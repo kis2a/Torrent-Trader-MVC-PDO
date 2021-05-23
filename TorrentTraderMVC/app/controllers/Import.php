@@ -61,7 +61,7 @@ class Import extends Controller {
                     $torrent_dir = TORRENTDIR;
 
                     $torInfo = new Parse();
-                    $tor = $torInfo->torr("$torrent_dir/$fname");
+                    $tor = $torInfo->torr("$dir/$fname");
 
                     $announce = strtolower($tor[0]);
                     $infohash = $tor[1];
@@ -101,7 +101,7 @@ class Import extends Controller {
 
                     $ret = DB::run("INSERT INTO torrents (filename, owner, name, descr, category, added, info_hash, size, numfiles, save_as, announce, external, torrentlang, anon, last_action) VALUES (" . sqlesc($fname) . ", '" . $_SESSION['id'] . "', " . sqlesc($name) . ", " . sqlesc($descr) . ", '" . $catid . "', '" . TimeDate::get_date_time() . "', '" . $infohash . "', '" . $torrentsize . "', '" . $filecount . "', " . sqlesc($fname) . ", '" . $announce . "', '" . $external . "', '" . $langid . "','$anon', '" . TimeDate::get_date_time() . "')");
 
-                    $id = $ret->lastInsertId();
+                    $id = DB::lastInsertId();
 
                     if ($ret->errorCode() == 1062) {
                         $message .= Lang::T("UPLOAD_ALREADY_UPLOADED");

@@ -3,6 +3,7 @@
     <?php echo $data['title']; ?>
 </div>
 <div class="card-body">
+<?php usermenu($data['userid']); ?>
     <center>
   <br>This page displays the options that you can redeem accumulated points against depending on the share of torrents. <font color=yellow><b><?php echo $data['usersbonus']; ?></font></b>
   </center>
