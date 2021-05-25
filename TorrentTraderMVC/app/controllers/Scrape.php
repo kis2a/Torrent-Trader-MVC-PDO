@@ -17,8 +17,10 @@ class Scrape extends Controller
         while ($rowu = $resu->fetch(PDO::FETCH_ASSOC)) {
             //parse torrent file
             $torrent_dir = TORRENTDIR;
-            $TorrentInfo = array();
-            $TorrentInfo = Parse::torr("$torrent_dir/$rowu[id].torrent");
+            //$TorrentInfo = array();
+            $Tor = new Parse();
+            //$TorrentInfo = Parse::torr("$torrent_dir/$rowu[id].torrent");
+            $TorrentInfo = $Tor->torr("$torrent_dir/$rowu[id].torrent");
 
             $ann = $TorrentInfo[0];
             $annlist = array();

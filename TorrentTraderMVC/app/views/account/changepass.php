@@ -1,6 +1,7 @@
 <?php
 Style::header(Lang::T("Change Password"));
 Style::begin(Lang::T("Change Password"));
+usermenu($data['id']);
 ?>
 <div class="form-group">
     <form method="post" action="<?php echo URLROOT; ?>/account/changepw?id=<?php echo $data['id']; ?>">

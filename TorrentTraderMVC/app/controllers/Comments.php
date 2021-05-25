@@ -25,6 +25,7 @@ class Comments extends Controller
             }
             Style::header(Lang::T("COMMENTS"));
             Style::begin(Lang::T("NEWS"));
+            torrentmenu($id);
             echo htmlspecialchars($row['title']) . "<br /><br />" . format_comment($row['body']) . "<br />";
             Style::end();
         }
@@ -40,6 +41,7 @@ class Comments extends Controller
         }
         Style::header(Lang::T("COMMENTS"));
         Style::begin($title);
+        torrentmenu($id);
         $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE $type =?", [$id])->fetchColumn();
         if ($commcount) {
             list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "comments?id=$id&amp;type=$type");

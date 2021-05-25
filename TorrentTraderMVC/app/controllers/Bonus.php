@@ -32,6 +32,7 @@ class Bonus extends Controller
             'usersbonus' => $_SESSION['seedbonus'],
             'configbonuspertime' => BONUSPERTIME,
             'configautoclean_interval' => floor(ADDBONUS / 60),
+			'getid' => $_GET['id'],
             'usersid' => $_SESSION['id'],
         ];
         $this->view('bonus/index', $data, true);

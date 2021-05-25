@@ -1,6 +1,7 @@
 <?php
 Style::header(Lang::T("Change Email"));
 Style::begin(Lang::T("Change Email"));
+usermenu($data['id']);
 ?>
 <div class="form-group">
 <form action="<?php echo URLROOT; ?>/account/email?id=<?php echo $data['id']; ?>" method="post">

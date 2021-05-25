@@ -123,10 +123,10 @@ function usermenu($id)
     <a href='<?php echo URLROOT; ?>/account/changepw?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Password</button></a>
     <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Email</button></a>
     <a href='<?php echo URLROOT; ?>/messages'><button type="button" class="btn btn-sm btn-primary">Messages</button></a>
-    <a href='<?php echo URLROOT; ?>/bonus'><button type="button" class="btn btn-sm btn-primary">Seed Bonus</button></a>
+    <a href='<?php echo URLROOT; ?>/bonus?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Seed Bonus</button></a>
     <?php }?>
     <?php if ($_SESSION["view_users"]) {?>
-    <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Your Friends</button></a>
+    <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Friends</button></a>
     <?php }?>
     <?php if ($_SESSION["view_torrents"]) {?>
     <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Seeding</button></a>
@@ -139,7 +139,7 @@ function usermenu($id)
     <br><br><?php
 } //end func
 
-function torrentmenu($id, $external)
+function torrentmenu($id, $external = 'no')
 {
      ?>
 <a href='<?php echo URLROOT; ?>/torrents/read?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Back</button></a>
