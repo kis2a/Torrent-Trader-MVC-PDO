@@ -37,5 +37,5 @@ if (ANONYMOUSUPLOAD) {?>
                        </td></tr>
 
                    <?php }?>
-                   <tr><td align="center" colspan="2"><<button type="submit" class="btn btn-primary btn-sm"><?php echo Lang::T("UPLOAD"); ?></button><br />
+                   <tr><td align="center" colspan="2"><button type="submit" class="btn btn-primary btn-sm"><?php echo Lang::T("UPLOAD"); ?></button><br />
                    <i><?php echo Lang::T("CLICK_ONCE_IMAGE"); ?></i></td></tr></table></form>

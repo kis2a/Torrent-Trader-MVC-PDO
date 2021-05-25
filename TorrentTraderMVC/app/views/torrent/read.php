@@ -17,7 +17,7 @@ torrentmenu($data['id'], $torr['external']);
         <b><?php echo Lang::T("LANG"); ?>:</b>&nbsp;<?php echo $torr["lang_name"]; ?><br>
          <?php
         if (isset($torr["lang_image"]) && $torr["lang_image"] != "") {
-            print("&nbsp;<img border=\"0\" src=\"images/languages/" . $torr["lang_image"] . "\" alt=\"" . $torr["lang_name"] . "\" />");
+            print("&nbsp;<img border=\"0\" src=\"".URLROOT."/assets/images/languages/" . $torr["lang_image"] . "\" alt=\"" . $torr["lang_name"] . "\" />");
         }?>
         <b><?php echo Lang::T("TOTAL_SIZE"); ?>:</b>&nbsp;<?php echo mksize($torr["size"]); ?><br>
         <b><?php echo Lang::T("INFO_HASH"); ?>:</b>&nbsp;<?php echo $torr["info_hash"]; ?><br>
@@ -54,14 +54,14 @@ torrentmenu($data['id'], $torr['external']);
             print("<b>" . Lang::T("FREE_LEECH") . ": </b><font color='#ff0000'>" . Lang::T("FREE_LEECH_MSG") . "</font><br />");
         }
         if ($torr["external"] != 'yes' && $torr["vip"] == 'yes') {
-            print("<b>Torrent VIP: </b><font color='orange'>Torrent reserved for VIP</font><br><br>");
+            print("<b>Torrent VIP: </b><font color='orange'>Torrent reserved for VIP</font><br>");
         }
         print("<b>" . Lang::T("LAST_CHECKED") . ": </b>" . date("d-m-Y H:i:s", TimeDate::utc_to_tz_time($torr["last_action"])) . "<br><br>");
         echo  Helper::ratingtor($data['id']) ;
 		// Scrape External Torrents
         if ($torr["external"] == 'yes') {
         print("
-        <b><font color='#FF2000'>" . Lang::T("EXTERNAL_TORRENT") . "</font></b>
+        <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
             <form action='".URLROOT."/scrape?id=$data[id]' method='post'>
                 <input type='submit' name='submit' value=" . Lang::T("UPDATE_STATS") . " />
             </form>");

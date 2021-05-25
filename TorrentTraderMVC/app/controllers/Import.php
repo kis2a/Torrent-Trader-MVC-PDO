@@ -6,6 +6,7 @@ class Import extends Controller {
         Auth::user();
         $this->torrentModel = $this->model('Torrent');
         $this->valid = new Validation();
+		$this->logsModel = $this->model('Logs');
     }
 
     public function index()

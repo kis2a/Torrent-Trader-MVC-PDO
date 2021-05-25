@@ -743,6 +743,7 @@ if ($sql->rowCount() != 0) {
 
             print("</table>");
 ///////////////////////////////////////////////////////////////////
+            /*
             print("
             <div class='row justify-content-md-center'>
         <div class='col-md-8'>
@@ -750,13 +751,19 @@ if ($sql->rowCount() != 0) {
             </div>
             </div>
             ");
-            //textbbcode("Form", "body"); // todo
+            */textbbcode("Form", "body"); // todo
 
 
-            echo 'Add attachment';
-            echo '<center><input type="file" name="upfile[]" multiple></center><br>';
             //echo '<center><input type="file" name="upfile[]" multiple></center><br>';
-            print("<center><br /><input type='image' src='" . URLROOT . "/assets/images/forum/button_reply.png' alt='' /></center>");
+            print("<center><br /><button class='btn btn-sm btn-warning'>Reply</button></center><br>");
+            
+            ?>
+    <div class="row justify-content-md-center">
+        <div class="col-md-4 border border-warning">
+<?php
+            echo '<center>Add attachment<center><br>';
+            echo '<center><input type="file" name="upfile[]" multiple></center><br></div></div><br>';
+            
             print("</form>\n");
             //Style::end();
             print(" </fieldset>");
@@ -783,8 +790,16 @@ if ($sql->rowCount() != 0) {
             print("<form method='post' action='" . URLROOT . "/forums/renametopic'>\n");
             print("<input type='hidden' name='topicid' value='$topicid' />\n");
             print("<input type='hidden' name='returnto' value='forums/viewtopic&amp;topicid=$topicid' />\n");
-            print("<div align='center'  style='padding:3px'>Rename topic: <input type='text' name='subject' size='60' maxlength='$maxsubjectlength' value='" . stripslashes(htmlspecialchars($subject)) . "' />\n");
-            print("<input type='submit' value='Apply' />");
+            
+			print("<div align='center'  style='padding:3px'>Rename topic: 
+            <div class='row justify-content-md-center'>
+            <div class='col col-lg-4'>
+            <input class='form-control' type='text' name='subject' size='30' maxlength='$maxsubjectlength' value='" . stripslashes(htmlspecialchars($subject)) . "' />
+            </div>
+            </div>
+            \n");
+			
+			print("<input type='submit' value='Apply' />");
             print("</div></form>\n");
             print("<form method='post' action='" . URLROOT . "/forums/movetopic&amp;topicid=$topicid'>\n");
             print("<div align='center' style='padding:3px'>");
