@@ -42,7 +42,7 @@ class Adminprivacy extends Controller
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('admin/privacylevel', $data);
+        $this->view('user/admin/privacylevel', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

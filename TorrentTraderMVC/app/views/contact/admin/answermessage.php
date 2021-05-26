@@ -1,11 +1,12 @@
 <?php
 $user = $data['res']->fetch(PDO::FETCH_ASSOC);
 $array = $data['res2']->fetch(PDO::FETCH_ASSOC);
+Style::adminheader("All Clients");
 Style::begin('Answer to Staff PM');
 ?>
-<center><b>Answering to <a href='<?php echo URLROOT; ?>/contactstaff/viewpm?pmid=<?php echo $array['id']; ?>'><i><?php echo $array["subject"]; ?></i></a> sent by <i><?php echo $user["username"]; ?></i></b></center>
+<center><b>Answering to <a href='<?php echo URLROOT; ?>/admincontactstaff/viewpm?pmid=<?php echo $array['id']; ?>'><i><?php echo $array["subject"]; ?></i></a> sent by <i><?php echo $user["username"]; ?></i></b></center>
 
-<form method=post name=message action='<?php echo URLROOT; ?>/contactstaff/takeanswer'>
+<form method=post name=message action='<?php echo URLROOT; ?>/admincontactstaff/takeanswer'>
 <table class='table table-striped table-bordered table-hover'><thead><tr><td> 
     <b><font color=red>Message:</font></b><br>
     <textarea name=msg cols=50 rows=5><?php echo htmlspecialchars($body); ?></textarea>
@@ -21,3 +22,4 @@ Style::begin('Answer to Staff PM');
 </form>
 <?php
 Style::end();
+Style::adminfooter();

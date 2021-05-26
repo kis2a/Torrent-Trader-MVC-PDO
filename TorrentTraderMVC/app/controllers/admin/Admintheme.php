@@ -74,7 +74,7 @@ class Admintheme extends Controller
             Style::adminnavmenu();
             //$data = [];
             //$this->view('admin/sitelog', $data);
-            require APPROOT . '/views/admin/styledo.php'; // todo
+            require APPROOT . '/views/style/admin/styledo.php'; // todo
             require APPROOT . '/views/admin/footer.php';
         
     }   

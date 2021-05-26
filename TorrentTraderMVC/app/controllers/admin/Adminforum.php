@@ -124,7 +124,7 @@ class Adminforum extends Controller
         if (!$r) {
             Redirect::autolink(URLROOT . "/adminforum", Lang::T("FORUM_INVALID"));
         }
-        require APPROOT . '/views/admin/forum/editforum.php';
+        require APPROOT . '/views/forum/admin/editforum.php';
         require APPROOT . '/views/admin/footer.php';
     }
 
@@ -173,13 +173,13 @@ Style::end();
         if (!$r) {
             Redirect::autolink(URLROOT . "/adminforum", Lang::T("FORUM_INVALID_CAT"));
         }
-        require APPROOT . '/views/admin/forum/editcat.php';
+        require APPROOT . '/views/forum/admin/editcat.php';
         require APPROOT . '/views/admin/footer.php';
     }
 
     if (!$do) {
         Style::adminnavmenu();
-        require APPROOT . '/views/admin/forum/index.php';
+        require APPROOT . '/views/forum/admin/index.php';
         require APPROOT . '/views/admin/footer.php';
     } // End New Forum
 

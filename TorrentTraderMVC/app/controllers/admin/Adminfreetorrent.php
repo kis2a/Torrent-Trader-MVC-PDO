@@ -32,7 +32,7 @@ class Adminfreetorrent extends Controller
             'resqq' => $resqq,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('admin/freetorrent', $data);
+        $this->view('torrent/admin/freetorrent', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

@@ -40,7 +40,7 @@ class Adminhitnrun extends Controller
                 'pagerbottom' => $pagerbottom,
                 'res' => $res,
             ];
-            $this->view('admin/hitnrun', $data);
+            $this->view('snatched/admin/hitnrun', $data);
             require APPROOT . '/views/admin/footer.php';
         } else {
             require APPROOT . '/views/admin/header.php';

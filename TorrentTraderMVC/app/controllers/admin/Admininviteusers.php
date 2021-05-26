@@ -41,7 +41,7 @@ class Admininviteusers extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('admin/invited', $data);
+        $this->view('user/admin/invited', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

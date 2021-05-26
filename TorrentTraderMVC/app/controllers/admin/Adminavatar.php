@@ -27,7 +27,7 @@ class Adminavatar extends Controller
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('admin/avatar', $data);
+        $this->view('user/admin/avatar', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 

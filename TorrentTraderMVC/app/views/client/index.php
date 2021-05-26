@@ -2,7 +2,7 @@
 Style::begin("All Clients");
 ?>
 <center><b>Current Clients Connected</b></center>
-<form id="ban" method="post" action="<?php echo URLROOT; ?>/client">
+<form id="ban" method="post" action="<?php echo URLROOT; ?>/adminclient">
     <table class='table table-striped table-bordered table-hover'><thead>
        <tr><th class=table_head>Client</th>
        <th class=table_head>Peer ID</th>
@@ -30,11 +30,12 @@ Style::begin("All Clients");
     <div class="form-group">
 	    <label for="name"><b>Enter Ban Code :</b></label>
         <input id="name" type="text" class="form-control" name="ban" minlength="3" maxlength="25">
-        <a href='<?php echo URLROOT; ?>/client/banned'><button type="submit" class="btn btn-primary btn-sm">Ban</button></a>
+        <a href='<?php echo URLROOT; ?>/adminclient/banned'><button type="submit" class="btn btn-primary btn-sm">Ban</button></a>
     </div>
+    </form>
     <div class="form-group">
-        <a href='<?php echo URLROOT; ?>/client/banned'><button type="submit" class="btn btn-primary btn-sm">View Banned</button></a>
+        <a href='<?php echo URLROOT; ?>/adminclient/banned'><button type="submit" class="btn btn-primary btn-sm">View Banned</button></a>
     </div>
-</form>
+
 <?php
 Style::end();

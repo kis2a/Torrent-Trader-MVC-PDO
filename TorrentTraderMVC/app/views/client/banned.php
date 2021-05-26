@@ -2,7 +2,7 @@
 Style::begin("All Clients");?>
 ?>
 <center><b>Current Banned Clients</b></center>
-<form id="unban" method="post" action="<?php echo URLROOT; ?>/client/banned">
+<form id="unban" method="post" action="<?php echo URLROOT; ?>/adminclient/banned">
     <input type="hidden" name="unban" value="unban" />
     <table class='table table-striped table-bordered table-hover'><thead>
     <tr><th class=table_head>Name</th>
@@ -22,7 +22,7 @@ Style::begin("All Clients");?>
     <td class=table_col1><input type='checkbox' name='unban[]' value='<?php echo $arr14['agent_id']; ?>' /></td></tr>
 <?php }?>
     </tbody></table>
-    <center><a href='<?php echo URLROOT; ?>/client'><button type="button" class="btn btn-sm btn-success">View Current Clients</button></a>&nbsp;
+    <center><a href='<?php echo URLROOT; ?>/adminclient'><button type="button" class="btn btn-sm btn-success">View Current Clients</button></a>&nbsp;
     &nbsp;
     <button type="input" class="btn btn-sm btn-danger">Unban</button></center>
 </form>

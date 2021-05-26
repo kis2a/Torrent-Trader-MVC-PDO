@@ -41,7 +41,7 @@ class Adminconfirmusers extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('admin/confirmreg', $data);
+        $this->view('user/admin/confirmreg', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

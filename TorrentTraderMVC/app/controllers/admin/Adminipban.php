@@ -72,7 +72,7 @@ class Adminipban extends Controller
             'pagertop' => $pagertop,
             'res' => $res,
         ];
-        $this->view('admin/bannedip', $data);
+        $this->view('user/admin/bannedip', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 

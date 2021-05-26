@@ -5,6 +5,7 @@ class Request extends Controller
     {
         Auth::user();
         $this->userModel = $this->model('User');
+        $this->logsModel = $this->model('Logs');
         $this->pdo = new Database();
         $this->valid = new Validation();
     }

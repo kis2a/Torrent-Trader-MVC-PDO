@@ -1,6 +1,6 @@
 <?php
 Style::begin(Lang::T("FAQ_MANAGEMENT"));
-print("<form method=\"post\" action=\"".URLROOT."/faq/reorder\">");
+print("<form method=\"post\" action=\"".URLROOT."/adminfaq/reorder\">");
 foreach ($data['faq_categ'] as $id => $temp) {
     print("<br />\n<table class='table table-striped table-bordered table-hover'><thead>\n");
     print("<tr><th class=\"table_head\" colspan=\"2\">Position</th><th class=\"table_head\">Section/Item " . Lang::T("TITLE") . ": </th><th class=\"table_head\">Status</th><th class=\"table_head\">Actions</th></tr></thead><tbody>\n");
@@ -12,8 +12,8 @@ foreach ($data['faq_categ'] as $id => $temp) {
     $status = ($data['faq_categ'][$id]['flag'] == "0") ? "<font color=\"red\">Hidden</font>" : "Normal";
     print("</select></td><td class=\"table_col2\" align=\"center\" width=\"40px\">&nbsp;</td><td class=\"table_col1\"><b>" . stripslashes($data['faq_categ'][$id]['title']) . "</b></td><td class=\"ttable_col2\" align=\"center\" width=\"60px\">" . $status . "</td>
     
-    <td class=\"ttable_col1\" align=\"center\" width=\"60px\"><a href=\"".URLROOT."/faq/edit?action=editsect&id=" . $id . "\">edit</a>
-     <a href=\"".URLROOT."/faq/delete?id=" . $id . "\">delete</a></td></tr>\n");
+    <td class=\"ttable_col1\" align=\"center\" width=\"60px\"><a href=\"".URLROOT."/adminfaq/edit?action=editsect&id=" . $id . "\">edit</a>
+     <a href=\"".URLROOT."/adminfaq/delete?id=" . $id . "\">delete</a></td></tr>\n");
 
     if (array_key_exists("items", $data['faq_categ'][$id])) {
         foreach ($data['faq_categ'][$id]['items'] as $id2 => $temp) {
@@ -33,11 +33,11 @@ foreach ($data['faq_categ'] as $id => $temp) {
             }
             print("</select></td><td class=\"ttable_col1\">" . stripslashes($data['faq_categ'][$id]['items'][$id2]['question']) . "</td><td class=\"table_col2\" align=\"center\" width=\"60px\">" . $status . "</td>
             
-            <td class=\"ttable_col1\" align=\"center\" width=\"60px\"><a href=\"".URLROOT."/faq/edit?action=edititem&id=" . $id2 . "\">edit</a>
-             <a href=\"".URLROOT."/faq/delete?id=" . $id2 . "\">delete</a></td></tr>\n");
+            <td class=\"ttable_col1\" align=\"center\" width=\"60px\"><a href=\"".URLROOT."/adminfaq/edit?action=edititem&id=" . $id2 . "\">edit</a>
+             <a href=\"".URLROOT."/adminfaq/delete?id=" . $id2 . "\">delete</a></td></tr>\n");
         }
     }
-    print("<tr><td colspan=\"5\" align=\"center\"><a href=\"".URLROOT."/faq/additem?id=" . $id . "\">Add new item</a></td></tr>\n");
+    print("<tr><td colspan=\"5\" align=\"center\"><a href=\"".URLROOT."/adminfaq/additem?id=" . $id . "\">Add new item</a></td></tr>\n");
     print("</tbody></table>\n");
 }
 
@@ -57,14 +57,14 @@ if (isset($data['faq_orphaned'])) {
         }
 
         print("<tr><td>" . stripslashes($data['faq_orphaned'][$id]['question']) . "</td><td align=\"center\" width=\"60px\">" . $status . "</td>
-        <td align=\"center\" width=\"60px\"><a href=\"".URLROOT."/faq/edit?action=edititem&id=" . $id . "\">edit</a>
-        <a href=\"".URLROOT."/faq/delete?id=" . $id . "\">delete</a></td></tr>\n");
+        <td align=\"center\" width=\"60px\"><a href=\"".URLROOT."/adminfaq/edit?action=edititem&id=" . $id . "\">edit</a>
+        <a href=\"".URLROOT."/adminfaq/delete?id=" . $id . "\">delete</a></td></tr>\n");
     }
     print("</table>\n");
 }
 
 print("<br />\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr>
-<td align=\"center\"><a href=\"".URLROOT."/faq/newsection\">Add new section</a></td></tr>\n</table>\n");
+<td align=\"center\"><a href=\"".URLROOT."/adminfaq/newsection\">Add new section</a></td></tr>\n</table>\n");
 
 print("<p align=\"center\"><input type=\"submit\" name=\"reorder\" value=\"Reorder\" /></p>\n");
 print("</form>\n");

@@ -52,6 +52,6 @@ class Members extends Controller
             'query1' => $query,
             'query2' => $q
         ];
-        $this->view('members/index', $data, true);
+        $this->view('groups/index', $data, true);
     }
 }

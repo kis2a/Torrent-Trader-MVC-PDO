@@ -9,7 +9,7 @@
     <ul class="navbar-nav mr-auto">
 
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="<?php echo URLROOT ?>">Home <span class="sr-only">(current)</span></a>
       </li>
 
       <li class="nav-item">
@@ -94,8 +94,8 @@
     $useruploaded = mksize($_SESSION["uploaded"]);
     $privacylevel = Lang::T($_SESSION["privacy"]);
       print("&nbsp;&nbsp;
-        <img src='" . URLROOT . "/assets/images/seed.gif' border='none' height='20' width='20' alt='Downloaded' title='Downloaded'><font color='#FFCC66'><b>$userdownloaded</b></font>&nbsp;&nbsp;
-        <img src='" . URLROOT . "/assets/images/up.gif' border='none' height='20' width='20' alt='Uploaded' title='Uploaded'> <font color='#33CCCC'><b>$useruploaded</b></font>&nbsp;&nbsp;
+        <img src='" . URLROOT . "/assets/images/up.gif' border='none' height='20' width='20' alt='Downloaded' title='Downloaded'><font color='#FFCC66'><b>$userdownloaded</b></font>&nbsp;&nbsp;
+        <img src='" . URLROOT . "/assets/images/seed.gif' border='none' height='20' width='20' alt='Uploaded' title='Uploaded'> <font color='#33CCCC'><b>$useruploaded</b></font>&nbsp;&nbsp;
         <img src='" . URLROOT . "/assets/images/button_online.png' border='none' height='20' width='20' alt='Ratio' title='Ratio'> (<b><font color='#FFF'>$userratio</font></b>)&nbsp;&nbsp;
         B &nbsp;<a href='" . URLROOT . "/bonus' title='Bonus'><font color=#00cc00>$_SESSION[seedbonus]</font></a>&nbsp;&nbsp;");
       // connectable yes or no

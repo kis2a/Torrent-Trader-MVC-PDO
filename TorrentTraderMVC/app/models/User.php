@@ -12,6 +12,25 @@
       return $row;
     }
 
+    public function updateUserPasswordSecret($chpassword, $secret, $id){
+      $row = $this->db->run("UPDATE users SET password =?, secret =?
+            WHERE id =?", [$chpassword, $secret, $id]);
+
+    }
+
+    public function updateUserEditSecret($sec, $id){
+      $row = $this->db->run("UPDATE users SET editsecret =? WHERE id =?", [$sec, $id]);
+
+    }
+    public function updateUserAvatar($avatar, $id){
+      $row = $this->db->run("UPDATE users SET avatar=? WHERE id =?", [$avatar, $id]);
+
+    }
+    public function selectUserEmail($id){
+      $row = $this->db->run("SELECT email FROM users WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
+
     // Update User pass & secret
     public function recoverUpdate($wantpassword, $newsec, $pid, $psecret){
       $row = $this->db->run("UPDATE `users` SET `password` =?, `secret` =? WHERE `id`=? AND `secret` =?", [$wantpassword, $newsec, $pid, $psecret]);

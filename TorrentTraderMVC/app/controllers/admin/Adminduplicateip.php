@@ -26,7 +26,7 @@ class Adminduplicateip extends Controller
             'res' => $res,
 
         ];
-        $this->view('admin/duplicuteip', $data);
+        $this->view('user/admin/duplicuteip', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

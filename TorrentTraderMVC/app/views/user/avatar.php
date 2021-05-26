@@ -1,5 +1,6 @@
 <?php
 Style::begin("Upload");
+usermenu($data['id']);
 print("<b>" . Lang::T("AVATAR_UPLOAD") . ":</b> &nbsp;
 <form action='".URLROOT."/account/avatar?id=".$data['id']."' method='post' enctype='multipart/form-data'>
 <input type='file' name='upfile'>

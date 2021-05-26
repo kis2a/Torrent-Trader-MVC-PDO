@@ -41,7 +41,7 @@ class Adminwarnedusers extends Controller
             'count' => $count,
             'res' => $res,
         ];
-        $this->view('admin/warned', $data);
+        $this->view('warning/admin/warned', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 

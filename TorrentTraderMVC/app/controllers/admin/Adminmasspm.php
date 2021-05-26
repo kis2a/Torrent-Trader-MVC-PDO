@@ -41,7 +41,7 @@ class Adminmasspm extends Controller
         $data = [
             'res' => $res,
         ];
-        $this->view('admin/masspm', $data);
+        $this->view('message/admin/masspm', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

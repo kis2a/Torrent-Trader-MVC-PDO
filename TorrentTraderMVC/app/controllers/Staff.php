@@ -42,7 +42,7 @@ class Staff extends Controller {
             'sql' => $res,
             'table' => $table,
         ];
-        $this->view('staff/index', $data, true);
+        $this->view('groups/staff', $data, true);
     }
 
 }

@@ -28,7 +28,7 @@ class Adminbantorrent extends Controller
             'pagertop' => $pagertop,
             'resqq' => $resqq,
         ];
-        $this->view('admin/bannedtorrents', $data);
+        $this->view('torrent/admin/bannedtorrents', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

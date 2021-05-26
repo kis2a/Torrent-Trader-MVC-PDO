@@ -34,7 +34,7 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
         $data = [
             'invite' => $invite_row,
         ];
-        $this->view('account/signup', $data, true);
+        $this->view('user/signup', $data, true);
     }
 
     public function submit()
@@ -134,7 +134,7 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
                 if (ACONFIRM) {
                     $body = Lang::T("YOUR_ACCOUNT_AT") . " " . SITENAME . " " . Lang::T("HAS_BEEN_CREATED_YOU_WILL_HAVE_TO_WAIT") . "\n\n" . SITENAME . " " . Lang::T("ADMIN");
                 } else { //NO ADMIN CONFIRM, BUT EMAIL CONFIRM
-                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . SITENAME . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/confirm?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
+                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . SITENAME . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/confirmemail/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
                 }
                 if (CONFIRMEMAIL) {
                     $TTMail = new TTMail();

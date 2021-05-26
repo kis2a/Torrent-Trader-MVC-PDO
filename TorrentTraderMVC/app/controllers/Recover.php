@@ -12,7 +12,7 @@ class Recover extends Controller
     public function index()
     {
         $data = [];
-        $this->view('account/recover', $data, true);
+        $this->view('user/recover', $data, true);
     }
 
     public function submit()
@@ -47,7 +47,7 @@ class Recover extends Controller
     public function confirm()
     {
         $data = [];
-        $this->view('account/confirm', $data, true);
+        $this->view('user/confirm', $data, true);
     }
 
     public function ok()

@@ -20,7 +20,7 @@ class Adminrules extends Controller
         $data = [
             'res' => $res,
         ];
-        $this->view('admin/rulesview', $data);
+        $this->view('rules/admin/rulesview', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }
@@ -48,7 +48,7 @@ class Adminrules extends Controller
             'id' => $id,
             'res' => $res,
         ];
-        $this->view('admin/rulesedit', $data);
+        $this->view('rules/admin/rulesedit', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }
@@ -69,7 +69,7 @@ class Adminrules extends Controller
         Style::adminnavmenu();
         Style::begin(Lang::T("ADD_NEW_RULES_SECTION"));
         $data = [];
-        $this->view('admin/rulesaddsect', $data);
+        $this->view('rules/admin/rulesaddsect', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

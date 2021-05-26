@@ -1,5 +1,4 @@
 <?php
-Style::header(Lang::T("Change Password"));
 Style::begin(Lang::T("Change Password"));
 usermenu($data['id']);
 ?>
@@ -21,4 +20,3 @@ usermenu($data['id']);
 </div>
  <?php
 Style::end();
-Style::footer();

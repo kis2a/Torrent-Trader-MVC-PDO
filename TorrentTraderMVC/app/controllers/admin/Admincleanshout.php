@@ -25,7 +25,7 @@ class Admincleanshout extends Controller
         require APPROOT . '/views/admin/header.php';
         Style::adminnavmenu();
         $data = [];
-        $this->view('admin/clearshoutbox', $data);
+        $this->view('shoutbox/admin/clearshoutbox', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

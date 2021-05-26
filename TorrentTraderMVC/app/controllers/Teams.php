@@ -8,6 +8,7 @@ class Teams extends Controller
         // $this->userModel = $this->model('User');
         $this->log = $this->model('Logs');
     }
+    
     public function index()
     {
         $res = DB::run("SELECT teams.id, teams.name, teams.image, teams.info, teams.owner, teams.added, users.username, (SELECT GROUP_CONCAT(id, ' ', username) FROM users WHERE FIND_IN_SET(users.team, teams.id) AND users.enabled = 'yes' AND users.status = 'confirmed') AS members FROM teams LEFT JOIN users ON teams.owner = users.id WHERE users.enabled = 'yes' AND users.status = 'confirmed'");

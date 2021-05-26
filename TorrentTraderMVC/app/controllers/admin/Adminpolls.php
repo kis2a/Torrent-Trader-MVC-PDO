@@ -20,7 +20,7 @@ class Adminpolls extends Controller
         $data = [
             'query' => $query,
         ];
-        $this->view('admin/pollsview', $data);
+        $this->view('poll/admin/pollsview', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }
@@ -43,7 +43,7 @@ class Adminpolls extends Controller
         $data = [
             'poll' => $poll,
         ];
-        $this->view('admin/pollsresults', $data);
+        $this->view('poll/admin/pollsresults', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

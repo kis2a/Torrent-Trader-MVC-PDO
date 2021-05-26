@@ -21,7 +21,7 @@ class Adminwhoswhere extends Controller
         $data = [
             'res' => $res,
         ];
-        $this->view('admin/whoswhere', $data);
+        $this->view('user/admin/whoswhere', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

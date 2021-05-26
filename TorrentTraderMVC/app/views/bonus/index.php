@@ -1,11 +1,8 @@
-<div class="card">
-<div class="card-header">
-    <?php echo $data['title']; ?>
-</div>
-<div class="card-body">
-<?php usermenu($data['getid']); ?>
-    <center>
-  <br>This page displays the options that you can redeem accumulated points against depending on the share of torrents. <font color=yellow><b><?php echo $data['usersbonus']; ?></font></b>
+<?php
+Style::begin(Lang::T("Bonus"));
+usermenu($data['getid']); ?>
+  <center>
+  This page displays the options that you can redeem accumulated points against depending on the share of torrents. <font color=yellow><b><?php echo $data['usersbonus']; ?></font></b>
   </center>
   <br />
   <div class='table-responsive'> <table class='table table-striped'><thead><tr>
@@ -33,5 +30,5 @@
      <li><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'>Return to profile</a></li>
   </ul>
   </div>
-  </div>
-    </div><br />
+<?php
+Style::end();

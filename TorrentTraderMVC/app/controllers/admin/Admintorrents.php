@@ -38,7 +38,7 @@ class Admintorrents extends Controller
             'res' => $res,
             'search' => $search,
         ];
-        $this->view('admin/torrentmanage', $data);
+        $this->view('torrent/admin/torrentmanage', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
 

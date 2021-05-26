@@ -51,7 +51,7 @@ class Adminsitelog extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('admin/sitelog', $data);
+        $this->view('log/admin/sitelog', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

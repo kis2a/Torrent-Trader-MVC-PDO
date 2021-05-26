@@ -13,7 +13,7 @@ if ($_SESSION['loggedin'] === true && $_SESSION["control_panel"] == "yes") {
        <option value="<?php echo URLROOT; ?>/admincp/blocks&amp;do=view">Blocks</option>
        <option value="<?php echo URLROOT; ?>/admincensor/cheats">Detect Possibe Cheats</option>
        <option value="<?php echo URLROOT; ?>/adminemailban">E-mail Bans</option>
-       <option value="<?php echo URLROOT; ?>/admincp/faq/manage">FAQ</option>
+       <option value="<?php echo URLROOT; ?>/adminfaq/manage">FAQ</option>
        <option value="<?php echo URLROOT; ?>/adminfreetorrent">Freeleech Torrents</option>
        <option value="<?php echo URLROOT; ?>/admincomments">Latest Comments</option>
        <option value="<?php echo URLROOT; ?>/adminmasspm">Mass PM</option>

@@ -10,95 +10,8 @@ class Admingroups extends Controller
         $this->valid = new Validation();
     }
 
-    public static function adminnavmenu1()
-    {
-        //Get Last Cleanup
-        $row = DB::run("SELECT last_time FROM tasks WHERE task =?", ['cleanup'])->fetchColumn();
-        if (!$row) {
-            $lastclean = "never done...";
-        } else {
-            $lastclean = TimeDate::get_elapsed_time($row);
-        }?><br>
-        <div class="card w-100 ">
-        <div class="border border-primary">
-        <?php
-echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLROOT . "/admincleanup'><b>" . Lang::T("FORCE_CLEAN") . "</b></a>]</center>";
-        /*
-        if (VERSION != "PDO") {
-        $file = @file_get_contents('https://www.torrenttradertest.uk/ttversion.php');
-        if (VERSION >= $file) {
-        echo "<br /><center><b>" . Lang::T("YOU_HAVE_LATEST_VER_INSTALLED") . " VERSION</b></center>";
-        } else {
-        echo "<br /><center><b><font class='error'>" . Lang::T("NEW_VERSION_OF_TT_NOW_AVAIL") . ": v" . $file . " you have " . VERSION . "<br /> Please visit <a href=http://www.torrenttrader.xyz/>TorrentTrader.xyz</a> to upgrade.</font></b></center>";
-        }
-        }
-         */
-        $row = DB::run("SELECT VERSION() AS version")->fetch();
-        $mysqlver = $row['version'];
-        function apache_version()
-        {
-            $ver = explode(" ", $_SERVER["SERVER_SOFTWARE"], 3);
-            return ($ver[0] . " " . $ver[1]);
-        }
-        $pending = get_row_count("users", "WHERE status = 'pending' AND invited_by = '0'");
-        echo "<center><b>" . Lang::T("USERS_AWAITING_VALIDATION") . ":</b> <a href='" . URLROOT . "/adminconfirmusers'><b>($pending)</b></a></center>";
-        echo "<center>" . Lang::T("VERSION_MYSQL") . ": <b>" . $mysqlver . "</b>&nbsp;-&nbsp;" . Lang::T("VERSION_PHP") . ": <b>" . phpversion() . "</b>&nbsp;-&nbsp;" . Lang::T("Apache Version") . ": <b>" . apache_version() . "</b></center>";
-        echo "<center><a href=" . URLROOT . "/admincache><b>Purge Cache</b></a><br></center>";
-        echo '</div></div><br>';
-    }
-
-    public function adminnavmenu()
-    {
-        //Get Last Cleanup
-        $row = DB::run("SELECT last_time FROM tasks WHERE task =?", ['cleanup'])->fetchColumn();
-        if (!$row) {
-            $lastclean = "never done...";
-        } else {
-            $lastclean = TimeDate::get_elapsed_time($row);
-        }?><br>
-        <div class="card w-100 ">
-        <div class="border border-primary">
-        <?php
-echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLROOT . "/admincleanup'><b>" . Lang::T("FORCE_CLEAN") . "</b></a>]</center>";
-        /*
-        if (VERSION != "PDO") {
-        $file = @file_get_contents('https://www.torrenttradertest.uk/ttversion.php');
-        if (VERSION >= $file) {
-        echo "<br /><center><b>" . Lang::T("YOU_HAVE_LATEST_VER_INSTALLED") . " VERSION</b></center>";
-        } else {
-        echo "<br /><center><b><font class='error'>" . Lang::T("NEW_VERSION_OF_TT_NOW_AVAIL") . ": v" . $file . " you have " . VERSION . "<br /> Please visit <a href=http://www.torrenttrader.xyz/>TorrentTrader.xyz</a> to upgrade.</font></b></center>";
-        }
-        }
-         */
-        $row = DB::run("SELECT VERSION() AS version")->fetch();
-        $mysqlver = $row['version'];
-        function apache_version()
-        {
-            $ver = explode(" ", $_SERVER["SERVER_SOFTWARE"], 3);
-            return ($ver[0] . " " . $ver[1]);
-        }
-        $pending = get_row_count("users", "WHERE status = 'pending' AND invited_by = '0'");
-        echo "<center><b>" . Lang::T("USERS_AWAITING_VALIDATION") . ":</b> <a href='" . URLROOT . "/adminconfirmusers'><b>($pending)</b></a></center>";
-        echo "<center>" . Lang::T("VERSION_MYSQL") . ": <b>" . $mysqlver . "</b>&nbsp;-&nbsp;" . Lang::T("VERSION_PHP") . ": <b>" . phpversion() . "</b>&nbsp;-&nbsp;" . Lang::T("Apache Version") . ": <b>" . apache_version() . "</b></center>";
-        echo "<center><a href=" . URLROOT . "/admincache><b>Purge Cache</b></a><br></center>";
-        echo '</div></div><br>';
-    }
-
     public function index()
-    {
-        if (!$_SESSION['class'] > 5 || $_SESSION["control_panel"] != "yes") {
-            show_error_msg(Lang::T("ERROR"), Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"), 1);
-        }
-        $title = 'admin';
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
-        echo '<div class="border border-primary">';
-        echo '<center>';
-        echo '<b>Welcome To The Staff Panel</b>';
-        echo '</center>';
-        echo '</div>';
-        require APPROOT . '/views/admin/footer.php';
-    }
+    {}
 
 
     public function groupsview()
@@ -110,7 +23,7 @@ echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLRO
         $data = [
             'getlevel' => $getlevel,
         ];
-        $this->view('groups/view', $data);
+        $this->view('groups/admin/view', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 
@@ -129,7 +42,7 @@ echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLRO
         $data = [
             'rlevel' => $rlevel,
         ];
-        $this->view('groups/edit', $data);
+        $this->view('groups/admin/edit', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 
@@ -186,7 +99,7 @@ echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLRO
         $data = [
             'rlevel' => $rlevel,
         ];
-        $this->view('groups/add', $data);
+        $this->view('groups/admin/add', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 

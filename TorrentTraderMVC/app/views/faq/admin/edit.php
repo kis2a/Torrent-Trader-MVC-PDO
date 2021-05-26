@@ -3,12 +3,12 @@ Style::begin();
 
 print("<h1 align=\"center\">Edit Section or Item</h1>");
 
-
 while ($arr = $data['res']->fetch(PDO::FETCH_BOTH)) {
     $arr['question'] = stripslashes(htmlspecialchars($arr['question']));
     $arr['answer'] = stripslashes(htmlspecialchars($arr['answer']));
+    
     if ($arr['type'] == "item") {
-        print("<form method=\"post\" action=\"" . URLROOT . "/faq/actions?action=edititem\">");
+        print("<form method=\"post\" action=\"" . URLROOT . "/adminfaq/edit?action=edititem\">");
         print("<table border=\"0\" class=\"table_table\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
         print("<tr><td class='table_col1'>ID:</td><td class='table_col1'>$arr[id] <input type=\"hidden\" name=\"id\" value=\"$arr[id]\" /></td></tr>\n");
         print("<tr><td class='table_col2'>Question:</td><td class='table_col2'><input style=\"width: 300px;\" type=\"text\" name=\"question\" value=\"$arr[question]\" /></td></tr>\n");
@@ -31,8 +31,9 @@ while ($arr = $data['res']->fetch(PDO::FETCH_BOTH)) {
         print("</select></td></tr>\n");
         print("<tr><td colspan=\"2\" align=\"center\"><input type=\"submit\" name=\"edit\" value=\"Edit\" style=\"width: 60px;\" /></td></tr>\n");
         print("</table></form>");
+
     } elseif ($arr['type'] == "categ") {
-        print("<form method=\"post\" action=\"" . URLROOT . "/faq/actions?action=editsect\">");
+        print("<form method=\"post\" action=\"" . URLROOT . "/adminfaq/edit?action=editsect\">");
         print("<table border=\"0\" cellspacing=\"0\" cellpadding=\"10\" align=\"center\">\n");
         print("<tr><td class='table_col1'>ID:</td><td class='table_col1'>$arr[id] <input type=\"hidden\" name=\"id\" value=\"$arr[id]\" /></td></tr>\n");
         print("<tr><td class='table_col2'>Title:</td><td class='table_col2'><input style=\"width: 300px;\" type=\"text\" name=\"title\" value=\"$arr[question]\" /></td></tr>\n");

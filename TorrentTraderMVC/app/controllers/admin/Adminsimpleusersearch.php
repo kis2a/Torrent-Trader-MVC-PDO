@@ -55,7 +55,7 @@ class Adminsimpleusersearch extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('admin/simpleusersearch', $data);
+        $this->view('user/admin/simpleusersearch', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

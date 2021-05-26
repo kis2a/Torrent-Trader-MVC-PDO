@@ -122,7 +122,7 @@ class Adminseedbonus extends Controller
         $data = [
             'row' => $row,
         ];
-        $this->view('admin/seedbonuschange', $data);
+        $this->view('bonus/admin/seedbonuschange', $data);
         Style::end();
         require APPROOT . '/views/admin/footer.php';
     }

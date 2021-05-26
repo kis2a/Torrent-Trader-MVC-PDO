@@ -82,7 +82,7 @@ class Adminadvancedsearch extends Controller
     $title = Lang::T("ADVANCED_USER_SEARCH");
     require APPROOT . '/views/admin/header.php';
     Style::adminnavmenu();
-    require APPROOT . '/views/admin/advancedsearch.php';
+    require APPROOT . '/views/user/admin/advancedsearch.php';
     require APPROOT . '/views/admin/footer.php';
 }
 

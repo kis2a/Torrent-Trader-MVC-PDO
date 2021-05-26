@@ -51,7 +51,7 @@ class Adminemailban extends Controller
             'pagerbottom' => $pagerbottom,
             'limit' => $limit,
         ];
-        $this->view('admin/emails/bans', $data);
+        $this->view('emails/admin/bans', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 }

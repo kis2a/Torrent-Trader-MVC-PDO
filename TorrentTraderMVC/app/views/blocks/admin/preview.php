@@ -1,5 +1,6 @@
 <?php
-Style::header(Lang::T("_BLC_MAN_"));
+require APPROOT . '/views/admin/header.php';
+Style::adminnavmenu();
         echo "<a name=\"" . $data['name'] . "\"></a>";
         Style::begin(Lang::T("_BLC_PREVIEW_"));
         echo "<br /><center><b>" . Lang::T("_BLC_USE_SITE_SET_") . "</b></center><hr />";
@@ -8,4 +9,4 @@ Style::header(Lang::T("_BLC_MAN_"));
         echo "</td></tr></table><hr />";
         echo "<center><a href=\"javascript: self.close();\">" . Lang::T("_CLS_WIN_") . "</a></center>";
         Style::end();
-        Style::footer();
+        require APPROOT . '/views/admin/footer.php';

@@ -41,7 +41,7 @@ class Adminpendinginvite extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('admin/pendinginvite', $data);
+        $this->view('user/admin/pendinginvite', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 

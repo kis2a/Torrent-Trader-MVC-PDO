@@ -1,5 +1,4 @@
 <?php
-Style::header(Lang::T("Change Email"));
 Style::begin(Lang::T("Change Email"));
 usermenu($data['id']);
 ?>
@@ -16,4 +15,3 @@ usermenu($data['id']);
 </div>
 <?php
 Style::end();
-Style::footer();

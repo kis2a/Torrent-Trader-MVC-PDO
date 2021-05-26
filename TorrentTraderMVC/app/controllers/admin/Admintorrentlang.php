@@ -26,7 +26,7 @@ class Admintorrentlang extends Controller
         $data = [
             'sql' => $sql,
         ];
-        $this->view('admin/torrentlangview', $data);
+        $this->view('torrent/admin/torrentlangview', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 
@@ -60,7 +60,7 @@ class Admintorrentlang extends Controller
                 'id' => $id,
                 'res' => $res,
             ];
-            $this->view('admin/torrentlangedit', $data);
+            $this->view('torrent/admin/torrentlangedit', $data);
         }
         require APPROOT . '/views/admin/footer.php';
     }
@@ -83,7 +83,7 @@ class Admintorrentlang extends Controller
             $data = [
                 'id' => $id,
             ];
-            $this->view('admin/torrentlangdelete', $data);
+            $this->view('torrent/admin/torrentlangdelete', $data);
             require APPROOT . '/views/admin/footer.php';
         }
     }
@@ -113,7 +113,7 @@ class Admintorrentlang extends Controller
         require APPROOT . '/views/admin/header.php';
         Style::adminnavmenu();
         $data = [];
-        $this->view('admin/torrentlangadd', $data);
+        $this->view('torrent/admin/torrentlangadd', $data);
         require APPROOT . '/views/admin/footer.php';
     }
 

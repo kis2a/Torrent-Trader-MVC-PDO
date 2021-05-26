@@ -24,7 +24,7 @@ class Adminteams extends Controller
         $data = [
             'sql' => $sql
         ];
-        $this->view('teams/admin', $data);
+        $this->view('teams/admin/admin', $data);
     }
 
     public function add()
@@ -128,7 +128,7 @@ class Adminteams extends Controller
                 'owner' => $owner,
                 'info' => $info,
             ];
-            $this->view('teams/edit', $data);
+            $this->view('teams/admin/edit', $data);
             die();
         }
 	}
@@ -141,6 +141,6 @@ class Adminteams extends Controller
         $data = [
             'sql' => $sql
         ];
-        $this->view('teams/members', $data);
+        $this->view('teams/admin/members', $data);
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-class Confirm extends Controller
+class Confirmemail extends Controller
 {
 
     public function __construct()
@@ -10,7 +10,7 @@ class Confirm extends Controller
     }
 
     // Confirm by email (siteconfig - first contact)
-    public function index()
+    public function signup()
     {
         
         $id = (int) Input::get("id");
@@ -39,7 +39,7 @@ class Confirm extends Controller
     }
 
     // user confirm email reset (reset own email)
-    public function email()
+    public function index()
     {
         
         $id = (int) Input::get("id");

@@ -112,7 +112,7 @@ class Style
             return ($ver[0] . " " . $ver[1]);
         }
         $newstaffmessage = get_row_count("staffmessages", "WHERE answered = '0'");
-        echo "<center><b>" . Lang::T("New Staff Messages") . ":</b> <a href='" . URLROOT . "/contactstaff/staffbox'><b>($newstaffmessage)</b></a></center>";
+        echo "<center><b>" . Lang::T("New Staff Messages") . ":</b> <a href='" . URLROOT . "/admincontactstaff/staffbox'><b>($newstaffmessage)</b></a></center>";
         $pending = get_row_count("users", "WHERE status = 'pending' AND invited_by = '0'");
         echo "<center><b>" . Lang::T("USERS_AWAITING_VALIDATION") . ":</b> <a href='" . URLROOT . "/adminconfirmusers'><b>($pending)</b></a></center>";
         echo "<center>" . Lang::T("VERSION_MYSQL") . ": <b>" . $mysqlver . "</b>&nbsp;-&nbsp;" . Lang::T("VERSION_PHP") . ": <b>" . phpversion() . "</b>&nbsp;-&nbsp;" . Lang::T("Apache Version") . ": <b>" . apache_version() . "</b></center>";

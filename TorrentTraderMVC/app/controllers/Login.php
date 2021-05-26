@@ -14,7 +14,7 @@ class Login extends Controller
         $data = [
             'title' => Lang::T("LOGIN")
         ];
-        $this->view('account/login', $data, true);
+        $this->view('user/login', $data, true);
     }
 
     public function submit() {
