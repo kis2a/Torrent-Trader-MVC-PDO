@@ -85,7 +85,7 @@ class Profile extends Controller
             'usersignature' => $usersignature,
             'selectuser' => $user1,
         ];
-        $this->view('user/profile', $data, true);
+        $this->view('user/profile', $data, 'user');
     }
 
     public function edit()
@@ -156,7 +156,7 @@ class Profile extends Controller
             'id' => $id,
             'selectuser' => $user1,
         ];
-        $this->view('user/edit', $data, true);
+        $this->view('user/edit', $data, 'user');
     }
 
     public function submit()
@@ -225,7 +225,7 @@ class Profile extends Controller
             'title' => $cardheader,
             'selectuser' => $user,
         ];
-        $this->view('user/admin', $data, true);
+        $this->view('user/admin', $data, 'user');
     }
 
     public function submited()

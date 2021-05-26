@@ -34,7 +34,7 @@ class Warning extends Controller
             'id' => $user['id'],
             'username' => $user['username'],
         ];
-        $this->view('warning/index', $data, true);
+        $this->view('warning/index', $data, 'user');
     }
 
     public function submit()

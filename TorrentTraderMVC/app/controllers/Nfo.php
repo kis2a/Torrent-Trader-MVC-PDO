@@ -42,7 +42,7 @@ class Nfo extends Controller
                 'titleedit' => $titleedit,
                 'nfo' => $nfo,
             ];
-            $this->view('nfo/index', $data, true);
+            $this->view('nfo/index', $data, 'user');
         } else {
             Session::flash('info', Lang::T("NFO Found but error"), URLROOT."/torrents/read?id=$id");
         }
@@ -63,7 +63,7 @@ class Nfo extends Controller
             'id' => $id,
             'contents' => $contents,
         ];
-        $this->view('nfo/edit', $data, true);
+        $this->view('nfo/edit', $data, 'user');
     }
 
     public function submit()

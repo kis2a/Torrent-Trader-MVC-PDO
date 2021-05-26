@@ -19,7 +19,7 @@ class Seed extends Controller {
         $data = [
             'res' => $res
         ];
-        $this->view('torrent/needseed', $data, true);
+        $this->view('torrent/needseed', $data, 'user');
     }
 
 

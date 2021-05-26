@@ -35,7 +35,7 @@ class Bonus extends Controller
 			'getid' => $_GET['id'],
             'usersid' => $_SESSION['id'],
         ];
-        $this->view('bonus/index', $data, true);
+        $this->view('bonus/index', $data, 'user');
     }
 
     private function bonusswitch($row)

@@ -63,7 +63,7 @@ class Request extends Controller
                 'num' => $num,
                 'res' => $res,
             ];
-            $this->view('request/index', $data, true);
+            $this->view('request/index', $data, 'user');
         } else {
             Session::flash("info", "Request are not available", URLROOT . "/home");
             die;
@@ -74,7 +74,7 @@ class Request extends Controller
     {
         if (REQUESTSON) {
             $data = [];
-            $this->view('request/makereq', $data, true);
+            $this->view('request/makereq', $data, 'user');
         } else {
             Session::flash("info", "Request are not available", URLROOT . "/home");
         }
@@ -116,7 +116,7 @@ class Request extends Controller
                 'res' => $res,
                 'res2' => $res2,
             ];
-            $this->view('request/voteview', $data, true);
+            $this->view('request/voteview', $data, 'user');
         } else {
             Session::flash('info', Lang::T('No Votes Yet'), URLROOT . "/request");
         }
@@ -181,7 +181,7 @@ class Request extends Controller
             'commcount' => $commcount,
             'commres' => $commres,
         ];
-        $this->view('request/details', $data, true);
+        $this->view('request/details', $data, 'user');
     }
 
     public function takereqedit()
@@ -210,7 +210,7 @@ class Request extends Controller
         $data = [
             'res' => $res,
         ];
-        $this->view('request/edit', $data, true);
+        $this->view('request/edit', $data, 'user');
     }
 
     public function takedelreq()

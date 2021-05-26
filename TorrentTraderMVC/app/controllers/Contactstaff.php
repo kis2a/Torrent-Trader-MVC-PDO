@@ -35,7 +35,7 @@ class Contactstaff extends Controller
         } else {
             $data = [
             ];
-            $this->view('contact/index', $data, true);
+            $this->view('contact/index', $data, 'user');
         }
     }
 

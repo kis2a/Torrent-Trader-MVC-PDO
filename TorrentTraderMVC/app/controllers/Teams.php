@@ -18,7 +18,7 @@ class Teams extends Controller
         $data = [
             'res' => $res
         ];
-        $this->view('teams/index', $data, true);
+        $this->view('teams/index', $data, 'user');
     }
 
 }

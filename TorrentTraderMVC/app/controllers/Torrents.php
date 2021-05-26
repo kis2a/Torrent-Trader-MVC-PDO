@@ -142,7 +142,7 @@ class Torrents extends Controller
             'id' => $id,
             'selecttor' => $torrent1,
         ];
-        $this->view('torrent/edit', $data, true);
+        $this->view('torrent/edit', $data, 'user');
     }
 
     public function submit()
@@ -283,7 +283,7 @@ class Torrents extends Controller
             'id' => $id,
             'name' => $torrname,
         ];
-        $this->view('torrent/delete', $data, true);
+        $this->view('torrent/delete', $data, 'user');
     }
 
     public function deleteok()
@@ -338,7 +338,7 @@ class Torrents extends Controller
             'size' => $row["size"],
             'fres' => $fres
         ];
-        $this->view('torrent/filelist', $data, true);
+        $this->view('torrent/filelist', $data, 'user');
     }
 
     public function torrenttrackerlist()
@@ -358,7 +358,7 @@ class Torrents extends Controller
             'res' => $res,
             'tres' => $tres,
         ];
-        $this->view('torrent/trackerlist', $data, true);
+        $this->view('torrent/trackerlist', $data, 'user');
     }
 
 }

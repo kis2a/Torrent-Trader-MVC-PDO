@@ -26,7 +26,7 @@ class Friends extends Controller
             'friend' => $friend,
             'enemy' => $enemy,
         ];
-        $this->view('friends/index', $data, true);
+        $this->view('friends/index', $data, 'user');
     }
 
     public function add()

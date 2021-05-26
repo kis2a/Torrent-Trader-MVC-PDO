@@ -22,7 +22,11 @@ class Controller
     public function view($file, $data = [], $inc = false)
     {
         if (file_exists('../app/views/' . $file . '.php')) {
-            if ($inc) {
+            if ($inc == 'admin') {
+                require_once "../app/views/admin/header.php";
+                require_once "../app/views/" . $file . ".php";
+                require_once "../app/views/admin/footer.php";
+            } elseif ($inc == 'user') {
                 require_once "../app/views/inc/" . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . "/header.php";
                 require_once "../app/views/" . $file . ".php";
                 require_once "../app/views/inc/" . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . "/footer.php";

@@ -48,7 +48,7 @@ class Report extends Controller
                 'username' => $arr['username'],
                 'user' => $user
             ];
-            $this->view('report/user', $data, true);
+            $this->view('report/user', $data, 'user');
             die();
         } else {
             Session::flash('info', Lang::T("MISSING_INFO"), URLROOT."/profile?id=$user");
@@ -89,7 +89,7 @@ class Report extends Controller
                 'name' => $arr['name'],
                 'torrent' => $torrent
             ];
-            $this->view('report/torrent', $data, true);
+            $this->view('report/torrent', $data, 'user');
             die();
         } else {
             Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/torrents/read?id=$torrent");
@@ -131,7 +131,7 @@ class Report extends Controller
                 'text' => $arr['text'],
                 'comment' => $comment
             ];
-            $this->view('report/torrent', $data, true);
+            $this->view('report/torrent', $data, 'user');
             die();
         } else {
             Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/home");
@@ -176,7 +176,7 @@ class Report extends Controller
                 'forumpost' => $forumpost,
                 'forumid' => $forumid,
             ];
-            $this->view('report/forum', $data, true);
+            $this->view('report/forum', $data, 'user');
             die;
         }
         Session::flash('danger', Lang::T("MISSING_INFO") . ".", URLROOT."/home");

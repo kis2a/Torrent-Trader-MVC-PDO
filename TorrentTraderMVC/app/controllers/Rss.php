@@ -63,7 +63,7 @@ class Rss extends Controller
         $data = [
             'resqn' => $resqn
         ];
-        $this->view('rss/custom', $data, true);
+        $this->view('rss/custom', $data, 'user');
     }
 
     

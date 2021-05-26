@@ -26,7 +26,7 @@ class Upload extends Controller
             'title' => $title,
             'announce_urls' => $announce_urls,
         ];
-        $this->view('torrent/upload', $data, true);
+        $this->view('torrent/upload', $data, 'user');
     }
 
     public function submit()

@@ -22,7 +22,7 @@ class Invite extends Controller
             show_error_msg(Lang::T("YOU_HAVE_NO_INVITES"), Lang::T("YOU_HAVE_NO_INVITES_MSG"), 1);
         }
         $data = [];
-        $this->view('invite/index', $data, true);
+        $this->view('invite/index', $data, 'user');
     }
 
     public function submit()
@@ -113,7 +113,7 @@ class Invite extends Controller
             'res' => $res,
             'num' => $num,
         ];
-        $this->view('invite/tree', $data, true);
+        $this->view('invite/tree', $data, 'user');
         Style::footer();
     }
 }

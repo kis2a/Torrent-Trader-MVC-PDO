@@ -34,7 +34,7 @@ class Completed extends Controller {
             'res' => $res,
             'id' => $id,
         ];
-        $this->view('torrent/completed', $data, true);
+        $this->view('torrent/completed', $data, 'user');
     }
 
 }

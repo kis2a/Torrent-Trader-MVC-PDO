@@ -51,7 +51,7 @@ class Forums extends Controller
                 'postcount' => $postcount,
                 'topiccount' => $topiccount,
             ];
-            $this->view('forum/index', $data, true);
+            $this->view('forum/index', $data, 'user');
         } else {
             Session::flash('INFO', Lang::T("Unfortunatley the forums are not currently available."), URLROOT . "/home");
         }
@@ -71,7 +71,7 @@ class Forums extends Controller
             $data = [
                 'id' => $forumid,
             ];
-            $this->view('forum/newtopic', $data, true);
+            $this->view('forum/newtopic', $data, 'user');
             die;
         } else {
             Session::flash('INFO', Lang::T("Unfortunatley the forums are not currently available."), URLROOT . "/home");
@@ -161,7 +161,7 @@ Style::footer();
             'res' => $res,
             'n' => 0,
         ];
-        $this->view('forum/viewunread', $data, true);
+        $this->view('forum/viewunread', $data, 'user');
         die;
     }
 
@@ -195,7 +195,7 @@ Style::footer();
             'forumid' => $forumid,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('forum/viewforum', $data, true);
+        $this->view('forum/viewforum', $data, 'user');
         die;
     }
 
@@ -213,7 +213,7 @@ Style::footer();
         $data = [
             'topicid' => $topicid,
         ];
-        $this->view('forum/reply', $data, true);
+        $this->view('forum/reply', $data, 'user');
         die;
     }
 
@@ -255,7 +255,7 @@ Style::footer();
             'postid' => $postid,
             'arrbody' => $arr['body'],
         ];
-        $this->view('forum/edit', $data, true);
+        $this->view('forum/edit', $data, 'user');
         die;
     }
 

@@ -50,7 +50,7 @@ class Account extends Controller
         $data = [
             'id' => $id,
         ];
-        $this->view('user/changepass', $data, true);
+        $this->view('user/changepass', $data, 'user');
     }
 
     public function email()
@@ -88,7 +88,7 @@ EOD;
             'id' => $id,
             'email' => $user['email'],
         ];
-        $this->view('user/changeemail', $data, true);
+        $this->view('user/changeemail', $data, 'user');
     }
 
     public function avatar()
@@ -117,7 +117,7 @@ EOD;
         $data = [
             'id' => $id,
         ];
-        $this->view('user/avatar', $data, true);
+        $this->view('user/avatar', $data, 'user');
     }
 
 }

@@ -34,7 +34,7 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
         $data = [
             'invite' => $invite_row,
         ];
-        $this->view('user/signup', $data, true);
+        $this->view('user/signup', $data, 'user');
     }
 
     public function submit()

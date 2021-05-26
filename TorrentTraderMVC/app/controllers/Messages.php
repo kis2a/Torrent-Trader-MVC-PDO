@@ -19,7 +19,7 @@ class Messages extends Controller
             'draft' => $arr['draft'],
             'template' => $arr['template']
         ];
-        $this->view('message/overview', $data, true);
+        $this->view('message/overview', $data, 'user');
     }
 
     public function inbox()
@@ -65,7 +65,7 @@ class Messages extends Controller
             'pagerbottom' => $pagerbottom,
             'mainsql' => $res
         ];
-        $this->view('message/inbox', $data, true);
+        $this->view('message/inbox', $data, 'user');
     }
 
     public function outbox()
@@ -100,7 +100,7 @@ class Messages extends Controller
             'pagerbottom' => $pagerbottom,
             'mainsql' => $res
         ];
-        $this->view('message/outbox', $data, true);
+        $this->view('message/outbox', $data, 'user');
     }
 
     public function create()
@@ -109,7 +109,7 @@ class Messages extends Controller
         $data = [
             'id' => $id,
         ];
-        $this->view('message/create', $data, true);
+        $this->view('message/create', $data, 'user');
     }
 
     public function submit()
@@ -190,7 +190,7 @@ class Messages extends Controller
             'added' => $arr['added'],
             'msg' => $arr['msg'],
         ];
-        $this->view('message/read', $data, true);
+        $this->view('message/read', $data, 'user');
     }
 
     public function update()
@@ -226,7 +226,7 @@ class Messages extends Controller
                 'subject' => $row['subject'],
                 'id' => $row['id'],
             ];
-            $this->view('message/edit', $data, true);
+            $this->view('message/edit', $data, 'user');
         }
 
     public function reply()
@@ -252,7 +252,7 @@ class Messages extends Controller
             'subject' => $row['subject'],
             'id' => $row['id'],
         ];
-        $this->view('message/reply', $data, true);
+        $this->view('message/reply', $data, 'user');
     }
 
     public function templates()
@@ -286,7 +286,7 @@ class Messages extends Controller
             'pagename' => $pagename,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('message/template', $data, true);
+        $this->view('message/template', $data, 'user');
     }
 
 
@@ -321,7 +321,7 @@ class Messages extends Controller
             'pagename' => $pagename,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('message/draft', $data, true);
+        $this->view('message/draft', $data, 'user');
     }
 
     public function checktype($type, $receiver, $subject, $body)

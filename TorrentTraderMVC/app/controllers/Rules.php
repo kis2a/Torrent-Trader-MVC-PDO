@@ -14,6 +14,6 @@ class Rules extends Controller
         $data = [
             'res' => $res
         ];
-        $this->view('rules/index', $data, true);
+        $this->view('rules/index', $data, 'user');
     }
 }
