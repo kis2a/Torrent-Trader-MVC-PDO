@@ -17,11 +17,11 @@ CREATE TABLE IF NOT EXISTS `addedrequests` (
 -- Table structure for table `agents`
 --
 
-CREATE TABLE IF NOT EXISTS `agents` (
+CREATE TABLE IF NOT EXISTS `clients` (
   `agent_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `agent_name` varchar(255) NOT NULL DEFAULT '',
   `hits` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `ins_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ins_date` datetime DEFAULT NULL,
   PRIMARY KEY (`agent_id`),
   UNIQUE KEY `agent_name` (`agent_name`) USING HASH
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
@@ -71,7 +71,7 @@ CREATE TABLE `attachments` (
 
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `addedby` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `comment` varchar(255) NOT NULL DEFAULT '',
   `first` varchar(39) DEFAULT NULL,
@@ -232,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `torrent` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `text` text DEFAULT NULL,
   `news` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `req` int(11) DEFAULT NULL,
@@ -254,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `completed` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `userid` int(10) NOT NULL DEFAULT 0,
   `torrentid` int(10) NOT NULL DEFAULT 0,
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userid_torrentid` (`userid`,`torrentid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
@@ -383,7 +383,7 @@ INSERT INTO `countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 CREATE TABLE IF NOT EXISTS `email_bans` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `userid` int(11) DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `addedby` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `comment` varchar(255) NOT NULL DEFAULT '',
   `mail_domain` varchar(255) DEFAULT NULL,
@@ -520,7 +520,7 @@ CREATE TABLE IF NOT EXISTS `forum_posts` (
   `added` datetime DEFAULT NULL,
   `body` longtext DEFAULT NULL,
   `editedby` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `editedat` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `editedat` datetime DEFAULT NULL,
   `attachments` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `topicid` (`topicid`),
@@ -644,8 +644,8 @@ CREATE TABLE IF NOT EXISTS `iplog` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `ip` varchar(15) NOT NULL DEFAULT '',
   `userid` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `lastused` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
+  `lastused` datetime DEFAULT NULL,
   `timesused` int(10) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
@@ -676,7 +676,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `liked` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `reaction` text NOT NULL,
   `type` text NOT NULL,
   PRIMARY KEY (`id`),
@@ -727,7 +727,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
 CREATE TABLE IF NOT EXISTS `news` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `title` varchar(255) NOT NULL DEFAULT '',
   `body` text NOT NULL,
   PRIMARY KEY (`id`),
@@ -753,8 +753,8 @@ CREATE TABLE IF NOT EXISTS `peers` (
   `downloaded` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `to_go` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
   `seeder` enum('yes','no') NOT NULL DEFAULT 'no',
-  `started` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `last_action` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `started` datetime DEFAULT NULL,
+  `last_action` datetime DEFAULT NULL,
   `connectable` enum('yes','no') NOT NULL DEFAULT 'yes',
   `client` varchar(60) NOT NULL DEFAULT '',
   `userid` varchar(32) NOT NULL DEFAULT '',
@@ -791,7 +791,7 @@ CREATE TABLE IF NOT EXISTS `pollanswers` (
 
 CREATE TABLE IF NOT EXISTS `polls` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `question` varchar(255) NOT NULL DEFAULT '',
   `option0` varchar(40) NOT NULL DEFAULT '',
   `option1` varchar(40) NOT NULL DEFAULT '',
@@ -818,7 +818,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `polls` (`id`, `added`, `question`, `option0`, `option1`, `option2`, `option3`, `option4`, `option5`, `option6`, `option7`, `option8`, `option9`, `option10`, `option11`, `option12`, `option13`, `option14`, `option15`, `option16`, `option17`, `option18`, `option19`, `sort`) VALUES 
-(1, '0000-00-00 00:00:00', 'Do You Like This Site', 'Excellent!', 'Its OK', 'Its my first visit', 'Don''t Like It', 'Im Off', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'yes');
+(1, NULL, 'Do You Like This Site', 'Excellent!', 'Its OK', 'Its my first visit', 'Don''t Like It', 'Im Off', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'yes');
 
 -- --------------------------------------------------------
 
@@ -830,7 +830,7 @@ CREATE TABLE IF NOT EXISTS `ratings` (
   `torrent` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `user` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `rating` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   PRIMARY KEY (`torrent`,`user`),
   KEY `user` (`user`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
@@ -846,7 +846,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `addedby` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `votedfor` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `votedfor_xtra` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `type` enum('torrent','user','forum','comment','other','request') NOT NULL DEFAULT 'torrent',
+  `type` enum('torrent','user','forum','comment','other','req') NOT NULL DEFAULT 'torrent',
   `reason` varchar(255) NOT NULL DEFAULT '',
   `dealtby` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `dealtwith` tinyint(1) NOT NULL DEFAULT 0,
@@ -865,14 +865,14 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `userid` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `request` varchar(225) DEFAULT NULL,
   `descr` text NOT NULL,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `hits` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `cat` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `filled` varchar(75) DEFAULT NULL,
   `filledby` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `comments` int(11) NOT NULL,
   `profilled` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `done` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `done` datetime DEFAULT NULL,
   `poster` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
@@ -908,7 +908,7 @@ CREATE TABLE IF NOT EXISTS `shoutbox` (
   `msgid` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user` varchar(50) NOT NULL DEFAULT '0',
   `message` text DEFAULT NULL,
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `date` datetime DEFAULT NULL,
   `userid` int(8) UNSIGNED NOT NULL DEFAULT 0,
   `staff` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`msgid`)
@@ -932,7 +932,7 @@ CREATE TABLE IF NOT EXISTS `snatched` (
   `completed` enum('0','1') NOT NULL DEFAULT '0',
   `hnr` enum('no','yes') NOT NULL DEFAULT 'no',
   `done` enum('yes','no') NOT NULL DEFAULT 'no',
-  `hitrun` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `hitrun` datetime DEFAULT NULL,
   `hitrunwarn` enum('yes','pending','no') NOT NULL DEFAULT 'no',
   PRIMARY KEY (`sid`),
   UNIQUE KEY `tid_uid` (`tid`,`uid`),
@@ -950,7 +950,7 @@ CREATE TABLE IF NOT EXISTS `snatched` (
 CREATE TABLE IF NOT EXISTS `sqlerr` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `txt` text NOT NULL DEFAULT '',
-  `time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
@@ -1012,7 +1012,7 @@ INSERT INTO `tasks` (`task`, `last_time`) VALUES
 
 CREATE TABLE IF NOT EXISTS `teams` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `owner` int(10) NOT NULL DEFAULT 0,
   `info` text DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -1030,7 +1030,7 @@ CREATE TABLE IF NOT EXISTS `thanks` (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `user` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `thanked` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `type` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
@@ -1077,7 +1077,7 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   `image2` text DEFAULT NULL,
   `category` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `size` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
   `type` enum('single','multi') NOT NULL DEFAULT 'single',
   `numfiles` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `comments` int(10) UNSIGNED NOT NULL DEFAULT 0,
@@ -1086,7 +1086,7 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   `times_completed` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `leechers` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `seeders` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `last_action` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `last_action` datetime DEFAULT NULL,
   `visible` enum('yes','no') NOT NULL DEFAULT 'yes',
   `banned` enum('yes','no') NOT NULL DEFAULT 'no',
   `owner` int(10) UNSIGNED NOT NULL DEFAULT 0,
@@ -1124,9 +1124,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `secret` varchar(20) NOT NULL DEFAULT '',
   `email` varchar(80) NOT NULL DEFAULT '',
   `status` enum('pending','confirmed') NOT NULL DEFAULT 'pending',
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `last_login` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `last_access` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  `last_access` datetime DEFAULT NULL,
   `editsecret` varchar(20) NOT NULL DEFAULT '',
   `privacy` enum('strong','normal','low') NOT NULL DEFAULT 'normal',
   `stylesheet` varchar(20) NOT NULL DEFAULT 'default',
@@ -1154,7 +1154,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `invited_by` int(10) NOT NULL DEFAULT 0,
   `invitees` varchar(100) NOT NULL DEFAULT '',
   `invites` smallint(5) NOT NULL DEFAULT 0,
-  `invitedate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `invitedate` datetime DEFAULT NULL,
   `commentpm` enum('yes','no') NOT NULL DEFAULT 'yes',
   `passkey` varchar(32) NOT NULL DEFAULT '',
   `page` text DEFAULT NULL,
@@ -1163,7 +1163,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `hideshoutbox` enum('yes','no') NOT NULL DEFAULT 'no',
   `token` varchar(255) NOT NULL DEFAULT '',
   `seedbonus` decimal(10,1) NOT NULL DEFAULT 0.0,
-  `vipuntil` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `vipuntil` datetime DEFAULT NULL,
   `oldclass` int(10) UNSIGNED NOT NULL DEFAULT 0,
   `shoutboxpos` char(3) NOT NULL DEFAULT 'no',
   `downloadbanned` char(3) NOT NULL DEFAULT 'no',
@@ -1188,8 +1188,8 @@ CREATE TABLE IF NOT EXISTS `warnings` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
   `userid` int(10) NOT NULL DEFAULT 0,
   `reason` varchar(255) NOT NULL DEFAULT '',
-  `added` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `expiry` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `added` datetime DEFAULT NULL,
+  `expiry` datetime DEFAULT NULL,
   `warnedby` int(10) NOT NULL DEFAULT 0,
   `type` varchar(10) NOT NULL DEFAULT '',
   `active` enum('yes','no') DEFAULT 'yes',

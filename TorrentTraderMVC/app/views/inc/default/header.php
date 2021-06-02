@@ -11,7 +11,7 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
     <meta name="generator" content="TorrentTrader <?php echo VERSION; ?>" />
     <meta name="description" content="TorrentTrader is a feature packed and highly customisable PHP/PDO/MVC Based BitTorrent tracker. Featuring intergrated forums, and plenty of administration options. Please visit www.torrenttrader.xyx for the support forums. " />
     <meta name="keywords" content="https://github.com/M-jay84/Torrent-Trader-MVC-PDO-OOP" />
-    <title><?php echo $data['title']; ?></title>
+    <title><?php echo $title; ?></title>
   
     <!-- Bootstrap & core CSS -->
     <link href="<?php echo URLROOT; ?>/assets/themes/default/bootstrap.min.css" rel="stylesheet">

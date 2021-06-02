@@ -19,17 +19,22 @@ class Controller
         return new $model();
     }
 
-    public function view($file, $data = [], $inc = false)
+    public function view($file, $data = [], $page = false)
     {
         if (file_exists('../app/views/' . $file . '.php')) {
-            if ($inc == 'admin') {
-                require_once "../app/views/admin/header.php";
+            if ($page == 'admin') {
+                Style::adminheader('Staff Panel');
+                Style::adminnavmenu();
+                Style::begin($data['title']);
                 require_once "../app/views/" . $file . ".php";
-                require_once "../app/views/admin/footer.php";
-            } elseif ($inc == 'user') {
-                require_once "../app/views/inc/" . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . "/header.php";
+                Style::end();
+                Style::adminfooter();
+            } elseif ($page == 'user') {
+                Style::header($data['title']);
+                Style::begin($data['title']);
                 require_once "../app/views/" . $file . ".php";
-                require_once "../app/views/inc/" . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . "/footer.php";
+                Style::end();
+                Style::footer();
             } else {
                 require_once "../app/views/" . $file . ".php";
             }

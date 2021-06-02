@@ -35,7 +35,7 @@ function format_comment($text) {
     // List 1
     $s = preg_replace("#\[list\](.+)\[/list\]#isU", "<li style= 'margin-left: 20px;'>$1</li>", $s);
     // List 2
-    $s = preg_replace("#\[*\](.+)\[/*\]#isU", "<li style= 'margin-left: 20px;'>$1</li>", $s);
+    //$s = preg_replace("#\[*\](.+)\[/*\]#isU", "<li style= 'margin-left: 20px;'>$1</li>", $s);
     // Quote 1
     while (preg_match("#\[quote\](.+)\[/quote\]#isU", $s))
         $s = preg_replace("#\[quote\](.+)\[/quote\]#isU", "<blockquote><strong> Quote : </strong></blockquote><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>$1</td></tr></table><br />", $s);
