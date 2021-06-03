@@ -20,15 +20,13 @@ class Adminavatar extends Controller
         $res = DB::run($query);
 
         $title = "Avatar Log";
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
         $data = [
+            'title' => $title,
             'pagertop' => $pagertop,
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('user/admin/avatar', $data);
-        require APPROOT . '/views/admin/footer.php';
+        $this->view('user/admin/avatar', $data, 'admin');
     }
 
 }

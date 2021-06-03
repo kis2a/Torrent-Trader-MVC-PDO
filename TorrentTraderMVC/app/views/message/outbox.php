@@ -1,6 +1,3 @@
-<?php
-Style::begin(Lang::T($data['pagename']));
-?>
 <?php include APPROOT.'/views/message/messagenavbar.php'; ?>
     <form id='messagespy' method='post' action='<?php echo URLROOT; ?>/messages/outbox?do=del'>
         <div class='table-responsive'><table class='table table-striped'>
@@ -24,6 +21,4 @@ Style::begin(Lang::T($data['pagename']));
 <?php echo '<div style="float: left;">read&nbsp;<img src="' . URLROOT . '/assets/images/forum/folder.png" alt="read" width="20" height="20">&nbsp;unread&nbsp;<img src="' . URLROOT . '/assets/images/forum/folder_new.png" alt="unread" width="20" height="20"></div>'; ?>
 <center><button type="submit" class="btn btn-primary" value='Delete Checked' />Delete Checked</button></center>
 
-    <?php echo $data['pagerbottom']; ?>
-    </div>
-    </div><br />
+    <?php echo $data['pagerbottom'];

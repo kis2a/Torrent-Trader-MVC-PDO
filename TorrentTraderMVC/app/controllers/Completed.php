@@ -11,7 +11,6 @@ class Completed extends Controller {
     
     public function index()
     {
-        $db = new Database;
         if ($_SESSION["view_torrents"] == "no") {
             show_error_msg(Lang::T("ERROR"), Lang::T("NO_TORRENT_VIEW"), 1);
         }

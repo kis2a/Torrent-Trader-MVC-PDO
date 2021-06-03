@@ -1,8 +1,4 @@
-<div class="card">
-    <div class="card-header">
-        <?php echo Lang::T("STAFF"); ?>
-    </div>
-    <div class="card-body">
+
         <div class="table-responsive"><table class="table">
         <?php while ($row = $data['sql']->fetch(PDO::FETCH_ASSOC)): if (!isset($data['table'][$row["group_id"]])) {
             continue;
@@ -17,5 +13,3 @@
         </tr>
         <?php endwhile;?>
         </table></div>
-    </div>
-</div>

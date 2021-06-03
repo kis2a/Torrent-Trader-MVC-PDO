@@ -44,7 +44,7 @@
 	        <script>
         function updatestaffShouts(){
             // Assuming we have #shoutbox
-            $('#shoutboxstaff').load('<?php echo URLROOT; ?>/shoutbox/staffchat');
+            $('#shoutboxstaff').load('<?php echo URLROOT; ?>/shoutbox/loadchat');
         }
         setInterval( "updatestaffShouts()", 15000 );
 		updatestaffShouts();

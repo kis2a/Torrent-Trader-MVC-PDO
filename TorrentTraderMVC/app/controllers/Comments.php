@@ -13,7 +13,7 @@ class Comments extends Controller
         require_once APPROOT . "/helpers/bbcode_helper.php";
         $id = (int) ($_GET["id"] ?? 0);
         $type = $_GET["type"];
-        if (!isset($id) || !$id || ($type != "torrent" && $type != "news")) {
+        if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
             Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
         }
         //NEWS
@@ -25,13 +25,17 @@ class Comments extends Controller
             }
             Style::header(Lang::T("COMMENTS"));
             Style::begin(Lang::T("NEWS"));
-            torrentmenu($id);
             echo htmlspecialchars($row['title']) . "<br /><br />" . format_comment($row['body']) . "<br />";
             Style::end();
         }
+
+
+        Style::header(Lang::T("COMMENTS"));
+        Style::begin($title);
         //TORRENT
         $title = Lang::T("COMMENTS");
         if ($type == "torrent") {
+            torrentmenu($id);
             $res = DB::run("SELECT id, name FROM torrents WHERE id =?", [$id]);
             $row = $res->fetch(PDO::FETCH_LAZY);
             if (!$row) {
@@ -39,9 +43,17 @@ class Comments extends Controller
             }
             $title = Lang::T("COMMENTSFOR") . "<a href='torrents/read?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</a>";
         }
-        Style::header(Lang::T("COMMENTS"));
-        Style::begin($title);
-        torrentmenu($id);
+
+        if ($type == "req") {
+            $res = DB::run("SELECT * FROM comments WHERE req =?", [$id]);
+            $row = $res->fetch(PDO::FETCH_LAZY);
+            if (!$row) {
+                Session::flash('warning', "Request id invalid", URLROOT."/home");
+            }
+            $title = Lang::T("COMMENTSFOR") . "<a href='".URLROOT."/request'>" . htmlspecialchars($row['name']) . "</a>";
+        }
+
+
         $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE $type =?", [$id])->fetchColumn();
         if ($commcount) {
             list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "comments?id=$id&amp;type=$type");
@@ -56,11 +68,11 @@ class Comments extends Controller
         } else {
             print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
         }
-        echo "<center><div class='form-group'>";
+        echo "<div class='form-group'>";
         echo "<form name='comment' method='post' action=\"comments/take?type=$type&amp;id=$id\">";
         echo textbbcode("comment", "body") . "<br>";
-        echo "<input type=\"submit\"  value=\"" . Lang::T("ADDCOMMENT") . "\" />";
-        echo "</form></div></center>";
+        echo "<center><input type=\"submit\"  value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
+        echo "</form></div>";
         Style::end();
         Style::footer();
     }
@@ -71,11 +83,11 @@ class Comments extends Controller
         $id = (int) ($_GET["id"] ?? 0);
         $type = $_GET["type"];
         $edit = (int) ($_GET["edit"] ?? 0);
-        if (!isset($id) || !$id || ($type != "torrent" && $type != "news")) {
+        if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
             Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
         }
         $row = DB::run("SELECT user FROM comments WHERE id=?", [$id])->fetch();
-        if (($type == "torrent" && $_SESSION["edit_torrents"] == "no" || $type == "news" && $_SESSION["edit_news"] == "no") && $_SESSION['id'] != $row['user']) {
+        if (($type == "torrent" && $_SESSION["edit_torrents"] == "no" || $type == "news" && $_SESSION["edit_news"] == "no") && $_SESSION['id'] != $row['user'] || $type == "req" && $_SESSION['id'] != $row['user']) {
             Session::flash('warning', Lang::T("ERR_YOU_CANT_DO_THIS"), URLROOT."/home");
         }
         $save = (int) $_GET["save"];
@@ -89,10 +101,10 @@ class Comments extends Controller
 
         Style::header("Edit Comment");
         Style::begin(Lang::T("EDITCOMMENT"));
-        print("<center><b> " . Lang::T("EDITCOMMENT") . " </b><p>\n");
+        print("<b> " . Lang::T("EDITCOMMENT") . " </b><p>\n");
         print("<form method=\"post\" name=\"comment\" action=\"" . URLROOT . "/comments/edit?type=$type&save=1&amp;id=$id\">\n");
         print textbbcode("comment", "text", htmlspecialchars($arr["text"]));
-        print("<p><input type=\"submit\"  value=\"Submit Changes\" /></p></form></center>\n");
+        print("<p><center><input type=\"submit\"  value=\"Submit Changes\" /></center></p></form>\n");
         Style::end();
         Style::footer();
         die();

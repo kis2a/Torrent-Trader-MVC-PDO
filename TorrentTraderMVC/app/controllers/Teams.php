@@ -15,7 +15,9 @@ class Teams extends Controller
         if ($res->rowCount() == 0) {
             Session::flash("info", 'No teams available, to create a group please contact <a href='.URLROOT.'/staff>staff</a>', URLROOT . "/home");
         }
+        $title = Lang::T("Teams");
         $data = [
+            'title' => $title,
             'res' => $res
         ];
         $this->view('teams/index', $data, 'user');

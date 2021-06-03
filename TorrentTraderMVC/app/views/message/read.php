@@ -1,8 +1,3 @@
-<div class="card">
-        <div class="card-header">
-            Read
-        </div>
-        <div class="card-body">
 
 <?php include APPROOT.'/views/message/messagenavbar.php'; ?>
 <center><b><?php echo $data['subject']; ?></b></center><br>
@@ -28,6 +23,4 @@
     <td><br /><?php echo format_comment($row['msg']); ?></td></tr>
     <tbody></table></div>
      <?php
-} ?>
-</div>
-</div><br />
+}

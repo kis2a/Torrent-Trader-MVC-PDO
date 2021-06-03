@@ -1,5 +1,4 @@
 <?php
-Style::begin(Lang::T("Forum Home"));
 forumheader('index');
 latestforumposts();
 // MAIN LAYOUT 
@@ -71,4 +70,3 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
     <center>Our members have made <?php echo $data[' $postcount']; ?> posts in  <?php echo $data['topiccount']; ?> topics</center>
 <?php 
 insert_quick_jump_menu();
-Style::end();

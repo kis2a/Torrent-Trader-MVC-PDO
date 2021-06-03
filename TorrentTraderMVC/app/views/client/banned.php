@@ -1,6 +1,3 @@
-<?php
-Style::begin("All Clients");?>
-?>
 <center><b>Current Banned Clients</b></center>
 <form id="unban" method="post" action="<?php echo URLROOT; ?>/adminclient/banned">
     <input type="hidden" name="unban" value="unban" />
@@ -26,5 +23,3 @@ Style::begin("All Clients");?>
     &nbsp;
     <button type="input" class="btn btn-sm btn-danger">Unban</button></center>
 </form>
-<?php
-Style::end();

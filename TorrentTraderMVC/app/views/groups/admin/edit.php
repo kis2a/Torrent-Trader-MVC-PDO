@@ -1,10 +1,7 @@
 
-<?php
-$level = $data['rlevel']->fetch(PDO::FETCH_ASSOC);
-    Style::begin(Lang::T("CP_EDIT_GROUP"));
-    ?>
-	<form action="<?php echo URLROOT; ?>/admingroups/groupsupdate?group_id=<?php echo $level["group_id"]; ?>" name="level" method="post">
-	<table width="100%" align="center">
+<?php $level = $data['rlevel']->fetch(PDO::FETCH_ASSOC); ?>
+<form action="<?php echo URLROOT; ?>/admingroups/update?group_id=<?php echo $level["group_id"]; ?>" name="level" method="post">
+<table width="100%" align="center">
 	<tr><td>Name:</td><td><input type="text" name="gname" value="<?php echo $level["level"]; ?>" size="40" /></td></tr>
 	<tr><td>Group Colour:</td><td><input type="text" name="gcolor" value="<?php echo $level["Color"]; ?>" size="10" /></td></tr>
 	<tr><td>View Torrents:</td><td>  <?php echo Lang::T("YES"); ?> <input type="radio" name="vtorrent" value="yes" <?php if ($level["view_torrents"] == "yes") {
@@ -131,4 +128,3 @@ $level = $data['rlevel']->fetch(PDO::FETCH_ASSOC);
     <?php
     print("\n<tr><td align=\"center\" ><input type=\"submit\" name=\"write\" value=\"Confirm\" /></td></tr>");
     print("</table></form><br /><br />");
-    Style::end();

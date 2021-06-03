@@ -1,5 +1,4 @@
 <?php
-Style::begin("The Dead Torrents");
 echo "<div style='margin-top:10px' align='center'><font size='4'>List of dead torrents without being shared and sorted by date of sharing </font></div>";
 echo "<hr class='barre'/><div style='margin-top:16px; margin-bottom:20px' align='center'><font size='4'>We have<font color='IndianRed'><b>$data[count]</b></font> DEAD" . ($data['count'] != 1 ? "s" : "") . " torrent" . ($data['count'] != 1 ? "s" : "") . "</font></div>";
 if ($data['count'] > $data['perpage']) {
@@ -59,4 +58,3 @@ if ($data['count'] > $data['perpage']) {
 } else {
     print("<br />");
 }
-Style::end();

@@ -1,6 +1,3 @@
-<?php
-Style::begin(Lang::T("FORUMS_EDIT_POST"));
-?>
 <center><b>Edit Message</b></center>
 <div>
 <form name='Form' method='post' action='<?php echo URLROOT; ?>/forums/editpost&amp;postid=<?php echo $data['postid']; ?>''>
@@ -13,6 +10,3 @@ Style::begin(Lang::T("FORUMS_EDIT_POST"));
 <center><button type='submit' class='btn btn-sm btn-primary'><?php echo Lang::T("SUBMIT"); ?></button></center>
 </form>
 </div>
-<?php
-Style::end();
-?>

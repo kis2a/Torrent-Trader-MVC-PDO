@@ -5,49 +5,36 @@ class Adminclient extends Controller
     public function __construct()
     {
         Auth::user();
+        Auth::isStaff();
         // $this->userModel = $this->model('User');
     }
 
     public function index()
     {
-        if ($_SESSION["class"] < 6) {
-            show_error_msg("Error", "Access denied.");
-        }
         if (isset($_POST['ban'])) {
-            //die($_POST['ban']);
-            DB::run("INSERT INTO agents (agent_name, hits, ins_date) VALUES (?,?,?)", [$_POST['ban'], 1, TimeDate::get_date_time()]);
+            DB::run("INSERT INTO clients (agent_name, hits, ins_date) VALUES (?,?,?)", [$_POST['ban'], 1, TimeDate::get_date_time()]);
         }
         $res11 = DB::run("SELECT client, peer_id FROM peers GROUP BY client");
-        $title = Lang::T("Clients");
-
-        Style::adminheader("All Clients");
         $data = [
+            'title' => Lang::T("Clients"),
             'res11' => $res11,
         ];
-        $this->view('client/index', $data);
-        Style::adminfooter();
+        $this->view('client/index', $data, 'admin');
     }
 
     public function banned()
     {
-        
-        if ($_SESSION["class"] < 6) {
-            show_error_msg("Error", "Access denied.");
-        }
         if (isset($_POST['unban'])) {
             foreach ($_POST['unban'] as $deleteid) {
-                DB::run("DELETE FROM agents WHERE agent_id=?", [$deleteid]);
+                DB::run("DELETE FROM clients WHERE agent_id=?", [$deleteid]);
             }
         }
 
-        $sql = DB::run("SELECT * FROM agents")->fetchAll(PDO::FETCH_ASSOC);
-        $title = Lang::T("Clients");
-
-        Style::adminheader("Banned Clients");
+        $sql = DB::run("SELECT * FROM clients")->fetchAll(PDO::FETCH_ASSOC);
         $data = [
+            'title' => Lang::T("Clients"),
             'sql' => $sql,
         ];
-        $this->view('client/banned', $data);
-        Style::adminfooter();
+        $this->view('client/banned', $data, 'admin');
     }
 }

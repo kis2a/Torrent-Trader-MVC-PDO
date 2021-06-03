@@ -1,6 +1,3 @@
-<?php
-Style::begin("All Clients");
-?>
 <center><b>Current Clients Connected</b></center>
 <form id="ban" method="post" action="<?php echo URLROOT; ?>/adminclient">
     <table class='table table-striped table-bordered table-hover'><thead>
@@ -13,7 +10,7 @@ Style::begin("All Clients");
         $peer = $arr12['peer_id'];
         $peer = substr($peer, 0, 8);
         $peer2 = $peer;
-        $arr3 = DB::run("SELECT hits FROM agents WHERE agent_name=?", [$peer2])->fetch();
+        $arr3 = DB::run("SELECT hits FROM clients WHERE agent_name=?", [$peer2])->fetch();
         $isbanned = "<font color='green'><b>Yes</b></font>";
         if ($arr3 == 0) {
             $isbanned = "<font color='red'><b>No</b></font>";
@@ -36,6 +33,3 @@ Style::begin("All Clients");
     <div class="form-group">
         <a href='<?php echo URLROOT; ?>/adminclient/banned'><button type="submit" class="btn btn-primary btn-sm">View Banned</button></a>
     </div>
-
-<?php
-Style::end();

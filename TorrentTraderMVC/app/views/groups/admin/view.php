@@ -1,39 +1,38 @@
+<center><a href='<?php echo URLROOT ?>/admingroups/add'><?php echo Lang::T("Add New Group") ?></a></center>
+<div class='table-responsive'>
+    <table class='table'><thead><tr>
+    <th><?php echo  Lang::T("NAME") ?></th>
+    <th><?php echo Lang::T("TORRENTS") ?><br /><?php echo Lang::T("GROUPS_VIEW_EDIT_DEL") ?></th>
+    <th><?php echo Lang::T("MEMBERS") ?><br /><?php echo Lang::T("GROUPS_VIEW_EDIT_DEL") ?></th>
+    <th><?php echo Lang::T("NEWS") ?><br /><?php echo Lang::T("GROUPS_VIEW_EDIT_DEL") ?></th>
+    <th><?php echo Lang::T("FORUM") ?><br /><?php echo Lang::T("GROUPS_VIEW_EDIT_DEL") ?></th>
+    <th><?php echo Lang::T("UPLOAD") ?></th>
+    <th><?php echo Lang::T("DOWNLOAD") ?></th>
+    <th><?php echo Lang::T("SLOTS") ?></th>
+    <th><?php echo Lang::T("CP_VIEW") ?></th>
+    <th><?php echo Lang::T("CP_STAFF_PAGE") ?></th>
+    <th><?php echo Lang::T("CP_STAFF_PUBLIC") ?></th>
+    <th><?php echo Lang::T("CP_STAFF_SORT") ?></th>
+    <th><?php echo Lang::T("DEL") ?></th>
+    </tr></thead><tbody>
 <?php
-Style::begin(Lang::T("USER_GROUPS"));
-    print("<center><a href='".URLROOT."/admingroups/groupsadd'>" . Lang::T("Add New Group") . "</a></center>\n");
-    print("<div class='table-responsive'>
-    <table class='table'><thead>");
-    print("<tr>");
-    print("<th class='table_head'>" . Lang::T("NAME") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("TORRENTS") . "<br />" . Lang::T("GROUPS_VIEW_EDIT_DEL") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("MEMBERS") . "<br />" . Lang::T("GROUPS_VIEW_EDIT_DEL") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("NEWS") . "<br />" . Lang::T("GROUPS_VIEW_EDIT_DEL") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("FORUM") . "<br />" . Lang::T("GROUPS_VIEW_EDIT_DEL") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("UPLOAD") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("DOWNLOAD") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("SLOTS") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("CP_VIEW") . "</th>\n");
-    print("<th class='table_head'>" . Lang::T("CP_STAFF_PAGE") . "</th>");
-    print("<th class='table_head'>" . Lang::T("CP_STAFF_PUBLIC") . "</th>");
-    print("<th class='table_head'>" . Lang::T("CP_STAFF_SORT") . "</th>");
-    print("<th class='table_head'>" . Lang::T("DEL") . "</th>\n");
-    print("</tr></thead><tbody>");
-    while ($level = $data['getlevel']->fetch(PDO::FETCH_LAZY)) {
-        print("<tr>\n");
-        print("<td class='table_col1'><a href=".URLROOT."/admingroups/groupsedit?group_id=" . $level["group_id"] . "><font color=\"$level[Color]\">" . $level["level"] . "</font></td>\n");
-        print("<td class='table_col2'>" . $level["view_torrents"] . "/" . $level["edit_torrents"] . "/" . $level["delete_torrents"] . "</td>\n");
-        print("<td class='table_col1'>" . $level["view_users"] . "/" . $level["edit_users"] . "/" . $level["delete_users"] . "</td>\n");
-        print("<td class='table_col2'>" . $level["view_news"] . "/" . $level["edit_news"] . "/" . $level["delete_news"] . "</td>\n");
-        print("<td class='table_col1'>" . $level["view_forum"] . "/" . $level["edit_forum"] . "/" . $level["delete_forum"] . "</td>\n");
-        print("<td class='table_col2'>" . $level["can_upload"] . "</td>\n");
-        print("<td class='table_col1'>" . $level["can_download"] . "</td>\n");
-        print("<td class='table_col1'>" . $level["maxslots"] . "</td>\n");
-        print("<td class='table_col2'>" . $level["control_panel"] . "</td>\n");
-        print("<td class='table_col1'>" . $level["staff_page"] . "</td>\n");
-        print("<td class='table_col2'>" . $level["staff_public"] . "</td>\n");
-        print("<td class='table_col1'>" . $level["staff_sort"] . "</td>\n");
-        print("<td class='table_col1'><a href='".URLROOT."/admingroups/groupsdelete?group_id=" . $level["group_id"] . "'>Del</a></td>\n");
-        print("</tr>\n");
-    }
-    print("</tbody></table></div><br /><br />");
-    Style::end();
+while ($level = $data['getlevel']->fetch(PDO::FETCH_LAZY)) { ?>
+        <tr>
+        <td><a href='<?php echo URLROOT ?>/admingroups/edit?group_id=<?php echo $level["group_id"] ?>'><font color="<?php echo $level['Color'] ?>"><?php echo $level["level"] ?></font></td>
+        <td><?php echo $level["view_torrents"] ?>/<?php echo $level["edit_torrents"] ?>/<?php echo $level["delete_torrents"] ?></td>
+        <td><?php echo $level["view_users"] ?>/<?php echo $level["edit_users"] ?>/<?php echo $level["delete_users"] ?></td>
+        <td><?php echo $level["view_news"] ?>/<?php echo $level["edit_news"] ?>/<?php echo $level["delete_news"] ?></td>
+        <td><?php echo $level["view_forum"] ?>/<?php echo $level["edit_forum"] ?>/<?php echo $level["delete_forum"] ?></td>
+        <td><?php echo $level["can_upload"] ?></td>
+        <td><?php echo $level["can_download"] ?></td>
+        <td><?php echo $level["maxslots"] ?></td>
+        <td><?php echo $level["control_panel"] ?></td>
+        <td><?php echo $level["staff_page"] ?></td>
+        <td><?php echo  $level["staff_public"] ?></td>
+        <td><?php echo $level["staff_sort"] ?></td>
+        <td><a href='<?php echo URLROOT ?>/admingroups/delete?group_id=<?php echo $level["group_id"]; ?>'>Del</a></td>
+        </tr>
+        <?php
+}
+?>
+</tbody></table></div><br />

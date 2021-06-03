@@ -58,7 +58,7 @@ class Forums extends Controller
     }
 
     /**
-     * Post New Topic.
+     * Post New Topic
      */
     public function newtopic()
     {

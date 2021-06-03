@@ -31,7 +31,9 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
                 Session::flash('info', Lang::T("INVITE_ONLY_NOT_FOUND")."".(SIGNUPTIMEOUT / 86400)."days.", URLROOT . "/home");
             }
         }
+        $title = Lang::T("SIGNUP");
         $data = [
+            'title' => $title,
             'invite' => $invite_row,
         ];
         $this->view('user/signup', $data, 'user');

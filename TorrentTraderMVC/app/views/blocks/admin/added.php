@@ -1,26 +1,22 @@
-<?php
+<a name="anb"></a>
+<hr />
+<table align="center"><tr><td>
 
-        
-        
-Style::begin(Lang::T("Uploaded Blocks"));
-print("<a name=\"anb\"></a>");
-print("<hr />");
-//echo $success . $delmessage;
-print("<table align=\"center\"><tr><td>");
-print("<form name=\"addnewblock\" method=\"post\" action=\"" . URLROOT . "/blocks/submit\">" .
-    "<table class=\"table_table\" cellspacing=\"1\" align=\"center\" width=\"650\">" .
-    "<tr>" .
-    "<th class=\"table_head\" align=\"center\"><font size=\"2\"><b>" . Lang::T("_BLC_AVAIL_") . "</b></font><br />(" . Lang::T("_IN_FOLDER_") . ")</th>" .
-    "</tr>" .
-    "</table><br />" .
-    "<table width=\"650\" cellspacing=\"1\" class=\"table_table\" align=\"center\">" .
-    "<tr>" .
-    "<th class=\"table_head\">" . Lang::T("_NAMED_") . "<br />(" . Lang::T("_FL_NM_IF_NO_SET_") . ")</th>" .
-    "<th class=\"table_head\">" . Lang::T("FILE") . "</th>" .
-    "<th class=\"table_head\">" . Lang::T("DESCRIPTION") . "<br />(" . Lang::T("_MAX_") . " 255 " . Lang::T("_CHARS_") . ")</th>" .
-    "<th class=\"table_head\">" . Lang::T("_ADD_") . "</th>" .
-    "<th class=\"table_head\">" . Lang::T("_DEL_") . "</th>" .
-    "</tr>");
+<form name="addnewblock" method="post" action="<?php echo URLROOT ?>/adminblocks/submit">
+<table class="table_table" cellspacing="1" align="center" width="650">
+<tr>
+<th class="table_head" align="center"><font size="2"><b><?php echo Lang::T("_BLC_AVAIL_") ?></b></font><br />(<?php echo Lang::T("_IN_FOLDER_") ?>)</th>
+</tr>
+</table><br />
+<table width="650" cellspacing="1" class="table_table" align="center">
+<tr>
+<th><?php echo Lang::T("_NAMED_") ?><br />(<?php echo Lang::T("_FL_NM_IF_NO_SET_") ?>)</th>
+<th><?php echo Lang::T("FILE") ?></th>
+<th><?php echo Lang::T("DESCRIPTION") ?><br />(<?php echo Lang::T("_MAX_") ?> 255 <?php echo Lang::T("_CHARS_") ?>)</th>
+<th><?php echo Lang::T("_ADD_") ?></th>
+<th><?php echo Lang::T("_DEL_") ?></th>
+</tr>
+<?php
 /* loop over the blocks directory and take file names witch are not in database. */
 if ($folder = opendir(APPROOT . '/views/blocks')) {
     $i = 0;
@@ -47,11 +43,10 @@ if ($folder = opendir(APPROOT . '/views/blocks')) {
     closedir($folder);
 }
 /* end loop over the blocks directory and take names. */
-
-print("<tr>" .
-    "<td colspan=\"5\" class=\"table_head\" align=\"center\"><input type=\"submit\" name=\"submit\" class=\"btn\" value=\"" . Lang::T("_BTN_DOIT_") . "\" />&nbsp;<input type=\"reset\" class=\"btn\" value=\"" . Lang::T("RESET") . "\" /></td>" .
-    "</tr>" .
-    "</table>" .
-    "</form></td></tr></table>");
-print("<center>(" . Lang::T("_DLT_WIL_PER_") . " <font color='#ff0000'>" . Lang::T("_NO_ADD_WAR_") . "</font>)</center><br />");
-Style::end();
+?>
+<tr>
+<td colspan="5" class="table_head" align="center"><input type="submit" name="submit" class="btn" value="<?php echo Lang::T("_BTN_DOIT_") ?>">&nbsp;<input type="reset" class="btn" value="<?php echo Lang::T("RESET") ?>" ></td>
+</tr>
+</table>
+</form></td></tr></table>
+<center>(<?php echo Lang::T("_DLT_WIL_PER_") ?> <font color='#ff0000'><?php echo Lang::T("_NO_ADD_WAR_") ?></font>)</center><br />

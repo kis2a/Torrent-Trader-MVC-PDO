@@ -44,7 +44,9 @@ class Report extends Controller
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_ASSOC);
+            $title = 'Report';
             $data = [
+                'title' => $title,
                 'username' => $arr['username'],
                 'user' => $user
             ];
@@ -56,7 +58,8 @@ class Report extends Controller
     }
 
     public function torrent()
-    {$taketorrent = (int) $_POST["torrent"];
+    {
+        $taketorrent = (int) $_POST["torrent"];
         $takereason = $_POST["reason"];
         $torrent = (int) $_GET["torrent"];
 
@@ -85,7 +88,9 @@ class Report extends Controller
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
+            $title = 'Report';
             $data = [
+                'title' => $title,
                 'name' => $arr['name'],
                 'torrent' => $torrent
             ];
@@ -100,16 +105,21 @@ class Report extends Controller
     {
         $takecomment = (int) $_POST["comment"];
         $takereason = $_POST["reason"];
-        $comment = (int) $_GET["comment"];
-
+        $comment = (int) $_GET["comment"]; 
+        $type = $_GET["type"];
+        if ($type == "req") {
+            $whattype = 'req';
+        } else {
+            $whattype = 'comment';
+        }
         if (($takecomment != "") && ($takereason != "")) {
             if (!$takereason) {
                 Session::flash('info', Lang::T("YOU_MUST_ENTER_A_REASON"), URLROOT."/report/comment?comment=$comment");
                 die;
             }
-            $res = DB::run("SELECT id FROM reports WHERE addedby =? AND votedfor =? AND type =?", [$_SESSION['id'], $takecomment, 'comment']);
+            $res = DB::run("SELECT id FROM reports WHERE addedby =? AND votedfor =? AND type =?", [$_SESSION['id'], $takecomment, $whattype]);
             if ($res->rowCount() == 0) {
-                DB::run("INSERT into reports (addedby,votedfor,type,reason) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $takecomment, 'comment', $takereason]);
+                DB::run("INSERT into reports (addedby,votedfor,type,reason) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $takecomment, $whattype, $takereason]);
                 $msg = "Comment with id: $takecomment, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>";
                 Session::flash('info', $msg, URLROOT."/home");
                 die();
@@ -127,11 +137,14 @@ class Report extends Controller
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
+            $title = 'Report';
             $data = [
+                'type' => $type,
+                'title' => $title,
                 'text' => $arr['text'],
                 'comment' => $comment
             ];
-            $this->view('report/torrent', $data, 'user');
+            $this->view('report/comment', $data, 'user');
             die();
         } else {
             Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/home");
@@ -171,7 +184,9 @@ class Report extends Controller
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
+            $title = 'Report';
             $data = [
+                'title' => $title,
                 'subject' => $arr['subject'],
                 'forumpost' => $forumpost,
                 'forumid' => $forumid,

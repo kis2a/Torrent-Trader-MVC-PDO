@@ -37,14 +37,14 @@ public function getStaffLevel ($where)
 public function getGroups () 
 {
     $row = $this->db->run("
-    SELECT group_id, level FROM groups");
+    SELECT group_id, level FROM `groups`");
     return $row;
 }
 
 public function getGroupsearch ($query, $startpoint, $per_page) 
 {
     $row = $this->db->run("
-    SELECT users.*, groups.level FROM users INNER JOIN groups ON groups.group_id=users.class WHERE $query ORDER BY username LIMIT {$startpoint} , {$per_page}");
+    SELECT users.*, groups.level FROM users INNER JOIN `groups` ON groups.group_id=users.class WHERE $query ORDER BY username LIMIT {$startpoint} , {$per_page}");
     return $row;
 }
   }

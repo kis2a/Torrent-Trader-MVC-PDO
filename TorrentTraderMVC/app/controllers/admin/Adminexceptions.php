@@ -2,13 +2,12 @@
 class Adminexceptions extends Controller
 {
     public function __construct()
-    {}
+    {
+        Auth::user();
+        Auth::isStaff();
+    }
 
     public function index() {
-        Auth::user();
-        if (!$_SESSION['class'] > 6 || $_SESSION["control_panel"] != "yes") {
-            show_error_msg(Lang::T("ERROR"), Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"), 1);
-        }
         $exceptionfilelocation = LOGGER."/exception_log.txt";
         $filegetcontents = file_get_contents($exceptionfilelocation);
         $errorlog = htmlspecialchars($filegetcontents);
@@ -27,9 +26,11 @@ class Adminexceptions extends Controller
         $filecontents = file_get_contents($exceptionfilelocation);
         
         $data = [
+            'title' => 'Exception Log',
             'filecontents' => $filecontents,
             'errorlog' => $errorlog,
         ];
-        $this->view('error/admin/admin', $data);
+        $this->view('error/admin/admin', $data, 'admin');
     }
+
 }

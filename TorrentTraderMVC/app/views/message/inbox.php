@@ -1,7 +1,4 @@
-<?php
-Style::begin(Lang::T($data['pagename']));
-?>
-    <?php include APPROOT.'/views/message/messagenavbar.php'; ?>
+   <?php include APPROOT.'/views/message/messagenavbar.php'; ?>
     <form id='messages' method='post' action='<?php echo URLROOT; ?>/messages/inbox?do=del'>
     <div class='table-responsive'><table class='table table-striped'>
     <thead><tr>
@@ -27,4 +24,3 @@ while ($arr = $data['mainsql']->fetch(PDO::FETCH_ASSOC)) {
 <center><button type="submit" class="btn btn-primary" value='Delete Checked' />Delete Checked</button>  <button type="submit" class="btn btn-primary" value='Read Checked' name='read' />Read Checked</button></center>
 </form>
 <?php echo $data['pagerbottom'];
-Style::end();

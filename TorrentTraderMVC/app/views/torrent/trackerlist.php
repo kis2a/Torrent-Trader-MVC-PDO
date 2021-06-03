@@ -1,5 +1,4 @@
 <?php
-Style::begin(Lang::T("Tracker List"));
 $row = $data['res']->fetch(PDO::FETCH_ASSOC);
 torrentmenu($data['id'], $row['external'])
 ?>
@@ -19,4 +18,3 @@ if ($data['tres']->rowCount() > 1) {
     }
     echo '</table>';
 }
-Style::end();

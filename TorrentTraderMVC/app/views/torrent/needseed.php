@@ -1,9 +1,4 @@
- <div class="card">
-    <div class="card-header">
-        <?php echo Lang::T("TORRENT_NEED_SEED"); ?>
-    </div>
-    <div class="card-body">
-        <?php echo Lang::T("TORRENT_NEED_SEED_MSG"); ?>
+<?php echo Lang::T("TORRENT_NEED_SEED_MSG"); ?>
         <div class='table-responsive'><table class='table table-striped'>
             <thead><tr>
             <th><?php echo Lang::T("TORRENT_NAME"); ?></th>
@@ -38,5 +33,3 @@
             </tr></tbody>
 <?php } ?>
         </table></div>
-    </div>
-</div>

@@ -623,7 +623,7 @@ class Helper
         } else {
             $receiver = Lang::T("SYSTEM");
         }
-        $subject = "<a href='" . URLROOT . "/messages/read?inbox&amp;id=" . $arr["id"] . "'><b>" . format_comment($arr["subject"]) . "</b></a>";
+        $subject = "<a href='" . URLROOT . "/messages/read?outbox&amp;id=" . $arr["id"] . "'><b>" . format_comment($arr["subject"]) . "</b></a>";
         $added = TimeDate::utc_to_tz($arr["added"]);
         if ($arr["unread"] == "yes") {
             $unread = "<img src='" . URLROOT . "/assets/images/forum/folder_new.png' alt='read' width='25' height='25'>";

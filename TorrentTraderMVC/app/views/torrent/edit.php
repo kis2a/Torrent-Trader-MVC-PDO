@@ -1,5 +1,4 @@
 <?php
-Style::begin($data['title']);
 foreach ($data['selecttor'] as $torr):
 torrentmenu($data['id'], $torr['external']);
 ?>
@@ -88,4 +87,3 @@ if (ANONYMOUSUPLOAD) { ?>
 
 <?php
 endforeach;
-Style::end();

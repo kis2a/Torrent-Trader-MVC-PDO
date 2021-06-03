@@ -210,13 +210,14 @@ try {
             }
 
             $arr[] = "addedrequests";
-            $arr[] = "agents";
             $arr[] = "announce";
+            $arr[] = "attachments";
             $arr[] = "bans";
             $arr[] = "blocks";
             $arr[] = "bonus";
             $arr[] = "categories";
             $arr[] = "censor";
+            $arr[] = "clients";
             $arr[] = "comments";
             $arr[] = "completed";
             $arr[] = "countries";
@@ -242,9 +243,11 @@ try {
             $arr[] = "polls";
             $arr[] = "ratings";
             $arr[] = "reports";
+            $arr[] = "requests";
             $arr[] = "rules";
-            $arr[] = "snatched";
             $arr[] = "shoutbox";
+            $arr[] = "snatched";
+            $arr[] = "sqlerr";
             $arr[] = "staffmessages";
             $arr[] = "stylesheets";
             $arr[] = "tasks";

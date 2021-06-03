@@ -1,6 +1,4 @@
-<?php
-Style::begin(Lang::T("Bonus"));
-usermenu($data['getid']); ?>
+<?php usermenu($data['getid']); ?>
   <center>
   This page displays the options that you can redeem accumulated points against depending on the share of torrents. <font color=yellow><b><?php echo $data['usersbonus']; ?></font></b>
   </center>
@@ -30,5 +28,3 @@ usermenu($data['getid']); ?>
      <li><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'>Return to profile</a></li>
   </ul>
   </div>
-<?php
-Style::end();

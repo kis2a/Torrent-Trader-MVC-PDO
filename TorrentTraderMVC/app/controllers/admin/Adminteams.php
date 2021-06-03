@@ -5,32 +5,24 @@ class Adminteams extends Controller
     public function __construct()
     {
         Auth::user();
+        Auth::isStaff();
         // $this->userModel = $this->model('User');
         $this->log = $this->model('Logs');
-    }
-
-    private function isadmin()
-    {
-        if (!$_SESSION['loggedin'] == true || $_SESSION["control_panel"] != "yes") {
-            Session::flash('info', Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"), URLROOT . "/home");
-        }
     }
 
     public function index()
     {
         require_once APPROOT."/helpers/bbcode_helper.php";
-        $this->isadmin();
         $sql = DB::run("SELECT * FROM teams");
         $data = [
+            'title' => Lang::T("TEAMS_MANAGEMENT"),
             'sql' => $sql
         ];
-        $this->view('teams/admin/admin', $data);
+        $this->view('teams/admin/index', $data, 'admin');
     }
 
     public function add()
     {
-        $this->isadmin();
-
         $team_name = $_POST['team_name'];
         $team_image = $_POST['team_image'];
         $team_description = $_POST['team_description'];
@@ -63,7 +55,6 @@ class Adminteams extends Controller
 
     public function delete()
     {
-        $this->isadmin();
         $sure = $_GET['sure'];
         $del = $_GET['del'];
         $team = htmlspecialchars($_GET['team']);
@@ -82,7 +73,6 @@ class Adminteams extends Controller
 
     public function edit()
     {
-        $this->isadmin();
         $edited = (int) $_GET['edited'];
         $id = (int) $_GET['id'];
         $team_name = $_GET['team_name'];
@@ -99,8 +89,6 @@ class Adminteams extends Controller
         if ($edited == 1) {
             if (!$team_name || !$teamownername || !$team_info) {
                 Session::flash('info', 'One or more fields left empty.', URLROOT."/adminteams");
-                Style::end();
-                require APPROOT . '/views/admin/footer.php';
                 die;
             }
             $team_name = $team_name;
@@ -122,25 +110,25 @@ class Adminteams extends Controller
 
         if ($editid > 0) {
             $data = [
+                'title' => Lang::T("Team Edit"),
                 'editid' => $editid,
                 'name' => $name,
                 'image' => $image,
                 'owner' => $owner,
                 'info' => $info,
             ];
-            $this->view('teams/admin/edit', $data);
-            die();
+            $this->view('teams/admin/edit', $data, 'admin');
         }
 	}
 
     public function members()
     {
-        $this->isadmin();
         $teamid = $_GET['teamid'];
         $sql = DB::run("SELECT id,username,uploaded,downloaded FROM users WHERE team=$teamid");
         $data = [
+            'title' => Lang::T("TEAMS_MANAGEMENT"),
             'sql' => $sql
         ];
-        $this->view('teams/admin/members', $data);
+        $this->view('teams/admin/members', $data, 'admin');
 	}
 }

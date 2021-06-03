@@ -4,7 +4,8 @@ class Admintorrentlang extends Controller
 
     public function __construct()
     {
-        Auth::user(); // should check admin here
+        Auth::user();
+        Auth::isStaff();
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();
@@ -12,25 +13,16 @@ class Admintorrentlang extends Controller
 
     public function index()
     {
-
-    }
-
-
-    public function torrentlangsview()
-    {
         $sql = DB::run("SELECT * FROM torrentlang ORDER BY sort_index ASC");
-
         $title = Lang::T("TORRENT_LANGUAGES");
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
         $data = [
+            'title' => $title,
             'sql' => $sql,
         ];
-        $this->view('torrent/admin/torrentlangview', $data);
-        require APPROOT . '/views/admin/footer.php';
+        $this->view('torrentlang/torrentlangview', $data, 'admin');
     }
 
-    public function torrentlangsedit()
+    public function edit()
     {
         $id = (int) $_GET["id"];
         if (!$this->valid->validId($id)) {
@@ -51,21 +43,19 @@ class Admintorrentlang extends Controller
             $sort_index = $sort_index;
             $image = $image;
             DB::run("UPDATE torrentlang SET name=?, sort_index=?, image=? WHERE id=?", [$name, $sort_index, $image, $id]);
-            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlangsview", Lang::T("Language was edited successfully."));
+            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlang", Lang::T("Language was edited successfully."));
         } else {
             $title = Lang::T("TORRENT_LANGUAGES");
-            require APPROOT . '/views/admin/header.php';
-            Style::adminnavmenu();
             $data = [
+                'title' => $title,
                 'id' => $id,
                 'res' => $res,
             ];
-            $this->view('torrent/admin/torrentlangedit', $data);
+            $this->view('torrentlang/torrentlangedit', $data, 'admin');
         }
-        require APPROOT . '/views/admin/footer.php';
     }
 
-    public function torrentlangsdelete()
+    public function delete()
     {
         $id = (int) $_GET["id"];
         if ($_GET["sure"] == '1') {
@@ -75,20 +65,18 @@ class Admintorrentlang extends Controller
             $newlangid = (int) $_POST["newlangid"];
             DB::run("UPDATE torrents SET torrentlang=$newlangid WHERE torrentlang=$id"); //move torrents to a new cat
             DB::run("DELETE FROM torrentlang WHERE id=$id"); //delete old cat
-            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlangsview", Lang::T("Language Deleted OK."));
+            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlang", Lang::T("Language Deleted OK."));
         } else {
             $title = Lang::T("TORRENT_LANGUAGES");
-            require APPROOT . '/views/admin/header.php';
-            Style::adminnavmenu();
             $data = [
+                'title' => $title,
                 'id' => $id,
             ];
-            $this->view('torrent/admin/torrentlangdelete', $data);
-            require APPROOT . '/views/admin/footer.php';
+            $this->view('torrentlang/torrentlangdelete', $data, 'admin');
         }
     }
 
-    public function torrentlangstakeadd()
+    public function takeadd()
     {
         $name = $_POST['name'];
         if ($name == "") {
@@ -101,20 +89,19 @@ class Admintorrentlang extends Controller
         $image = $image;
         $ins = DB::run("INSERT INTO torrentlang (name, sort_index, image) VALUES (?, ?, ?)", [$name, $sort_index, $image]);
         if ($ins) {
-            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlangsview", Lang::T("Language was added successfully."));
+            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlang", Lang::T("Language was added successfully."));
         } else {
             show_error_msg(Lang::T("ERROR"), "Unable to add Language", 1);
         }
     }
 
-    public function torrentlangsadd()
+    public function add()
     {
         $title = Lang::T("TORRENT_LANGUAGES");
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
-        $data = [];
-        $this->view('torrent/admin/torrentlangadd', $data);
-        require APPROOT . '/views/admin/footer.php';
+        $data = [
+            'title' => $title,
+        ];
+        $this->view('torrentlang/torrentlangadd', $data, 'admin');
     }
 
 }

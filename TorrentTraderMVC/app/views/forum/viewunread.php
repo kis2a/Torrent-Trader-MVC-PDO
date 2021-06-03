@@ -1,5 +1,4 @@
 <?php
-Style::begin(Lang::T("Topics with unread posts"));
 forumheader('New Topics');
 
 while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
@@ -45,4 +44,3 @@ if ($data['n'] > 0) {
 } else {
     print("<b>Nothing found</b>");
 }
-Style::end();

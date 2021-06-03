@@ -4,7 +4,7 @@ class Seed extends Controller {
     public function __construct()
     {
         Auth::user();
-        // $this->shoutModel = $this->model('Shout');
+        //  $this->shoutModel = $this->model('Shout');
     }
 
     public function needseed()
@@ -16,7 +16,9 @@ class Seed extends Controller {
         if ($res->rowCount() == 0) {
             Session::flash('info', Lang::T("NO_TORRENT_NEED_SEED"), URLROOT."/home");
         }
+        $title = Lang::T("TORRENT_NEED_SEED");
         $data = [
+            'title' => $title,
             'res' => $res
         ];
         $this->view('torrent/needseed', $data, 'user');

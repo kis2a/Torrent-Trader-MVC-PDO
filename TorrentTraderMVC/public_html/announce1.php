@@ -112,7 +112,7 @@ if (strlen($passkey) != 32) {die(track("Invalid passkey (" . strlen($passkey) . 
 $dbh = new Database() or die(track('Database connection failed'));
 
 // Client Ban
-$stmt = $dbh->prepare("SELECT agent_name FROM agents");
+$stmt = $dbh->prepare("SELECT agent_name FROM clients");
 $agentarray = $stmt->fetchAll(PDO::FETCH_COLUMN);
 $useragent = substr($peerid, 0, 8);
 foreach ($agentarray as $bannedclient) {
@@ -124,7 +124,7 @@ foreach ($agentarray as $bannedclient) {
 // Get User (select user/group vars here)
 $sql = "SELECT u.id, u.class, u.uploaded, u.downloaded, u.ip, u.passkey, g.can_download
 	    FROM users u
-	    INNER JOIN groups g
+	    INNER JOIN `groups` g
 	    ON u.class = g.group_id
 	    WHERE u.passkey=? AND u.enabled = ? AND u.status = ? LIMIT 1";
 $stmt = $dbh->prepare($sql);

@@ -157,24 +157,27 @@ function shoutbbcode($form, $name, $content = "")
     //$content = textarea content (only for edit pages etc)
     require "assets/js/BBTag.js";
     print("<center><input id='BBCode' type='button' name='Bold' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/bold.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[b]', '[/b]')\" 					alt='Bold' 				title='Bold' 				/>");
-    print("<input id='BBCode' type='button' name='Italic' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/italic.png');  height:20px; width:20px;\" 					onclick=\"bbcomment('[i]', '[/i]')\" 					alt='Italique' 			title='Italique' 			/>");
+    print("<input id='BBCode' type='button' name='Italic' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/italic.png');  height:20px; width:20px;\" 					onclick=\"bbcomment('[i]', '[/i]')\" 					alt='Italic' 			title='Italic' 			/>");
     print("<input id='BBCode' type='button' name='Highlight' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/underline.png');  height:20px; width:20px;\" 				onclick=\"bbcomment('[u]', '[/u]')\" 					alt='Highlight' 			title='Highlight'			/>");
-    print("<input id='BBCode' type='button' name='Barré' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/strike.png');  height:20px; width:20px;\"			 		onclick=\"bbcomment('[s]', '[/s]')\" 					alt='Ligne Barrée' 		title='Ligne Barrée'		/>");
+    print("<input id='BBCode' type='button' name='Barré' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/strike.png');  height:20px; width:20px;\"			 		onclick=\"bbcomment('[s]', '[/s]')\" 					alt='Strike' 		title='Strike'		/>");
     print("<input id='BBCode' type='button' name='List' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/indent.png');  height:20px; width:20px;\" 					onclick=\"bbcomment('[list]', '[/list]')\" 				alt='List' 				title='List'				/>");
     print("<input id='BBCode' type='button' name='Quote' 			       value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/quote.png');  height:20px; width:20px;\"			 		onclick=\"bbcomment('[quote]', '[/quote]')\" 			alt='Quote' 			title='Quote'			/>");
     print("<input id='BBCode' type='button' name='Code' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/code.png');  height:20px; width:20px;\" 					onclick=\"bbcomment('[code]', '[/code]')\" 			alt='Code' 			title='Code'				/>");
     print("<input id='BBCode' type='button' name='Url' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/Link.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[url]', '[/url]')\"				alt='Lnk' 				title='Link'				/>");
     print("<input id='BBCode' type='button' name='Image' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/image.png');  height:20px; width:20px;\" 					onclick=\"bbcomment('[img]', '[/img]')\"				alt='Image' 			title='Image'				/>");
-    print("<input id='BBCode' type='button' name='Video' 				value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/Video.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[video]', '[/video]')\" 			alt='Vidéo' 			title='Vidéo'				/>");
     print("<input id='BBCode' type='button' name='scroller' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/scroller.png');  height:20px; width:20px;\"					onclick=\"bbcomment('[df]', '[/df]')\" 				alt='scroller' 			title='scroller'			/>");
     print("<input id='BBCode' type='button' name='Align Right'            	value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/right.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[align=left]','[/align]')\" 			alt='Align Right' 		title='Align Right' 	/>");
     print("<input id='BBCode' type='button' name='Align Center'        	value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/center.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[align=center]','[/align]')\" 		alt='Align Center' 		title='Align Center' 	/>");
     print("<input id='BBCode' type='button' name='Align Left'             	value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/left.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[align=right]','[/align]')\" 		alt='Align Left' 		       title='Align Left' 	/>");
     print("<a href='#' onClick=\"window.open('http://www.zupimages.net','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/imgur.gif');  height:20px; width:20px;\" 		alt='Upload Image' 			title='Upload Image' /></a>");
     print("<a href='#' onClick=\"window.open('http://www.youtube.com','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/youtube.gif');  height:20px; width:20px;\"										alt='YouTube' 				title='YouTube' /></a></center>");
-    // History
-    print("<center><a href=" . URLROOT . "/shoutbox/history  target='_blank'><b>History</b></a>
-	&nbsp;&nbsp;<a  onclick='myFunction()'><img src='" . URLROOT . "/assets/images/smilies/grin.png' alt='' /></a>&nbsp;&nbsp;");
+    // History & Staff
+    echo "<center><a href=" . URLROOT . "/shoutbox/history><b>History</b></a>
+	&nbsp;&nbsp;";
+    if ($_SESSION['class'] > _UPLOADER) {
+        echo "<a href='" . URLROOT . "/adminshoutbox'><b>Staff</b></a>&nbsp;&nbsp;";
+    }
+    print("<a  onclick='myFunction()'><img src='" . URLROOT . "/assets/images/smilies/grin.png' alt='' /></a>&nbsp;&nbsp;");
     // Choose the colour
 	print("<select name='color' style='padding-bottom:3px;' onChange='bbcouleur(this.value);' title='Couleur'>");
     print("<option value='0' name='color'>Colour</option>");

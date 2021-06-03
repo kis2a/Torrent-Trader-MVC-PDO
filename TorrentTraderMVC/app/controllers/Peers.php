@@ -39,22 +39,22 @@ class Peers extends Controller
         if ($res->rowCount() > 0) {
             $leeching = peerstable($res);
         }
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
         $data = [
             'id' => $id,
+            'title' => $title,
             'leeching' => $leeching,
             'seeding' => $seeding,
             'uid' => $user["id"],
             'username' => $user["username"],
             'privacy' => $user["privacy"],
         ];
-        $this->view('peers/seeding', $data);
-        Style::footer();
+        $this->view('peers/seeding', $data, 'user');
     }
 
     // sharing on account details
     public function uploaded()
     {
-        Style::header("User CP");
         $id = (int) $_GET["id"];
         if (!$this->valid->validId($id)) {
             Session::flash('info', "Bad ID.", URLROOT."/home");
@@ -86,8 +86,10 @@ class Peers extends Controller
         } else {
             unset($res);
         }
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
         $data = [
             'id' => $id,
+            'title' => $title,
             'username' => $user["username"],
             'privacy' => $user["privacy"],
             'count' => $count,
@@ -95,8 +97,7 @@ class Peers extends Controller
             'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('peers/uploaded', $data);
-        Style::footer();
+        $this->view('peers/uploaded', $data, 'user');
     }
 
     // sharing on torrent details
@@ -237,16 +238,15 @@ class Peers extends Controller
             $msg = "<div style='margin-top:10px; margin-bottom:10px' align='center'><font size='2'><i>...No Dead Torrents !</i></font></div>";
             Session::flash('info', $msg, URLROOT."/home");
         }
-
-        Style::header("Dead Torrents");
+        $title = "The Dead Torrents";
         $data = [
             'res' => $res,
+            'title' => $title,
              'count' => $count,
              'perpage' => $perpage,
              'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('peers/dead', $data);
-        Style::footer();
+        $this->view('peers/dead', $data, 'user');
     }
 }

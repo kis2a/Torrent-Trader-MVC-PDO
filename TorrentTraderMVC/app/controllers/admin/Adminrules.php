@@ -4,7 +4,8 @@ class Adminrules extends Controller
 
     public function __construct()
     {
-        Auth::user(); // should check admin here
+        Auth::user();
+        Auth::isStaff();
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();
@@ -13,19 +14,14 @@ class Adminrules extends Controller
     public function index()
     {
         $res = DB::run("SELECT * FROM rules ORDER BY id");
-        $title = Lang::T("SITE_RULES_EDITOR");
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
-        Style::begin(Lang::T("SITE_RULES_EDITOR"));
         $data = [
+            'title' => Lang::T("SITE_RULES_EDITOR"),
             'res' => $res,
         ];
-        $this->view('rules/admin/rulesview', $data);
-        Style::end();
-        require APPROOT . '/views/admin/footer.php';
+        $this->view('rules/admin/rulesview', $data, 'admin');
     }
 
-    public function rulesedit()
+    public function edit()
     {
         if ($_GET["save"] == "1") {
             $id = (int) $_POST["id"];
@@ -40,20 +36,15 @@ class Adminrules extends Controller
         }
         $id = (int) $_POST["id"];
         $res = DB::run("select * from rules where id='$id'");
-        $title = Lang::T("SITE_RULES_EDITOR");
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
-        Style::begin("Edit Rule Section");
         $data = [
+            'title' => Lang::T("SITE_RULES_EDITOR"),
             'id' => $id,
             'res' => $res,
         ];
-        $this->view('rules/admin/rulesedit', $data);
-        Style::end();
-        require APPROOT . '/views/admin/footer.php';
+        $this->view('rules/admin/rulesedit', $data, 'admin');
     }
 
-    public function rulesaddsect()
+    public function addsect()
     {
         if ($_GET["save"] == "1") {
             $title = $_POST["title"];
@@ -64,14 +55,10 @@ class Adminrules extends Controller
             show_error_msg(Lang::T("COMPLETE"), "New Section Added<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>", 1);
             die();
         }
-        $title = Lang::T("SITE_RULES_EDITOR");
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
-        Style::begin(Lang::T("ADD_NEW_RULES_SECTION"));
-        $data = [];
-        $this->view('rules/admin/rulesaddsect', $data);
-        Style::end();
-        require APPROOT . '/views/admin/footer.php';
+        $data = [
+            'title' => Lang::T("SITE_RULES_EDITOR"),
+        ];
+        $this->view('rules/admin/rulesaddsect', $data, 'admin');
     }
 
 }

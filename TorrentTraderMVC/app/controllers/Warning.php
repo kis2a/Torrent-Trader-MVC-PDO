@@ -12,10 +12,6 @@ class Warning extends Controller
     public function index()
     {
         $id = (int) $_GET["id"];
-        // VALIDATION STUFF
-        if (!$this->valid->validId($id)) {
-            Session::flash('info', "Bad ID.", URLROOT . '/members');
-        }
         $user = DB::run("SELECT * FROM users WHERE id=?", [$id])->fetch();
         if (!$user) {
             Session::flash('info', Lang::T("NO_USER_WITH_ID") . " $id.", URLROOT . '/members');
@@ -43,6 +39,9 @@ class Warning extends Controller
         $reason = $_POST["reason"];
         $expiry = (int) $_POST["expiry"];
         $type = $_POST["type"];
+        if ($_SESSION["edit_users"] != "yes" ) {
+            Session::flash('info', Lang::T("TASK_ADMIN"), URLROOT . "/profile?id=$userid");
+        }
         if (!$this->valid->validId($userid)) {
             Session::flash('info', Lang::T("INVALID_USERID"), URLROOT . '/members');
         }
@@ -58,29 +57,6 @@ class Warning extends Controller
         DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(?,?,?,?)", [0, $userid, $msg, $added]);
         Logs::write($_SESSION['username'] . " has added a warning for user: <a href='" . URLROOT . "/profile?id=$userid'>$userid</a>");
         Session::flash('info', "Warning given", URLROOT . "/profile?id=$userid");
-        die;
-    }
-
-    public function deleteaccount()
-    {
-        $userid = (int) $_POST["userid"];
-        $username = $_POST["username"];
-        $delreason = $_POST["delreason"];
-        if ($_SESSION["delete_users"] != "yes" ) {
-            Session::flash('info', Lang::T("TASK_ADMIN"), URLROOT . "/profile?id=$userid");
-        }
-        if (!$this->valid->validId($userid)) {
-            Session::flash('info', Lang::T("INVALID_USERID"), URLROOT . "/profile?id=$userid");
-        }
-        if ($_SESSION["id"] == $userid) {
-            Session::flash('info', "You cannot delete yourself.", URLROOT . "/profile?id=$userid");
-        }
-        if (!$delreason) {
-            Session::flash('info', Lang::T("MISSING_FORM_DATA"), URLROOT . "/profile?id=$userid");
-        }
-        $this->userModel->deleteaccount($userid);
-        Logs::write($_SESSION['username'] . " has deleted account: $username");
-        Session::flash('info', Lang::T("USER_DELETE"), URLROOT . "/profile?id=$userid");
         die;
     }
 

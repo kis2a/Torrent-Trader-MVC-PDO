@@ -1,5 +1,4 @@
 <?php
-Style::begin($data['title']);
 usermenu($data['id']);
 foreach ($data['selectuser'] as $selectedid):
 if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") || ($_SESSION["id"] == $data["id"])) {
@@ -112,4 +111,3 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 }
 
 endforeach;
-Style::end();

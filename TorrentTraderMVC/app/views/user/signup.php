@@ -1,6 +1,3 @@
-<?php
-Style::begin(Lang::T("SIGNUP"));
-?>
 <div class="row justify-content-center">
 <form method="post" action="<?php echo URLROOT; ?>/signup/submit">
 <?php if ($data['invite']) {?>
@@ -60,6 +57,3 @@ Style::begin(Lang::T("SIGNUP"));
 </div>
 </form>
 </div>
-<?php
-Style::end();
-?>

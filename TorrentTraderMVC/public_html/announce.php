@@ -170,7 +170,7 @@ $dbh = new Database();
 //Agent Ban Moved To DB
 $agentarray = $dbh->run("
               SELECT agent_name 
-              FROM agents
+              FROM clients
               ")->fetchAll(PDO::FETCH_COLUMN);
 $useragent = substr($peer_id, 0, 8);
 foreach ($agentarray as $bannedclient) {
@@ -197,7 +197,7 @@ if ($MEMBERSONLY) {
     $res = $dbh->run("
            SELECT $userfields 
            FROM users u 
-           INNER JOIN groups g 
+           INNER JOIN `groups` g 
            ON u.class = g.group_id 
            WHERE u.passkey=? AND u.enabled = ? AND u.status = ? LIMIT 1", [$passkey, 'yes', 'confirmed'])
             or err("Cannot Get User Details");

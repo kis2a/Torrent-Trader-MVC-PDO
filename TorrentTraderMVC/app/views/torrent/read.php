@@ -1,6 +1,4 @@
 <?php
-Style::header($data['title']);
-Style::begin($data['title']);
 foreach ($data['selecttor'] as $torr):
 torrentmenu($data['id'], $torr['external']);
 ?>
@@ -256,5 +254,3 @@ if ($torr["nfo"] == "yes") {
  }
 
 endforeach;
-Style::end();
-Style::footer();

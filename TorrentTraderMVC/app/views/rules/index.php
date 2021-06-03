@@ -1,34 +1,22 @@
-<div class="card">
-    <div class="card-header">
-        <?php echo Lang::T("SITE_RULES"); ?>
-    </div>
-    <div class="card-body">
-
-<?php foreach ($data['res'] as $row) { ?>
-    <?php if ($row->public == "yes") { ?>
-
-    <div class="card">
-        <div class="card-header">
-        <?php echo $row->title; ?>
-        </div>
-        <div class="card-body">
-        <?php echo format_comment($row->text); ?>
-        </div>
-    </div>
-
-    <?php } else if ($row->public == "no" && $row->class <= $_SESSION["class"]) { ?>
-
-    <div class="card">
-        <div class="card-header">
-        <?php echo $row->title; ?>
-        </div>
-        <div class="card-body">
-        <?php echo format_comment($row->text); ?>
-        </div>
-    </div>
-
-    <?php }?>
-<?php }?>
-
-    </div>
-</div>
+<?php
+foreach ($data['res'] as $row) {
+    if ($row->public == "yes") { ?>
+        <div class="row justify-content-center">
+            <div class="col-10 border border-warning">
+            <center><?php echo $row->title; ?></center>
+            <br>
+            <?php echo format_comment($row->text); ?>
+            </div>
+        </div><br>
+        <?php
+    } else if ($row->public == "no" && $row->class <= $_SESSION["class"]) { ?>
+        <div class="row justify-content-center">
+            <div class="col-10 border border-warning">
+            <center><?php echo $row->title; ?></center>
+            <br>
+            <?php echo format_comment($row->text); ?>
+            </div>
+        </div><br>
+        <?php
+    }
+}

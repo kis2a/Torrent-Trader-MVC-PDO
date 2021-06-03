@@ -15,8 +15,10 @@ class Adminadduser extends Controller
         if ($_SESSION["class"] < "7") {
             show_error_msg("Error", "Sorry you do not have the rights to view this page!", 1);
         }
-        $data = [];
-        $this->view('user/admin/adduser', $data);
+        $data = [
+            'title' => 'Add User'
+        ];
+        $this->view('user/admin/adduser', $data, 'admin');
     }
 
     public function addeduserok()

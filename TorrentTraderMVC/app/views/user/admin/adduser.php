@@ -1,8 +1,3 @@
-<?php
-Style::adminheader("Add User");
-Style::adminnavmenu();
-Style::begin("Add User");
-?>
     <center><b>Add user</b></center>
     <div class='row justify-content-md-center'>
         <div class='col-md-8'>
@@ -40,6 +35,3 @@ Style::begin("Add User");
     </div>
     </div>
     </div>
-<?php
-Style::end();
-Style::adminfooter();

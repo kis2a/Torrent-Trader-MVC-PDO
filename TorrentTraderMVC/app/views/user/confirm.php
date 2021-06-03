@@ -1,6 +1,3 @@
-<?php
-Style::begin(Lang::T("RECOVER_ACCOUNT"));
-?>
 <div class="row justify-content-center">
 <form method="post" action="<?php echo URLROOT; ?>/recover/ok">
 <div class="form-group">
@@ -21,5 +18,3 @@ Style::begin(Lang::T("RECOVER_ACCOUNT"));
 </div>
 </form>
 </div>
-<?php
-Style::end();

@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo URLROOT; ?>/adminrules/rulesaddsect?save=1">
+<form method="post" action="<?php echo URLROOT; ?>/adminrules/addsect?save=1">
 <table border="0" cellspacing="0" cellpadding="10" align="center">
 <tr><td>Section Title:</td><td><input style="width: 400px;" type="text" name="title" /></td></tr>
 <tr><td style="vertical-align: top;">Rules:</td><td><textarea cols="60" rows="15" name="text"></textarea><br />

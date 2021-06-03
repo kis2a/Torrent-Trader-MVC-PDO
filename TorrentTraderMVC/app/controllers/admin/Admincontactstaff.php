@@ -4,27 +4,23 @@ class Admincontactstaff extends Controller
     public function __construct()
     {
         Auth::user();
+        Auth::isStaff();
         // $this->userModel = $this->model('User');
         $this->valid = new Validation();
     }
 
     public function staffbox()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $res = DB::run("SELECT staffmessages.id, staffmessages.added, staffmessages.subject, staffmessages.answered, staffmessages.answeredby, staffmessages.sender, staffmessages.answer, users.username FROM staffmessages INNER JOIN users on staffmessages.sender = users.id ORDER BY id desc");
         $data = [
+            'title' => 'Staff PMs',
             'res' => $res,
         ];
-        $this->view('contact/admin/staff', $data);
+        $this->view('contactstaff/admin/staff', $data, 'admin');
     }
 
     public function viewpm()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $pmid = (int) $_GET["pmid"];
         $ress4 = DB::run("SELECT id, subject, sender, added, msg, answeredby, answered FROM staffmessages WHERE id=$pmid");
         $arr4 = $ress4->fetch(PDO::FETCH_ASSOC);
@@ -53,6 +49,7 @@ class Admincontactstaff extends Controller
         $iidee = $arr4["id"];
         $elapsed = TimeDate::get_elapsed_time(TimeDate::sql_timestamp_to_unix_timestamp($arr4["added"]));
         $data = [
+            'title' => 'Staff PMs',
             'elapsed' => $elapsed,
             'sender' => $sender,
             'added' => $arr4["added"],
@@ -65,14 +62,30 @@ class Admincontactstaff extends Controller
             'iidee' => $iidee,
             'id' => $arr4["id"],
         ];
-        $this->view('contact/admin/viewpm', $data);
+        $this->view('contactstaff/admin/viewpm', $data, 'admin');
+    }
+
+    public function answermessage()
+    {
+        $answeringto = $_GET["answeringto"];
+        $receiver = (int) $_GET["receiver"];
+        if (!$this->valid->validId($receiver)) {
+            Session::flash('warning', "Invalid id.", URLROOT."/admincontactstaff");
+        }
+        $res = DB::run("SELECT * FROM users WHERE id=$receiver");
+        $res2 = DB::run("SELECT * FROM staffmessages WHERE id=$answeringto");
+        $data = [
+            'title' => 'Staff PMs',
+            'res' => $res,
+            'res2' => $res2,
+            'answeringto' => $answeringto,
+            'receiver' => $receiver,
+        ];
+        $this->view('contactstaff/admin/answermessage', $data, 'admin');
     }
 
     public function viewanswer()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $pmid = (int) $_GET["pmid"];
         $ress4 = DB::run("SELECT id, subject, sender, added, msg, answeredby, answered, answer FROM staffmessages WHERE id=$pmid");
         $arr4 = $ress4->fetch(PDO::FETCH_ASSOC);
@@ -98,6 +111,7 @@ class Admincontactstaff extends Controller
             $answer = $arr4["answer"];
         }
         $data = [
+            'title' => 'Staff PMs',
             'answer' => $answer,
             'added' =>  $arr4["added"],
             'subject' => $subject,
@@ -105,38 +119,11 @@ class Admincontactstaff extends Controller
             'sender' => $sender,
             'answeredby' => $answeredby,
         ];
-        $this->view('contact/admin/viewanswer', $data);
-    }
-
-    public function answermessage()
-    {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
-        $answeringto = $_GET["answeringto"];
-        $receiver = (int) $_GET["receiver"];
-        if (!$this->valid->validId($receiver)) {
-            die;
-        }
-        $res = DB::run("SELECT * FROM users WHERE id=$receiver");
-        $res2 = DB::run("SELECT * FROM staffmessages WHERE id=$answeringto");
-        $data = [
-            'res' => $res,
-            'res2' => $res2,
-            'answeringto' => $answeringto,
-            'receiver' => $receiver,
-        ];
-        $this->view('contact/admin/answermessage', $data);
+        $this->view('contactstaff/admin/viewanswer', $data, 'admin');
     }
 
     public function takeanswer()
     {
-        if ($_SERVER["REQUEST_METHOD"] != "POST") {
-            show_error_msg("Error", "Method", 1);
-        }
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $receiver = (int) $_POST["receiver"];
         $answeringto = $_POST["answeringto"];
         if (!$this->valid->validId($receiver)) {
@@ -158,9 +145,6 @@ class Admincontactstaff extends Controller
 
     public function deletestaffmessage()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $id = (int) $_GET["id"];
         if (!is_numeric($id) || $id < 1 || floor($id) != $id) {
             die;
@@ -173,9 +157,6 @@ class Admincontactstaff extends Controller
 
     public function setanswered()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $id = (int) $_GET["id"];
         DB::run("UPDATE staffmessages SET answered=1, answeredby = $_SESSION[id] WHERE id = $id");
         $smsg = "Staff Message $id has been set as answered.";
@@ -185,9 +166,6 @@ class Admincontactstaff extends Controller
 
     public function takecontactanswered()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            show_error_msg("Error", "Permission denied.", 1);
-        }
         $res = DB::run("SELECT id FROM staffmessages WHERE answered=0 AND id IN (" . implode(", ", $_POST['setanswered']) . ")");
         while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
             DB::run("UPDATE staffmessages SET answered=?, answeredby =?  WHERE id =?", [1, $_SESSION['id'], $arr['id']]);

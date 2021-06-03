@@ -1,8 +1,4 @@
-<div class="card">
-    <div class="card-header">
-        <?php echo Lang::T("LOGIN"); ?>
-    </div>
-    <div class="card-body">
+
         <?php if (MEMBERSONLY) {?>
         <center><b><?php echo Lang::T("MEMBERS_ONLY"); ?></b>
         <?php }?>
@@ -29,5 +25,3 @@
         </form>
         </div>
         </center>
-    </div>
-</div>

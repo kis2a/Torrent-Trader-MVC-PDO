@@ -1,5 +1,4 @@
 <?php
-Style::begin(Lang::T("CONTENTS"));
 print("<a name='top'></a>");
 foreach ($data['faq_categ'] as $id => $temp) {
     if ($data['faq_categ'][$id]['flag'] == "1") {
@@ -19,12 +18,12 @@ foreach ($data['faq_categ'] as $id => $temp) {
         print("</ul>\n</li>\n</ul>\n<br />\n");
     }
 }
-Style::end();
+
+?><br><hr><br><?php
 
 foreach ($data['faq_categ'] as $id => $temp) {
     if ($data['faq_categ'][$id]['flag'] == "1") {
         $frame = $data['faq_categ'][$id]['title'] . " - <a href=\"#top\">Top</a>";
-        Style::begin($frame);
         print("<a id=\"section" . $id . "\"></a>\n");
         if (array_key_exists("items", $data['faq_categ'][$id])) {
             foreach ($data['faq_categ'][$id]['items'] as $id2 => $temp) {
@@ -34,6 +33,5 @@ foreach ($data['faq_categ'] as $id => $temp) {
                 }
             }
         }
-        Style::end();
     }
 }

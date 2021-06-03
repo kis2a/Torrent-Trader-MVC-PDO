@@ -93,7 +93,7 @@ class Style
         <div class="card w-100 ">
         <div class="border border-primary">
         <?php
-        echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLROOT . "/admincleanup'><b>" . Lang::T("FORCE_CLEAN") . "</b></a>]</center>";
+        echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLROOT . "/admintask/cleanup'><b>" . Lang::T("FORCE_CLEAN") . "</b></a>]</center>";
         /*
         if (VERSION != "PDO") {
         $file = @file_get_contents('https://www.torrenttradertest.uk/ttversion.php');
@@ -116,7 +116,7 @@ class Style
         $pending = get_row_count("users", "WHERE status = 'pending' AND invited_by = '0'");
         echo "<center><b>" . Lang::T("USERS_AWAITING_VALIDATION") . ":</b> <a href='" . URLROOT . "/adminconfirmusers'><b>($pending)</b></a></center>";
         echo "<center>" . Lang::T("VERSION_MYSQL") . ": <b>" . $mysqlver . "</b>&nbsp;-&nbsp;" . Lang::T("VERSION_PHP") . ": <b>" . phpversion() . "</b>&nbsp;-&nbsp;" . Lang::T("Apache Version") . ": <b>" . apache_version() . "</b></center>";
-        echo "<center><a href=" . URLROOT . "/admincache><b>Purge Cache</b></a><br></center>";
+        echo "<center><a href=" . URLROOT . "/admintask/cache><b>Purge Cache</b></a><br></center>";
         echo '</div></div><br>';
     }
 

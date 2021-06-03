@@ -1,5 +1,4 @@
 <?php
-Style::begin(Lang::T("Forum Home"));
 forumheader($data['forumname']);
 // MAIN LAYOUT
 if ($_SESSION['loggedin'] == true) {
@@ -156,4 +155,3 @@ print("<td><img src='" . URLROOT . "/image/forum/folder_locked.png' style='margi
 print("<table cellspacing='0' cellpadding='0'><tr>\n");
 print("</tr></table>\n");
 insert_quick_jump_menu($data['forumid']);
-Style::end();

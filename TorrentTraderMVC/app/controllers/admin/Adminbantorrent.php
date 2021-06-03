@@ -19,16 +19,14 @@ class Adminbantorrent extends Controller
         list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "/adminbantorrent?");
 
         $resqq = DB::run("SELECT id, name, seeders, leechers, visible, banned, external FROM torrents WHERE banned=? ORDER BY name", ['yes']);
-        $title = "Banned Torrents";
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
+        $title = "Banned " . Lang::T("TORRENT_MANAGEMENT");
         $data = [
+            'title' => $title,
             'pagerbottom' => $pagerbottom,
             'count' => $count,
             'pagertop' => $pagertop,
             'resqq' => $resqq,
         ];
-        $this->view('torrent/admin/bannedtorrents', $data);
-        require APPROOT . '/views/admin/footer.php';
+        $this->view('torrent/admin/bannedtorrents', $data, 'admin');
     }
 }

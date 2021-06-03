@@ -1,5 +1,4 @@
 <?php
-Style::begin($data['title']);
 usermenu($data['id']);
 foreach ($data['selectuser'] as $selectedid):
 $acceptpms = $selectedid['acceptpms'] == "yes";
@@ -58,5 +57,3 @@ print("<br><center><button type='submit' class='btn btn-sm btn-primary' value='"
  ?>
 </form>
 </div>
-<?php
-Style::end();

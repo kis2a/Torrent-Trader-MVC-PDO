@@ -1,7 +1,4 @@
-<?php
-Style::begin(Lang::T("Change Password"));
-usermenu($data['id']);
-?>
+<?php usermenu($data['id']); ?>
 <div class="form-group">
     <form method="post" action="<?php echo URLROOT; ?>/account/changepw?id=<?php echo $data['id']; ?>">
     <input type="hidden" name="do" value="newpassword" />
@@ -18,5 +15,3 @@ usermenu($data['id']);
     </div>
     </form>
 </div>
- <?php
-Style::end();

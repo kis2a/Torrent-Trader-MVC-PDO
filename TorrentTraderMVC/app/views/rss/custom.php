@@ -1,10 +1,4 @@
-<div class="card">
-    <div class="card-header">
-        <?php echo Lang::T("CUSTOM_RSS_XML_FEED"); ?>
-    </div>
-    <div class="card-body">
-
-	        What is RSS? Take a look at the <a href="http://wikipedia.org/wiki/RSS_%28file_format%29">Wiki</a> to <a href="http://wikipedia.org/wiki/RSS_%28file_format%29">learn more</a>.<br /><br />
+What is RSS? Take a look at the <a href="http://wikipedia.org/wiki/RSS_%28file_format%29">Wiki</a> to <a href="http://wikipedia.org/wiki/RSS_%28file_format%29">learn more</a>.<br /><br />
 
 	        <form action="<?php echo URLROOT; ?>/rss/submit" method="post">
 	        <table border="0" cellpadding="5" cellspacing="0" class="table_table">
@@ -47,6 +41,3 @@
         	<li>Our RSS feeds are properly validated by true RSS 2.0 XML Parsing Standards. Visit FeedValidator.org to validate.</li>
         	<li>Our feeds display only the latest 50 uploaded Torrents as default.</li>
          	</ul>
-        	</div>
-    </div>
-</div>

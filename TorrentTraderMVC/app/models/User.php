@@ -71,7 +71,7 @@
     }
 
     // Function That Removes All From An Account
-public function deleteaccount($userid)
+public function deleteuser($userid)
 {
   $this->db->run("DELETE FROM users WHERE id = $userid");
   $this->db->run("DELETE FROM warnings WHERE userid = $userid");

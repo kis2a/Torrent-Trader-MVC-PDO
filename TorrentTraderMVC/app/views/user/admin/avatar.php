@@ -1,6 +1,4 @@
-<?php
-        Style::begin("Avatar Log");
-        echo ($data['pagertop']);
+<?php echo ($data['pagertop']);
         ?>
         <table border="0" class="table_table" align="center">
         <tr>
@@ -20,4 +18,3 @@
         </table>
         <?php
         echo ($data['pagerbottom']);
-        Style::end();

@@ -60,7 +60,9 @@ class Rss extends Controller
     {
         $rqt = "SELECT id, name, parent_cat FROM categories ORDER BY parent_cat ASC, sort_index ASC";
         $resqn = DB::run($rqt);
+        $title = Lang::T("CUSTOM_RSS_XML_FEED");
         $data = [
+            'title' => $title,
             'resqn' => $resqn
         ];
         $this->view('rss/custom', $data, 'user');

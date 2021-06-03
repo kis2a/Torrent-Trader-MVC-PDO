@@ -1,8 +1,3 @@
-<div class="card">
-<div class="card-header">
-    Templates
-</div>
-    <div class="card-body">
 <?php include APPROOT.'/views/message/messagenavbar.php'; ?>
     <form id='messagespy' method='post' action='<?php echo URLROOT; ?>/messages/templates?do=del'>
     <div class='table-responsive'><table class='table table-striped'>
@@ -28,5 +23,3 @@ while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     <button type='button' class='btn btn-sm btn-success'><b>Make New Template</b></button></a>
     <button type="submit" class="btn btn-sm btn-primary" value='Delete Checked' />Delete Checked</button></center>
     </form>
-            </div>
-</div><br />

@@ -8,112 +8,33 @@ class Messages extends Controller
         $this->messageModel = $this->model('Message');
         $this->valid = new Validation();
     }
-    
+
     public function index()
     {
         $arr = $this->messageModel->countmsg();
         $data = [
+            'title' => 'Messages',
             'inbox' => $arr['inbox'],
             'unread' => $arr['unread'],
             'outbox' => $arr['outbox'],
             'draft' => $arr['draft'],
-            'template' => $arr['template']
+            'template' => $arr['template'],
         ];
         $this->view('message/overview', $data, 'user');
     }
 
-    public function inbox()
-    {
-        // Mark or Delete
-        $do = $_REQUEST["do"];
-        if ($do == "del") {
-            if ($_POST["read"]) {
-                if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT."/messages/inbox");
-                }
-                $ids = array_map("intval", $_POST["del"]);
-                $ids = implode(", ", $ids);
-                DB::run("UPDATE messages SET `unread` = 'no' WHERE `id` IN ($ids)");
-            } else {
-                if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT."/messages/inbox");
-                }
-
-                $ids = array_map("intval", $_POST["del"]);
-                $ids = implode(", ", $ids);
-                DB::run("DELETE FROM messages WHERE `location` = 'in' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
-                DB::run("UPDATE messages SET `location` = 'out' WHERE `location` = 'both' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
-            }
-            Session::flash('info', "Action Completed", URLROOT."/messages/inbox");
-            die;
-        }
-
-        // Get Page from url
-        $inbox = isset($_GET['inbox']) ? $_GET['inbox'] : null;
-        $pagename = 'Inbox';
-        $where = "`receiver` = $_SESSION[id] AND `location` IN ('in','both') ORDER BY added ASC";
-        // Pagination
-        $row = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetch(PDO::FETCH_LAZY);
-        $count = $row[0];
-        $perpage = 50;
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "messages/inbox&amp;");
-
-        // Set database query for views
-        $res = DB::run("SELECT * FROM messages WHERE $where $limit");
-        $data = [
-            'pagename' => $pagename,
-            'pagerbottom' => $pagerbottom,
-            'mainsql' => $res
-        ];
-        $this->view('message/inbox', $data, 'user');
-    }
-
-    public function outbox()
-    {
-        // Mark or Delete
-        $do = $_REQUEST["do"];
-        if ($do == "del") {
-            if (!empty($_POST)) {
-                if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT."/messages/inbox");
-                }
-                $ids = array_map("intval", $_POST["del"]);
-                $ids = implode(", ", $ids);
-                DB::run("UPDATE messages SET `location` = 'in' WHERE `location` = 'both' AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
-                DB::run("DELETE FROM messages WHERE `location` IN ('out', 'draft', 'template') AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
-            }
-            Session::flash('info', "Action Completed", URLROOT."/messages/outbox");
-            die;
-        }
-
-        $pagename = 'Outbox';
-        $where = "`sender` = $_SESSION[id] AND `location` IN ('out','both') ORDER BY added ASC";
-        // Pagination
-        $row = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetch(PDO::FETCH_LAZY);
-        $count = $row[0];
-        $perpage = 50;
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "messages/outbox&amp;");
-        // Set database query for views
-        $res = DB::run("SELECT * FROM messages WHERE $where $limit");
-        $data = [
-            'pagename' => $pagename,
-            'pagerbottom' => $pagerbottom,
-            'mainsql' => $res
-        ];
-        $this->view('message/outbox', $data, 'user');
-    }
-
     public function create()
     {
-        $id = $_GET['id'];
+        $id = $_GET['id']; // user id
         $data = [
+            'title' => 'Messages',
             'id' => $id,
         ];
         $this->view('message/create', $data, 'user');
     }
 
     public function submit()
-    {        
+    {
         $receiver = $_POST['receiver'];
         $subject = $_POST['subject'];
         $body = $_POST['body'];
@@ -126,8 +47,30 @@ class Messages extends Controller
         if ($subject == "") {
             Session::flash('info', "Subject cannot be empty!", URLROOT . "/forums");
         }
-        // POST Var Button Switch
-        $this->checktype($_REQUEST['Update'], $receiver, $subject, $body);
+        // Button Switch
+        $this->insertbytype($_REQUEST['Update'], $receiver, $subject, $body);
+    }
+
+    public function insertbytype($type, $receiver, $subject, $body)
+    {
+        switch ($type) {
+            case 'create':
+                if (isset($_POST['save'])) {
+                    $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'both');
+                } else {
+                    $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'in');
+                }
+                Session::flash('info', "yeah i posted a new post!", URLROOT . "/messages/outbox");
+                break;
+            case 'draft':
+                $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'draft');
+                Session::flash('info', "yeah i posted a draft!", URLROOT . "/messages/draft");
+                break;
+            case 'template':
+                $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'template');
+                Session::flash('info', "yeah i posted a template!", URLROOT . "/messages/templates");
+                break;
+        }
     }
 
     public function read()
@@ -142,21 +85,21 @@ class Messages extends Controller
         // Set button condition
         if (isset($templates)) {
             $button = "
-        <a href='".URLROOT."/messages/update?type=templates&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
+        <a href='" . URLROOT . "/messages/update?type=templates&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
         ";
         } elseif (isset($draft)) {
             $button = "
-        <a href='".URLROOT."/messages/update?type=draft&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
+        <a href='" . URLROOT . "/messages/update?type=draft&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
         ";
         } elseif (isset($outbox)) {
             $button = "
-            <a href='".URLROOT."/messages/reply?type=outbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Reply</button></a>
-            <a href='".URLROOT."/messages/update?type=outbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
+            <a href='" . URLROOT . "/messages/reply?type=outbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Reply</button></a>
+            <a href='" . URLROOT . "/messages/update?type=outbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
             ";
         } else {
             $button = "
-            <a href='".URLROOT."/messages/reply?type=inbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Reply</button></a>
-            <a href='".URLROOT."/messages/update?type=inbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
+            <a href='" . URLROOT . "/messages/reply?type=inbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Reply</button></a>
+            <a href='" . URLROOT . "/messages/update?type=inbox&amp;id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>
             ";
         }
         // get row
@@ -181,6 +124,7 @@ class Messages extends Controller
         }
 
         $data = [
+            'title' => 'Messages',
             'id' => $id,
             'button' => $button,
             'arr' => $arr,
@@ -192,42 +136,6 @@ class Messages extends Controller
         ];
         $this->view('message/read', $data, 'user');
     }
-
-    public function update()
-    {
-        // Get Page from url
-        if (isset($_GET['id'])) {
-            if (!empty($_POST)) {
-                $id = isset($_GET['id']) ? $_GET['id'] : null;
-                $subject = isset($_POST['subject']) ? $_POST['subject'] : '';
-                $msg = isset($_POST['msg']) ? $_POST['msg'] : '';
-                // Update the record
-                $stmt = DB::run('UPDATE messages SET subject = ?, msg = ? WHERE id = ?', [$subject, $msg, $id]);
-                Session::flash('info', "Edited Successfully!", URLROOT."/messages/inbox");
-            }
-
-            $stmt = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $msg = $row['msg'];
-            if (!$row) {
-                Session::flash('info', "Message does not exist with that ID!", URLROOT."/messages/inbox");
-            }
-            // get the username
-            $stmt7 = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
-            $row7 = $stmt7->fetch(PDO::FETCH_ASSOC);
-            $arr27 = DB::run("SELECT username FROM users WHERE id=?", [$row7['receiver']])->fetch(PDO::FETCH_LAZY);
-            $username = $arr27["username"];
-            $ress1 = DB::run("SELECT * FROM `messages` WHERE `sender` = $_SESSION[id] AND `location` = 'template' ORDER BY `subject`");
-        }
-
-            $data = [
-                'username' => $username,
-                'msg' => $msg,
-                'subject' => $row['subject'],
-                'id' => $row['id'],
-            ];
-            $this->view('message/edit', $data, 'user');
-        }
 
     public function reply()
     {
@@ -255,6 +163,123 @@ class Messages extends Controller
         $this->view('message/reply', $data, 'user');
     }
 
+    public function update()
+    {
+        // Get Page from url
+        if (isset($_GET['id'])) {
+            if (!empty($_POST)) {
+                $id = isset($_GET['id']) ? $_GET['id'] : null;
+                $subject = isset($_POST['subject']) ? $_POST['subject'] : '';
+                $msg = isset($_POST['msg']) ? $_POST['msg'] : '';
+                // Update the record
+                $stmt = DB::run('UPDATE messages SET subject = ?, msg = ? WHERE id = ?', [$subject, $msg, $id]);
+                Session::flash('info', "Edited Successfully!", URLROOT . "/messages/inbox");
+            }
+
+            $stmt = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $msg = $row['msg'];
+            if (!$row) {
+                Session::flash('info', "Message does not exist with that ID!", URLROOT . "/messages/inbox");
+            }
+            // get the username
+            $stmt7 = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
+            $row7 = $stmt7->fetch(PDO::FETCH_ASSOC);
+            $arr27 = DB::run("SELECT username FROM users WHERE id=?", [$row7['receiver']])->fetch(PDO::FETCH_LAZY);
+            $username = $arr27["username"];
+            $ress1 = DB::run("SELECT * FROM `messages` WHERE `sender` = $_SESSION[id] AND `location` = 'template' ORDER BY `subject`");
+        }
+
+        $data = [
+            'username' => $username,
+            'msg' => $msg,
+            'subject' => $row['subject'],
+            'id' => $row['id'],
+        ];
+        $this->view('message/edit', $data, 'user');
+    }
+
+    public function inbox()
+    {
+        // Mark or Delete
+        $do = $_REQUEST["do"];
+        if ($do == "del") {
+            if ($_POST["read"]) {
+                if (!@count($_POST["del"])) {
+                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/inbox");
+                }
+                $ids = array_map("intval", $_POST["del"]);
+                $ids = implode(", ", $ids);
+                DB::run("UPDATE messages SET `unread` = 'no' WHERE `id` IN ($ids)");
+            } else {
+                if (!@count($_POST["del"])) {
+                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/inbox");
+                }
+
+                $ids = array_map("intval", $_POST["del"]);
+                $ids = implode(", ", $ids);
+                DB::run("DELETE FROM messages WHERE `location` = 'in' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
+                DB::run("UPDATE messages SET `location` = 'out' WHERE `location` = 'both' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
+            }
+            Session::flash('info', "Action Completed", URLROOT . "/messages/inbox");
+            die;
+        }
+
+        // Get Page from url
+        $inbox = isset($_GET['inbox']) ? $_GET['inbox'] : null;
+        $pagename = 'Inbox';
+        $where = "`receiver` = $_SESSION[id] AND `location` IN ('in','both') ORDER BY added ASC";
+        // Pagination
+        $row = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetch(PDO::FETCH_LAZY);
+        $count = $row[0];
+        $perpage = 50;
+        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "messages/inbox&amp;");
+
+        // Set database query for views
+        $res = DB::run("SELECT * FROM messages WHERE $where $limit");
+        $data = [
+            'pagename' => $pagename,
+            'pagerbottom' => $pagerbottom,
+            'mainsql' => $res,
+        ];
+        $this->view('message/inbox', $data, 'user');
+    }
+
+    public function outbox()
+    {
+        // Mark or Delete
+        $do = $_REQUEST["do"];
+        if ($do == "del") {
+            if (!empty($_POST)) {
+                if (!@count($_POST["del"])) {
+                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/inbox");
+                }
+                $ids = array_map("intval", $_POST["del"]);
+                $ids = implode(", ", $ids);
+                DB::run("UPDATE messages SET `location` = 'in' WHERE `location` = 'both' AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
+                DB::run("DELETE FROM messages WHERE `location` IN ('out', 'draft', 'template') AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
+            }
+            Session::flash('info', "Action Completed", URLROOT . "/messages/outbox");
+            die;
+        }
+
+        $pagename = 'Outbox';
+        $where = "`sender` = $_SESSION[id] AND `location` IN ('out','both') ORDER BY added ASC";
+        // Pagination
+        $row = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetch(PDO::FETCH_LAZY);
+        $count = $row[0];
+        $perpage = 50;
+        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "messages/outbox&amp;");
+        // Set database query for views
+        $res = DB::run("SELECT * FROM messages WHERE $where $limit");
+        $data = [
+            'pagename' => $pagename,
+            'pagerbottom' => $pagerbottom,
+            'mainsql' => $res,
+        ];
+        $this->view('message/outbox', $data, 'user');
+    }
+
     public function templates()
     {
         // Mark or Delete
@@ -262,13 +287,13 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST) {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT."/messages/templates");
+                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/templates");
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("DELETE FROM messages WHERE `sender` = $_SESSION[id] AND `location` = 'template' AND `id` IN ($ids)");
             }
-            Session::flash('info', "Action Completed", URLROOT."/messages/templates");
+            Session::flash('info', "Action Completed", URLROOT . "/messages/templates");
             die;
         }
 
@@ -289,7 +314,6 @@ class Messages extends Controller
         $this->view('message/template', $data, 'user');
     }
 
-
     public function draft()
     {
         // Mark or Delete
@@ -297,13 +321,13 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST) {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT."/messages/draft");
+                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/draft");
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("DELETE FROM messages WHERE `sender` = $_SESSION[id] AND `location` = 'draft' AND `id` IN ($ids)");
             }
-            Session::flash('info', "Action Completed", URLROOT."/messages/draft");
+            Session::flash('info', "Action Completed", URLROOT . "/messages/draft");
             die;
         }
 
@@ -322,50 +346,6 @@ class Messages extends Controller
             'pagerbottom' => $pagerbottom,
         ];
         $this->view('message/draft', $data, 'user');
-    }
-
-    public function checktype($type, $receiver, $subject, $body)
-    {
-        switch ($type) {
-        case 'create':
-            if (isset($_POST['save'])) {
-                DB::run( "INSERT INTO `messages`
-                       (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`)
-                       VALUES (?,?,?,?,?,?,?)",
-                       [$_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'both']
-                );
-            } else {
-                DB::run("INSERT INTO `messages`
-                       (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`)
-                       VALUES (?,?,?,?,?,?,?)",
-                      [$_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'in']
-                );
-            }
-            Session::flash('info', "yeah i posted a new post!", URLROOT."/messages/outbox");
-            break;
-
-        case 'draft':
-            $status = 'no';
-            $to = 'draft';
-            DB::run("INSERT INTO `messages`
-                   (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`)
-                    VALUES (?,?,?,?,?,?,?)",
-                   [$_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, $status, $to]
-            );
-            Session::flash('info', "yeah i posted a draft!", URLROOT."/messages/draft");
-            break;
-
-        case 'template':
-            $status = 'no';
-            $to = 'template';
-            DB::run("INSERT INTO `messages`
-                   (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`)
-                    VALUES (?,?,?,?,?,?,?)",
-                   [$_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, $status, $to]
-            );
-            Session::flash('info', "yeah i posted a template!", URLROOT."/messages/templates");
-            break;
-    }
     }
 
 }

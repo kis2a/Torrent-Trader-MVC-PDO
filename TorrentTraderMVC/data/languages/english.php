@@ -155,7 +155,7 @@ $LANG["THEME_NAME_OF_NEW"] = "Name of the new Theme";
 $LANG["THEME_NAME_WAS_EMPTY"] = "Theme name was empty.";
 $LANG["THEME_NOT_ADDED_DB_ERROR"] = "Theme NOT added. Database error:";
 $LANG["THEME_NOT_ADDED_REASON"] = "Theme NOT added.<br />Reason:";
-$LANG["THEME_NOTHING_SELECTED"] = "Nothing Selected.<br /><a href='".URLROOT."/admintheme'>Click Here</a> to go back or wait 3 seconds to be redirected.";
+$LANG["THEME_NOTHING_SELECTED"] = "Nothing Selected.<br /><a href='".URLROOT."/adminstylesheet'>Click Here</a> to go back or wait 3 seconds to be redirected.";
 $LANG["THEME_NOTHING_TO_SHOW"] = "Nothing to show.";
 $LANG["THEME_PLEASE_NOTE_ALL_THEMES_MUST"] = "Please note: All themes must be uploaded to the /themes/ folder.  Please make sure all folder names are EXACT.";
 $LANG["THEME_SUCCESS_THEME_DELETED"] = "Success', 'Theme(s) deleted.<br /><br />Redirecting...'";

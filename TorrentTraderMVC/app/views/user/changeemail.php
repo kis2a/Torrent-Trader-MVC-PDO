@@ -1,7 +1,4 @@
-<?php
-Style::begin(Lang::T("Change Email"));
-usermenu($data['id']);
-?>
+<?php usermenu($data['id']); ?>
 <div class="form-group">
 <form action="<?php echo URLROOT; ?>/account/email?id=<?php echo $data['id']; ?>" method="post">
     <div class="form-group">
@@ -13,5 +10,3 @@ usermenu($data['id']);
     </div>
 </form>
 </div>
-<?php
-Style::end();

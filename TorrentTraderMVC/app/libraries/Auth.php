@@ -7,7 +7,7 @@ class Auth
     {
         $db = new Database();
         self::ipBanned();
-		self::isClosed();
+        self::isClosed();
         if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["login_fingerprint"] != self::loginString()) {
             Redirect::to(URLROOT . "/logout");
         } else {
@@ -20,7 +20,14 @@ class Auth
             if (Session::get('ttttt')) {
                 $token = $_SESSION['ttttt'];
             }
-            $res = $db->run("SELECT * FROM users INNER JOIN groups ON users.class=groups.group_id WHERE id=? AND users.enabled=? AND users.status =? ", [$_COOKIE["id"], 'yes', 'confirmed']);
+            
+            try {
+                $res = DB::run("SELECT * FROM `users` LEFT OUTER JOIN `groups` ON users.class=groups.group_id WHERE id = $_COOKIE[id] AND users.enabled='yes' AND users.status ='confirmed'");
+            } catch (Exception $e) {
+                Redirect::autolink(URLROOT . "/logout", 'Issue With User Auth');
+            }
+
+            //$res = $db->run("SELECT * FROM users INNER JOIN `groups` ON users.class=groups.group_id WHERE id=? AND users.enabled=? AND users.status =? ", [$_COOKIE["id"], 'yes', 'confirmed']);
             $row = $res->fetch(PDO::FETCH_ASSOC);
 
             if ($row['token'] != $_COOKIE['password']) {
@@ -61,21 +68,29 @@ class Auth
         }
         Ip::checkipban($ip);
     }
-	    
-    public static function isClosed($wrapper = 1) {
-    if (!SITE_ONLINE) {
-        if ($_SESSION["control_panel"] != "yes") {
-            if ($wrapper) {
-                ob_start();
-                ob_clean();
-            }
-            require_once "../app/views/inc/default/header.php";
-            echo '<div class="alert alert-info"><center>' . stripslashes(OFFLINEMSG) . '</center></div>';
-            require_once "../app/views/inc/default/footer.php";
-            if ($wrapper) {
-                die();
-            }
+
+    public static function isStaff()
+    {
+        if (!$_SESSION['class'] > 5 || $_SESSION["control_panel"] != "yes") {
+            Session::flash('info', Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"), URLROOT);
         }
     }
+
+    public static function isClosed($wrapper = 1)
+    {
+        if (!SITE_ONLINE) {
+            if ($_SESSION["control_panel"] != "yes") {
+                if ($wrapper) {
+                    ob_start();
+                    ob_clean();
+                }
+                require_once "../app/views/inc/default/header.php";
+                echo '<div class="alert alert-info"><center>' . stripslashes(OFFLINEMSG) . '</center></div>';
+                require_once "../app/views/inc/default/footer.php";
+                if ($wrapper) {
+                    die();
+                }
+            }
+        }
     }
 }

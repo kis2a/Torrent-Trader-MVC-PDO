@@ -12,6 +12,7 @@ class Rules extends Controller
     {
         $res = $this->rulesModel->getRules();
         $data = [
+            'title' => 'Rules',
             'res' => $res
         ];
         $this->view('rules/index', $data, 'user');

@@ -38,7 +38,9 @@ class Staff extends Controller {
         if ($res->rowCount() == 0) {
             Session::flash('info', Lang::T("NO_STAFF_HERE"), URLROOT."/home");
         }
+        $title = Lang::T("STAFF");
         $data = [
+            'title' => $title,
             'sql' => $res,
             'table' => $table,
         ];

@@ -1,8 +1,3 @@
-<div class="card">
-<div class="card-header">
-    <?php echo $data['pagename']; ?>
-</div>
-    <div class="card-body">
     <?php include APPROOT.'/views/message/messagenavbar.php'; ?>
     <form id='messagespy' method='post' action='<?php echo URLROOT; ?>/messages/draft?do=del'>
     <div class='table-responsive'><table class='table table-striped'>
@@ -35,5 +30,3 @@ foreach ($data['res'] as $arr) {
 <?php echo $data['pagerbottom']; ?>
     <tbody></table></div>
     <center><button type="submit" class="btn btn-primary" value='Delete Checked' />Delete Checked</button></center>
-    </div>
-</div><br />

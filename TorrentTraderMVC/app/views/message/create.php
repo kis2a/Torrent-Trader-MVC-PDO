@@ -1,8 +1,6 @@
-<?php
-Style::begin("Create");
-    include APPROOT.'/views/message/messagenavbar.php'; ?>
-    <form name="form" action="<?php echo URLROOT; ?>/messages/submit" method="post">
-    <center>
+<?php include APPROOT.'/views/message/messagenavbar.php'; ?>
+<form name="form" action="<?php echo URLROOT; ?>/messages/submit" method="post">
+<center>
     <label for="reciever">Reciever:</label>&nbsp;
     <select name="receiver">
     <?php
@@ -20,12 +18,11 @@ Style::begin("Create");
     </center>
     <?php require_once APPROOT."/helpers/bbcode_helper.php";
     print textbbcode("form", "body", "$body");?><br>
-
+<center>
     <button type="submit" class="btn-sm btn-primary" name="Update" value="create">Create</button>&nbsp;
     <label>Save Copy In Outbox</label>
     <input type="checkbox" name="save" checked='Checked'>&nbsp;
     <button type="submit" class="btn btn-sm btn-primary" name="Update" value="draft">Draft</button>
     <button type="submit" class="btn btn-sm btn-primary" name="Update" value="template">Template</button>
+    </center>
     </form>
-    </center><?php
-Style::end();

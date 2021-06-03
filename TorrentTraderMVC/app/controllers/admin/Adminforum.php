@@ -112,7 +112,7 @@ class Adminforum extends Controller
 
     $title = Lang::T("FORUM_MANAGEMENT");
     require APPROOT . '/views/admin/header.php';
-    $groupsres = DB::run("SELECT group_id, level FROM groups ORDER BY group_id ASC");
+    $groupsres = DB::run("SELECT group_id, level FROM `groups` ORDER BY group_id ASC");
     while ($groupsrow = $groupsres->fetch()) {
         $groups[$groupsrow[0]] = $groupsrow[1];
     }

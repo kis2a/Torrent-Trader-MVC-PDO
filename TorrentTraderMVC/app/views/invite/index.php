@@ -1,6 +1,3 @@
-<?php
-Style::begin(Lang::T("INVITE"));
-?>
 <div class="form-group">
 <form method="post" action="<?php echo URLROOT; ?>/invite/submit?take=1">
 <div class="form-group">
@@ -17,5 +14,3 @@ Style::begin(Lang::T("INVITE"));
 </div>
 </form>
 </div>
-<?php
-Style::end();

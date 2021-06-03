@@ -1,5 +1,4 @@
 <?php
-Style::begin($data['title']);
 usermenu($data['id']);
 foreach ($data['selectuser'] as $selectedid):
     $uploaded = $selectedid["uploaded"];
@@ -65,5 +64,3 @@ print("<center><button type='submit' class='btn btn-sm btn-primary' value='" . L
  endforeach;?>
 </form>
 </div>
-<?php
-Style::end();

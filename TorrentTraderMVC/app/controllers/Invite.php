@@ -106,14 +106,13 @@ class Invite extends Controller
             Session::flash('info', "This member has no invitees", URLROOT."/profile?id=$id");
         }
 
-        Style::header("Invite Tree for " . $id . "");
         $data = [
+            'title' => "Invite Tree for " . $id . "",
             'id' => $id,
             'invitees' => $invitees,
             'res' => $res,
             'num' => $num,
         ];
         $this->view('invite/tree', $data, 'user');
-        Style::footer();
     }
 }

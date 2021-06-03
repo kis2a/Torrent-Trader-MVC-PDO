@@ -1,8 +1,4 @@
-<div class="card">
-<div class="card-header">
-    <?php echo Lang::T("USERS"); ?>
-</div>
-<div class="card-body">
+
 <center><br />
 <form method='get' action='<?php echo URLROOT; ?>/members'>
 <?php echo Lang::T("SEARCH"); ?>: <input type='text' size='30' name='search' />
@@ -65,5 +61,3 @@
         No records are found.
      <?php   } ?>
 <?php echo pagination($statement, $per_page, $page, $url = '?'); ?>
-</div>
-</div><br />

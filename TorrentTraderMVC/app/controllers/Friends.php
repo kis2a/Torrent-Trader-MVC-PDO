@@ -15,11 +15,15 @@ class Friends extends Controller
         if (!$this->valid->validId($userid)) {
             Session::flash('info', "Invalid ID $userid.", URLROOT . "/home");
         }
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $userid) {
+            Session::flash('info', Lang::T("NO_USER_VIEW"), URLROOT);
+        }
         $res = DB::run("SELECT * FROM users WHERE id=$userid");
         $user = $res->fetch(PDO::FETCH_ASSOC);
         $enemy = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$userid AND friend='enemy' ORDER BY name");
         $friend = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$userid AND friend='friend' ORDER BY name");
         $data = [
+            'title' => 'Friend Lists',
             'sql' => $user,
             'username' => $user['username'],
             'userid' => $userid,

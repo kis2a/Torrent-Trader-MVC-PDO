@@ -77,7 +77,7 @@ class Torrents extends Controller
             'id' => $id,
             'selecttor' => $torrent1,
         ];
-        $this->view('torrent/read', $data);
+        $this->view('torrent/read', $data, 'user');
     }
 
     public function edit()
@@ -353,7 +353,9 @@ class Torrents extends Controller
         //GET ALL MYSQL VALUES FOR THIS TORRENT
         $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
         $tres = DB::run("SELECT * FROM `announce` WHERE `torrent` = $id");
+        $title = Lang::T("Tracker List");
         $data = [
+            'title' => $title,
             'id' => $id,
             'res' => $res,
             'tres' => $tres,

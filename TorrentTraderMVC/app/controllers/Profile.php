@@ -303,4 +303,27 @@ class Profile extends Controller
         }
     }
 
+    public function delete()
+    {
+        $userid = (int) $_POST["userid"];
+        $username = $_POST["username"];
+        $delreason = $_POST["delreason"];
+        if ($_SESSION["delete_users"] != "yes" ) {
+            Session::flash('info', Lang::T("TASK_ADMIN"), URLROOT . "/profile?id=$userid");
+        }
+        if (!$this->valid->validId($userid)) {
+            Session::flash('info', Lang::T("INVALID_USERID"), URLROOT . "/profile?id=$userid");
+        }
+        if ($_SESSION["id"] == $userid) {
+            Session::flash('info', "You cannot delete yourself.", URLROOT . "/profile?id=$userid");
+        }
+        if (!$delreason) {
+            Session::flash('info', Lang::T("MISSING_FORM_DATA"), URLROOT . "/profile?id=$userid");
+        }
+        $this->userModel->deleteuser($userid);
+        Logs::write($_SESSION['username'] . " has deleted account: $username");
+        Session::flash('info', Lang::T("USER_DELETE"), URLROOT);
+        die;
+    }
+
 }

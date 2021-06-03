@@ -4,6 +4,7 @@ class Adminfaq extends Controller
     public function __construct()
     {
         Auth::user();
+        Auth::isStaff();
         $this->faqModel = $this->model('Faqs');
         $this->valid = new Validation();
     }
