@@ -36,7 +36,7 @@ if ($_SESSION['loggedin'] == true) {
     </ul>
     <br />
 	<div class="text-center">
-	<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'><button class="btn btn-primary"><?php echo Lang::T("ACCOUNT"); ?></button></a>
+	<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'><button class="btn btn-warning"><?php echo Lang::T("ACCOUNT"); ?></button></a>
 		<?php if ($_SESSION["control_panel"] == "yes") {?>
 		<a href="<?php echo URLROOT; ?>/admincp" class="btn btn-warning"><?php echo Lang::T("STAFFCP"); ?></a>
 		<?php }?>

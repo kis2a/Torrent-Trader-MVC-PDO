@@ -131,7 +131,7 @@ function peerstable($res)
         } else {
             $ratio = "---";
         }
-        $ret .= "<tr><td class='table_col1'><a href=".URLROOT."torrents/read?id=$arr[torrent]&amp;hit=1'><b>" . htmlspecialchars($arr2["name"]) . "</b></a></td><td align='center' class='table_col2'>" . mksize($arr2["size"]) . "</td><td align='center' class='table_col1'>" . mksize($arr["uploaded"]) . "</td><td align='center' class='table_col2'>" . mksize($arr["downloaded"]) . "</td><td align='center' class='table_col1'>$ratio</td></tr>\n";
+        $ret .= "<tr><td class='table_col1'><a href=".URLROOT."torrent?id=$arr[torrent]&amp;hit=1'><b>" . htmlspecialchars($arr2["name"]) . "</b></a></td><td align='center' class='table_col2'>" . mksize($arr2["size"]) . "</td><td align='center' class='table_col1'>" . mksize($arr["uploaded"]) . "</td><td align='center' class='table_col2'>" . mksize($arr["downloaded"]) . "</td><td align='center' class='table_col1'>$ratio</td></tr>\n";
     }
     $ret .= "</table>\n";
     return $ret;
@@ -302,7 +302,7 @@ function torrenttable($res)
                     if ($row["sticky"] == "yes") {
                         $dispname .= " <img src='".URLROOT."/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
                     }
-                    print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrents/read?id=$id&amp;hit=1\">$dispname</a></td>");
+                    print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
 
                     break;
                 case 'dl':
@@ -711,7 +711,7 @@ function torrenttable1($query)
                     if ($row["sticky"] == "yes") {
                         $dispname .= " <img src='".URLROOT."/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
                     }
-                    print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrents/read?id=$id&amp;hit=1\">$dispname</a></td>");
+                    print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
 
                     break;
                 case 'dl':

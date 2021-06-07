@@ -197,7 +197,7 @@ if ($MEMBERSONLY) {
     $res = $dbh->run("
            SELECT $userfields 
            FROM users u 
-           INNER JOIN `groups` g 
+           INNER JOIN groups g 
            ON u.class = g.group_id 
            WHERE u.passkey=? AND u.enabled = ? AND u.status = ? LIMIT 1", [$passkey, 'yes', 'confirmed'])
             or err("Cannot Get User Details");

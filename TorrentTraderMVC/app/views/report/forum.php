@@ -4,4 +4,4 @@
 <input type='hidden' name='forumid' value='<?php echo $data['forumid']; ?>' />
 <input type='hidden' name='forumpost' value='<?php echo $data['forumpost']; ?>'>
 <input class="form-control" type='text' size='100' name='reason' /><br>
-<input class="btn btn-sm btn-primary" type='submit'  value='Confirm' /></form>
+<input class="btn btn-sm btn-warning" type='submit'  value='Confirm' /></form>

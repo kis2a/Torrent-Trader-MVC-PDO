@@ -1,8 +1,11 @@
-<?php Style::begin(Lang::T("UPLOAD_RULES")); ?>
-<b><?php echo stripslashes(UPLOADRULES); ?></b><br>
-<?php Style::end(); ?>
-<?php Style::begin($data['title']); ?>
+<div class="row justify-content-md-center">
+    <div class="col-md-6 border border-warning">
+	<center><b><?php echo stripslashes("Upload Rules"); ?></b><br>
+	<b><?php echo stripslashes(UPLOADRULES); ?></b></center>
+	</div>
+</div><br>
 
+<div class="row justify-content-md-center">
 <form name="upload" enctype="multipart/form-data" action="<?php echo URLROOT; ?>/upload/submit" method="post">
 <input type="hidden" name="takeupload" value="yes" />
 <table border="0" cellspacing="0" cellpadding="6" align="center">
@@ -15,16 +18,12 @@
     <br /><b><?php echo Lang::T("THIS_SITE_ACCEPTS_EXTERNAL"); ?></b>
 <?php }  ?>
 </td></tr>
-
 <tr><td align='right'><?php echo Lang::T("TORRENT_FILE"); ?>: </td>
 <td align='left'> <input class="form-control" type='file' name='torrent' size='50' value='<?php echo $_FILES['torrent']['name']; ?>'></td></tr>
-
 <tr><td align='right'><?php echo Lang::T("NFO"); ?>: </td>
 <td align='left'> <input class="form-control" type='file' name='nfo' size='50' value='<?php echo $_FILES['nfo']['name']; ?>'><br></td></tr>
-
 <tr><td align='right'><?php echo Lang::T("TORRENT_NAME"); ?>: </td>
 <td align='left'><input class="form-control" type='text' name='name' size='60' value='<?php echo $_POST['name']; ?>' /><br /><?php echo Lang::T("THIS_WILL_BE_TAKEN_TORRENT"); ?></td></tr>
-
 <?php if (IMDB1) { ?>
 	<tr><td align='right'><a href="https://www.imdb.com/?ref_=nv_home" target='_blank'><img border='0' src='assets/images/imdb.png' width='50' height='50' title='Click here to go to Youtube'></a> </td>
 	<td align='left'> <input class="form-control" type='text' name='imdb' size='60' value='<?php echo $_POST['imdb']; ?>' />Link from IMDB, example https://www.imdb.com/title/tt1799527/</td></tr>
@@ -68,14 +67,13 @@ if (ANONYMOUSUPLOAD && MEMBERSONLY) {?>
 	</td></tr>
 <?php } ?>
 <tr><td align='center' colspan='2'><?php echo Lang::T("DESCRIPTION"); ?></td></tr></table>
+
+
 <?php
-require_once APPROOT."/helpers/bbcode_helper.php";
 print textbbcode("upload", "descr", "$descr");
 ?>
-<br /><br /><br /><center><input type="submit" class="btn btn-sm btn-primary" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
+<br /><br /><br /><center><input type="submit" class="btn btn-sm btn-warning" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
 <i><?php echo Lang::T("CLICK_ONCE_IMAGE"); ?></i>
 </center>
 </form>
-<?php
-Style::end();
-?>
+</div>

@@ -1,9 +1,11 @@
 <?php
-  class Guest {
+class Guest
+{
     private $db;
 
-    public function __construct(){
-      $this->db = new Database;
+    public function __construct()
+    {
+        $this->db = new Database;
     }
 
     public function guestadd()
@@ -12,7 +14,7 @@
         $time = TimeDate::gmtime();
         $this->db->run("INSERT INTO `guests` (`ip`, `time`) VALUES ('$ip', '$time') ON DUPLICATE KEY UPDATE `time` = '$time'");
     }
-    
+
     public function getguests()
     {
         $past = (TimeDate::gmtime() - 2400);
@@ -20,4 +22,4 @@
         return $this->db->get_row_count("guests");
     }
 
-  }
+}

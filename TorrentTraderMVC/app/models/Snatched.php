@@ -1,9 +1,11 @@
 <?php
-  class Snatched {
+class Snatched
+{
     private $db;
 
-    public function __construct(){
-      $this->db = new Database;
+    public function __construct()
+    {
+        $this->db = new Database;
     }
 
-  }
+}

@@ -40,6 +40,7 @@ class TTMail
                 $this->type = "php";
         }
     }
+    
     // Function That Allows Sending Mail
     public function Send($to, $subject, $message, $additional_headers = "", $additional_parameters = "")
     {

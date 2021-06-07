@@ -48,7 +48,7 @@ class Rss extends Controller
                     $link = "".URLROOT."/download?id=$id";
                 }
             } else {
-                $link = URLROOT . "/torrents/read?id=$id&amp;hit=1";
+                $link = URLROOT . "/torrent?id=$id&amp;hit=1";
             }
             $pubdate = date("r", TimeDate::sql_timestamp_to_unix_timestamp($added));
             echo ("<item><title>" . htmlspecialchars($name) . "</title><guid>" . $link . "</guid><link>" . $link . "</link><pubDate>" . $pubdate . "</pubDate>	<category> " . $row["cat_parent"] . ": " . $row["cat_name"] . "</category><description>Category: " . $row["cat_parent"] . ": " . $row["cat_name"] . "  Size: " . mksize($size) . " Added: " . $added . " Seeders: " . $seeders . " Leechers: " . $leechers . "</description></item>");
@@ -60,9 +60,8 @@ class Rss extends Controller
     {
         $rqt = "SELECT id, name, parent_cat FROM categories ORDER BY parent_cat ASC, sort_index ASC";
         $resqn = DB::run($rqt);
-        $title = Lang::T("CUSTOM_RSS_XML_FEED");
         $data = [
-            'title' => $title,
+            'title' => Lang::T("CUSTOM_RSS_XML_FEED"),
             'resqn' => $resqn
         ];
         $this->view('rss/custom', $data, 'user');

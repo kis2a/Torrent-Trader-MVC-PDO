@@ -13,8 +13,8 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
         continue;
     }
     if ($forums_arr['fcid'] != $fcid) {
-?>
-        <div class="row navbarone">
+        ?>
+        <div class="row card-header">
         <div class="col-md-8">
         <?php echo htmlspecialchars($forums_arr['fcname']); ?>
         </div>
@@ -40,10 +40,9 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
     // Get last post info in a array return img & lastpost
     $detail = lastpostdetails($lastpostid); ?>
 
-        <div class="row border border-info">
-        <div class="col-md-8">
+    <div class="row border border-warning">
+    <div class="col-md-8">
         <img src='<?php echo URLROOT; ?>/assets/images/forum/<?php echo $detail['img']; ?>.png'>&nbsp;
-
         <a href='<?php echo URLROOT; ?>/forums/viewforum&amp;forumid=<?php echo $forumid; ?>'><b><?php echo $forumname; ?></b></a><br>
         <small>- <?php echo $forumdescription; ?></small>
         </div>
@@ -55,18 +54,21 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
         </div>
         <div class="col-md-2 d-none d-sm-block">
         <?php echo $detail['lastpost']; ?>
-        </div>
-        </div>
+    </div>
+    </div><br>
+    <?php
+} ?>
+</div>
+</div>
+</div>
 
-    <?php } ?>
-</div></div></div>
-
-    <table cellspacing='0' cellpadding='3'><tr valign='middle'>
+<table cellspacing='0' cellpadding='3'><tr valign='middle'>
     <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_new.png' style='margin: 5px' alt='' /></td><td>New posts</td>
-    <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder.png' style='margin: 5px' alt='' /></td><td>No New posts</td>;
+    <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder.png' style='margin: 5px' alt='' /></td><td>No New posts</td>
     <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_locked.png' style='margin: 5px' alt='' /></td><td><?php echo Lang::T("FORUMS_LOCKED"); ?> topic</td>
     <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_sticky.png' style='margin: 5px' alt='' /></td><td><?php echo Lang::T("FORUMS_STICKY"); ?> topic</td>
-    </tr></table>
-    <center>Our members have made <?php echo $data[' $postcount']; ?> posts in  <?php echo $data['topiccount']; ?> topics</center>
+    </tr>
+</table>
+<center>Our members have made <?php echo $data[' $postcount']; ?> posts in  <?php echo $data['topiccount']; ?> topics</center>
 <?php 
 insert_quick_jump_menu();

@@ -63,7 +63,7 @@ class Bonus extends Controller
                     $row2 = DB::run("SELECT `name` FROM `torrents` WHERE `id` = '$tid'")->fetchColumn();
                     $username = htmlspecialchars($row1["username"]);
                     $torname = htmlspecialchars($row2["name"]);
-                    Logs::write("The HnR of <a href='profile?id=" . $uid . "'>" . Users::coloredname($username) . "</a> on the torrent <a href='torrents/read?id=" . $tid . "'>" . $torname . "</a> has been cleared by <a href='profile?id=" . $_SESSION['id'] . "'>" . Users::coloredname($_SESSION['username']) . "</a>");
+                    Logs::write("The HnR of <a href='profile?id=" . $uid . "'>" . Users::coloredname($username) . "</a> on the torrent <a href='torrent?id=" . $tid . "'>" . $torname . "</a> has been cleared by <a href='profile?id=" . $_SESSION['id'] . "'>" . Users::coloredname($_SESSION['username']) . "</a>");
                     $new_modcomment = gmdate("d-m-Y \à H:i") . " - ";
                     if ($uid == $_SESSION["id"]) {
                         $new_modcomment .= "H&R on the torrent " . $torname . " cleared against " . $row->cost . " points \n";
@@ -122,7 +122,7 @@ class Bonus extends Controller
                 $modcomment = gmdate("d-M-Y") . " - " . Lang::T("DELETED_RECORDING") . ": " . $torid . " " . Lang::T("POINTS_OF_SEED_BONUS") . "\n" . $modcom;
                 DB::run("UPDATE users SET seedbonus = seedbonus - '100', modcomment = " . sqlesc($modcomment) . " WHERE id = '$uid'");
                 DB::run("UPDATE snatched SET ltime = '86400', hnr = 'no', done = 'yes' WHERE tid = '$torid' AND uid = '$uid'");
-                Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrents/read?id=$torid><b>$torid</b></a> " . Lang::T("POINTS_OF_SEED_BONUS") . "");
+                Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrent?id=$torid><b>$torid</b></a> " . Lang::T("POINTS_OF_SEED_BONUS") . "");
                 Redirect::autolink(URLROOT . "/bonus/trade", Lang::T("ONE_RECORDING_HIT_AND_RUN_DELETED"));
             }
 
@@ -136,7 +136,7 @@ class Bonus extends Controller
                 $modcomment = gmdate("d-M-Y") . " - " . Lang::T("DELETED_RECORDING") . ": " . $torid . " with " . $viewsize . " " . Lang::T("OF_UPLOAD") . "\n" . $modcom;
                 DB::run("UPDATE users SET uploaded = uploaded - '$torsize', modcomment = " . sqlesc($modcomment) . " WHERE id = '$uid'");
                 DB::run("UPDATE snatched SET ltime = '86400', hnr = 'no', done = 'yes' WHERE tid = '$torid' AND uid = '$uid'");
-                Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrents/read?id=$torid><b>$torid</b></a> " . Lang::T("HIT_AND_RUN_WITH") . " <b>$viewsize</b> " . Lang::T("OF_UPLOAD") . "");
+                Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrent?id=$torid><b>$torid</b></a> " . Lang::T("HIT_AND_RUN_WITH") . " <b>$viewsize</b> " . Lang::T("OF_UPLOAD") . "");
                 Redirect::autolink(URLROOT . "/bonus/trade", Lang::T("ONE_RECORDING_HIT_AND_RUN_DELETED"));
             }
             echo "<div style='margin-top:5px; margin-bottom:20px;' align='center'>
@@ -169,7 +169,7 @@ while ($row = $res->fetch(PDO::FETCH_ASSOC)):
                 $dispname = "<b>" . $smallname . "</b>";?>
 
 				<tr align="center">
-		          <?php print("<td align='left' class='table_col1' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['0'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['0'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . " <a title=\"" . $row["1"] . "\" href=\"" . URLROOT . "/torrents/read?id=$row[0]&amp;hit=1\">$dispname</a></td>");?>
+		          <?php print("<td align='left' class='table_col1' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['0'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['0'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . " <a title=\"" . $row["1"] . "\" href=\"" . URLROOT . "/torrent?id=$row[0]&amp;hit=1\">$dispname</a></td>");?>
 			     <td class="table_col2"><font color="#27B500"><?php echo mksize($row[3]); ?></font></td>
 			     <td class="table_col1"><font color="#FF2200"><?php echo mksize($row[4]); ?></font></td>
 			     <td class="table_col2"><?php echo ($row[6]) ? TimeDate::mkprettytime($row[5]) : '---'; ?></td>

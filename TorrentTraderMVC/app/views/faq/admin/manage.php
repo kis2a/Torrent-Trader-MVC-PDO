@@ -1,20 +1,27 @@
+<form method="post" action="<?php echo URLROOT ?>/adminfaq/reorder">
 <?php
-Style::begin(Lang::T("FAQ_MANAGEMENT"));
-print("<form method=\"post\" action=\"".URLROOT."/adminfaq/reorder\">");
-foreach ($data['faq_categ'] as $id => $temp) {
-    print("<br />\n<table class='table table-striped table-bordered table-hover'><thead>\n");
-    print("<tr><th class=\"table_head\" colspan=\"2\">Position</th><th class=\"table_head\">Section/Item " . Lang::T("TITLE") . ": </th><th class=\"table_head\">Status</th><th class=\"table_head\">Actions</th></tr></thead><tbody>\n");
-    print("<tr><td class=\"table_col1\" align=\"center\" width=\"40px\"><select name=\"order[" . $id . "]\">");
+foreach ($data['faq_categ'] as $id => $temp) { ?>
+    <br><table class='table table-striped table-bordered table-hover'><thead><tr>
+    <th class="table_head" colspan="2">Position</th>
+    <th class="table_head">Section/Item <?php echo Lang::T("TITLE") ?>: </th>
+    <th class="table_head">Status</th><th class="table_head">Actions</th>
+    </tr></thead><tbody>
+    <tr>
+    <td class="table_col1" align="center" width="40px"><select name="order[<?php echo $id ?>]">
+    <?php
     for ($n = 1; $n <= count($data['faq_categ']); $n++) {
         $sel = ($n == $data['faq_categ'][$id]['order']) ? " selected=\"selected\"" : "";
         print("<option value=\"$n\"" . $sel . ">" . $n . "</option>");
     }
     $status = ($data['faq_categ'][$id]['flag'] == "0") ? "<font color=\"red\">Hidden</font>" : "Normal";
-    print("</select></td><td class=\"table_col2\" align=\"center\" width=\"40px\">&nbsp;</td><td class=\"table_col1\"><b>" . stripslashes($data['faq_categ'][$id]['title']) . "</b></td><td class=\"ttable_col2\" align=\"center\" width=\"60px\">" . $status . "</td>
-    
-    <td class=\"ttable_col1\" align=\"center\" width=\"60px\"><a href=\"".URLROOT."/adminfaq/edit?action=editsect&id=" . $id . "\">edit</a>
-     <a href=\"".URLROOT."/adminfaq/delete?id=" . $id . "\">delete</a></td></tr>\n");
-
+    ?>
+    </select></td>
+    <td class="table_col2" align="center" width="40px">&nbsp;</td>
+    <td class="table_col1"><b><?php echo stripslashes($data['faq_categ'][$id]['title']) ?></b></td>
+    <td class="ttable_col2" align="center" width="60px"><?php echo $status  ?></td>
+    <td class="ttable_col1" align="center" width="60px"><a href="<?php echo URLROOT ?>/adminfaq/edit?action=editsect&id=<?php echo  $id ?>\">edit</a><br>
+    <a href="<?php echo URLROOT ?>/adminfaq/delete?id=<?php echo $id ?>">delete</a></td></tr>
+    <?php
     if (array_key_exists("items", $data['faq_categ'][$id])) {
         foreach ($data['faq_categ'][$id]['items'] as $id2 => $temp) {
             print("<tr><td class=\"ttable_col1\" align=\"center\" width=\"40px\">&nbsp;</td><td class=\"table_col2\" align=\"center\" width=\"40px\"><select name=\"order[" . $id2 . "]\">");
@@ -65,10 +72,7 @@ if (isset($data['faq_orphaned'])) {
 
 print("<br />\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"5\" align=\"center\" width=\"95%\">\n<tr>
 <td align=\"center\"><a href=\"".URLROOT."/adminfaq/newsection\">Add new section</a></td></tr>\n</table>\n");
-
 print("<p align=\"center\"><input type=\"submit\" name=\"reorder\" value=\"Reorder\" /></p>\n");
 print("</form>\n");
 print("When the position numbers don't reflect the position in the table, it means the order id is bigger than the total number of sections/items and you should check all the order id's in the table and click \"reorder\"\n");
 echo $pagerbottom;
-
-        Style::end();

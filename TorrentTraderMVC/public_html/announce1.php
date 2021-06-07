@@ -124,7 +124,7 @@ foreach ($agentarray as $bannedclient) {
 // Get User (select user/group vars here)
 $sql = "SELECT u.id, u.class, u.uploaded, u.downloaded, u.ip, u.passkey, g.can_download
 	    FROM users u
-	    INNER JOIN `groups` g
+	    INNER JOIN groups g
 	    ON u.class = g.group_id
 	    WHERE u.passkey=? AND u.enabled = ? AND u.status = ? LIMIT 1";
 $stmt = $dbh->prepare($sql);

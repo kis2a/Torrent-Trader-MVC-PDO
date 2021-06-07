@@ -22,7 +22,7 @@ class Likes extends Controller
         $id = (int) $_GET['id'];
         if (!$this->valid->validId($id));
         DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent']);
-        Session::flash('info', "Thanks you for you appreciation.", URLROOT."/torrents/read?id=$id");
+        Session::flash('info', "Thanks you for you appreciation.", URLROOT."/torrent?id=$id");
     }
 
     public function liketorrent()
@@ -30,7 +30,7 @@ class Likes extends Controller
         $id = (int) $_GET['id'];
         if (!$this->valid->validId($id));
         DB::run("INSERT INTO likes (user, liked, added, type, reaction) VALUES (?, ?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent', 'like']);
-        Session::flash('info', "Thanks you for you appreciation.", URLROOT."/torrents/read?id=$id");
+        Session::flash('info', "Thanks you for you appreciation.", URLROOT."/torrent?id=$id");
     }
 
     public function unliketorrent()
@@ -38,7 +38,7 @@ class Likes extends Controller
         $id = (int) $_GET['id'];
         if (!$this->valid->validId($id));
         DB::run("DELETE FROM likes WHERE user=? AND liked=? AND type=?", [$_SESSION['id'], $id, 'torrent']);
-        Session::flash('info', "Unliked.", URLROOT."/torrents/read?id=$id");
+        Session::flash('info', "Unliked.", URLROOT."/torrent?id=$id");
     }
 
     public function likeforum()

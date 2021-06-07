@@ -6,23 +6,6 @@ function data_uri($file, $mime)
     $contents = file_get_contents($file);
     $base64   = base64_encode($contents); 
     return ('data:' . $mime . ';base64,' . $base64);
-    }
-////////////////////////////////////////////////////////////////
-
-function test()
-{
-    'http://localhost/TorrentTraderMVC';
-}
-
-// Function To Display Error Messages taken from forum
-function showerror($text, $heading = "Error", $sort = "Error")
-{
-    Style::header("$sort: $heading");
-    Style::begin("<font class='error'>$sort: $heading</font>");
-    echo $text;
-    Style::end();
-    Style::footer();
-    die;
 }
 
 // Function To Display Error Messages
@@ -115,25 +98,25 @@ function strtobytes($str)
 function usermenu($id)
 {
      ?>
-    <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Profile</button></a>
+    <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Profile</button></a>
     <?php if ($_SESSION["id"] == $id or $_SESSION["class"] > _UPLOADER) {?>
-    <a href='<?php echo URLROOT; ?>/profile/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Edit</button></a>&nbsp;
+    <a href='<?php echo URLROOT; ?>/profile/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Edit</button></a>&nbsp;
     <?php }?>
     <?php if ($_SESSION["id"] == $id) {?>
-    <a href='<?php echo URLROOT; ?>/account/changepw?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Password</button></a>
-    <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Email</button></a>
-    <a href='<?php echo URLROOT; ?>/messages'><button type="button" class="btn btn-sm btn-primary">Messages</button></a>
-    <a href='<?php echo URLROOT; ?>/bonus?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Seed Bonus</button></a>
+    <a href='<?php echo URLROOT; ?>/account/changepw?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Password</button></a>
+    <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Email</button></a>
+    <a href='<?php echo URLROOT; ?>/messages'><button type="button" class="btn btn-sm btn-warning">Messages</button></a>
+    <a href='<?php echo URLROOT; ?>/bonus?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Seed Bonus</button></a>
     <?php }?>
     <?php if ($_SESSION["view_users"]) {?>
-    <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Friends</button></a>
+    <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Friends</button></a>
     <?php }?>
     <?php if ($_SESSION["view_torrents"]) {?>
-    <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Seeding</button></a>
-    <a href='<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Uploaded</button></a>
+    <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Seeding</button></a>
+    <a href='<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Uploaded</button></a>
     <?php }?>
     <?php if ($_SESSION["class"] > _UPLOADER) {?>
-    <a href='<?php echo URLROOT; ?>/warning?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Warn</button></a>
+    <a href='<?php echo URLROOT; ?>/warning?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Warn</button></a>
     <a href='<?php echo URLROOT; ?>/profile/admin?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-success">Admin</button></a>
 	<?php } ?>
     <br><br><?php
@@ -142,19 +125,19 @@ function usermenu($id)
 function torrentmenu($id, $external = 'no')
 {
      ?>
-<a href='<?php echo URLROOT; ?>/torrents/read?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Back</button></a>
+<a href='<?php echo URLROOT; ?>/torrent?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Back</button></a>
 <?php if ($_SESSION["id"] == $id or $_SESSION["edit_torrents"] == 'yes') {?>
-<a href='<?php echo URLROOT; ?>/torrents/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Edit</button></a>
+<a href='<?php echo URLROOT; ?>/torrent/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Edit</button></a>
 <?php }?>
-<a href='<?php echo URLROOT; ?>/comments?type=torrent&amp;id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Comments</button></a>
-<a href='<?php echo URLROOT; ?>/torrents/torrentfilelist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Files</button></a>
+<a href='<?php echo URLROOT; ?>/comments?type=torrent&amp;id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Comments</button></a>
+<a href='<?php echo URLROOT; ?>/torrent/torrentfilelist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Files</button></a>
 
 <?php if ($external != 'yes') {?>
-     <a href='<?php echo URLROOT; ?>/peers/peerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Peers</button></a>
+     <a href='<?php echo URLROOT; ?>/peers/peerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Peers</button></a>
 <?php }?>
 
 <?php if ($external == 'yes') {?>
-     <a href='<?php echo URLROOT; ?>/torrents/torrenttrackerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-primary">Trackers</button></a>
+     <a href='<?php echo URLROOT; ?>/torrent/torrenttrackerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Trackers</button></a>
 <?php } ?>
 <br><br>
 <?php 

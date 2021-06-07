@@ -1,4 +1,4 @@
-<center>Please <a href="<?php echo URLROOT ?>/staff">contact</a> 
+<center>Please <a href="<?php echo URLROOT ?>/group/staff">contact</a> 
 a member of staff if you would like a new team creating</center><br>
  <?php
  while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)): ?>

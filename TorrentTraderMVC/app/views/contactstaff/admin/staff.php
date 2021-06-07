@@ -31,6 +31,6 @@ while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 </table>
 
 <div class="form-group">
-    <button type="submit" class="btn btn-primary btn-sm"><?php echo Lang::T("Confirm"); ?></button>
+    <button type="submit" class="btn btn-warning btn-sm"><?php echo Lang::T("Confirm"); ?></button>
 </div>
 </form>

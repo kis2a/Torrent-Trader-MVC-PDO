@@ -25,14 +25,11 @@
     <!-- Dont Change -->
     <script src="<?php echo URLROOT; ?>/assets/js/jquery-3.3.1.min.js"></script>
     <script src="<?php echo URLROOT; ?>/assets/js/popper.js"></script>
-    <script src="<?php echo URLROOT; ?>/assets/themes/darktheme/bootstrap.min.js"></script>
+    <script src="<?php echo URLROOT; ?>/assets/js/bootstrap.min.js"></script>
     <script src="<?php echo URLROOT; ?>/assets/js/java_klappe.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="<?php echo URLROOT; ?>/sceditor/minified/sceditor.min.js"></script>
-		<script src="<?php echo URLROOT; ?>/sceditor/minified/icons/monocons.js"></script>
-		<script src="<?php echo URLROOT; ?>/sceditor/minified/formats/bbcode.js"></script>
     <script>
         function updateShouts(){
             // Assuming we have #shoutbox
@@ -41,15 +38,7 @@
         setInterval( "updateShouts()", 15000 );
         updateShouts();
     </script>
-	        <script>
-        function updatestaffShouts(){
-            // Assuming we have #shoutbox
-            $('#shoutboxstaff').load('<?php echo URLROOT; ?>/adminshoutbox/loadchat');
-        }
-        setInterval( "updatestaffShouts()", 15000 );
-		updatestaffShouts();
-    </script>
-	    <script>
+<script>
 function myFunction() {
   var x = document.getElementById("myDIVsmileytog");
   if (x.style.display === "none") {
@@ -59,55 +48,7 @@ function myFunction() {
   }
 }
 </script>
-<script>
-// Replace the textarea #example with SCEditor
-var textarea = document.getElementById('example');
-sceditor.create(textarea, {
-	format: 'bbcode',
-	style: 'minified/themes/content/default.min.css',
-  startInSourceMode: true,
-  toolbar: 'bold,italic,underline,strike,left,center,right,font,size,color,cut,copy,paste,code,quote,image,link,emoticon,youtube,hide,source',
-  emoticonsRoot: "<?php echo URLROOT ?>/assets/images/smilies/",
-  emoticonsCompat: true,
-	emoticons: {
-  dropdown: {
-    ":O":"suprise.png",
-    ":?":"confused.png",
-    "8)":"glasses.png",
-    "8o":"eek.png",
-    "B)":"cool.png",
-    ":-)":"smile-big.png",
-    ":-(":"crying.png",
-    ":-*":"kiss.png",
-    "O:-D":"angel.png",
-    ":-@":"devilish.png",
-    ":o)":"monkey.png",
-    ":help":"help.png",
-    ":love":"love.png",
-    ":warn":"warn.png",
-    ":bomb":"bomb.png",
-    ":idea":"idea.png",
-    ":bad":"bad.png",
-    ":!":"important.png",
-    "brb":"brb.png",
-    ":gigg":"giggle.png",
-    ":rofl":"roflmao.png",
-    ":slep":"sleep.png",
-    ":thum":"thumbsup.png",
-    ":0_0":"zpo.png",
-    ":poop":"poop.png",
-    ":spechles":"speechless.png",
-    ":unsure":"unsure.png",
-    ":mad":"mad.png",
-    ":roll":"rolleyes.png",
-    ":sick":"sick.png",
-    ":crylol":"crylaugh.png",
-    ":confos":"confound.png",
-    ":fire":"fire.png",
-  },
-}
-});
-</script>
+
   </body>
 </html>
 <?php ob_end_flush();?>

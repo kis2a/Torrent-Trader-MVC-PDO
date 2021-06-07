@@ -90,43 +90,43 @@ function textbbcode($form, $name, $content = "")
 		
 		<div class="row justify-content-md-center">
 		<div class="col-10">
-		<a href="javascript:SmileIT(':)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile.png" border="0" alt=':)' title=':)' /></a>
-        <a href="javascript:SmileIT(':(','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sad.png" border="0" alt=':(' title=':(' /></a>
-        <a href="javascript:SmileIT(':D','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/grin.png" border="0" alt=':D' title=':D' /></a>
-        <a href="javascript:SmileIT(':P','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/razz.png" border="0" alt=':P' title=':P' /></a>
-        <a href="javascript:SmileIT(':-)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile-big.png" border="0" alt=':-)' title=':-)' /></a>
-        <a href="javascript:SmileIT('B)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/cool.png" border="0" alt='B)' title='B)' /></a>
-        <a href="javascript:SmileIT('8o','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/eek.png" border="0" alt='8o' title='8o' /></a>
-        <a href="javascript:SmileIT(':?','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confused.png" border="0" alt=':?' title=':?' /></a>
-        <a href="javascript:SmileIT('8)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/glasses.png" border="0" alt='8)' title='8)' /></a>
-        <a href="javascript:SmileIT(';)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/wink.png" border="0" alt=';)' title=';)' /></a>
-        <a href="javascript:SmileIT(':-*','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/kiss.png" border="0" alt=':-*' title=':-*' /></a>
-        <a href="javascript:SmileIT(':-(','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/crying.png" border="0" alt=':-(' title=':-(' /></a>
-        <a href="javascript:SmileIT(':|','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/plain.png" border="0" alt=':|' title=':|' /></a>
-        <a href="javascript:SmileIT('O:-D','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/angel.png" border="0" alt='O:-D' title='0:-D' /></a>
-        <a href="javascript:SmileIT(':-@','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/devilish.png" border="0" alt=':-@' title=':-@' /></a>
-        <a href="javascript:SmileIT(':o)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/monkey.png" border="0" alt=':o)' title=':o)' /></a>
-        <a href="javascript:SmileIT('brb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/brb.png" border="0" alt='brb' title='brb' /></a>
+        <a href="javascript:SmileIT(':smile','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile.png" border="0" alt=':)' title=':)' /></a>
+        <a href="javascript:SmileIT(':sad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sad.png" border="0" alt=':(' title=':(' /></a>
+        <a href="javascript:SmileIT(':grin','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/grin.png" border="0" alt=':D' title=':D' /></a>
+        <a href="javascript:SmileIT(':razz','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/razz.png" border="0" alt=':P' title=':P' /></a>
+        <a href="javascript:SmileIT(':bigsmile','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile-big.png" border="0" alt=':-)' title=':-)' /></a>
+        <a href="javascript:SmileIT(':cool','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/cool.png" border="0" alt='B)' title='B)' /></a>
+        <a href="javascript:SmileIT(':eek','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/eek.png" border="0" alt='8o' title='8o' /></a>
+        <a href="javascript:SmileIT(':confused','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confused.png" border="0" alt=':?' title=':?' /></a>
+        <a href="javascript:SmileIT(':glasses','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/glasses.png" border="0" alt='8)' title='8)' /></a>
+        <a href="javascript:SmileIT(':wink','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/wink.png" border="0" alt=';)' title=';)' /></a>
+        <a href="javascript:SmileIT(':kiss','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/kiss.png" border="0" alt=':-*' title=':-*' /></a>
+        <a href="javascript:SmileIT(':crying','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/crying.png" border="0" alt=':-(' title=':-(' /></a>
+        <a href="javascript:SmileIT(':plain','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/plain.png" border="0" alt=':|' title=':|' /></a>
+        <a href="javascript:SmileIT(':angel','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/angel.png" border="0" alt='O:-D' title='0:-D' /></a>
+        <a href="javascript:SmileIT(':devil','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/devilish.png" border="0" alt=':-@' title=':-@' /></a>
+        <a href="javascript:SmileIT(':monkey','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/monkey.png" border="0" alt=':o)' title=':o)' /></a>
+        <a href="javascript:SmileIT(':brb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/brb.png" border="0" alt='brb' title='brb' /></a>
         <a href="javascript:SmileIT(':warn','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/warn.png" border="0" alt=':warn' title=':warn' /></a>
         <a href="javascript:SmileIT(':help','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/help.png" border="0" alt=':help' title=':help' /></a>
         <a href="javascript:SmileIT(':bad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/bad.png" border="0" alt=':bad' title=':bad' /></a>
         <a href="javascript:SmileIT(':love','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/love.png" border="0" alt=':love' title=':love' /></a>
         <a href="javascript:SmileIT(':idea','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/idea.png" border="0" alt=':idea' title=':idea' /></a>
         <a href="javascript:SmileIT(':bomb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/bomb.png" border="0" alt=':bomb' title=':bomb' /></a>
-        <a href="javascript:SmileIT(':!','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/important.png" border="0" alt=':!' title=':!' /></a>
-        <a href="javascript:SmileIT(':gigg','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/giggle.png" border="0" alt=':|' title=':|' /></a>
+        <a href="javascript:SmileIT(':important','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/important.png" border="0" alt=':!' title=':!' /></a>
+        <a href="javascript:SmileIT(':giggle','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/giggle.png" border="0" alt=':|' title=':|' /></a>
         <a href="javascript:SmileIT(':rofl','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/roflmao.png" border="0" alt='O:-D' title='0:-D' /></a>
-        <a href="javascript:SmileIT(':slep','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sleep.png" border="0" alt=':-@' title=':-@' /></a>
-        <a href="javascript:SmileIT(':thum','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/thumbsup.png" border="0" alt=':o)' title=':o)' /></a>
-        <a href="javascript:SmileIT(':0_0','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/zpo.png" border="0" alt=':|' title=':|' /></a>
+        <a href="javascript:SmileIT(':sleep','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sleep.png" border="0" alt=':-@' title=':-@' /></a>
+        <a href="javascript:SmileIT(':thumb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/thumbsup.png" border="0" alt=':o)' title=':o)' /></a>
+        <a href="javascript:SmileIT(':zpo','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/zpo.png" border="0" alt=':|' title=':|' /></a>
         <a href="javascript:SmileIT(':poop','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/poop.png" border="0" alt='O:-D' title='0:-D' /></a>
         <a href="javascript:SmileIT(':spechles','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/speechless.png" border="0" alt=':-@' title=':-@' /></a>
         <a href="javascript:SmileIT(':unsure','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/unsure.png" border="0" alt=':o)' title=':o)' /></a>
         <a href="javascript:SmileIT(':mad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/mad.png" border="0" alt=':|' title=':|' /></a>
-        <a href="javascript:SmileIT(':roll','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/rolleyes.png" border="0" alt='O:-D' title='0:-D' /></a>
+        <a href="javascript:SmileIT(':rolleye','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/rolleyes.png" border="0" alt='O:-D' title='0:-D' /></a>
         <a href="javascript:SmileIT(':sick','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sick.png" border="0" alt=':-@' title=':-@' /></a>
         <a href="javascript:SmileIT(':crylol','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/crylaugh.png" border="0" alt=':|' title=':|' /></a>
-        <a href="javascript:SmileIT(':confos','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confound.png" border="0" alt='O:-D' title='0:-D' /></a>
+        <a href="javascript:SmileIT(':confound','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confound.png" border="0" alt='O:-D' title='0:-D' /></a>
         <a href="javascript:SmileIT(':fire','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/fire.png" border="0" alt=':-@' title=':-@' /></a>
         </div>
     	</div>
@@ -152,9 +152,6 @@ function textbbcode($form, $name, $content = "")
 
 function shoutbbcode($form, $name, $content = "")
 {
-    //$form = form name
-    //$name = textarea name
-    //$content = textarea content (only for edit pages etc)
     require "assets/js/BBTag.js";
     print("<center><input id='BBCode' type='button' name='Bold' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/bold.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[b]', '[/b]')\" 					alt='Bold' 				title='Bold' 				/>");
     print("<input id='BBCode' type='button' name='Italic' 			value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/italic.png');  height:20px; width:20px;\" 					onclick=\"bbcomment('[i]', '[/i]')\" 					alt='Italic' 			title='Italic' 			/>");
@@ -225,43 +222,43 @@ function shoutbbcode($form, $name, $content = "")
         <div class="row justify-content-md-center">
         <div class="col col-lg-10">
         <div id="myDIVsmileytog" style="display:none">
-        <a href="javascript:SmileIT(':)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile.png" border="0" alt=':)' title=':)' /></a>
-        <a href="javascript:SmileIT(':(','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sad.png" border="0" alt=':(' title=':(' /></a>
-        <a href="javascript:SmileIT(':D','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/grin.png" border="0" alt=':D' title=':D' /></a>
-        <a href="javascript:SmileIT(':P','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/razz.png" border="0" alt=':P' title=':P' /></a>
-        <a href="javascript:SmileIT(':-)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile-big.png" border="0" alt=':-)' title=':-)' /></a>
-        <a href="javascript:SmileIT('B)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/cool.png" border="0" alt='B)' title='B)' /></a>
-        <a href="javascript:SmileIT('8o','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/eek.png" border="0" alt='8o' title='8o' /></a>
-        <a href="javascript:SmileIT(':?','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confused.png" border="0" alt=':?' title=':?' /></a>
-        <a href="javascript:SmileIT('8)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/glasses.png" border="0" alt='8)' title='8)' /></a>
-        <a href="javascript:SmileIT(';)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/wink.png" border="0" alt=';)' title=';)' /></a>
-        <a href="javascript:SmileIT(':-*','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/kiss.png" border="0" alt=':-*' title=':-*' /></a>
-        <a href="javascript:SmileIT(':-(','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/crying.png" border="0" alt=':-(' title=':-(' /></a>
-        <a href="javascript:SmileIT(':|','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/plain.png" border="0" alt=':|' title=':|' /></a>
-        <a href="javascript:SmileIT('O:-D','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/angel.png" border="0" alt='O:-D' title='0:-D' /></a>
-        <a href="javascript:SmileIT(':-@','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/devilish.png" border="0" alt=':-@' title=':-@' /></a>
-        <a href="javascript:SmileIT(':o)','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/monkey.png" border="0" alt=':o)' title=':o)' /></a>
-        <a href="javascript:SmileIT('brb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/brb.png" border="0" alt='brb' title='brb' /></a>
+        <a href="javascript:SmileIT(':smile','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile.png" border="0" alt=':)' title=':)' /></a>
+        <a href="javascript:SmileIT(':sad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sad.png" border="0" alt=':(' title=':(' /></a>
+        <a href="javascript:SmileIT(':grin','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/grin.png" border="0" alt=':D' title=':D' /></a>
+        <a href="javascript:SmileIT(':razz','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/razz.png" border="0" alt=':P' title=':P' /></a>
+        <a href="javascript:SmileIT(':bigsmile','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile-big.png" border="0" alt=':-)' title=':-)' /></a>
+        <a href="javascript:SmileIT(':cool','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/cool.png" border="0" alt='B)' title='B)' /></a>
+        <a href="javascript:SmileIT(':eek','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/eek.png" border="0" alt='8o' title='8o' /></a>
+        <a href="javascript:SmileIT(':confused','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confused.png" border="0" alt=':?' title=':?' /></a>
+        <a href="javascript:SmileIT(':glasses','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/glasses.png" border="0" alt='8)' title='8)' /></a>
+        <a href="javascript:SmileIT(':wink','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/wink.png" border="0" alt=';)' title=';)' /></a>
+        <a href="javascript:SmileIT(':kiss','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/kiss.png" border="0" alt=':-*' title=':-*' /></a>
+        <a href="javascript:SmileIT(':crying','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/crying.png" border="0" alt=':-(' title=':-(' /></a>
+        <a href="javascript:SmileIT(':plain','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/plain.png" border="0" alt=':|' title=':|' /></a>
+        <a href="javascript:SmileIT(':angel','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/angel.png" border="0" alt='O:-D' title='0:-D' /></a>
+        <a href="javascript:SmileIT(':devil','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/devilish.png" border="0" alt=':-@' title=':-@' /></a>
+        <a href="javascript:SmileIT(':monkey','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/monkey.png" border="0" alt=':o)' title=':o)' /></a>
+        <a href="javascript:SmileIT(':brb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/brb.png" border="0" alt='brb' title='brb' /></a>
         <a href="javascript:SmileIT(':warn','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/warn.png" border="0" alt=':warn' title=':warn' /></a>
         <a href="javascript:SmileIT(':help','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/help.png" border="0" alt=':help' title=':help' /></a>
         <a href="javascript:SmileIT(':bad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/bad.png" border="0" alt=':bad' title=':bad' /></a>
         <a href="javascript:SmileIT(':love','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/love.png" border="0" alt=':love' title=':love' /></a>
         <a href="javascript:SmileIT(':idea','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/idea.png" border="0" alt=':idea' title=':idea' /></a>
         <a href="javascript:SmileIT(':bomb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/bomb.png" border="0" alt=':bomb' title=':bomb' /></a>
-        <a href="javascript:SmileIT(':!','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/important.png" border="0" alt=':!' title=':!' /></a>
-        <a href="javascript:SmileIT(':gigg','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/giggle.png" border="0" alt=':|' title=':|' /></a>
+        <a href="javascript:SmileIT(':important','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/important.png" border="0" alt=':!' title=':!' /></a>
+        <a href="javascript:SmileIT(':giggle','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/giggle.png" border="0" alt=':|' title=':|' /></a>
         <a href="javascript:SmileIT(':rofl','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/roflmao.png" border="0" alt='O:-D' title='0:-D' /></a>
-        <a href="javascript:SmileIT(':slep','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sleep.png" border="0" alt=':-@' title=':-@' /></a>
-        <a href="javascript:SmileIT(':thum','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/thumbsup.png" border="0" alt=':o)' title=':o)' /></a>
-        <a href="javascript:SmileIT(':0_0','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/zpo.png" border="0" alt=':|' title=':|' /></a>
+        <a href="javascript:SmileIT(':sleep','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sleep.png" border="0" alt=':-@' title=':-@' /></a>
+        <a href="javascript:SmileIT(':thumb','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/thumbsup.png" border="0" alt=':o)' title=':o)' /></a>
+        <a href="javascript:SmileIT(':zpo','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/zpo.png" border="0" alt=':|' title=':|' /></a>
         <a href="javascript:SmileIT(':poop','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/poop.png" border="0" alt='O:-D' title='0:-D' /></a>
         <a href="javascript:SmileIT(':spechles','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/speechless.png" border="0" alt=':-@' title=':-@' /></a>
         <a href="javascript:SmileIT(':unsure','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/unsure.png" border="0" alt=':o)' title=':o)' /></a>
         <a href="javascript:SmileIT(':mad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/mad.png" border="0" alt=':|' title=':|' /></a>
-        <a href="javascript:SmileIT(':roll','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/rolleyes.png" border="0" alt='O:-D' title='0:-D' /></a>
+        <a href="javascript:SmileIT(':rolleye','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/rolleyes.png" border="0" alt='O:-D' title='0:-D' /></a>
         <a href="javascript:SmileIT(':sick','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sick.png" border="0" alt=':-@' title=':-@' /></a>
         <a href="javascript:SmileIT(':crylol','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/crylaugh.png" border="0" alt=':|' title=':|' /></a>
-        <a href="javascript:SmileIT(':confos','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confound.png" border="0" alt='O:-D' title='0:-D' /></a>
+        <a href="javascript:SmileIT(':confound','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/confound.png" border="0" alt='O:-D' title='0:-D' /></a>
         <a href="javascript:SmileIT(':fire','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/fire.png" border="0" alt=':-@' title=':-@' /></a>
         </div>
 		</div>
@@ -271,7 +268,7 @@ function shoutbbcode($form, $name, $content = "")
         <input  class="form-control shoutbox_msgbox" type='text' size='100%' name="<?php echo $name; ?>"><?php echo $content; ?>
         </div>
         <div class="col-md-1">
-        <center><input type='submit' name='submit' value='<?php echo Lang::T("SHOUT") ?>' class='btn btn-sm btn-primary' /></center>
+        <center><input type='submit' name='submit' value='<?php echo Lang::T("SHOUT") ?>' class='btn btn-sm btn-warning' /></center>
         </div>
         </div>
     </div>

@@ -3,14 +3,14 @@
     matched against there username, e-mail and ip. You can also choose to delete them. If no results are shown please try
     redefining your search.
     <br />
-    <form method="get" action="<?php echo URLROOT; ?>/adminsimpleusersearch">
+    <form method="get" action="<?php echo URLROOT; ?>/adminusers/simplesearch">
     <input type="hidden" name="action" value="users" />
     Search: <input type="text" name="search" size="30" value="<?php echo htmlspecialchars($_GET['search']); ?>" />
     <input type="submit" value="Search" />
     </form>
     </center>
     <?php if ($data['count'] > 0): ?>
-    <form id="usersearch" method="post" action="<?php echo URLROOT; ?>/adminsimpleusersearch">
+    <form id="usersearch" method="post" action="<?php echo URLROOT; ?>/adminsimplesearch">
     <input type="hidden" name="do" value="del" />
     <table class='table table-striped table-bordered table-hover'><thead>
     <thead>

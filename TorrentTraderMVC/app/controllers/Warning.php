@@ -14,13 +14,13 @@ class Warning extends Controller
         $id = (int) $_GET["id"];
         $user = DB::run("SELECT * FROM users WHERE id=?", [$id])->fetch();
         if (!$user) {
-            Session::flash('info', Lang::T("NO_USER_WITH_ID") . " $id.", URLROOT . '/members');
+            Session::flash('info', Lang::T("NO_USER_WITH_ID") . " $id.", URLROOT . '/group/members');
         }
         if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $id) {
             Session::flash('info', Lang::T("NO_USER_VIEW"), URLROOT . '/home');
         }
         if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $_SESSION["edit_users"] == "no") {
-            Session::flash('info', Lang::T("NO_ACCESS_ACCOUNT_DISABLED"), URLROOT . '/members');
+            Session::flash('info', Lang::T("NO_ACCESS_ACCOUNT_DISABLED"), URLROOT . '/group/members');
         }
         $res = DB::run("SELECT * FROM warnings WHERE userid=? ORDER BY id DESC", [$user['id']]);
         $title = sprintf(Lang::T("USER_DETAILS_FOR"), Helper::userColour($user["username"]));
@@ -43,7 +43,7 @@ class Warning extends Controller
             Session::flash('info', Lang::T("TASK_ADMIN"), URLROOT . "/profile?id=$userid");
         }
         if (!$this->valid->validId($userid)) {
-            Session::flash('info', Lang::T("INVALID_USERID"), URLROOT . '/members');
+            Session::flash('info', Lang::T("INVALID_USERID"), URLROOT . '/group/members');
         }
         if (!$reason || !$expiry || !$type) {
             Session::flash('info', Lang::T("MISSING_FORM_DATA"), URLROOT . "/profile?id=$userid");

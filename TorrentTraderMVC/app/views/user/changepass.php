@@ -11,7 +11,7 @@
         <input id="name" type="password" class="form-control" name="passagain" minlength="3" maxlength="25" required autofocus>
     </div>
     <div class="form-group">
-	    <button type="submit" class="btn btn-primary"><?php echo Lang::T("Submit"); ?></button>
+	    <button type="submit" class="btn btn-warning"><?php echo Lang::T("Submit"); ?></button>
     </div>
     </form>
 </div>

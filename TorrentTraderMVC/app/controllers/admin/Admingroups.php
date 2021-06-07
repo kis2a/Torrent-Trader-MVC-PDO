@@ -13,7 +13,7 @@ class Admingroups extends Controller
 
     public function index()
     {
-        $getlevel = DB::run("SELECT * from `groups` ORDER BY group_id");
+        $getlevel = DB::run("SELECT * from groups ORDER BY group_id");
         $data = [
             'title' => Lang::T("Groups Management"),
             'getlevel' => $getlevel,
@@ -24,7 +24,7 @@ class Admingroups extends Controller
     public function edit()
     {
         $group_id = intval($_GET["group_id"]);
-        $rlevel = DB::run("SELECT * FROM `groups` WHERE group_id=?", [$group_id]);
+        $rlevel = DB::run("SELECT * FROM groups WHERE group_id=?", [$group_id]);
         if (!$rlevel) {
             show_error_msg(Lang::T("ERROR"), Lang::T("CP_NO_GROUP_ID_FOUND"), 1);
         }
@@ -38,7 +38,7 @@ class Admingroups extends Controller
     public function update()
     {
         $group_id = intval($_GET["group_id"]);
-        DB::run("UPDATE `groups` SET 
+        DB::run("UPDATE groups SET 
                 level = ?, Color = ?, view_torrents = ?, edit_torrents  = ?, delete_torrents = ?,
                 view_users = ?, edit_users = ?, delete_users = ?, view_news = ?, edit_news = ?,
                 delete_news = ?, view_forum = ?, edit_forum = ?, delete_forum = ?, can_upload = ?,
@@ -59,13 +59,13 @@ class Admingroups extends Controller
         if (($group_id == "1") || ($group_id == "7")) {
             show_error_msg(Lang::T("ERROR"), Lang::T("CP_YOU_CANT_DEL_THIS_GRP"), 1);
         }
-        DB::run("DELETE FROM `groups` WHERE group_id=?", [$group_id]);
+        DB::run("DELETE FROM groups WHERE group_id=?", [$group_id]);
         Redirect::autolink(URLROOT . "/admingroups/groups", Lang::T("CP_DEL_OK"));
     }
 
     public function add()
     {
-        $rlevel = DB::run("SELECT DISTINCT group_id, level FROM `groups` ORDER BY group_id");
+        $rlevel = DB::run("SELECT DISTINCT group_id, level FROM groups ORDER BY group_id");
         $data = [
             'title' => Lang::T("Groups Management"),
             'rlevel' => $rlevel,
@@ -78,12 +78,12 @@ class Admingroups extends Controller
         $gname = $_POST["gname"];
         $gcolor = $_POST["gcolor"];
         $group_id = $_POST["getlevel"];
-        $rlevel = DB::run("SELECT * FROM `groups` WHERE group_id=?", [$group_id]);
+        $rlevel = DB::run("SELECT * FROM groups WHERE group_id=?", [$group_id]);
         $level = $rlevel->fetch(PDO::FETCH_ASSOC);
         if (!$level) {
             show_error_msg(Lang::T("ERROR"), Lang::T("CP_INVALID_ID"), 1);
         }
-        DB::run("INSERT INTO `groups`
+        DB::run("INSERT INTO groups
         (level, color, view_torrents, edit_torrents, delete_torrents, view_users, edit_users, delete_users,
 	    view_news, edit_news, delete_news, view_forum, edit_forum, delete_forum, can_upload, can_download,
 	    control_panel, staff_page, staff_public, staff_sort, maxslots)

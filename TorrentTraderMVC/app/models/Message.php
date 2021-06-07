@@ -37,7 +37,7 @@ class Message
         DB::run("INSERT INTO `messages`
         (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`)
                  VALUES (?,?,?,?,?,?,?)",
-        [$sender, $receiver, $added, $subject, $msg, $unread, $location]
+            [$sender, $receiver, $added, $subject, $msg, $unread, $location]
         );
     }
 }

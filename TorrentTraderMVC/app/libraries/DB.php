@@ -3,10 +3,8 @@
 class DB
 {
     protected static $instance = null;
-    protected function __construct()
-    {}
-    protected function __clone()
-    {}
+    protected function __construct() {}
+    protected function __clone() {}
 
     public static function instance()
     {

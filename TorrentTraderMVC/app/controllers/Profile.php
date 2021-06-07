@@ -97,8 +97,6 @@ class Profile extends Controller
         $tz = '';
         if ($_SESSION['class'] < 5 && $id != $_SESSION['id']) {
             Session::flash('info', Lang::T("You dont have permission"), URLROOT."/home");
-        } else {
-            //   echo 'im staff or curuser';
         }
         $user = User::getUserById($id);
         // Stylesheet
@@ -165,8 +163,6 @@ class Profile extends Controller
         $id = (int) $_GET["id"];
         if ($_SESSION['class'] < 5 && $id != $_SESSION['id']) {
             Session::flash('info', Lang::T("You dont have permission"), URLROOT."/home");
-        } else {
-            //   echo 'im staff or curuser';
         }
         if ($_POST) {
             $avatar = strip_tags($_POST["avatar"]);
@@ -208,17 +204,9 @@ class Profile extends Controller
         $id = (int) $_GET["id"];
         if ($_SESSION['class'] < 5 && $id != $_SESSION['id']) {
             Session::flash('info', Lang::T("You dont have permission"), URLROOT."/admin?id=$id");
-        } else {
-            //   echo 'im staff or curuser';
         }
         $user1 = User::getUserById($id);
         $user = $this->userModel->getAll($id);
-        //$ratio
-        if ($user["downloaded"] > 0) {
-            $ratio = $user["uploaded"] / $user["downloaded"];
-        } else {
-            $ratio = "---";
-        }
         $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user1["username"]));
         $data = [
             'id' => $id,
@@ -233,11 +221,8 @@ class Profile extends Controller
         $id = (int) $_GET["id"];
         if ($_SESSION['class'] < 5 && $id != $_SESSION['id']) {
             Session::flash('info', Lang::T("You dont have permission"), URLROOT."/admin?id=$id");
-        } else {
-            //   echo 'im staff or curuser';
         }
         if ($_POST) {
-            $userid = $_POST["userid"];
             $downloaded = strtobytes($_POST["downloaded"]);
             $uploaded = strtobytes($_POST["uploaded"]);
             $ip = $_POST["ip"];
@@ -261,8 +246,8 @@ class Profile extends Controller
             $arr = DB::run("SELECT class FROM users WHERE id=?", [$id])->fetch();
             $uc = $arr['class'];
             // skip if class is same as current
-            //if ($uc != $class && $class > 0) {
-            if ($uc <= get_others_class($id)) { // todo
+            if ($uc != $class && $uc > $class) {
+            //if ($uc <= get_others_class($id)) { // todo
                 Session::flash('info', Lang::T("YOU_CANT_DEMOTE_YOURSELF"), URLROOT."/admin?id=$id");
             } elseif ($uc <= get_others_class($id)) {
                 Session::flash('info', Lang::T("YOU_CANT_DEMOTE_SOMEONE_SAME_LVL"), URLROOT."/admin?id=$id");
@@ -272,7 +257,7 @@ class Profile extends Controller
                 $prodemoted = ($class > $uc ? "promoted" : "demoted");
                 $msg = "You have been $prodemoted to " . get_user_class_name($class) . " by " . $_SESSION["username"] . "";
                 $added = TimeDate::get_date_time();
-                //  DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(0, $_SESSION[id], $msg, $added)");
+                DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(?,?,?,?)", [0, $_SESSION['id'], $msg, $added]);
             }
             // }
             //continue updates

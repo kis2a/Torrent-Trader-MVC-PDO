@@ -849,7 +849,7 @@ $LANG["RATING_THANK"] = "Thank you for rating this torrent!";
 $LANG["REASON_FOR_DELETE"] = "Reason for deletion:";
 $LANG["REPORT_TORRENT"] = "Report Torrent";
 $LANG["REQUEST_A_RE_SEED"] = "Request a RE-Seed";
-$LANG['RESEED_MESSAGE'] = "%s has requested a re-seed on the torrent below because there are currently no or few seeds:\n\n %s/torrents/read?id=%d\n Thank You!";
+$LANG['RESEED_MESSAGE'] = "%s has requested a re-seed on the torrent below because there are currently no or few seeds:\n\n %s/torrent?id=%d\n Thank You!";
 $LANG["RESEED_REQUEST"] = "Reseed Request";
 $LANG["SEED"] = "Seed";
 $LANG["SEEDS"] = "Seeds";
@@ -894,8 +894,8 @@ $LANG["NFO_VIEW"] = "View NFO";
 $LANG["NO_NFO"] = "This torrent does not have a NFO.";
 $LANG["NO_NFO_SIZE"] = "0-byte NFO";
 $LANG["NO_NFO_UPLOADED"] = "No Nfo.";
-$LANG["TORRENT_UPLOAD_EXTERNAL"] = "Torrent Uploaded OK:<br /><br />%s was uploaded.<br /><br /><a href='".URLROOT."/torrents/read?id=%d'>View Uploaded Torrent</a><br /><br />";
-$LANG["TORRENT_UPLOAD_LOCAL"] = "Torrent Uploaded OK:<br /><br />%s was uploaded.<br /><br />  Please remember to re-download so that your passkey is added and you can seed this torrent.<br /><br /><a href='".URLROOT."/download?id=%d'>Download Now</a><br /><a href='".URLROOT."/torrents/read?id=%d'>View Uploaded Torrent</a><br /><br />";
+$LANG["TORRENT_UPLOAD_EXTERNAL"] = "Torrent Uploaded OK:<br /><br />%s was uploaded.<br /><br /><a href='".URLROOT."/torrent?id=%d'>View Uploaded Torrent</a><br /><br />";
+$LANG["TORRENT_UPLOAD_LOCAL"] = "Torrent Uploaded OK:<br /><br />%s was uploaded.<br /><br />  Please remember to re-download so that your passkey is added and you can seed this torrent.<br /><br /><a href='".URLROOT."/download?id=%d'>Download Now</a><br /><a href='".URLROOT."/torrent?id=%d'>View Uploaded Torrent</a><br /><br />";
 $LANG["TORRENT_UPLOADED"] = "Torrent %s uploaded by %s";
 
 // Upload Errors. (http://www.php.net/manual/en/features.file-upload.errors.php)

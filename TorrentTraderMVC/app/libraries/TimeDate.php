@@ -1,12 +1,6 @@
 <?php
 class TimeDate
 {
-    public function __construct()
-    {
-        //$this->loggedIn();
-        //$this->ipBanned();
-    }
-
     // Function that calculates the Hours Minutes Seconds of a Timestamp
     public static function mkprettytime($s)
     {
@@ -17,23 +11,18 @@ class TimeDate
         $t = array();
         $t["day"] = floor($s / 86400);
         $s -= $t["day"] * 86400;
-
         $t["hour"] = floor($s / 3600);
         $s -= $t["hour"] * 3600;
-
         $t["min"] = floor($s / 60);
         $s -= $t["min"] * 60;
-
         $t["sec"] = $s;
 
         if ($t["day"]) {
             return $t["day"] . "d " . sprintf("%02d:%02d:%02d", $t["hour"], $t["min"], $t["sec"]);
         }
-
         if ($t["hour"]) {
             return sprintf("%d:%02d:%02d", $t["hour"], $t["min"], $t["sec"]);
         }
-
         return sprintf("%d:%02d", $t["min"], $t["sec"]);
     }
 
@@ -63,19 +52,15 @@ class TimeDate
         if ($weeks > 0) {
             return "$weeks wk" . ($weeks > 1 ? "s" : "");
         }
-
         if ($days > 0) {
             return "$days day" . ($days > 1 ? "s" : "");
         }
-
         if ($hours > 0) {
             return "$hours hr" . ($hours > 1 ? "s" : "");
         }
-
         if ($mins > 0) {
             return "$mins min" . ($mins > 1 ? "s" : "");
         }
-
         return "< 1 min";
     }
 
@@ -99,12 +84,10 @@ class TimeDate
     public static function utc_to_tz($timestamp = 0)
     {
         global $tzs;
-
         if (method_exists("DateTime", "setTimezone")) {
             if (!$timestamp) {
                 $timestamp = self::get_date_time();
             }
-
             $date = new DateTime($timestamp, new DateTimeZone("UTC"));
             $ZONE = $tzs[$_SESSION["tzoffset"]][1] ?? "Europe/London";
             $date->setTimezone(new DateTimeZone($ZONE));
@@ -114,11 +97,9 @@ class TimeDate
         if (!is_numeric($timestamp)) {
             $timestamp = self::sql_timestamp_to_unix_timestamp($timestamp);
         }
-
         if ($timestamp == 0) {
             $timestamp = gmtime();
         }
-
         $timestamp = $timestamp + ($_SESSION['tzoffset'] * 60);
         if (date("I")) {
             $timestamp += 3600;
@@ -131,12 +112,10 @@ class TimeDate
     public static function utc_to_tz_time($timestamp = 0)
     {
         global $tzs;
-
         if (method_exists("DateTime", "setTimezone")) {
             if (!$timestamp) {
                 $timestamp = TimeDate::get_date_time();
             }
-
             $date = new DateTime($timestamp, new DateTimeZone("UTC"));
             $ZONE = $tzs[$_SESSION["tzoffset"]][1] ?? "Europe/London";
             $date->setTimezone(new DateTimeZone($ZONE));
@@ -144,21 +123,17 @@ class TimeDate
             //$date->setTimezone(new DateTimeZone($tzs[$_SESSION["tzoffset"]][1] ?? "Europe/London"));
             return self::sql_timestamp_to_unix_timestamp($date->format('Y-m-d H:i:s'));
         }
-
         if (!is_numeric($timestamp)) {
             $timestamp = self::sql_timestamp_to_unix_timestamp($timestamp);
         }
-
         if ($timestamp == 0) {
             $timestamp = gmtime();
         }
-
         $timestamp = $timestamp + ($_SESSION['tzoffset'] * 60);
         if (date("I")) {
             $timestamp += 3600;
         }
         // DST Fix
-
         return $timestamp;
     }
 
@@ -168,11 +143,9 @@ class TimeDate
         if (!is_numeric($start)) {
             $start = self::sql_timestamp_to_unix_timestamp($start);
         }
-
         if (!is_numeric($end)) {
             $end = self::sql_timestamp_to_unix_timestamp($end);
         }
-
         return ($end - $start);
     }
 

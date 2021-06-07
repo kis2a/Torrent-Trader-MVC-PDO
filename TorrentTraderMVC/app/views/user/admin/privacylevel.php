@@ -7,7 +7,7 @@ This page displays all users which are enabled, confirmed grouped by their priva
     <td valign="top">
     <form id='sort' action=''>
     <b>Privacy Level:</b>
-    <select name="type" onchange="window.location='<?php echo URLROOT; ?>/adminprivacy?type='+this.options[this.selectedIndex].value">
+    <select name="type" onchange="window.location='<?php echo URLROOT; ?>/adminusers/privacy?type='+this.options[this.selectedIndex].value">
     <option value="">Any</option>
     <option value="low" <?php echo ($_GET['type'] == "low" ? " selected='selected'" : ""); ?>>Low</option>
     <option value="normal" <?php echo ($_GET['type'] == "normal" ? " selected='selected'" : ""); ?>>Normal</option>

@@ -32,7 +32,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     ?>
     <tbody>
 	<tr>
-		<td class="table_col1"><a href="<?php echo URLROOT; ?>/torrents/read?id=<?php echo $row["id"]; ?>"><?php echo CutName(htmlspecialchars($row["name"]), 50) ?></a></td>
+		<td class="table_col1"><a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $row["id"]; ?>"><?php echo CutName(htmlspecialchars($row["name"]), 50) ?></a></td>
 		<td class="table_col2"><?php echo $owner; ?></td>
 		<td class="table_col2" align="center"><?php echo mksize($row["size"]); ?></td>
 		<td class="table_col1" align="center"><font color="limegreen"><b><?php echo number_format($row["seeders"]); ?></b></font></td>
@@ -49,7 +49,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 ?>
 </tbody></table></div>
 <?php if ($_SESSION["class"] >= 6) {?>
-    <button type="submit" class="btn btn-sm btn-primary" value='Remove The Checks '>Remove The Checks</button>
+    <button type="submit" class="btn btn-sm btn-warning" value='Remove The Checks '>Remove The Checks</button>
 <?php }?>
 </form>
  <?php

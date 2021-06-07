@@ -50,7 +50,7 @@
 			  <a class="dropdown-item" href="<?php echo URLROOT ?>/search"><?php echo Lang::T("SEARCH_TORRENTS"); ?></a>
 		  	<a class="dropdown-item" href="<?php echo URLROOT ?>/request"><?php echo Lang::T("MAKE_REQUEST"); ?></a>
 		  	<a class="dropdown-item" href="<?php echo URLROOT ?>/search/today"><?php echo Lang::T("TODAYS_TORRENTS"); ?></a>
-		  	<a class="dropdown-item" href="<?php echo URLROOT ?>/seed/needseed"><?php echo Lang::T("TORRENT_NEED_SEED"); ?></a>
+		  	<a class="dropdown-item" href="<?php echo URLROOT ?>/search/needseed"><?php echo Lang::T("TORRENT_NEED_SEED"); ?></a>
         </div>
       </li>
 
@@ -71,7 +71,7 @@
         Contact
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-		    <a class="dropdown-item" href="<?php echo URLROOT ?>/staff">Our Staff</a>
+		    <a class="dropdown-item" href="<?php echo URLROOT ?>/group/staff">Our Staff</a>
 		    <a class="dropdown-item" href="<?php echo URLROOT ?>/contactstaff"><?php echo Lang::T("Contact Staff"); ?></a>
         </div>
       </li>

@@ -10,7 +10,7 @@
 	<textarea name="mess" rows="10" cols="50"></textarea>
 </div>
 <div class="form-group">
-	<button type="submit" class="btn btn-primary btn-block"><?php echo Lang::T("SEND_AN_INVITE"); ?></button>
+	<button type="submit" class="btn btn-warning btn-block"><?php echo Lang::T("SEND_AN_INVITE"); ?></button>
 </div>
 </form>
 </div>

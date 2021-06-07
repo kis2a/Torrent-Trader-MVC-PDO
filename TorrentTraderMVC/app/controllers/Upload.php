@@ -20,10 +20,9 @@ class Upload extends Controller
         if (UPLOADERSONLY && $_SESSION["class"] < 4) {
             Session::flash('info', Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"), URLROOT . '/home');
         }
-        $announce_urls = explode(",", strtolower(ANNOUNCELIST));
-        $title = Lang::T("UPLOAD");
+        $announce_urls = explode(",", strtolower(ANNOUNCELIST)); 
         $data = [
-            'title' => $title,
+            'title' => Lang::T("UPLOAD"),
             'announce_urls' => $announce_urls,
         ];
         $this->view('torrent/upload', $data, 'user');
@@ -240,7 +239,7 @@ class Upload extends Controller
 
             Logs::write(sprintf(Lang::T("TORRENT_UPLOADED"), htmlspecialchars($name), $_SESSION["username"]));
             // Shout new torrent
-            $msg_shout = "New Torrent: [url=" . URLROOT . "/torrents/read?id=" . $id . "]" . $torrent . "[/url] has been uploaded " . ($anon == 'no' ? "by [url=" . URLROOT . "/account-details.php?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]" : "") . "";
+            $msg_shout = "New Torrent: [url=" . URLROOT . "/torrent?id=" . $id . "]" . $torrent . "[/url] has been uploaded " . ($anon == 'no' ? "by [url=" . URLROOT . "/account-details.php?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]" : "") . "";
             DB::run("INSERT INTO shoutbox (userid, date, user, message) VALUES(?,?,?,?)", [0, TimeDate::get_date_time(), 'System', $msg_shout]);
             //Uploaded ok message
             if ($external == 'no') {
@@ -249,7 +248,7 @@ class Upload extends Controller
                 $message = sprintf(Lang::T("TORRENT_UPLOAD_EXTERNAL"), $name, $id);
             }
 
-            Session::flash('info', $message, URLROOT . "/torrents/read?id=$id");
+            Session::flash('info', $message, URLROOT . "/torrent?id=$id");
             die();
         }
     }

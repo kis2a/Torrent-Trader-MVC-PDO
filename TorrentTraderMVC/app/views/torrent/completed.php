@@ -24,4 +24,4 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     <?php
 } ?>
 </table>
-<center><a href="<?php echo URLROOT; ?>/torrents/read?id=<?php echo $data['id']; ?>"><?php echo Lang::T("BACK_TO_DETAILS"); ?></a></center>
+<center><a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $data['id']; ?>"><?php echo Lang::T("BACK_TO_DETAILS"); ?></a></center>

@@ -27,7 +27,7 @@ class Auth
                 Redirect::autolink(URLROOT . "/logout", 'Issue With User Auth');
             }
 
-            //$res = $db->run("SELECT * FROM users INNER JOIN `groups` ON users.class=groups.group_id WHERE id=? AND users.enabled=? AND users.status =? ", [$_COOKIE["id"], 'yes', 'confirmed']);
+            //$res = $db->run("SELECT * FROM users INNER JOIN groups ON users.class=groups.group_id WHERE id=? AND users.enabled=? AND users.status =? ", [$_COOKIE["id"], 'yes', 'confirmed']);
             $row = $res->fetch(PDO::FETCH_ASSOC);
 
             if ($row['token'] != $_COOKIE['password']) {
@@ -84,8 +84,8 @@ class Auth
                     ob_start();
                     ob_clean();
                 }
-                require_once "../app/views/inc/default/header.php";
-                echo '<div class="alert alert-info"><center>' . stripslashes(OFFLINEMSG) . '</center></div>';
+                require_once "../app/views/inc/darktheme/header.php";
+                echo '<div class="alert alert-warning"><center>' . stripslashes(OFFLINEMSG) . '</center></div>';
                 require_once "../app/views/inc/default/footer.php";
                 if ($wrapper) {
                     die();

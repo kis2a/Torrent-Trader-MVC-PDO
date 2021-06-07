@@ -10,7 +10,6 @@ class Topten extends Controller
     public function index()
     {
         $db = new Database();
-        
         $limit = isset($_GET["lim"]) ? (int) $_GET["lim"] : false;
         $subtype = isset($_GET["subtype"]) ? (int) $_GET["subtype"] : false;
         $pu = $_SESSION["class"] >= 3;
@@ -66,7 +65,6 @@ class Topten extends Controller
     public function torrents()
     {
         $db = new Database();
-        
         $limit = isset($_GET["lim"]) ? (int) $_GET["lim"] : false;
         $subtype = isset($_GET["subtype"]) ? (int) $_GET["subtype"] : false;
         $pu = $_SESSION["class"] >= 3;
@@ -95,12 +93,9 @@ class Topten extends Controller
         Style::footer();
     }
 
-
-
     public function countries()
     {
         $db = new Database();
-        
         $limit = isset($_GET["lim"]) ? (int) $_GET["lim"] : false;
         $subtype = isset($_GET["subtype"]) ? (int) $_GET["subtype"] : false;
         $pu = $_SESSION["class"] >= 3;

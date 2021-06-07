@@ -24,7 +24,7 @@ Style::begin($title);
         }
         print("<tbody><tr>
             <td>$num</td>
-            <td><a href=".URLROOT."/torrents/read?id=" . $a["id"] . "&hit=1><b>" . $a["name"] . "</b></a></td>
+            <td><a href=".URLROOT."/torrent?id=" . $a["id"] . "&hit=1><b>" . $a["name"] . "</b></a></td>
             <td><font color=#0080FF><b>" . number_format($a["times_completed"]) . "</b></font></td>
             <td>" . mksize($a["data"]) . "</td>
             <td><font color=limegreen><b>" . number_format($a["seeders"]) . "</b></font></td>

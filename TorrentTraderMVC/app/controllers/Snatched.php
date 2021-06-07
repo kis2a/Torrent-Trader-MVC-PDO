@@ -116,7 +116,7 @@ class Snatched extends Controller
 			</table>
 			<?php
             if ($count_tid > $perpage) {echo ($pagerbottom);}
-                print("<div style='margin-top:5px; margin-bottom:10px' align='right'><a href=".URLROOT."/torrents/read?id=$tid><b><input type='submit' value='" . Lang::T("BACK_TO_TORRENT") . "'></b></a></div>");
+                print("<div style='margin-top:5px; margin-bottom:10px' align='right'><a href=".URLROOT."/torrent?id=$tid><b><input type='submit' value='" . Lang::T("BACK_TO_TORRENT") . "'></b></a></div>");
                 endif;
                 Style::end();
                 Style::footer();
@@ -132,7 +132,7 @@ class Snatched extends Controller
                     Style::begin($ttitle);
                     ?>
 			    	<div style="margin-top:10px; margin-bottom:10px" align="center"><font size="2"><?php echo Lang::T("NOTHING_FOUND"); ?>.</font></div>
-			    	<div style="margin-bottom:10px" align="center">[<?php echo "<a href=".URLROOT."/torrents/read?id=$tid>"; ?><b><?php echo Lang::T("BACK_TO_TORRENT"); ?></b></a>]</div>
+			    	<div style="margin-bottom:10px" align="center">[<?php echo "<a href=".URLROOT."/torrent?id=$tid>"; ?><b><?php echo Lang::T("BACK_TO_TORRENT"); ?></b></a>]</div>
 				    <?php
                     Style::end();
                     Style::footer();
@@ -202,7 +202,7 @@ class Snatched extends Controller
 		    	<table border="0" class="table_table" cellpadding="4" cellspacing="0" width="100%">
 					<tr>
 						<th class="table_head" align="left"><?php echo Lang::T("TORRENT_NAME"); ?></th>
-					  <?php if ($config["ALLOWEXTERNAL"]) {?>
+					  <?php if (ALLOWEXTERNAL) {?>
 						<th class="table_head"><img src="assets/images/t_le.png" border="0" title="<?php echo Lang::T("T_L_OR_E"); ?>"></th>
 					  <?php }?>
 						<th class="table_head"><?php echo Lang::T("UPLOADED"); ?></th>
@@ -237,8 +237,8 @@ class Snatched extends Controller
                     $smallname = htmlspecialchars(CutName($row[1], $maxchar));
                     ?>
 						<tr align="center">  <!-- below was ".(count($expandrows)?" -->
-							<?php echo ("<td class='ttable_col1' align='left' nowrap='nowrap'>" . ($expandrows ? "<a href=\"javascript: klappe_torrent('t" . $row['0'] . "')\"><img border=\"0\" src=\"" . $config["SITEURL"] . "/assets/images/plus.gif\" id=\"pict" . $row['0'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "<a title=\"" . $row["1"] . "\" href=\"/torrents/read?id=" . $row['0'] . "&amp;hit=1\"><b>$smallname</b></a> $freeleech</td>"); ?>
-						  <?php if ($config["ALLOWEXTERNAL"]) {?>
+							<?php echo ("<td class='ttable_col1' align='left' nowrap='nowrap'>" . ($expandrows ? "<a href=\"javascript: klappe_torrent('t" . $row['0'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['0'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "<a title=\"" . $row["1"] . "\" href=\"/torrent?id=" . $row['0'] . "&amp;hit=1\"><b>$smallname</b></a> $freeleech</td>"); ?>
+						  <?php if (ALLOWEXTERNAL) {?>
 							<td class="table_col2" align="center"><?php echo $type; ?></td>
 						  <?php }?>
 							<td class="table_col1"><font color="#27B500"><?php echo mksize($row[2]); ?></font></td>
@@ -291,7 +291,7 @@ class Snatched extends Controller
                 //    if ($users->rowCount() > 0)
                 {
                     if ($uid != $_SESSION['id']) {
-                        print("<div style='margin-bottom:10px' align='center'><a href=".URLROOT."/profile?id=$uid><b><button type='submit' class='btn btn-sm btn-primary'>" . Lang::T("GO_TO_USER_ACCOUNT") . "</button></b></a></div>");
+                        print("<div style='margin-bottom:10px' align='center'><a href=".URLROOT."/profile?id=$uid><b><button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("GO_TO_USER_ACCOUNT") . "</button></b></a></div>");
                     } else {
                         print("<div style='margin-bottom:10px' align='center'>[<a href=".URLROOT."/profile?id=$_SESSION[id]><b>" . Lang::T("GO_TO_YOUR_PROFILE") . "</b></a>]</div>");
                     }

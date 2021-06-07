@@ -2,8 +2,6 @@
 // Function For Comment Table
 function commenttable($res, $type = null)
 {
-    global $THEME, $LANGUAGE, $pdo; //Define globals
-
     while ($row = $res->fetch(PDO::FETCH_LAZY)) {
 
         $postername = Users::coloredname($row["username"]);

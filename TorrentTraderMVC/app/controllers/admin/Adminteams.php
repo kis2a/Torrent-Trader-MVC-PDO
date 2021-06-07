@@ -12,7 +12,6 @@ class Adminteams extends Controller
 
     public function index()
     {
-        require_once APPROOT."/helpers/bbcode_helper.php";
         $sql = DB::run("SELECT * FROM teams");
         $data = [
             'title' => Lang::T("TEAMS_MANAGEMENT"),

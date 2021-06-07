@@ -26,6 +26,7 @@ require "helpers/comment_helper.php";
 require "helpers/user_helper.php";
 require "helpers/torrent_helper.php";
 require "helpers/smileys.php";
+require "helpers/bbcode_helper.php";
 // Autoload Classes
 spl_autoload_register(function ($className) {
     require_once 'libraries/' . $className . '.php';

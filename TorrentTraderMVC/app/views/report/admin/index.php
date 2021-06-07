@@ -57,7 +57,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)):
     if ($row["type"] == "user") {
         $link = "".URLROOT."/profile?id=$row[votedfor]";
     } else if ($row["type"] == "torrent") {
-    $link = "".URLROOT."/torrents/read?id=$row[votedfor]";
+    $link = "".URLROOT."/torrent?id=$row[votedfor]";
     } else if ($row["type"] == "comment") {
         $link = "".URLROOT."/comments?type=" . ($r[1] > 0 ? "news" : "torrent") . "&amp;id=" . ($r[1] > 0 ? $r[1] : $r[2]) . "#comment$row[votedfor]";
     } else if ($row["type"] == "forum") {

@@ -4,7 +4,6 @@ foreach ($data['selectuser'] as $selectedid):
 if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") || ($_SESSION["id"] == $data["id"])) {
 ?>
 
-
 <div class="jumbotron">
 <div class="row">
     <div class="col">
@@ -109,5 +108,4 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 } else {
     Session::flash('info', "This member has elected to keep their details private!", URLROOT . "/home");
 }
-
 endforeach;

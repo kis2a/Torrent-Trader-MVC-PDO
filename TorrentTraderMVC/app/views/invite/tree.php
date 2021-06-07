@@ -1,20 +1,14 @@
-<?php
-if ($data['id'] != $_SESSION["id"]) {
-    Style::begin("Invite Tree for [<a href=".URLROOT."/profile?id=$data[id]>" . $data['id'] . "</a>]");
-} else {
-    Style::begin("You have $data[invitees] invitees " . Users::coloredname($_SESSION["username"]) . "");
-}
-    ?><br />
-    <div class='table-responsive'> <table class='table table-striped'><thead><tr>
-	<th><b>Invited&nbsp;Members</b></th>
-    <th><b>Class</b></th>
-    <th><b>Registered</b></th>
-	<th><b>Last&nbsp;access</b></th>
-    <th><b>Downloaded</b></th>
-	<th><b>Uploaded<b></th>
-	<th><b>Ratio</b></th>
-	<th><b>Warned</b></th>
-	</tr></thead> <?php
+<br />
+<div class='table-responsive'> <table class='table table-striped'><thead><tr>
+<th><b>Invited&nbsp;Members</b></th>
+<th><b>Class</b></th>
+<th><b>Registered</b></th>
+<th><b>Last&nbsp;access</b></th>
+<th><b>Downloaded</b></th>
+<th><b>Uploaded<b></th>
+<th><b>Ratio</b></th>
+<th><b>Warned</b></th>
+</tr></thead> <?php
 for ($i = 1; $i <= $data['num']; $i++) {
     $arr = $data['res']->fetch(PDO::FETCH_ASSOC);
     if ($arr["invited_by"] != $_SESSION['id'] && $_SESSION["class"] < 5) {
@@ -60,5 +54,4 @@ for ($i = 1; $i <= $data['num']; $i++) {
 if ($arr["invited_by"] != $_SESSION['id']) {
     print("<div style='margin-top:10px' align='center'>[<a href=" . URLROOT . "/profile?id=$data[id]><b>Go Back to User Profile</b></a>]</div>");
 }
-print("<br />"); //one small space here!
-Style::end();
+print("<br />");

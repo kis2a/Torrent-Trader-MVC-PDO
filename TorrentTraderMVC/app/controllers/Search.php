@@ -6,7 +6,7 @@ class Search extends Controller
     public function __construct()
     {
         Auth::user();
-        $this->torrentModel = $this->model('Torrent');
+        $this->torrentModel = $this->model('Torrents');
         $this->valid = new Validation();
     }
 
@@ -354,7 +354,7 @@ class Search extends Controller
         ?>
                 <?php echo $langdropdown ?>
                 </select>
-                <button type='submit' class='btn btn-sm btn-primary'><?php print Lang::T("SEARCH");?></button>
+                <button type='submit' class='btn btn-sm btn-warning'><?php print Lang::T("SEARCH");?></button>
                 <br />
                 </form>
                 <?php print Lang::T("SEARCH_RULES");?><br />
@@ -419,7 +419,7 @@ class Search extends Controller
             $res = $this->torrentModel->getCatSortAll($where, $date_time, $orderby, $limit);
             $numtor = $res->rowCount();
             if ($numtor != 0) {
-                echo "<b><a href=".URLROOT."/torrents/browse?cat=" . $cat["id"] . "'>$cat[name]</a></b>";
+                echo "<b><a href=".URLROOT."/torrent/browse?cat=" . $cat["id"] . "'>$cat[name]</a></b>";
                 torrenttable($res);
                 echo "<br />";
             }
@@ -606,4 +606,23 @@ class Search extends Controller
         Style::end();
         Style::footer();
     }
+
+        
+    public function needseed()
+    {
+        if ($_SESSION["view_torrents"] == "no") {
+            Session::flash('info', Lang::T("NO_TORRENT_VIEW"), URLROOT."/home");
+        }
+        $res = DB::run("SELECT torrents.id, torrents.name, torrents.owner, torrents.external, torrents.size, torrents.seeders, torrents.leechers, torrents.times_completed, torrents.added, users.username FROM torrents LEFT JOIN users ON torrents.owner = users.id WHERE torrents.banned = 'no' AND torrents.leechers > 0 AND torrents.seeders <= 1 ORDER BY torrents.seeders");
+        if ($res->rowCount() == 0) {
+            Session::flash('info', Lang::T("NO_TORRENT_NEED_SEED"), URLROOT."/home");
+        }
+        $title = Lang::T("TORRENT_NEED_SEED");
+        $data = [
+            'title' => $title,
+            'res' => $res
+        ];
+        $this->view('torrent/needseed', $data, 'user');
+    }
+
 }

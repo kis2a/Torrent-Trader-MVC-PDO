@@ -18,12 +18,12 @@ Style::begin("Search");
 			respectively, as well as linking to the history page.\n
 			</td></tr></table><br /><br />\n";
         } else {
-            echo "<p align='center'>[<a href='" . URLROOT . "/adminadvancedsearch?h=1'>Instructions</a>]";
-            echo "&nbsp;-&nbsp;[<a href='" . URLROOT . "/adminadvancedsearch'>Reset</a>]</p>\n";
+            echo "<p align='center'>[<a href='" . URLROOT . "/adminusers/advancedsearch?h=1'>Instructions</a>]";
+            echo "&nbsp;-&nbsp;[<a href='" . URLROOT . "/adminusers/advancedsearch'>Reset</a>]</p>\n";
         }
         ?>
     <div class="border border-warning">
-	<form method="get" action="<?php echo URLROOT; ?>/adminadvancedsearch">
+	<form method="get" action="<?php echo URLROOT; ?>/adminusers/advancedsearch">
 	<input type="hidden" name="action" value="usersearch" />
 	<table border="0" class="table_table" cellspacing="0" cellpadding="0" width="100%">
     <tr>
@@ -589,14 +589,14 @@ $options = array("(any)", "Yes", "No");
 
             $queryc = "SELECT COUNT(" . $distinct . "u.id) FROM " . $from_is .
                 (($where_is == "") ? "" : " WHERE $where_is ");
-            $querypm = "FROM " . $from_is . (($where_is == "") ? " " : " WHERE $where_is ");
+            $querypm = "FROM " . $from_is . (($where_is == "") ? " " : " WHERE  u.class < $_SESSION[class] AND $where_is");
             $select_is = "u.id, u.username, u.email, u.status, u.added, u.last_access, u.ip,
 		u.class, u.uploaded, u.downloaded, u.donated, u.modcomment, u.enabled, u.warned, u.invited_by";
             $query = "SELECT " . $distinct . " " . $select_is . " " . $querypm;
             $count = DB::run($queryc, $params)->fetchColumn();
             $q = isset($q) ? ($q . "&amp;") : "";
             $perpage = 25;
-            list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "".URLROOT."/adminadvancedsearch?$q");
+            list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "".URLROOT."/adminusers/advancedsearch?$q");
             $query .= $limit;
             $res = DB::run($query, $params)->fetchAll();
 
@@ -606,7 +606,7 @@ $options = array("(any)", "Yes", "No");
                 if ($count > $perpage) {
                     echo $pagertop;
                 }
-                echo "<br><form action='".URLROOT."/adminadvancedsearch?do=warndisable' method='post'>";
+                echo "<br><form action='".URLROOT."/adminusers/advancedsearch?do=warndisable' method='post'>";
                 echo "<div class='table-responsive'><table class='table'><thead>\n";
                 echo "<tr><th class='table_head'>" . Lang::T("NAME") . "</th>
 			<th class='table_head'>IP</th>

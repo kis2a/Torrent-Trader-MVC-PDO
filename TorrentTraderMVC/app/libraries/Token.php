@@ -2,10 +2,6 @@
 
 class Token
 {
-    public function __construct() { }
-
-    private function __clone() { }
-
     public static function generate()
     {
         return Session::set("ttttt", sha1(time()));

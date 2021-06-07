@@ -1,4 +1,4 @@
-<form method="post" action="<?php echo URLROOT; ?>/adminseedbonus/change">
+<form method="post" action="<?php echo URLROOT; ?>/adminbonus/change">
     <?php if ($data['row'] != null): ?>
     <input type="hidden" name="id" value="<?php echo $data['row']->id; ?>" />
     <?php endif;?>

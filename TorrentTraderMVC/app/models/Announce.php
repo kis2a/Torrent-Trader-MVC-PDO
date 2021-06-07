@@ -1,9 +1,11 @@
 <?php
-  class Announce {
+class Announce
+{
     private $db;
 
-    public function __construct(){
-      $this->db = new Database;
+    public function __construct()
+    {
+        $this->db = new Database;
     }
 
-  }
+}

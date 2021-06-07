@@ -15,8 +15,9 @@ function format_urls($s)
         "\\1<a href='\\2' target='_blank'>\\2</a>", $s);
 }
 
-function format_comment($text) {
-    global $smilies, $smilies1;
+function format_comment($text)
+{
+    global $smilies;
     $s = $text;
     $s = htmlspecialchars($s);
     $s = format_urls($s);
@@ -37,20 +38,26 @@ function format_comment($text) {
     // List 2
     //$s = preg_replace("#\[*\](.+)\[/*\]#isU", "<li style= 'margin-left: 20px;'>$1</li>", $s);
     // Quote 1
-    while (preg_match("#\[quote\](.+)\[/quote\]#isU", $s))
+    while (preg_match("#\[quote\](.+)\[/quote\]#isU", $s)) {
         $s = preg_replace("#\[quote\](.+)\[/quote\]#isU", "<blockquote><strong> Quote : </strong></blockquote><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>$1</td></tr></table><br />", $s);
+    }
+
     // Quote 2
-    while (preg_match("#\[quote=(.+)\](.+)\[/quote\]#isU", $s))
+    while (preg_match("#\[quote=(.+)\](.+)\[/quote\]#isU", $s)) {
         $s = preg_replace("#\[quote=(.*?)\](.+)\[/quote\]#isU", "<blockquote><strong>$1 Quote : </strong></blockquote><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>$2</td></tr></table><br />", $s);
+    }
+
     ///Multi Quote For Private Message
-    while(preg_match( '#\[reponse(.*)\](.+)\[/reponse\]#isU', $s))
-        $s= preg_replace('#\[reponse(.*)\](.+)\[/reponse\]#isU','<table class=main border=2 cellspacing=0 cellpadding=10><tr><td style=border: 1px black dotted>$2</td></tr></table><br />',$s);
+    while (preg_match('#\[reponse(.*)\](.+)\[/reponse\]#isU', $s)) {
+        $s = preg_replace('#\[reponse(.*)\](.+)\[/reponse\]#isU', '<table class=main border=2 cellspacing=0 cellpadding=10><tr><td style=border: 1px black dotted>$2</td></tr></table><br />', $s);
+    }
+
     // Extract the Code
     $s = preg_replace("#\[code\](.+)\[/code\]#isU", "<b> Code : </b><div style='border: 1px #3895D3 solid'><pre><code><div rows='10' style='max-height:400px;white-space: nowrap'  readonly='readonly'>$1</div></code></pre></div><br />", $s);
     // Links
     // [url=http://www.example.com]Text[/url]
     $s = preg_replace("#\[url=((?:ftp|https?)://.*?)\](.*?)\[/url\]#i", "<a href='$1'>$2</a>", $s);
-     // [url]http://www.exemple.fr[/url]
+    // [url]http://www.exemple.fr[/url]
     $s = preg_replace("#\[url\]((?:ftp|https?)://.*?)\[/url\]#i", "<a href='$1'>$1</a>", $s);
     // Image
     // [img]http://image.gif[/img]
@@ -72,13 +79,13 @@ function format_comment($text) {
     $s = preg_replace("#\[font=([a-zA-Z].*?)\](.+)\[/font\]#isU", "<font face='$1'>$2</font>", $s);
     // Blink
     $s = preg_replace("#\[blink\](.+)\[/blink\]#isU", "<div id='blink'>$1</div>", $s);
-     // Scroller
+    // Scroller
     $s = preg_replace("#\[df\](.+)\[/df\]#isU", "<div class='marquee'>$1</div>", $s);
     // Text Alignment
     //[align=(center|left|right)]text[/align]
     $s = preg_replace(
-    "/\[align=([a-zA-Z]+)\](.+?)\[\/align\]/is",
-    "<div style=\"text-align:\\1\">\\2</div>", $s);
+        "/\[align=([a-zA-Z]+)\](.+?)\[\/align\]/is",
+        "<div style=\"text-align:\\1\">\\2</div>", $s);
     // HTML HTML tag If Need Horizontal Line
     // Attention The Color Is Considered Only On IE For Info
     //[hr]
@@ -89,13 +96,13 @@ function format_comment($text) {
     if (HIDEBBCODE) {
         $id = (int) Input::get("topicid");
         $reply = DB::run("SELECT * FROM forum_posts WHERE topicid=$id AND userid=$_SESSION[id]");
-            if ($reply->rowCount() == 0) {
-                $s = preg_replace(
-                    "/\[hide\]\s*((\s|.)+?)\s*\[\/hide\]\s*/i",
-                    "<p style='border: 3px solid red; width:50%'><font color=red><b>Please reply to view Links</b></font></p>",
-                    $s
-                );
-            }
+        if ($reply->rowCount() == 0) {
+            $s = preg_replace(
+                "/\[hide\]\s*((\s|.)+?)\s*\[\/hide\]\s*/i",
+                "<p style='border: 3px solid red; width:50%'><font color=red><b>Please reply to view Links</b></font></p>",
+                $s
+            );
+        }
     }
     // Linebreaks
     $s = nl2br($s);
@@ -107,33 +114,24 @@ function format_comment($text) {
     while (list($code, $url) = thisEach($smilies)) {
         $s = str_replace($code, '<img border="0" src="' . URLROOT . '/assets/images/smilies/' . $url . '" alt="' . $code . '" title="' . $code . '" />', $s);
     }
-	reset($smilies1);
-    while (list($code, $url) = thisEach($smilies1)) {
-        $s = str_replace($code, '<img border="0" src="' . URLROOT . '/sceditor/' . $url . '" alt="' . $code . '" title="' . $code . '" />', $s);
+
+    if (OLD_CENSOR) {
+        $r = DB::run("SELECT * FROM censor");
+        while ($rr = $r->fetch(PDO::FETCH_ASSOC)) {
+            $s = preg_replace("/" . preg_quote($rr[0]) . "/i", $rr[1], $s);
+        }
+    } else {
+        $f = @fopen(LOGGER . "/censor.txt", "r");
+        if ($f && filesize(LOGGER . "/censor.txt") != 0) {
+            $bw = fread($f, filesize(LOGGER . "/censor.txt"));
+            $badwords = explode("\n", $bw);
+
+            for ($i = 0; $i < count($badwords); ++$i) {
+                $badwords[$i] = trim($badwords[$i]);
+            }
+            $s = str_replace($badwords, "<img src='" . URLROOT . "/assets/images/censored.png' border='0' alt='Censored' title='Censored' />", $s);
+        }
+        @fclose($f);
     }
-    /*
-	if($site_config["OLD_CENSOR"])
-	{
-    $r = SQL_Query_exec("SELECT * FROM censor");
-	while($rr=mysqli_fetch_row($r))
-	$s = preg_replace("/".preg_quote($rr[0])."/i", $rr[1], $s);
-    }
-	else
-	{
-	
-    $f = @fopen("censor.txt","r");
-    
-    if ($f && filesize("censor.txt") != 0) {
-    
-       $bw = fread($f, filesize("censor.txt"));
-       $badwords = explode("\n",$bw);
-       
-       for ($i=0; $i<count($badwords); ++$i)
-           $badwords[$i] = trim($badwords[$i]);
-       $s = str_replace($badwords, "<img src='/images/censored.png' border='0' alt='Censored' title='Censored' />", $s);
-    }
-    @fclose($f);
-	}
-*/
-	return $s;
+    return $s;
 }

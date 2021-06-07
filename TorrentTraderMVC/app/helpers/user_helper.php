@@ -26,7 +26,7 @@ function get_user_class_name($i)
     if ($i == $_SESSION["class"]) {
         return $_SESSION["level"];
     }
-    $res = $pdo->run("SELECT level FROM `groups` WHERE group_id=" . $i . "");
+    $res = $pdo->run("SELECT level FROM groups WHERE group_id=" . $i . "");
     $row = $res->fetch(PDO::FETCH_LAZY);
     return $row[0];
 }
@@ -41,7 +41,7 @@ function classlist()
 {
     $pdo = new Database();
     $ret = array();
-    $res = $pdo->run("SELECT * FROM `groups` ORDER BY group_id ASC");
+    $res = $pdo->run("SELECT * FROM groups ORDER BY group_id ASC");
     while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
         $ret[] = $row;
     }

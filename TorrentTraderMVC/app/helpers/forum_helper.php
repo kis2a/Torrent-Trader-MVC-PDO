@@ -65,7 +65,7 @@ function update_topic_last_post($topicid)
 {
     $pdo = new Database();
     $res = DB::run("SELECT id FROM forum_posts WHERE topicid=? ORDER BY id DESC LIMIT 1", [$topicid]);
-    $arr = $res->fetch(PDO::FETCH_LAZY) or showerror("No post found", Lang::T("FORUM_ERROR"));
+    $arr = $res->fetch(PDO::FETCH_LAZY) or Session::flash('info', 'No post found', URLROOT . "/forums");
     $postid = $arr[0];
     $pdo->run("UPDATE forum_topics SET lastpost=? WHERE id=?", [$postid, $topicid]);
 }
@@ -121,7 +121,7 @@ function insert_quick_jump_menu($currentforum = 0)
 
         }
         print("</select>\n");
-        print("<button type='submit' class='btn btn-sm btn-primary'>" . Lang::T("GO") . "</button>\n");
+        print("<button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("GO") . "</button>\n");
     }
     print("</form>\n</div>");
 }
@@ -133,12 +133,12 @@ function insert_compose_frame($id, $newtopic = true)
     $pdo = new Database();
     if ($newtopic) {
         $res = $pdo->run("SELECT name FROM forum_forums WHERE id=$id");
-        $arr = $res->fetch(PDO::FETCH_ASSOC) or showerror(Lang::T("FORUM_BAD_FORUM_ID"), Lang::T("FORUM_ERROR"));
+        $arr = $res->fetch(PDO::FETCH_ASSOC) or Session::flash('info', Lang::T("FORUM_BAD_FORUM_ID"), URLROOT . "/forums");
         $forumname = stripslashes($arr["name"]);
         print("<p align='center'><b>" . Lang::T("FORUM_NEW_TOPIC") . " <a href='" . URLROOT . "/forums/viewforum&amp;forumid=$id'>$forumname</a></b></p>\n");
     } else {
         $res = $pdo->run("SELECT * FROM forum_topics WHERE id=$id");
-        $arr = $res->fetch(PDO::FETCH_ASSOC) or showerror(Lang::T("FORUMS_NOT_FOUND_TOPIC"), Lang::T("FORUM_ERROR"));
+        $arr = $res->fetch(PDO::FETCH_ASSOC) or Session::flash('info', Lang::T("FORUMS_NOT_FOUND_TOPIC"), URLROOT . "/forums");
         $subject = stripslashes($arr["subject"]);
         print("<p align='center'>" . Lang::T("FORUM_REPLY_TOPIC") . ": <a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$id'>$subject</a></p>");
     }
@@ -155,7 +155,7 @@ function insert_compose_frame($id, $newtopic = true)
     } else {
         print("<div><input type='hidden' name='topicid' value='$id' />\n"); // added div here
     }
-   
+    /*
     print("
     <div class='row justify-content-md-center'>
 <div class='col-md-8'>
@@ -163,11 +163,11 @@ function insert_compose_frame($id, $newtopic = true)
     </div>
     </div>
     ");
-    // textbbcode("Form", "body");
+    */
+    textbbcode("Form", "body");
     
-    echo '<input type="file" name="upfile[]" multiple>';
-    //echo '<input type="file" name="upfile[]" multiple>';
-    print("<center><button type='submit' class='btn btn-sm btn-primary'>" . Lang::T("SUBMIT") . "</button></center></div>");
+    echo '<br><center><input type="file" name="upfile[]" multiple></center><br>';
+    print("<center><button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("SUBMIT") . "</button></center></div>");
     print("</form>\n");
     print("</div>");
     insert_quick_jump_menu();
@@ -182,7 +182,7 @@ function latestforumposts()
     <div class="col-lg-12">
     <div class="wrapper wrapper-content animated fadeInRight">
 
-    <div class="row navbarone">
+    <div class="row card-header">
     <div class="col-md-5">
     Latest Topic Title
     </div>
@@ -249,7 +249,7 @@ function latestforumposts()
             $new = !$a || $postid > $a[0];
             $subject = "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=last#last'>" . stripslashes(encodehtml($topicarr["subject"])) . "</a>";
             ?>
-        <div class="row border border-info">
+        <div class="row border border-warning">
         <div class="col-md-5 d-none d-sm-block">
         <b><?php echo $subject; ?></b>
         </div>
@@ -271,13 +271,13 @@ function latestforumposts()
         <?php
         } // while
     }
-    print("</div></div></div>");
+    print("</div></div></div><br>");
 }
 
 function lastpostdetails($lastpostid) {
     $post_res = DB::run("SELECT added,topicid,userid FROM forum_posts WHERE id=$lastpostid");
     if ($post_res->rowCount() == 1) {
-        $post_arr = $post_res->fetch(PDO::FETCH_ASSOC) or showerror("Bad forum last_post", Lang::T("ERROR"));
+        $post_arr = $post_res->fetch(PDO::FETCH_ASSOC) or Session::flash('info', "Bad forum last_post", URLROOT . "/forums");
         $lastposterid = $post_arr["userid"];
         $lastpostdate = TimeDate::utc_to_tz($post_arr["added"]);
         $lasttopicid = $post_arr["topicid"];

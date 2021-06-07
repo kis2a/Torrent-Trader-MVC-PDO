@@ -10,7 +10,6 @@ class Comments extends Controller
 
     public function index()
     {
-        require_once APPROOT . "/helpers/bbcode_helper.php";
         $id = (int) ($_GET["id"] ?? 0);
         $type = $_GET["type"];
         if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
@@ -29,11 +28,11 @@ class Comments extends Controller
             Style::end();
         }
 
-
+        $title = Lang::T("COMMENTS");
         Style::header(Lang::T("COMMENTS"));
         Style::begin($title);
         //TORRENT
-        $title = Lang::T("COMMENTS");
+        
         if ($type == "torrent") {
             torrentmenu($id);
             $res = DB::run("SELECT id, name FROM torrents WHERE id =?", [$id]);
@@ -41,7 +40,7 @@ class Comments extends Controller
             if (!$row) {
                 Session::flash('warning', "News id invalid", URLROOT."/home");
             }
-            $title = Lang::T("COMMENTSFOR") . "<a href='torrents/read?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</a>";
+            $title = Lang::T("COMMENTSFOR") . "<a href='torrent?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</a>";
         }
 
         if ($type == "req") {
@@ -53,6 +52,7 @@ class Comments extends Controller
             $title = Lang::T("COMMENTSFOR") . "<a href='".URLROOT."/request'>" . htmlspecialchars($row['name']) . "</a>";
         }
 
+        echo "<center><a href='".URLROOT."/comments/add?type=$type&amp;id=$id'><b>Add Comment</b></a></center><br>";
 
         $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE $type =?", [$id])->fetchColumn();
         if ($commcount) {
@@ -62,12 +62,12 @@ class Comments extends Controller
             unset($commres);
         }
         if ($commcount) {
-            print($pagertop);
             commenttable($commres, $type);
             print($pagerbottom);
         } else {
             print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
         }
+        
         echo "<div class='form-group'>";
         echo "<form name='comment' method='post' action=\"comments/take?type=$type&amp;id=$id\">";
         echo textbbcode("comment", "body") . "<br>";
@@ -77,9 +77,22 @@ class Comments extends Controller
         Style::footer();
     }
 
+    public function add()
+    {
+        $id = (int) ($_GET["id"] ?? 0);
+        $type = $_GET["type"];
+        if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
+            Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
+        }$data = [
+            'title' => 'Add Comment',
+            'id' => $id,
+            'type' => $type,
+        ];
+        $this->view('comments/add', $data, 'user');
+    }
+
     public function edit()
     {
-        require_once APPROOT . "/helpers/bbcode_helper.php";
         $id = (int) ($_GET["id"] ?? 0);
         $type = $_GET["type"];
         $edit = (int) ($_GET["edit"] ?? 0);
@@ -99,14 +112,13 @@ class Comments extends Controller
         }
         $arr = DB::run("SELECT * FROM comments WHERE id=?", [$id])->fetch();
 
-        Style::header("Edit Comment");
-        Style::begin(Lang::T("EDITCOMMENT"));
-        print("<b> " . Lang::T("EDITCOMMENT") . " </b><p>\n");
-        print("<form method=\"post\" name=\"comment\" action=\"" . URLROOT . "/comments/edit?type=$type&save=1&amp;id=$id\">\n");
-        print textbbcode("comment", "text", htmlspecialchars($arr["text"]));
-        print("<p><center><input type=\"submit\"  value=\"Submit Changes\" /></center></p></form>\n");
-        Style::end();
-        Style::footer();
+        $data = [
+            'title' => 'Edit Comment',
+            'text' => $arr["text"],
+            'id' => $id,
+            'type' => $type,
+        ];
+        $this->view('comments/index', $data, 'user');
         die();
     }
 
@@ -153,16 +165,11 @@ class Comments extends Controller
 
     public function user()
     {
-
-        require_once APPROOT . "/helpers/bbcode_helper.php";
         $id = (int) ($_GET["id"] ?? 0);
         if (!isset($id) || !$id) {
             Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
         }
 
-        //TORRENT
-        $title = Lang::T("COMMENTS");
-            
         $res = DB::run("SELECT 
             comments.id, text, user, comments.added, avatar, 
             signature, username, title, class, uploaded, downloaded, privacy, donated 
@@ -170,17 +177,14 @@ class Comments extends Controller
             LEFT JOIN users 
             ON comments.user = users.id 
             WHERE user = $id ORDER BY comments.id "); //$limit
-        //$res = DB::run("SELECT * FROM comments WHERE user =?", [$id]);
-            $row = $res->fetch(PDO::FETCH_LAZY);
-            if (!$row) {
-                Session::flash('warning', "User id invalid", URLROOT."/home");
-            }
-            $title = Lang::T("COMMENTSFOR") . "<a href='profile?id=" . $row['user'] . "'>&nbsp;$row[username]</a>";
-
+        $row = $res->fetch(PDO::FETCH_LAZY);
+        if (!$row) {
+            Session::flash('warning', "User id invalid", URLROOT."/home");
+        }
+        $title = Lang::T("COMMENTSFOR") . "<a href='profile?id=" . $row['user'] . "'>&nbsp;$row[username]</a>";
 
         Style::header(Lang::T("COMMENTS"));
         Style::begin($title);
-
         $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE user =? AND torrent = ?", [$id, 0])->fetchColumn();
         if ($commcount) {
             list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "comments?id=$id");
@@ -195,10 +199,8 @@ class Comments extends Controller
         } else {
             print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
         }
-
         Style::end();
         Style::footer();
-
     }
 
 }

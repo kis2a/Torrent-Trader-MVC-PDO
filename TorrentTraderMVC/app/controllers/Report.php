@@ -72,11 +72,11 @@ class Report extends Controller
             if ($res->rowCount() == 0) {
                 DB::run("INSERT into reports (addedby,votedfor,type,reason) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $taketorrent, 'torrent', $takereason]);
                 $msg = "Torrent with id: $taketorrent, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>";
-                Session::flash('info', $msg, URLROOT."/torrents/read?id=$torrent");
+                Session::flash('info', $msg, URLROOT."/torrent?id=$torrent");
                 die();
             } else {
                 $msg = Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $taketorrent";
-                Session::flash('info', $msg, URLROOT."/torrents/read?id=$torrent");
+                Session::flash('info', $msg, URLROOT."/torrent?id=$torrent");
                 die();
             }
         }
@@ -84,7 +84,7 @@ class Report extends Controller
         if ($torrent != "") {
             $res = DB::run("SELECT name FROM torrents WHERE id=?", [$torrent]);
             if ($res->rowCount() == 0) {
-                Session::flash('info', 'Invalid TorrentID', URLROOT."/torrents/read?id=$torrent");
+                Session::flash('info', 'Invalid TorrentID', URLROOT."/torrent?id=$torrent");
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
@@ -97,7 +97,7 @@ class Report extends Controller
             $this->view('report/torrent', $data, 'user');
             die();
         } else {
-            Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/torrents/read?id=$torrent");
+            Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/torrent?id=$torrent");
         }
     }
 

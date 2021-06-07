@@ -11,9 +11,9 @@ if (!MEMBERSONLY || $_SESSION['loggedin'] == true) {
             $name = htmlspecialchars($row["name"]);
 
             if ($row["image1"]) {?>
-					<center><div class="col-lg-6"><a href="<?php echo URLROOT; ?>/torrents/read?id=<?php echo $row["id"]; ?>" title="<?php echo $name . " / " . $cat; ?>"><img src="<?php echo data_uri(TORRENTDIR."/assets/images/".$row["image1"], $row['image1']); ?>" alt="<?php echo $name . " / " . $cat; ?>" class="img-thumbnail" /></a></div></center>
+					<center><div class="col-lg-6"><a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $row["id"]; ?>" title="<?php echo $name . " / " . $cat; ?>"><img src="<?php echo data_uri(TORRENTDIR."/assets/images/".$row["image1"], $row['image1']); ?>" alt="<?php echo $name . " / " . $cat; ?>" class="img-thumbnail" /></a></div></center>
 				<?php } else {?>
-					<center><div class="col-lg-6"><a href="<?php echo URLROOT; ?>/torrents/read?id=<?php echo $row["id"]; ?>" title="<?php echo $name . " / " . $cat; ?>"><img src="<?php echo data_uri(TORRENTDIR."/assets/images/".$row["image2"], $row['image2']); ?>" alt="<?php echo $name . " / " . $cat; ?>" class="img-thumbnail" /></a></div></center>
+					<center><div class="col-lg-6"><a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $row["id"]; ?>" title="<?php echo $name . " / " . $cat; ?>"><img src="<?php echo data_uri(TORRENTDIR."/assets/images/".$row["image2"], $row['image2']); ?>" alt="<?php echo $name . " / " . $cat; ?>" class="img-thumbnail" /></a></div></center>
 				<?php }
         }
 ?>

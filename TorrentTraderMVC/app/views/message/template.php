@@ -21,5 +21,5 @@ while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     <tbody></table></div>
     <center><a href='<?php echo URLROOT; ?>/messages/create'>
     <button type='button' class='btn btn-sm btn-success'><b>Make New Template</b></button></a>
-    <button type="submit" class="btn btn-sm btn-primary" value='Delete Checked' />Delete Checked</button></center>
+    <button type="submit" class="btn btn-sm btn-warning" value='Delete Checked' />Delete Checked</button></center>
     </form>

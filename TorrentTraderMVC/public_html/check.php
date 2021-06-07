@@ -2,7 +2,7 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 if ($_GET["phpinfo"] == 1) {
-    echo "<br /><center><a href='$config[URLROOT]/check'>Back To Check</a></center><br /><br />";
+    echo "<br /><center><a href='check.php'>Back To Check</a></center><br /><br />";
     phpinfo();
     die();
 }
@@ -56,15 +56,10 @@ td { vertical-align: top; }
 <p>If any of these items are highlighted in red then please take actions to correct them. <br />
 Failure to do so could lead to your installation not functioning correctly.</p>
 <br />
-This system check is designed for unix based servers, windows based servers may not give desired results<br />
+This system check is designed for unix based servers, windows based servers may not give desired results<br /><br>
 
-In cPanel or other host<br />
+<b>For file uploads you might need to change some setting</b><br /><br>
 block direct access to protect attachments<br />
-
-
-
-
-
 For attachments check<br />
 memory_limit<br />	
 1300008K<br />
@@ -77,25 +72,22 @@ upload_max_filesize<br />
 
 <table cellpadding="3" cellspacing="1" style="border-collapse: collapse" border="1">
 <tr>
-	<td>PHP version >= 7.3.0</td>
+	<td>PHP version >= 8</td>
 	<td>
 	<?php
-echo phpversion() < '7.4' ? '<b><font color="red">No</font> 7.2 or above required</b>' : '<b><font color="green">Yes</font></b>';
+    echo phpversion() < '8' ? '<b><font color="red">No</font> 8 or above required</b>' : '<b><font color="green">Yes</font></b>';
     echo " - Your PHP version is " . phpversion();
     ?>
 	</td>
 </tr>
-
 <tr>
 	<td>&nbsp; - zlib compression support</td>
 	<td><?php echo extension_loaded('zlib') ? '<b><font color="green">Available</font></b>' : '<b><font color="red">Unavailable</font></b>'; ?></td>
 </tr>
-
 <tr>
 	<td>&nbsp; - XML support</td>
 	<td><?php echo extension_loaded('xml') ? '<b><font color="green">Available</font></b>' : '<b><font color="red">Unavailable</font></b>'; ?></td>
 </tr>
-
 <tr>
 	<td>&nbsp; - curl support (Not required but external torrents may scrape faster)</td>
 	<td><?php echo function_exists('curl_init') ? '<b><font color="green">Available</font></b>' : '<b><font color="red">Unavailable</font></b>'; ?></td>
@@ -104,32 +96,27 @@ echo phpversion() < '7.4' ? '<b><font color="red">No</font> 7.2 or above require
 	<td>&nbsp; - openSSL (for the torrent encryption mod)</td>
 	<td><?php echo extension_loaded('openssl') ? '<b><font color="green">Available</font></b>' : '<b><font color="red">Unavailable</font></b>'; ?></td>
 </tr>
-
 <tr>
 	<td>&nbsp; - bcmath support (Required for IPv6)</td>
 	<td><?php echo extension_loaded('bcmath') ? '<b><font color="green">Available</font></b>' : '<b><font color="red">Unavailable</font></b>'; ?></td>
 </tr>
-
 <tr>
-	<td>config/config.php</td>
+	<td>app/config/config.php</td>
 	<td>
 	<?php
-if (@file_exists('config/config.php') && @is_writable('config/config.php')) {
-        echo '<b><font color="red">Writeable</font></b><br />Warning: leaving config/config.php writeable is a security risk';
+if (@file_exists('config/config.php') && @is_writable(APPROOT.'/config/config.php')) {
+        echo '<b><font color="red">Writeable</font></b><br />Warning: leaving app/config/config.php writeable is a security risk';
     } else {
         echo '<b><font color="green">Unwriteable</font></b>';
     }
     ?>
 	</td>
 </tr>
-
 <tr>
-	<td>Document Root<br /><i><font size="1">(Use this for your PATHS in config.php)</font></i></td>
+	<td>Document Root<br /><i><font size="1">(Use this for your PATHS in app/config/config.php)</font></i></td>
 	<td><?php echo str_replace('\\', '/', getcwd()) ?></td>
 </tr>
-
 </table>
-
 
 <br />
 <p>These settings are recommended for PHP in order to ensure full compatibility with TorrentTrader!.
@@ -137,40 +124,39 @@ However, TorrentTrader! will still operate if your settings do not quite match t
 
 <table cellpadding="3" cellspacing="1" style="border-collapse: collapse" border="1">
 <tr><td width="500px">Directive</td><td>Recommended</td><td>Actual</td></tr>
-
 <?php
-$php_recommended_settings = array(array('Safe Mode', 'safe_mode', 'OFF'),
-        array('Display Errors (Can be off, but does make debugging difficult.)', 'display_errors', 'ON'),
-        array('File Uploads', 'file_uploads', 'ON'),
-        array('Register Globals', 'register_globals', 'OFF'),
-        array('Output Buffering', 'output_buffering', 'OFF'),
-        array('Session auto start', 'session.auto_start', 'OFF'),
-        array('allow_url_fopen (Required for external torrents)', 'allow_url_fopen', 'ON'),
-    );
-
-    foreach ($php_recommended_settings as $phprec) {
-        ?>
+$php_recommended_settings = array(
+    array('Safe Mode', 'safe_mode', 'OFF'),
+    array('Display Errors (Can be off, but does make debugging difficult.)', 'display_errors', 'ON'),
+    array('File Uploads', 'file_uploads', 'ON'),
+    array('Register Globals', 'register_globals', 'OFF'),
+    array('Output Buffering', 'output_buffering', 'OFF'),
+    array('Session auto start', 'session.auto_start', 'OFF'),
+    array('allow_url_fopen (Required for external torrents)', 'allow_url_fopen', 'ON'),
+);
+foreach ($php_recommended_settings as $phprec) {
+    ?>
 	<tr>
 	<td><?php echo $phprec[0]; ?>:</td>
 	<td><?php echo $phprec[2]; ?>:</td>
 	<td><b>
 	<?php
-if (get_php_setting($phprec[1]) == $phprec[2]) {
-            ?>
-		<font color="green">
-	<?php
-} else {
-            ?>
-		<font color="red">
-	<?php
-}
-        echo get_php_setting($phprec[1]);
+    if (get_php_setting($phprec[1]) == $phprec[2]) {
         ?>
-</font></b>
-</td></tr>
-<?php
-}
+		<font color="green">
+	    <?php
+    } else {
+        ?>
+		<font color="red">
+	    <?php
+    }
+    echo get_php_setting($phprec[1]);
     ?>
+    </font></b>
+    </td></tr>
+   <?php
+}
+?>
 </table>
 
 <br /><b>Directory and File Permissions Check:</b><br />
@@ -186,10 +172,15 @@ writableCell('../data/backups');
 writableCell('../data/uploads');
 writableCell('../data/uploads/images');
 writableCell('../data/uploads/imdb');
+writableCell('../data/uploads/attachment');
 writableCell('../data/cache');
 writableCell('../data/cache/imdb');
 writableCell('../data/import');
 writableCell('../data/logs/censor.txt', 1);
+writableCell('../data/logs/exception_log.txt', 1);
+writableCell('uploads');
+writableCell('uploads/avatars');
+writableCell('uploads/thumbnail');
 ?>
 </table>
 <br />
@@ -210,14 +201,13 @@ try {
             }
 
             $arr[] = "addedrequests";
+            $arr[] = "clients";
             $arr[] = "announce";
-            $arr[] = "attachments";
             $arr[] = "bans";
             $arr[] = "blocks";
             $arr[] = "bonus";
             $arr[] = "categories";
             $arr[] = "censor";
-            $arr[] = "clients";
             $arr[] = "comments";
             $arr[] = "completed";
             $arr[] = "countries";
@@ -243,11 +233,9 @@ try {
             $arr[] = "polls";
             $arr[] = "ratings";
             $arr[] = "reports";
-            $arr[] = "requests";
             $arr[] = "rules";
-            $arr[] = "shoutbox";
             $arr[] = "snatched";
-            $arr[] = "sqlerr";
+            $arr[] = "shoutbox";
             $arr[] = "staffmessages";
             $arr[] = "stylesheets";
             $arr[] = "tasks";

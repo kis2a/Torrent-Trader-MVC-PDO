@@ -3,7 +3,7 @@ Style::begin($data['title']);
         print("<div style='margin-top:4px; margin-bottom:4px' align='center'><font size=2>We have <font color=red><b>$data[count]</b></font> User" . ($data['count'] > 1 ? "s" : "") . " with Hit and Run</font></div>");
         if ($data['res']->rowCount() != 0) {
             print("$data[pagertop]");
-            print '<form id="snatched" method="post" action="'.URLROOT.'/adminhitnrun">';
+            print '<form id="snatched" method="post" action="'.URLROOT.'/Adminsnatched">';
             print '<input type="hidden" name="do" value="delete" />';
             print '<table class="table table-striped table-bordered table-hover"><thead>';
             print '<tr>';
@@ -35,7 +35,7 @@ Style::begin($data['title']);
                     $stime = TimeDate::mkprettytime($row['ltime']);
                     $startdate = TimeDate::utc_to_tz(get_date_time($row['stime']));
                     $lastaction = TimeDate::utc_to_tz(get_date_time($row['utime']));
-                    print '<td><a href="' . $config['SITEURL'] . '/torrents/read?id=' . $row['tid'] . '">' . $smallname . '</td>';
+                    print '<td><a href="' . $config['SITEURL'] . '/torrent?id=' . $row['tid'] . '">' . $smallname . '</td>';
                     print '<td><font color=limegreen>' . mksize($row['uload']) . '</font></td>';
                     print '<td><font color=red>' . mksize($row['dload']) . '</font></td>';
                     print '<td>' . (is_null($stime) ? '0' : $stime) . '</td>';

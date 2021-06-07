@@ -2,7 +2,7 @@
 class Block
 {
     public static function left()
-    { 
+    {
         $TTCache = new Cache();
         $db = Database::instance();
         if (($blocks = $TTCache->get("blocks_left", 900)) === false) {
@@ -62,7 +62,7 @@ class Block
             $i++;
         }
     }
-    
+
     public static function resortmiddle()
     {
         $db = Database::instance();
@@ -73,7 +73,7 @@ class Block
             $i++;
         }
     }
-    
+
     public static function resortright()
     {
         $db = Database::instance();
@@ -95,15 +95,15 @@ class Block
                 <a data-toggle="collapse" href="#" class="showHide" id="<?php echo $blockId; ?>" style="float: right;"></a>
             </div>
             <div class="card-body slidingDiv<?php echo $blockId; ?>">
-        <?php
-}
+            <?php
+    }
 
     public static function end()
     {
-        ?>
+            ?>
             </div>
-        </div><br />
+        </div>
         <?php
-}
+    }
 
 }

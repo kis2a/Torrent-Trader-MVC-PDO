@@ -22,7 +22,7 @@ if ($_SESSION['loggedin'] == true) {
             $char1 = 40; //cut length
             $smallname = htmlspecialchars(substr($row["name"], 0, 30)) . "..."; ?>
             <div class="pull-left">
-            <a href='<?php echo URLROOT; ?>/torrents/read?id=<?php echo $row["id"]; ?>' title='<?php echo htmlspecialchars($row["name"]); ?>'><?php echo $smallname; ?></a>
+            <a href='<?php echo URLROOT; ?>/torrent?id=<?php echo $row["id"]; ?>' title='<?php echo htmlspecialchars($row["name"]); ?>'><?php echo $smallname; ?></a>
             </div>
             <div class="pull-left">
                 <span class="label label-success"> S: <?php echo number_format($row['seeders']); ?></span>

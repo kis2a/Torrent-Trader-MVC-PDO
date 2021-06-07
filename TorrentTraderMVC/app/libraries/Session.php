@@ -1,11 +1,6 @@
 <?php
 class Session
 {
-    public function __construct()
-    {}
-
-    private function __clone()
-    {}
 
     public static function set($key, $value)
     {

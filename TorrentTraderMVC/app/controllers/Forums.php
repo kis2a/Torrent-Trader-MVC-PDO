@@ -47,6 +47,7 @@ class Forums extends Controller
             $topiccount = number_format(get_row_count("forum_topics"));
 
             $data = [
+                'title' => 'Forums',
                 'mainquery' => $forums_res,
                 'postcount' => $postcount,
                 'topiccount' => $topiccount,
@@ -70,6 +71,7 @@ class Forums extends Controller
             }
             $data = [
                 'id' => $forumid,
+                'title' => 'New Post',
             ];
             $this->view('forum/newtopic', $data, 'user');
             die;
@@ -84,29 +86,19 @@ class Forums extends Controller
     public function search()
     {
         $this->validForumUser();
-        
         Style::header('search');
         Style::begin(Lang::T("Search Forums"));
         forumheader('search');
-        
+
         $keywords = trim($_GET["keywords"]);
-        
         if ($keywords != "") {
-            print("<p>Search Phrase: <b>" . htmlspecialchars($keywords) . "</b></p>\n");
+            print("<br><p>Search Phrase: <b>" . htmlspecialchars($keywords) . "</b></p>\n");
             $maxresults = 50;
-            /*
-            $res = DB::run("SELECT forum_posts.topicid, forum_posts.userid, forum_posts.id, forum_posts.added, forum_posts.body
-                FROM forum_posts
-                WHERE forum_posts.body  LIKE ?", ['%'.$keyword.'%']);
-               */
             $res = DB::run("SELECT forum_posts.topicid, forum_posts.userid, forum_posts.id, forum_posts.added,
                 MATCH ( forum_posts.body ) AGAINST ( ? ) AS relevancy
                 FROM forum_posts
                 WHERE MATCH ( forum_posts.body ) AGAINST ( ? IN BOOLEAN MODE )
-                ORDER BY relevancy DESC", ['%'.$keywords.'%', '%'.$keywords.'%']);
-               // var_dump($res);
-
-                
+                ORDER BY relevancy DESC", ['%' . $keywords . '%', '%' . $keywords . '%']);
             // search and display results...
             $num = $res->rowCount();
             if ($num > $maxresults) {
@@ -133,21 +125,21 @@ class Forums extends Controller
                     if ($user["username"] == "") {
                         $user["username"] = "Deluser";
                     }
-                    print("<tr><td>$post[id]</td><td align='left'><a href='".URLROOT."/forums/viewtopic&amp;topicid=$post[topicid]#post$post[id]'><b>" . htmlspecialchars($topic["subject"]) . "</b></a></td><td align='left'><a href='".URLROOT."/forums/viewforum&amp;forumid=$topic[forumid]'><b>" . htmlspecialchars($forum["name"]) . "</b></a></td><td align='left'><a href='".URLROOT."/profile?id=$post[userid]'><b>$user[username]</b></a><br />at " . TimeDate::utc_to_tz($post["added"]) . "</td></tr>\n");
+                    print("<tr><td>$post[id]</td><td align='left'><a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$post[topicid]#post$post[id]'><b>" . htmlspecialchars($topic["subject"]) . "</b></a></td><td align='left'><a href='" . URLROOT . "/forums/viewforum&amp;forumid=$topic[forumid]'><b>" . htmlspecialchars($forum["name"]) . "</b></a></td><td align='left'><a href='" . URLROOT . "/profile?id=$post[userid]'><b>$user[username]</b></a><br />at " . TimeDate::utc_to_tz($post["added"]) . "</td></tr>\n");
                 }
                 print("</table></div></center></p>\n");
                 print("<p><b>Search again</b></p>\n");
             }
         }
- ?>
-<center><form method='get' action='<?php echo URLROOT; ?>/forums/search'>
-<table cellspacing='0' cellpadding='5'>
-<tr><td valign='bottom' align='right'>Search For: </td><td align='left'><input type='text' size='40' name='keywords' /><br /></td></tr>
-<tr><td colspan='2' align='center'><input type='submit' value='Search' /></td></tr>
-</table></form></center>
-<?php
+        ?>
+        <center><form method='get' action='<?php echo URLROOT; ?>/forums/search'>
+        <table cellspacing='0' cellpadding='5'>
+        <tr><td valign='bottom' align='right'>Search For: </td><td align='left'><input type='text' size='40' name='keywords' /><br /></td></tr>
+        <tr><td colspan='2' align='center'><input type='submit' value='Search' /></td></tr>
+        </table></form></center>
+        <?php
 Style::end();
-Style::footer();
+        Style::footer();
     }
 
     /**
@@ -160,6 +152,7 @@ Style::footer();
         $data = [
             'res' => $res,
             'n' => 0,
+            'title' => 'Forums',
         ];
         $this->view('forum/viewunread', $data, 'user');
         die;
@@ -190,6 +183,7 @@ Style::footer();
         // Get topics data and display category
         $topicsres = DB::run("SELECT * FROM forum_topics WHERE forumid=$forumid ORDER BY sticky, lastpost  DESC $limit")->fetchAll();
         $data = [
+            'title' => 'Forums',
             'topicsres' => $topicsres,
             'forumname' => $forumname,
             'forumid' => $forumid,
@@ -205,12 +199,12 @@ Style::footer();
     public function reply()
     {
         $this->validForumUser();
-        require_once APPROOT . "/helpers/bbcode_helper.php";
         $topicid = Input::get("topicid");
         if (!$this->valid->validId($topicid)) {
             Session::flash('info', sprintf(Lang::T("FORUMS_NO_ID_FORUM"), $topicid), URLROOT . "/forums");
         }
         $data = [
+            'title' => 'Reply',
             'topicid' => $topicid,
         ];
         $this->view('forum/reply', $data, 'user');
@@ -252,6 +246,7 @@ Style::footer();
             Session::flash('info', Lang::T("FORUMS_DENIED"), URLROOT . "/forums");
         }
         $data = [
+            'title' => 'Edit Post',
             'postid' => $postid,
             'arrbody' => $arr['body'],
         ];
@@ -304,7 +299,6 @@ Style::footer();
             $forumid = $arr["forumid"];
         }
         //Insert the new post
-        $added = "'" . TimeDate::get_date_time() . "'";
         $body = htmlspecialchars_decode($body);
         DB::run("INSERT INTO forum_posts (topicid, userid, added, body) VALUES(?, ?, ?, ?)", [$topicid, $_SESSION["id"], TimeDate::get_date_time(), $body]);
         $postid = DB::lastInsertId();
@@ -325,34 +319,31 @@ Style::footer();
                 $hash = sha1($sourcePath);
 
                 $newfile = $hash . "." . $extension;
-                $targetPath = TORRENTDIR."/attachment/" . $hash.".data"; // Target path where file is to be stored
-                $thumbPath = "uploads/thumbnail/" . $hash.".jpg"; // Target path where attachment as jpg is to be stored
+                $targetPath = TORRENTDIR . "/attachment/" . $hash . ".data"; // Target path where file is to be stored
+                $thumbPath = "uploads/thumbnail/" . $hash . ".jpg"; // Target path where attachment as jpg is to be stored
 
                 if ($extension == 'zip') {
                     move_uploaded_file($sourcePath, $targetPath); // Moving Uploaded file
                     DB::run("
-				                        INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
-				                        VALUES (?,?,?,?,?,?,?)",
+						        INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
+						        VALUES (?,?,?,?,?,?,?)",
                         [$postid, $_SESSION['id'], TimeDate::gmtime(), $fileName,
                             $fileSize, $hash, $topicid]);
                 } else {
                     if (move_uploaded_file($sourcePath, $targetPath)) { // Moving Uploaded file
                         SimpleThumbnail::create()->image($targetPath)->thumbnail(100)->to($thumbPath);
                         DB::run("
-				                            INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
-				                            VALUES (?,?,?,?,?,?,?)",
+						            INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
+						            VALUES (?,?,?,?,?,?,?)",
                             [$postid, $_SESSION['id'], TimeDate::gmtime(), $fileName,
                                 $fileSize, $hash, $topicid]);
                     }
                 }
-
             endforeach;
         endif;
         //Update topic last post
         update_topic_last_post($topicid);
-		//All done, redirect user to the post
         if ($newtopic) {
-            // shout it
             $msg_shout = "New Forum Topic: [url=" . URLROOT . "/forums/viewtopic&topicid=" . $topicid . "]" . $subject . "[/url] posted by [url=" . URLROOT . "/profile?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]";
             DB::run("INSERT INTO shoutbox (userid, date, user, message) VALUES(?,?,?,?)", [0, TimeDate::get_date_time(), $_SESSION["username"], $msg_shout]);
             Redirect::to(URLROOT . "/forums/viewtopic&topicid=$topicid&page=last");
@@ -368,7 +359,6 @@ Style::footer();
     public function viewtopic()
     {
         $this->validForumUser();
-        require_once APPROOT . "/helpers/bbcode_helper.php";
         $postsperpage = 20;
         $maxsubjectlength = 50;
         $topicid = $_GET["topicid"];
@@ -379,7 +369,7 @@ Style::footer();
 
         $userid = $_SESSION["id"];
 
-        //------ Get topic info
+        // Get topic info
         $res = DB::run("SELECT * FROM forum_topics WHERE id=?", [$topicid]);
         $arr = $res->fetch(PDO::FETCH_ASSOC) or Session::flash('warning', "Topic not found", 1);
         $locked = ($arr["locked"] == 'yes');
@@ -391,7 +381,7 @@ Style::footer();
         $res2 = DB::run("SELECT minclassread, guest_read FROM forum_forums WHERE id=?", [$forumid]);
         $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
         if (!$arr2 || $_SESSION["class"] < $arr2["minclassread"] && $arr2["guest_read"] == "no") {
-            Session::flash('warning', "You do not have access to the forum this topic is in.", 1);
+            Session::flash('warning', "You do not have access to the forum this topic is in.", URLROOT);
         }
 
         // Update Topic Views
@@ -402,17 +392,17 @@ Style::footer();
         $uviews = DB::run("UPDATE forum_topics SET views = $new_views WHERE id=$topicid");
         // End
 
-        //------ Get forum
+        // Get forum
         $res = DB::run("SELECT * FROM forum_forums WHERE id=?", [$forumid]);
-        $arr = $res->fetch(PDO::FETCH_ASSOC) or showerror("Forum is empty", Lang::T("FORUM_ERROR"));
+        $arr = $res->fetch(PDO::FETCH_ASSOC) or Session::flash('warning', "Forum is empty.", URLROOT);
         $forum = stripslashes($arr["name"]);
 
-        //------ Get post count
+        // Get post count
         $res = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
         $arr = $res->fetch(PDO::FETCH_LAZY);
         $postcount = $arr[0];
 
-        //------ Make page menu
+        // Make page menu
         $pagemenu = "<br /><small>\n";
         $perpage = $postsperpage;
         $pages = floor($postcount / $perpage);
@@ -432,14 +422,12 @@ Style::footer();
         }
         $offset = max(0, ($page * $perpage) - $perpage);
 
-        //
         if ($page == 1) {
             $pagemenu .= "<b>&lt;&lt; Prev</b>";
         } else {
             $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=" . ($page - 1) . "'><b>&lt;&lt; Prev</b></a>";
         }
 
-        //
         $pagemenu .= "&nbsp;&nbsp;";
         for ($i = 1; $i <= $pages; ++$i) {
             if ($i == $page) {
@@ -449,7 +437,6 @@ Style::footer();
             }
 
         }
-        //
         $pagemenu .= "&nbsp;&nbsp;";
         if ($page == $pages) {
             $pagemenu .= "<b>Next &gt;&gt;</b><br /><br />\n";
@@ -467,7 +454,6 @@ Style::footer();
         forumheader("<a href='" . URLROOT . "/forums/viewforum&amp;forumid=$forumid'>$forum</a> <b style='font-size:16px; vertical-align:middle'>/</b> $subject");
 
         print("<div style='padding: 6px'>");
-
         $levels = get_forum_access_levels($forumid) or die;
         if ($_SESSION["class"] >= $levels["write"]) {
             $maypost = true;
@@ -482,7 +468,7 @@ Style::footer();
         }
         print("</div>");
 
-        //------ Print table of posts
+        // Print table of posts
         $pc = $res->rowCount();
         $pn = 0;
         if ($_SESSION['loggedin'] == true) {
@@ -562,29 +548,21 @@ Style::footer();
 
             }
             //Post Top
-            /*
-            print("<div class='table'><table class='table table-striped'><thead>
-            <tr><th width='150'>$by</th><th align='left'><small>Posted at $added </small></th></tr></thead><tbody>");
-             */
             ?>
-        <div class="row navbarone">
-        <div class="col-md-3 border border-info">
-            <?php echo $by; ?>
-        </div>
-        <div class="col-md-9 border border-info">
-            Posted at <?php echo $added; ?>
-        </div>
-        </div>
+            <div class="row card-header">
+            <div class="col-md-2">
+                <?php echo $by; ?>
+            </div>
+            <div class="col-md-10">
+                Posted at <?php echo $added; ?>
+            </div>
+            </div>
+            <?php
+            //Post Middle
 
-<?php
-//Post Middle
-            
-$body = format_comment($arr["body"]); //htmlspecialchars_decode($arr["body"]);
-//$body1 = stripslashes(format_comment($arr["body"]));
-//$body = "<div style='white-space: pre'>".$body1."</div>";
+            $body = format_comment($arr["body"]);
             if ($this->valid->validId($arr['editedby'])) {
                 $res2 = DB::run("SELECT username FROM users WHERE id=?", [$arr['editedby']]);
-
                 if ($res2->rowCount() == 1) {
                     $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
                     //edited by comment out if needed
@@ -594,11 +572,8 @@ $body = format_comment($arr["body"]); //htmlspecialchars_decode($arr["body"]);
             }
 
             $quote = htmlspecialchars($arr["body"]);
-
             $postcount1 = DB::run("SELECT COUNT(forum_posts.userid) FROM forum_posts WHERE id=$posterid");
-
             while ($row = $postcount1->fetch(PDO::FETCH_LAZY)) {
-
                 if ($privacylevel == "strong" && $_SESSION["control_panel"] != "yes") { //hide stats, but not from staff
                     $useruploaded = "---";
                     $userdownloaded = "---";
@@ -606,21 +581,9 @@ $body = format_comment($arr["body"]); //htmlspecialchars_decode($arr["body"]);
                     $nposts = "-";
                     $tposts = "-";
                 }
-                /*
-                print("<tr style='border: 1px solid black'   valign='top''><td  style='border: 1px solid black'  wi
-                dth='150' align='left' class='comment-details'>
-                <center><i>$title</i></center><br /><center>
-                <img width='80' height='80' src='$avatar' alt='' /></center><br />
-                Uploaded: $useruploaded<br />
-                Downloaded: $userdownloaded<br />
-                Posts: $forumposts<br />
-                Ratio: $userratio<br />
-                Location: $usercountry<br /><br /></td>");
-                print("<td  style='border: 1px solid black'  class='comment'><br />$body<br />");
-                 */
                 ?>
-        <div class="row border border-info">
-        <div class="col-md-2 d-none d-sm-block border border-info">
+                <div class="row border">
+                <div class="col-md-2 d-none d-sm-block border border-warning">
                 <center><i><?php echo $title; ?></i></center><br>
                 <center><img width='80' height='80' src='<?php echo $avatar ?>' alt='' /></center><br>
                 Uploaded: <?php echo $useruploaded; ?><br>
@@ -628,51 +591,50 @@ $body = format_comment($arr["body"]); //htmlspecialchars_decode($arr["body"]);
                 Posts: <?php echo $forumposts; ?><br>
                 Ratio: <?php echo $userratio; ?><br>
                 Location: <?php echo $usercountry; ?><br>
-        </div>
-        <div class="col-md-10 border border-info"><br>
-            <?php echo $body; ?>
+                </div>
+                <div class="col-md-10 border border-warning"><br>
+                <?php echo $body; ?>
 
                 <?php
-// attachments todo
-$sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);
-if ($sql->rowCount() != 0) {
-    foreach ($sql as $row7) {
-        print("<br>&nbsp;<b>$row7[filename]</b><br>");
-        $extension = substr($row7['filename'], -3);
-        if ($extension == 'zip') {
-            $daimage = TORRENTDIR."/attachment/$row7[file_hash].data";
-            if (file_exists($daimage)) {
-                print(" <a class='btn btn-sm btn-success' href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><i class='fa fa-file-archive-o' aria-hidden='true'></i>Download</a><br>");
-            } else {
-                print("no zip<br>");
-            }
-        } else {
-            $daimage = "uploads/thumbnail/$row7[file_hash].jpg";
-            if (file_exists($daimage)) {
-            
+                // attachments todo
+                $sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);
+                if ($sql->rowCount() != 0) {
+                    foreach ($sql as $row7) {
+                        print("<br>&nbsp;<b>$row7[filename]</b><br>");
+                        $extension = substr($row7['filename'], -3);
+                        if ($extension == 'zip') {
+                            $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+                            if (file_exists($daimage)) {
+                                print(" <a class='btn btn-sm btn-success' href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><i class='fa fa-file-archive-o' aria-hidden='true'></i>Download</a><br>");
+                            } else {
+                                print("no zip<br>");
+                            }
+                        } else {
+                            $daimage = "uploads/thumbnail/$row7[file_hash].jpg";
+                            if (file_exists($daimage)) {
 
-            ?>
+                                ?>
                 <!-- Trigger/Open The Model -->
-                <img id="myBtn" src='<?php echo data_uri($daimage, $row7['filename']); ?>' height='110px' width='110px' border='0' alt=''  data-toggle="modal" data-target="#myModal-<?= $daimage; ?>">
+                <img id="myBtn" src='<?php echo data_uri($daimage, $row7['filename']); ?>' height='110px' width='110px' border='0' alt=''  data-toggle="modal" data-target="#myModal-<?=$daimage;?>">
                 <!-- The Modal -->
-                <div id="myModal-<?= $daimage; ?>" class="modal">
-                  <!-- Modal content -->
-                  <div class="modal-content">
+                <div id="myModal-<?=$daimage;?>" class="modal">
+                    <!-- Modal content -->
+                    <div class="modal-content">
                         <!-- The Close Button -->
-                        <?php 
-                        $switchimage =TORRENTDIR."/attachment/$row7[file_hash].data";
+                        <?php
+                        $switchimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
                         ?><button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>CLOSE</b></button><br><?php
                         echo $row7['filename']; ?><br>
                         <img src='<?php echo data_uri($switchimage, $row7['filename']); ?>' style="width:100%" alt=''>
-                  </div>
+                    </div>
                 </div>
-            <?php
-            } else {
-                print("<a href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><img src='" . URLROOT . "/thumb/$row7[file_hash].jpg' height='110px' width='110px' border='0' alt='' /></a><br>");
-            }
-        }
-    }
-}
+                                <?php
+                            } else {
+                                print("<a href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><img src='" . URLROOT . "/thumb/$row7[file_hash].jpg' height='110px' width='110px' border='0' alt='' /></a><br>");
+                            }
+                        }
+                    }
+                }
 
                 if (!$usersignature) {
                     print("<br /></td></tr>\n");
@@ -684,41 +646,37 @@ if ($sql->rowCount() != 0) {
         </div>
         </div>
 
-            <div class="row navbarone">
-            <div class="col-md-3 d-none d-sm-block">
-            <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_profile.png' border='0' alt='' /></a>
-            <a href='<?php echo URLROOT; ?>/messages/create?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_pm.png' border='0' alt='' /></a>
-            <a href='<?php echo URLROOT; ?>/report/forum?forumid=<?php echo $topicid ?>&amp;forumpost=<?php echo $postid ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/p_report.png' border='0' alt='" . Lang::T("FORUMS_REPORT_POST") . "' /></a>&nbsp;
-            <a href='javascript:scroll(0,0);'><img src='<?php echo URLROOT; ?>/assets/images/forum/p_up.png'  alt='<?php echo Lang::T("FORUMS_GOTO_TOP_PAGE"); ?>' /></a>
-            </div>
-            <div class="col-md-9 d-none d-sm-block">
-                <?php
-// Hide Reply Mod
-            if ($_SESSION["id"] !== $posterid) {
-                // say thanks
-                print("<a href='" . URLROOT . "/likes/likeforum?id=$topicid'><button class='btn btn-sm btn-success'>Say Thanks</button></a>&nbsp;");
-            }
+        <div class="row card-header1">
+        <div class="col-md-3 d-none d-sm-block">
+        <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_profile.png' border='0' alt='' /></a>
+        <a href='<?php echo URLROOT; ?>/messages/create?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_pm.png' border='0' alt='' /></a>
+        <a href='<?php echo URLROOT; ?>/report/forum?forumid=<?php echo $topicid ?>&amp;forumpost=<?php echo $postid ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/p_report.png' border='0' alt='" . Lang::T("FORUMS_REPORT_POST") . "' /></a>&nbsp;
+        <a href='javascript:scroll(0,0);'><img src='<?php echo URLROOT; ?>/assets/images/forum/p_up.png'  alt='<?php echo Lang::T("FORUMS_GOTO_TOP_PAGE"); ?>' /></a>
+        </div>
+        <div class="col-md-9 d-none d-sm-block">
+        <?php
+        // Hide Reply Mod
+        if ($_SESSION["id"] !== $posterid) {
+            // say thanks
+            print("<a href='" . URLROOT . "/likes/likeforum?id=$topicid'><button class='btn btn-sm btn-success'>Say Thanks</button></a>&nbsp;");
+        }
 
-            //define buttons and who can use them
-            if ($_SESSION["id"] == $posterid || $_SESSION["edit_forum"] == "yes" || $_SESSION["delete_forum"] == "yes") {
-                print("<a href='" . URLROOT . "/forums/editpost&amp;postid=$postid'><img src='" . URLROOT . "/assets/images/forum/p_edit.png' border='0' alt='' /></a>&nbsp;");
-            }
-            if ($_SESSION["delete_forum"] == "yes") {
-                print("<a href='" . URLROOT . "/forums/deletepost&amp;postid=$postid&amp;sure=0'><img src='" . URLROOT . "/assets/images/forum/p_delete.png' border='0' alt='' /></a>&nbsp;");
-            }
-            if (!$locked && $maypost) {
-                print("<a href=\"javascript:SmileIT('[quote=$postername] $quote [/quote]', 'Form', 'body');\"><img src='" . URLROOT . "/assets/images/forum/p_quote.png' border='0' alt='' /></a>&nbsp;");
-                print("<a href='#bottom'><img src='" . URLROOT . "/assets/images/forum/p_reply.png' alt='' /></a>");
-            }
-            ?>
-            </div>
-            </div><br>
-<?php
-//Post Bottom
-            //print("<tr class='p-foot'><td width='150' align='center'><a href='" . URLROOT . "/profile?id=$posterid'><img src='" . URLROOT . "/assets/images/forum/icon_profile.png' border='0' alt='' /></a> <a href='" . URLROOT . "/messages/create?id=$posterid'><img src='" . URLROOT . "/assets/images/forum/icon_pm.png' border='0' alt='' /></a></td><td>");
-            //print("<div style='float: left;'><a href='" . URLROOT . "/report/forum?forumid=$topicid&amp;forumpost=$postid'><img src='" . URLROOT . "/assets/images/forum/p_report.png' border='0' alt='" . Lang::T("FORUMS_REPORT_POST") . "' /></a>&nbsp;<a href='javascript:scroll(0,0);'><img src='" . URLROOT . "/assets/images/forum/p_up.png'  alt='" . Lang::T("FORUMS_GOTO_TOP_PAGE") . "' /></a></div><div align='right'>");
-
-            //print("&nbsp;</div></td></tr></tbody><thead><tr></tr></thead></table></div>");
+        //define buttons and who can use them
+        if ($_SESSION["id"] == $posterid || $_SESSION["edit_forum"] == "yes" || $_SESSION["delete_forum"] == "yes") {
+            print("<a href='" . URLROOT . "/forums/editpost&amp;postid=$postid'><img src='" . URLROOT . "/assets/images/forum/p_edit.png' border='0' alt='' /></a>&nbsp;");
+        }
+        if ($_SESSION["delete_forum"] == "yes") {
+            print("<a href='" . URLROOT . "/forums/deletepost&amp;postid=$postid&amp;sure=0'><img src='" . URLROOT . "/assets/images/forum/p_delete.png' border='0' alt='' /></a>&nbsp;");
+        }
+        if (!$locked && $maypost) {
+            print("<a href=\"javascript:SmileIT('[quote=$postername] $quote [/quote]', 'Form', 'body');\"><img src='" . URLROOT . "/assets/images/forum/p_quote.png' border='0' alt='' /></a>&nbsp;");
+            print("<a href='#bottom'><img src='" . URLROOT . "/assets/images/forum/p_reply.png' alt='' /></a>");
+        }
+        ?>
+        </div>
+        </div><br>
+        <?php
+        //Post Bottom
         }
         //-------- end posts table ---------//
         print($pagemenu);
@@ -742,28 +700,19 @@ if ($sql->rowCount() != 0) {
             }
 
             print("</table>");
-///////////////////////////////////////////////////////////////////
-            /*
-            print("
-            <div class='row justify-content-md-center'>
-        <div class='col-md-8'>
-            <textarea  id='example' style='height:300px;width:80%;' name='body' rows='13'></textarea>
-            </div>
-            </div>
-            ");
-            */textbbcode("Form", "body"); // todo
-
+            
+            textbbcode("Form", "body"); // todo
 
             //echo '<center><input type="file" name="upfile[]" multiple></center><br>';
             print("<center><br /><button class='btn btn-sm btn-warning'>Reply</button></center><br>");
-            
+
             ?>
     <div class="row justify-content-md-center">
         <div class="col-md-4 border border-warning">
 <?php
-            echo '<center>Add attachment<center><br>';
+echo '<center>Add attachment<center><br>';
             echo '<center><input type="file" name="upfile[]" multiple></center><br></div></div><br>';
-            
+
             print("</form>\n");
             //Style::end();
             print(" </fieldset>");
@@ -790,16 +739,16 @@ if ($sql->rowCount() != 0) {
             print("<form method='post' action='" . URLROOT . "/forums/renametopic'>\n");
             print("<input type='hidden' name='topicid' value='$topicid' />\n");
             print("<input type='hidden' name='returnto' value='forums/viewtopic&amp;topicid=$topicid' />\n");
-            
-			print("<div align='center'  style='padding:3px'>Rename topic: 
+
+            print("<div align='center'  style='padding:3px'>Rename topic:
             <div class='row justify-content-md-center'>
             <div class='col col-lg-4'>
             <input class='form-control' type='text' name='subject' size='30' maxlength='$maxsubjectlength' value='" . stripslashes(htmlspecialchars($subject)) . "' />
             </div>
             </div>
             \n");
-			
-			print("<input type='submit' value='Apply' />");
+
+            print("<input type='submit' value='Apply' />");
             print("</div></form>\n");
             print("<form method='post' action='" . URLROOT . "/forums/movetopic&amp;topicid=$topicid'>\n");
             print("<div align='center' style='padding:3px'>");
@@ -857,25 +806,25 @@ if ($sql->rowCount() != 0) {
         }
         // Delete post
         DB::run("DELETE FROM forum_posts WHERE id=?", [$postid]);
-		        // Delete attachment todo	
-        $sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);	
-        if ($sql->rowCount() != 0) {	
-            foreach ($sql as $row7) {	
-                //print("<br>&nbsp;<b>$row7[filename]</b><br>");	
-                $daimage = TORRENTDIR."/attachment/$row7[file_hash].data";	
-                if (file_exists($daimage)) {	
-                    if (unlink($daimage)) {	
-                        DB::run("DELETE FROM attachments WHERE content_id=?", [$postid]);	
-                    }	
-                }	
-                $extension = substr($row7['filename'], -3);	
-                if ($extension != 'zip') {	
-                    $dathumb = "uploads/thumbnail/$row7[file_hash].jpg";	
-                    if (!unlink($dathumb)) {	
-                        Session::flash('info', "Could not remove thumbnail = $row7[file_hash].jpg", URLROOT . "/forums/viewtopic&topicid=$topicid");	
-                    }	
-                }	
-            }	
+        // Delete attachment todo
+        $sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);
+        if ($sql->rowCount() != 0) {
+            foreach ($sql as $row7) {
+                //print("<br>&nbsp;<b>$row7[filename]</b><br>");
+                $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+                if (file_exists($daimage)) {
+                    if (unlink($daimage)) {
+                        DB::run("DELETE FROM attachments WHERE content_id=?", [$postid]);
+                    }
+                }
+                $extension = substr($row7['filename'], -3);
+                if ($extension != 'zip') {
+                    $dathumb = "uploads/thumbnail/$row7[file_hash].jpg";
+                    if (!unlink($dathumb)) {
+                        Session::flash('info', "Could not remove thumbnail = $row7[file_hash].jpg", URLROOT . "/forums/viewtopic&topicid=$topicid");
+                    }
+                }
+            }
         }
         // Update topic
         update_topic_last_post($topicid);
@@ -1031,30 +980,27 @@ if ($sql->rowCount() != 0) {
 
     public function user()
     {
-
-        require_once APPROOT . "/helpers/bbcode_helper.php";
         $id = (int) ($_GET["id"] ?? 0);
         if (!isset($id) || !$id) {
-            Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
+            Session::flash('warning', Lang::T("ERROR"), URLROOT . "/home");
         }
 
         //TORRENT
         $title = Lang::T("User Posts");
-            
-        $res = DB::run("SELECT 
-            forum_posts.id, topicid, userid, forum_posts.added, body, 
-            avatar, signature, username, title, class, uploaded, downloaded, privacy, donated 
+
+        $res = DB::run("SELECT
+            forum_posts.id, topicid, userid, forum_posts.added, body,
+            avatar, signature, username, title, class, uploaded, downloaded, privacy, donated
             FROM forum_posts
-            LEFT JOIN users 
-            ON forum_posts.userid = users.id 
+            LEFT JOIN users
+            ON forum_posts.userid = users.id
             WHERE userid = $id ORDER BY forum_posts.userid "); //$limit
         //$res = DB::run("SELECT * FROM comments WHERE user =?", [$id]);
-            $row = $res->fetch(PDO::FETCH_LAZY);
-            if (!$row) {
-                Session::flash('warning', "User has not posted in forum", URLROOT."/home");
-            }
-            $title = Lang::T("COMMENTSFOR") . "<a href='profile?id=" . $row['userid'] . "'>&nbsp;$row[username]</a>";
-
+        $row = $res->fetch(PDO::FETCH_LAZY);
+        if (!$row) {
+            Session::flash('warning', "User has not posted in forum", URLROOT . "/home");
+        }
+        $title = Lang::T("COMMENTSFOR") . "<a href='profile?id=" . $row['userid'] . "'>&nbsp;$row[username]</a>";
 
         Style::header(Lang::T("COMMENTS"));
         Style::begin($title);
@@ -1076,41 +1022,41 @@ if ($sql->rowCount() != 0) {
                 $userdownloaded = mksize($row["downloaded"]);
                 $useruploaded = mksize($row["uploaded"]);
             }
-    
+
             if ($row["downloaded"] > 0) {
                 $userratio = number_format($row["uploaded"] / $row["downloaded"], 2);
             } else {
                 $userratio = "---";
             }
-    
+
             if (!$avatar) {
                 $avatar = URLROOT . "/assets/images/default_avatar.png";
             }
-    
+
             $commenttext = format_comment($row["body"]);
-    
+
             $edit = null;
             if ($_SESSION["edit_torrents"] == "yes" || $_SESSION["edit_news"] == "yes" || $_SESSION['id'] == $row['user']) {
-                $edit = '[<a href="' . URLROOT . '/forums/editpost&amp;postid='.$row['id'].'">Edit</a>]&nbsp;';
+                $edit = '[<a href="' . URLROOT . '/forums/editpost&amp;postid=' . $row['id'] . '">Edit</a>]&nbsp;';
             }
-    
+
             $delete = null;
             if ($_SESSION["delete_torrents"] == "yes" || $_SESSION["delete_news"] == "yes") {
-                $delete = '[<a href="' . URLROOT . '/forums/deletepost&amp;postid='.$row['id'].'&amp;sure=0">Delete</a>]&nbsp;';
+                $delete = '[<a href="' . URLROOT . '/forums/deletepost&amp;postid=' . $row['id'] . '&amp;sure=0">Delete</a>]&nbsp;';
             }
-    
+
             print('<div class="container"><table class="table table-striped" style="border: 1px solid black" >');
             print('<thead><tr">');
             print('<th align="center" width="150"></th>');
-            print('<th align="right">' . $edit . $delete . '[<a href="' . URLROOT . '/report/forum?forumid='. $row['topicid'] .'&amp;forumpost='. $row['id'] .'">Report</a>] Posted: ' . date("d-m-Y \\a\\t H:i:s", TimeDate::utc_to_tz_time($row["added"])) . '<a id="comment' . $row["id"] . '"></a></th>');
+            print('<th align="right">' . $edit . $delete . '[<a href="' . URLROOT . '/report/forum?forumid=' . $row['topicid'] . '&amp;forumpost=' . $row['id'] . '">Report</a>] Posted: ' . date("d-m-Y \\a\\t H:i:s", TimeDate::utc_to_tz_time($row["added"])) . '<a id="comment' . $row["id"] . '"></a></th>');
             print('</tr></thead>');
             print('<tr valign="top">');
             if ($_SESSION['edit_users'] == 'no' && $privacylevel == 'strong') {
-                print('<td align="left" width="150"><center><a href="' . URLROOT . '/profile?id=' . $row['id'] . '"><b>' . $postername . '</b></a><br /><i>' . $title . '</i><br /><img width="80" height="80" src="' . $avatar . '" alt="" /><br /><br />Uploaded: ---<br />Downloaded: ---<br />Ratio: ---<br /><br /><a href="'.URLROOT.'/profile?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_profile.png" border="" alt="" /></a> <a href="'.URLROOT.'/messages/create?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_pm.png" border="0" alt="" /></a></center></td>');
+                print('<td align="left" width="150"><center><a href="' . URLROOT . '/profile?id=' . $row['id'] . '"><b>' . $postername . '</b></a><br /><i>' . $title . '</i><br /><img width="80" height="80" src="' . $avatar . '" alt="" /><br /><br />Uploaded: ---<br />Downloaded: ---<br />Ratio: ---<br /><br /><a href="' . URLROOT . '/profile?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_profile.png" border="" alt="" /></a> <a href="' . URLROOT . '/messages/create?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_pm.png" border="0" alt="" /></a></center></td>');
             } else {
-                print('<td align="left" width="150"><center><a href="' . URLROOT . '/profile?id=' . $row['id'] . '"><b>' . $postername . '</b></a><br /><i>' . $title . '</i><br /><img width="80" height="80" src="' . $avatar . '" alt="" /><br /><br />Uploaded: ' . $useruploaded . '<br />Downloaded: ' . $userdownloaded . '<br />Ratio: ' . $userratio . '<br /><br /><a href="'.URLROOT.'/profile?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_profile.png" border="0" alt="" /></a> <a href="/messages/create?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_pm.png" border="0" alt="" /></a></center></td>');
+                print('<td align="left" width="150"><center><a href="' . URLROOT . '/profile?id=' . $row['id'] . '"><b>' . $postername . '</b></a><br /><i>' . $title . '</i><br /><img width="80" height="80" src="' . $avatar . '" alt="" /><br /><br />Uploaded: ' . $useruploaded . '<br />Downloaded: ' . $userdownloaded . '<br />Ratio: ' . $userratio . '<br /><br /><a href="' . URLROOT . '/profile?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_profile.png" border="0" alt="" /></a> <a href="/messages/create?id=' . $row["user"] . '"><img src="themes/' . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . '/forums/icon_pm.png" border="0" alt="" /></a></center></td>');
             }
-    
+
             print('<td>' . $commenttext . '<hr />' . $usersignature . '</td>');
             print('</tr>');
             print('</table></div>');

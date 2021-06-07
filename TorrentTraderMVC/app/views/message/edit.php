@@ -10,9 +10,8 @@
 
         <label for="name">Subject</label>
         <input type="text" name="subject" placeholder="Subject" value="<?php echo $data['subject']; ?>" id="subject">
-        <?php require_once APPROOT."/helpers/bbcode_helper.php";
-        print textbbcode("form", "msg", $data['msg']);?>
+        <?php print textbbcode("form", "msg", $data['msg']); ?>
         <center><input type="submit" value="Update">
-        <button type="submit" class="btn-sm btn-primary" name="Update" value="Update">Update</button>&nbsp;
+        <button type="submit" class="btn-sm btn-warning" name="Update" value="Update">Update</button>&nbsp;
        </form>
         </center>

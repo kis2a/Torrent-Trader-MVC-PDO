@@ -9,9 +9,6 @@ class Users
         $this->db = new Database();
     }
 
-    private function __clone()
-    {}
-
     public static function coloredname($name)
     {
         $db = new Database();

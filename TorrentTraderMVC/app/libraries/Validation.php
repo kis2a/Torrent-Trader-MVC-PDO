@@ -9,9 +9,6 @@ class Validation
         $this->db = new Database();
     }
 
-    private function __clone()
-    {}
-
     public function isEmpty($data)
     {
         if (is_array($data)) {

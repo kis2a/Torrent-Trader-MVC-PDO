@@ -502,7 +502,6 @@ class Helper
         $s = str_replace("  ", " &nbsp;", $s);
 
         // Smilies
-        // require_once "smilies_helper.php";
         reset($smilies);
         while (list($code, $url) = Helper::thisEach($smilies)) {
             $s = str_replace($code, '<img border="0" src="' . URLROOT . '/assets/images/smilies/' . $url . '" alt="' . $code . '" title="' . $code . '" />', $s);

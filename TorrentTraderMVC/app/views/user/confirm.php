@@ -12,7 +12,7 @@
     <input id="name" type="text" class="form-control" name="password1" minlength="3" maxlength="25" required autofocus>
 </div>
 <div class="form-group">
-	<button type="submit" class="btn btn-primary"><?php echo Lang::T("Submit"); ?></button>
+	<button type="submit" class="btn btn-warning"><?php echo Lang::T("Submit"); ?></button>
 </div>
 
 </div>

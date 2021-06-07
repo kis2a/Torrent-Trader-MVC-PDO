@@ -232,7 +232,7 @@ function do_cleanup()
         if ($query->rowCount() > 0) {
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                 $pdo->run("UPDATE `torrents` SET `freeleech` = '1' WHERE `id` = '$row[id]'");
-                Logs::write("Freeleech added on  <a href='torrents/read?id=$row[id]'>$row[name]</a> because it is bigger than  8gb.");
+                Logs::write("Freeleech added on  <a href='torrent?id=$row[id]'>$row[name]</a> because it is bigger than  8gb.");
             }
         }
     }

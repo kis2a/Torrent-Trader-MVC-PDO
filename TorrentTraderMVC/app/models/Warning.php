@@ -1,9 +1,11 @@
 <?php
-  class Warning {
+class Warning
+{
     private $db;
 
-    public function __construct(){
-      $this->db = new Database;
+    public function __construct()
+    {
+        $this->db = new Database;
     }
 
-  }
+}

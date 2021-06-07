@@ -4,7 +4,8 @@ class Admintorrents extends Controller
 
     public function __construct()
     {
-        Auth::user(); // should check admin here
+        Auth::user();
+        Auth::isStaff();
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();
@@ -28,19 +29,36 @@ class Admintorrents extends Controller
         list($pagertop, $pagerbottom, $limit) = pager(25, $count, "admintorrents&amp;");
         $res = DB::run("SELECT id, name, seeders, leechers, visible, banned, external FROM torrents $where ORDER BY name $limit");
 
-        $title = Lang::T("Torrent Management");
-        require APPROOT . '/views/admin/header.php';
-        Style::adminnavmenu();
-        Style::begin("Torrent Management");
         $data = [
+            'title' => Lang::T("Torrent Management"),
             'count' => $count,
             'pagerbottom' => $pagerbottom,
             'res' => $res,
             'search' => $search,
         ];
-        $this->view('torrent/admin/torrentmanage', $data);
-        Style::end();
-        require APPROOT . '/views/admin/footer.php';
+        $this->view('torrent/admin/torrentmanage', $data, 'admin');
+    }
 
+    public function free()
+    {
+        $search = trim($_GET['search']);
+        if ($search != '') {
+            $whereand = "AND name LIKE '%$search%";
+        }
+        $res2 = DB::run("SELECT COUNT(*) FROM torrents WHERE freeleech='1' $whereand");
+        $row = $res2->fetch(PDO::FETCH_LAZY);
+        $count = $row[0];
+        $perpage = 50;
+        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "/admintorrent/free?");
+
+        $rqq = "SELECT id, name, seeders, leechers, visible, banned FROM torrents WHERE freeleech='1' $whereand ORDER BY name $limit";
+        $resqq = DB::run($rqq);
+        $data = [
+            'title' => Lang::T("Free Leech"),
+            'pagertop' => $pagertop,
+            'resqq' => $resqq,
+            'pagerbottom' => $pagerbottom,
+        ];
+        $this->view('torrent/admin/freetorrent', $data, 'admin');
     }
 }

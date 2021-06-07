@@ -123,14 +123,6 @@ function SmileIT(smile, form, text) {
     document.forms[form].elements[text].focus();
 }
 
-function PopMoreSmiles(form, name) {
-    link = '/helpers/smilies_helper.php?action=display&form=' + form + '&text=' + name
-    newWin = window.open(link, 'moresmile', 'height=500,width=450,resizable=no,scrollbars=yes,location=no');
-    if (window.focus) {
-        newWin.focus()
-    }
-}
-
 function PopMoreTags() {
     link = 'tags.php';
     newWin = window.open(link, 'moresmile', 'height=500,width=775,resizable=no,scrollbars=yes,location=no');

@@ -3,12 +3,6 @@ class Redirect
 {
     public $url;
 
-    public function __construct()
-    {}
-
-    private function __clone()
-    {}
-
     public static function to($url)
     {
         if (!headers_sent()) {
@@ -31,7 +25,7 @@ class Redirect
         Style::begin("Info");
         echo "\n<meta http-equiv=\"refresh\" content=\"3; url=$al_url\">\n";
         ?>
-        <div class="alert alert-info">
+        <div class="alert alert-warning">
         <b><?php echo $al_msg; ?></b>&nbsp;
         <b>Redirecting ...</b><br>
         <b>[ <a href='<?php echo $al_url; ?>'>link</a> ]</b>&nbsp;

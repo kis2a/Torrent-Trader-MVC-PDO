@@ -15,9 +15,8 @@
             <label>Subject</label>&nbsp;
                      <?php echo $data['subject']; ?><br>
 
-        <?php require_once APPROOT."/helpers/bbcode_helper.php"; ?>
         <?php print textbbcode("form", "body", $data['msg']);?>
-        <center><button type="submit" class="btn-sm btn-primary" name="Update" value="create">Create</button>&nbsp;
+        <center><button type="submit" class="btn-sm btn-warning" name="Update" value="create">Create</button>&nbsp;
     <label>Save Copy In Outbox</label>
     <input type="checkbox" name="save" checked='Checked'>&nbsp;
        </form>

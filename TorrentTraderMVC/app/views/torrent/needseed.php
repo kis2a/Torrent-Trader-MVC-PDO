@@ -22,7 +22,7 @@
     }
     ?>
             <tbody><tr>
-            <td><a href="<?php echo URLROOT ?>/torrents/read?id=<?php echo $row["id"]; ?>"><?php echo CutName(htmlspecialchars($row["name"]), 40) ?></a></td>
+            <td><a href="<?php echo URLROOT ?>/torrent?id=<?php echo $row["id"]; ?>"><?php echo CutName(htmlspecialchars($row["name"]), 40) ?></a></td>
             <td><?php echo $owner; ?></td>
             <td><?php echo $type; ?></td>
             <td><?php echo mksize($row["size"]); ?></td>

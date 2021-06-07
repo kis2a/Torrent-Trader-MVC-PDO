@@ -5,7 +5,7 @@ class Invite extends Controller
     public function __construct()
     {
         Auth::user();
-        // $this->userModel = $this->model('User');
+        //$this->userModel = $this->model('User');
         $this->valid = new Validation();
     }
 
@@ -105,9 +105,13 @@ class Invite extends Controller
         if ($invitees == 0) {
             Session::flash('info', "This member has no invitees", URLROOT."/profile?id=$id");
         }
-
+        if ($id != $_SESSION["id"]) {
+            $title = "Invite Tree for [<a href=".URLROOT."/profile?id=$id>" . $id . "</a>]";
+        } else {
+            $title = "You have $invitees invitees " . Users::coloredname($_SESSION["username"]) . "";
+        }
         $data = [
-            'title' => "Invite Tree for " . $id . "",
+            'title' => $title,
             'id' => $id,
             'invitees' => $invitees,
             'res' => $res,

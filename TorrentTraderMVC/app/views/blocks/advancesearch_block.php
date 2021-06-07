@@ -33,7 +33,7 @@ if ($_SESSION['loggedin']) {
 			<option value="2"><?php echo Lang::T("EXTERNAL_ONLY"); ?></option>
 		</select><br />
 		<?php }?>
-		<button type="submit" class="btn btn-primary center-block" /><?php echo Lang::T("SEARCH"); ?></button>
+		<button type="submit" class="btn btn-warning center-block" /><?php echo Lang::T("SEARCH"); ?></button>
 	</form>
     <!-- end content -->
 

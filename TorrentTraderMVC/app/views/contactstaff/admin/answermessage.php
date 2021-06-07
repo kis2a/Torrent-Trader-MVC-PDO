@@ -14,7 +14,7 @@ $array = $data['res2']->fetch(PDO::FETCH_ASSOC);
         print("<center><a href=#><font color=red><b>--- </a> ---</b></font color></center>");
     }
         echo $replyto ? " colspan=2" : ""; ?>
-    <button type="submit" class="btn btn-primary">Send it!</a>
+    <button type="submit" class="btn btn-warning">Send it!</a>
     <input type=hidden name=receiver value=<?php echo $data['receiver']; ?>>
     <input type=hidden name=answeringto value=<?php echo $data['answeringto']; ?>>
 </td></tr></table>

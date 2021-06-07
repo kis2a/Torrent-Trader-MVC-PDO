@@ -4,4 +4,4 @@
 <form method='post' action='<?php echo URLROOT; ?>/report/user'>
 <input type='hidden' name='user' value='<?php echo $data['user']; ?>' />
 <input class="form-control" type='text' size='100' name='reason' /><br>
-<input class="btn btn-sm btn-primary" type='submit' value='Confirm' /></form>
+<input class="btn btn-sm btn-warning" type='submit' value='Confirm' /></form>

@@ -27,7 +27,7 @@ class Rating extends Controller
                 }
             }
             DB::run("UPDATE torrents SET numratings = numratings + 1, ratingsum = ratingsum + $rating WHERE id = $id");
-            show_error_msg(Lang::T("RATING_SUCCESS"), Lang::T("RATING_THANK") . "<br /><br /><a href='".URLROOT."/torrents/read?id=$id'>" . Lang::T("BACK_TO_TORRENT") . "</a>");
+            show_error_msg(Lang::T("RATING_SUCCESS"), Lang::T("RATING_THANK") . "<br /><br /><a href='".URLROOT."/torrent?id=$id'>" . Lang::T("BACK_TO_TORRENT") . "</a>");
         }
     }
 }

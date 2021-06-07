@@ -21,6 +21,6 @@ while ($arr = $data['mainsql']->fetch(PDO::FETCH_ASSOC)) {
 <?php }?>
     <tbody></table></div>
 <?php echo '<div style="float: left;">read&nbsp;<img src="' . URLROOT . '/assets/images/forum/folder.png" alt="read" width="20" height="20">&nbsp;unread&nbsp;<img src="' . URLROOT . '/assets/images/forum/folder_new.png" alt="unread" width="20" height="20"></div>'; ?>
-<center><button type="submit" class="btn btn-primary" value='Delete Checked' />Delete Checked</button>  <button type="submit" class="btn btn-primary" value='Read Checked' name='read' />Read Checked</button></center>
+<center><button type="submit" class="btn btn-warning" value='Delete Checked' />Delete Checked</button>  <button type="submit" class="btn btn-warning" value='Read Checked' name='read' />Read Checked</button></center>
 </form>
 <?php echo $data['pagerbottom'];

@@ -6,7 +6,6 @@ Style::begin(Lang::T("SHOUTBOX"));
 <div class="row">
     <div class="col-md-12">
         <?php
-        include APPROOT.'/helpers/bbcode_helper.php';
         echo shoutbbcode("shoutboxform", "message");
         ?>
     </div>

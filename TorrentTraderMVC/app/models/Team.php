@@ -1,9 +1,11 @@
 <?php
-  class Team {
+class Team
+{
     private $db;
 
-    public function __construct(){
-      $this->db = new Database;
+    public function __construct()
+    {
+        $this->db = new Database;
     }
 
-  }
+}

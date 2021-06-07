@@ -84,6 +84,15 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
                         $message = sprintf(Lang::T("EMAIL_ADDRESS_INUSE_S"), $email);
                     }
                 }
+                
+                //check username isnt in use
+                $count = DB::run("SELECT count(*) FROM users WHERE  username=?", [$wantusername])->fetchColumn();
+	            if ($count != 0) {
+                    $message = sprintf(Lang::T("USERNAME_INUSE_S"), $wantusername);
+                    $secret = mksecret(); //generate secret field
+                    $wantpassword = password_hash($wantpassword, PASSWORD_BCRYPT); // hash the password
+                }
+                
                 $secret = mksecret(); //generate secret field
                 $wantpassword = password_hash($wantpassword, PASSWORD_BCRYPT); // hash the password
             }

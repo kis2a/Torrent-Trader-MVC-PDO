@@ -66,16 +66,18 @@ class Home extends Controller
             }
             Style::end();
         }
-        // Shoutbox
-        if (SHOUTBOX && !($_SESSION['hideshoutbox'] == 'yes')) {
-            $data = [];
-            $this->view('home/shoutbox', $data);
-        }
+
+                // Shoutbox
+                if (SHOUTBOX && !($_SESSION['hideshoutbox'] == 'yes')) {
+                    $data = [];
+                    $this->view('home/shoutbox', $data);
+                }
         // Last Forum Post On Index
         if (FORUMONINDEX) {
             $data = [];
             $this->view('home/lastforumpost', $data);
         }
+        
         // Latest Torrents
         if (MEMBERSONLY && !$_SESSION) {
             $msg = Lang::T("BROWSE_MEMBERS_ONLY");
