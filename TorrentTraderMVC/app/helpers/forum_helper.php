@@ -249,7 +249,7 @@ function latestforumposts()
             $new = !$a || $postid > $a[0];
             $subject = "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=last#last'>" . stripslashes(encodehtml($topicarr["subject"])) . "</a>";
             ?>
-        <div class="row border border-warning">
+        <div class="row border  border-primary rounded-bottom">
         <div class="col-md-5 d-none d-sm-block">
         <b><?php echo $subject; ?></b>
         </div>

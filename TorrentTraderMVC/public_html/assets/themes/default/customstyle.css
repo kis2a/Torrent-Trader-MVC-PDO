@@ -37,13 +37,10 @@ border: 5px solid #ff0000 !IMPORTANT;
 	border-radius: 9px 9px 9px 9px !IMPORTANT;
 -moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
 -webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #ff9900 !IMPORTANT;
+border: 3px solid #3895D3 !IMPORTANT;
 }
 .border-primary {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #3895D3 !IMPORTANT;
+border: 2px solid #3895D3 !IMPORTANT;
 }
 
 /* Styles ShoutBox */
@@ -126,6 +123,15 @@ border: 5px solid #3895D3 !IMPORTANT;
         background-image: linear-gradient(to bottom, #072F5F, #3895D3);
         background-repeat: repeat-x;
 }
+
+.ttheader {
+	color: #fff;
+	background-color: #ff9900;
+	background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
+	background-image: linear-gradient(to bottom, #a9111f, #ff9900);
+	background-repeat: repeat-x;
+}
+
 .tbody td {
     background-color: #EEEEEE;
 }
@@ -138,6 +144,14 @@ border: 5px solid #3895D3 !IMPORTANT;
 	border-bottom: 0px;
 }
 
+.card-header1 {
+	color: #fff;
+	background-image: -webkit-linear-gradient(top, #3895D3, #072F5F);
+	background-image: linear-gradient(to bottom, #3895D3, #072F5F);
+	background-repeat: repeat-x;
+	border-bottom: 0px;
+	height: 35px;
+}
 .card-body {
     border: 10px solid;
     border-image-slice: 1;
@@ -161,4 +175,21 @@ border: 5px solid #3895D3 !IMPORTANT;
     background-image: linear-gradient(to bottom, #3895D3, #072F5F);
     background-repeat: repeat-x;
 	color: #fff;
+}  
+
+ .alert-info {
+    color: #070b0c !IMPORTANT;
+    background-color: #f6f863 !IMPORTANT;
+    border-color: #f6f863 !IMPORTANT;
+}
+.card {
+	background-color: transparent; /* Needed to make the padding-bottom work */
+	border: 0px; /* Needed to make the padding-bottom work */
+	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
+}
+
+.btn-warning {
+    color: #fff  !IMPORTANT;
+	background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !IMPORTANT;
+	background-image: linear-gradient(to bottom, #072F5F, #3895D3) !IMPORTANT;
 }

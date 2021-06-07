@@ -37,13 +37,11 @@ border: 5px solid #ff0000 !IMPORTANT;
 	border-radius: 9px 9px 9px 9px !IMPORTANT;
 -moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
 -webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #ff9900 !IMPORTANT;
+border: 3px solid #ff9900 !IMPORTANT;
 }
+ /* used for forum straight border*/
 .border-primary {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #3895D3 !IMPORTANT;
+border: 2px solid #ff9900 !IMPORTANT;
 }
   
   /* Styles ShoutBox */
@@ -145,6 +143,7 @@ border: 5px solid #3895D3 !IMPORTANT;
 	  background-image: linear-gradient(to bottom, #a9111f, #ff9900);
 	  background-repeat: repeat-x;
 	  border-bottom: 0px;
+	  height: 35px;
   }
 
   .card-header1 {
@@ -153,6 +152,7 @@ border: 5px solid #3895D3 !IMPORTANT;
 	background-image: linear-gradient(to bottom, #ff9900, #a9111f);
 	background-repeat: repeat-x;
 	border-bottom: 0px;
+	height: 35px;
 }
 
   .card-body {
@@ -190,4 +190,15 @@ border: 5px solid #3895D3 !IMPORTANT;
 	background-color: transparent; /* Needed to make the padding-bottom work */
 	border: 0px; /* Needed to make the padding-bottom work */
 	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
+}
+
+.btn-warning {
+    color: #fff  !IMPORTANT;
+	background-image: -webkit-linear-gradient(top, #a9111f, #ffc107) !IMPORTANT;
+	background-image: linear-gradient(to bottom, #a9111f, #ffc107) !IMPORTANT;
+}
+
+
+a {
+    color: #fff;
 }

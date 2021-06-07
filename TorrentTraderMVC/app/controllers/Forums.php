@@ -462,7 +462,9 @@ Style::end();
         }
 
         if (!$locked && $maypost) {
-            print("<div align='right'><a href='#bottom'><img src='" . URLROOT . "/assets/images/forum/button_reply.png' border='0' alt='' /></a></div>");
+            print("<div align='right'>
+            <a href='#bottom'><button type='button' class='btn btn-sm btn-warning'><b>Reply</b></button></a>
+            </div>");
         } else {
             print("<div align='right'><img src='" . URLROOT . "/assets/images/forum/button_locked.png'  alt='" . Lang::T("FORUMS_LOCKED") . "' /></div>");
         }
@@ -582,8 +584,8 @@ Style::end();
                     $tposts = "-";
                 }
                 ?>
-                <div class="row border">
-                <div class="col-md-2 d-none d-sm-block border border-warning">
+                <div class="row">
+                <div class="col-md-2 d-none d-sm-block border border-primary">
                 <center><i><?php echo $title; ?></i></center><br>
                 <center><img width='80' height='80' src='<?php echo $avatar ?>' alt='' /></center><br>
                 Uploaded: <?php echo $useruploaded; ?><br>
@@ -592,7 +594,7 @@ Style::end();
                 Ratio: <?php echo $userratio; ?><br>
                 Location: <?php echo $usercountry; ?><br>
                 </div>
-                <div class="col-md-10 border border-warning"><br>
+                <div class="col-md-10 border border-primary"><br>
                 <?php echo $body; ?>
 
                 <?php
@@ -684,7 +686,7 @@ Style::end();
         //quick reply
         if (!$locked && $_SESSION['loggedin'] == true) {
             //Style::begin("Reply", $newtopic = false);
-            print("<fieldset class='download'><legend><b>" . Lang::T("FORUMS_POST_REPLY") . "</b></legend>");
+            print("<fieldset class='download'><legend><center><b>" . Lang::T("FORUMS_POST_REPLY") . "</b></center></legend>");
             $newtopic = false;
             print("<a name='bottom'></a>");
             print("<form name='Form' method='post' action='" . URLROOT . "/forums/submittopic' enctype='multipart/form-data'>\n");

@@ -40,7 +40,7 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
     // Get last post info in a array return img & lastpost
     $detail = lastpostdetails($lastpostid); ?>
 
-    <div class="row border border-warning">
+    <div class="row border border-primary rounded-bottom">
     <div class="col-md-8">
         <img src='<?php echo URLROOT; ?>/assets/images/forum/<?php echo $detail['img']; ?>.png'>&nbsp;
         <a href='<?php echo URLROOT; ?>/forums/viewforum&amp;forumid=<?php echo $forumid; ?>'><b><?php echo $forumname; ?></b></a><br>

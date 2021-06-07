@@ -99,7 +99,7 @@ if ($data['topicsres'] > 0) {
         $subject = ($sticky ? "<b>" . Lang::T("FORUMS_STICKY") . ": </b>" : "") . "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid'><b>" .
         encodehtml(stripslashes($topicarr["subject"])) . "</b></a>$topicpages";
         ?>
-        <div class="row border border-warning">
+        <div class="row border border-primary">
         <div class="col-md-1 d-none d-sm-block">
         <img src='<?php echo URLROOT; ?>/assets/images/forum/<?php echo $topicpic ?>.png' alt='' />
         </div>
