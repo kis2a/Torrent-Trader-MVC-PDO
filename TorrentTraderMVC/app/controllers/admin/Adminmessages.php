@@ -60,7 +60,7 @@ class Adminmessages extends Controller
             Redirect::autolink(URLROOT . "/adminmessages/mass", Lang::T("SUCCESS"), "Mass PM Sent!");
             die;
         }
-        $res = DB::run("SELECT group_id, level FROM groups");
+        $res = DB::run("SELECT group_id, level FROM `groups`");
         $data = [
             'title' => Lang::T("Mass Private Message"),
             'res' => $res,

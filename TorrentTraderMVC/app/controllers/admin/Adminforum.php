@@ -13,7 +13,7 @@ class Adminforum extends Controller
 
     public function index()
     {
-        $groupsres = DB::run("SELECT group_id, level FROM groups ORDER BY group_id ASC");
+        $groupsres = DB::run("SELECT group_id, level FROM `groups` ORDER BY group_id ASC");
         $data = [
             'title' => Lang::T("FORUM_MANAGEMENT"),
             'groupsres' => $groupsres,
