@@ -804,7 +804,8 @@ echo '<center>Add attachment<center><br>';
         $res = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
         $arr = $res->fetch(PDO::FETCH_LAZY);
         if ($arr[0] < 2) {
-            Session::flash('info', "$topicid is the last post in topic", URLROOT . "/forums");
+            $msg = sprintf(Lang::T("FORUMS_DEL_POST_ONLY_POST"), $topicid);
+            Session::flash('info', $msg, URLROOT . "/forums");
         }
         // Delete post
         DB::run("DELETE FROM forum_posts WHERE id=?", [$postid]);
