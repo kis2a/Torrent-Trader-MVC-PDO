@@ -248,7 +248,7 @@ Style::end();
         $data = [
             'title' => 'Edit Post',
             'postid' => $postid,
-            'arrbody' => $arr['body'],
+            'body' => $arr['body'],
         ];
         $this->view('forum/edit', $data, 'user');
         die;

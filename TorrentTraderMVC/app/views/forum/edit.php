@@ -5,7 +5,7 @@
 <div class='row justify-content-md-center'>
     <div class='col-md-10'>
         <?php
-        textbbcode("Form", "body");
+        textbbcode("Form", "body", $data['body']);
         ?>
     </div>
 </div>

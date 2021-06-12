@@ -55,7 +55,7 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
         <div class="col-md-2 d-none d-sm-block">
         <?php echo $detail['lastpost']; ?>
     </div>
-    </div><br>
+    </div>
     <?php
 } ?>
 </div>
