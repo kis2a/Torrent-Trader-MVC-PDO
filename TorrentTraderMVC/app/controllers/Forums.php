@@ -497,6 +497,7 @@ Style::end();
             $res2 = DB::run("SELECT * FROM users WHERE id=?", [$posterid]);
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
             $postername = Users::coloredname($arr2["username"]);
+			$quotename = $arr2["username"];
 
             if ($postername == "") {
                 $by = "Deluser";
@@ -671,7 +672,7 @@ Style::end();
             print("<a href='" . URLROOT . "/forums/deletepost&amp;postid=$postid&amp;sure=0'><img src='" . URLROOT . "/assets/images/forum/p_delete.png' border='0' alt='' /></a>&nbsp;");
         }
         if (!$locked && $maypost) {
-            print("<a href=\"javascript:SmileIT('[quote=$postername] $quote [/quote]', 'Form', 'body');\"><img src='" . URLROOT . "/assets/images/forum/p_quote.png' border='0' alt='' /></a>&nbsp;");
+            print("<a href=\"javascript:SmileIT('[quote=$quotename] $quote [/quote]', 'Form', 'body');\"><img src='" . URLROOT . "/assets/images/forum/p_quote.png' border='0' alt='' /></a>&nbsp;");
             print("<a href='#bottom'><img src='" . URLROOT . "/assets/images/forum/p_reply.png' alt='' /></a>");
         }
         ?>
