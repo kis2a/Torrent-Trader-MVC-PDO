@@ -31,50 +31,14 @@ function health($leechers, $seeders)
     }
 
 }
-// Transformation Function For Torrent URL
-function torrent_scrape_url($scrape, $hash)
-{
-    if (function_exists("curl_exec")) {
-        $ch = curl_init();
-        $timeout = 5;
-        curl_setopt($ch, CURLOPT_URL, $scrape . '?info_hash=' . escape_url($hash));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        $fp = curl_exec($ch);
-        curl_close($ch);
-    } else {
-        ini_set('default_socket_timeout', 10);
-        $fp = @file_get_contents($scrape . '?info_hash=' . escape_url($hash));
-    }
-    $ret = array();
-    if ($fp) {
-        // Bencode
-        $stats = Bencode::decode($fp);
-        //$stats = BDecode($fp);
-        $binhash = pack("H*", $hash);
-        $binhash = addslashes($binhash);
-        $seeds = $stats['files'][$binhash]['complete'];
-        $peers = $stats['files'][$binhash]['incomplete'];
-        $downloaded = $stats['files'][$binhash]['downloaded'];
-        $ret['seeds'] = $seeds;
-        $ret['peers'] = $peers;
-        $ret['downloaded'] = $downloaded;
-    }
-    if ($ret['seeds'] === null) {
-        $ret['seeds'] = -1;
-        $ret['peers'] = -1;
-        $ret['downloaded'] = -1;
-    }
-    return $ret;
-}
+
 // Function To Delete A Torrent
 function deletetorrent($id)
 {
     $db = new Database();
     $stmt = @$db->run("SELECT image1,image2 FROM torrents WHERE id=$id");
     $row = @$stmt->fetch(PDO::FETCH_ASSOC);
-    foreach (explode(".", "peers.comments.ratings.files.announce") as $x) {
+    foreach (explode(".", "peers.comments.ratings.files") as $x) {
         $db->run("DELETE FROM $x WHERE torrent = $id");
     }
     $db->run("DELETE FROM completed WHERE torrentid = $id");

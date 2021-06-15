@@ -27,8 +27,8 @@ class Import extends Controller
         if ($_SESSION["edit_torrents"] != "yes") {
             show_error_msg(Lang::T("ERROR"), Lang::T("ACCESS_DENIED"), 1);
         }
-
-        $announce_urls = explode(",", strtolower(ANNOUNCELIST)); //generate announce_urls[] from config.php
+        //generate announce_urls[] from config.php
+        $announce_urls = explode(",", strtolower(ANNOUNCELIST));
 
         if ($_POST["takeupload"] == "yes") {
             set_time_limit(0);
@@ -110,14 +110,35 @@ class Import extends Controller
 
                     //EXTERNAL SCRAPE
                     if ($external == 'yes' && UPLOADSCRAPE) {
-                        $tracker = str_replace("/announce", "/scrape", $announce);
-                        $stats = torrent_scrape_url($tracker, $infohash);
-                        $seeders = strip_tags($stats['seeds']);
-                        $leechers = strip_tags($stats['peers']);
-                        $downloaded = strip_tags($stats['downloaded']);
-                        DB::run("UPDATE torrents SET leechers='" . $leechers . "', seeders='" . $seeders . "',times_completed='" . $downloaded . "',last_action= '" . TimeDate::get_date_time() . "',visible='yes' WHERE id='" . $id . "'");
+                        $torrent = new Torrent(TORRENTDIR . "/$id.torrent");
+                        try {
+                            $scraped = $torrent->scrape();
+                        } catch (Exception $e) {
+                            $scraped = $torrent->errors();
+                            exit();
+                        }
+                        $myarray = array_shift($scraped);
+
+                        $seeders = $leechers = $completed = 0;
+                        if ($myarray['seeders'] > 0) {
+                            $seeders = $myarray['seeders'];
+                        }
+                        if ($myarray['leechers'] > 0) {
+                            $leechers = $myarray['leechers'];
+                        }
+                        if ($myarray['completed'] > 0) {
+                            $completed = $myarray['completed'];
+                        }
+                        if ($seeders !== null) {
+                            // Update the Torrent
+                            DB::run("
+                            UPDATE torrents
+                            SET leechers = ?, seeders = ?, times_completed = ?, last_action = ?, visible = ?
+                            WHERE id = ?",
+                                [$leechers, $seeders, $completed, TimeDate::get_date_time(), 'yes', $id]
+                            );
+                        }
                     }
-                    //END SCRAPE
 
                     Logs::write("Torrent $id ($name) was Uploaded by $_SESSION[username]");
                     $message .= "<br /><b>" . Lang::T("UPLOAD_OK") . "</b><br /><a href='" . URLROOT . "/torrent?id=" . $id . "'>" . Lang::T("UPLOAD_VIEW_DL") . "</a><br /><br />";
@@ -132,7 +153,7 @@ class Import extends Controller
                 show_error_msg(Lang::T("UPLOAD_FAILED"), $message, 1);
             }
 
-        } //takeupload
+        }
 
         Style::header(Lang::T("UPLOAD"));
         Style::begin(Lang::T("UPLOAD"));

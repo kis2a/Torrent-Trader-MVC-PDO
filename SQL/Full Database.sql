@@ -29,24 +29,6 @@ CREATE TABLE IF NOT EXISTS `clients` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `announce`
---
-
-CREATE TABLE IF NOT EXISTS `announce` (
-  `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `url` varchar(255) NOT NULL,
-  `torrent` int(10) UNSIGNED NOT NULL,
-  `seeders` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `leechers` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `times_completed` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `online` enum('yes','no') NOT NULL DEFAULT 'yes',
-  PRIMARY KEY (`id`),
-  KEY `torrent` (`torrent`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `attachments`
 --
 

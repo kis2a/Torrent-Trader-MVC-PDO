@@ -20,7 +20,7 @@ class Upload extends Controller
         if (UPLOADERSONLY && $_SESSION["class"] < 4) {
             Session::flash('info', Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"), URLROOT . '/home');
         }
-        $announce_urls = explode(",", strtolower(ANNOUNCELIST)); 
+        $announce_urls = explode(",", strtolower(ANNOUNCELIST));
         $data = [
             'title' => Lang::T("UPLOAD"),
             'announce_urls' => $announce_urls,
@@ -187,12 +187,13 @@ class Upload extends Controller
 
             $filecounts = (int) $filecount;
             try {
-            $ret = DB::run("INSERT INTO torrents (filename, owner, name, vip, descr, image1, image2, category, tube, added, info_hash, size, numfiles, save_as, announce, external, nfo, torrentlang, anon, last_action, freeleech, imdb)
+                DB::run("
+                    INSERT INTO torrents (filename, owner, name, vip, descr, image1, image2, category, tube, added, info_hash, size, numfiles, save_as, announce, external, nfo, torrentlang, anon, last_action, freeleech, imdb)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                [$fname, $_SESSION['id'], $name, $vip, $descr, $inames[0], $inames[1], $catid, $tube, TimeDate::get_date_time(), $infohash, $torrentsize, $filecounts, $fname, $announce, $external, $nfo, $langid, $anon, TimeDate::get_date_time(), $free, $imdb]);
+                    [$fname, $_SESSION['id'], $name, $vip, $descr, $inames[0], $inames[1], $catid, $tube, TimeDate::get_date_time(), $infohash, $torrentsize, $filecounts, $fname, $announce, $external, $nfo, $langid, $anon, TimeDate::get_date_time(), $free, $imdb]);
             } catch (PDOException $e) {
                 rename("$torrent_dir/$fname", "$torrent_dir/duplicate.torrent"); // todo
-                Redirect::to(URLROOT.'/exceptions');
+                Redirect::to(URLROOT . '/exceptions');
             }
             $id = DB::lastInsertId();
 
@@ -222,17 +223,6 @@ class Upload extends Controller
                 DB::run("INSERT INTO `files` (`torrent`, `path`, `filesize`) VALUES (?, ?, ?)", [$id, $internalname, $torrentsize]);
             }
 
-            if (!is_array($annlist)) {
-                $annlist = array(array($announce));
-            }
-            foreach ($annlist as $ann) {
-                foreach ($ann as $val) {
-                    if (strtolower(substr($val, 0, 4)) != "udp:") {
-                        DB::run("INSERT INTO `announce` (`torrent`, `url`) VALUES (?, ?)", [$id, $val]);
-                    }
-                }
-            }
-
             if ($nfo == 'yes') {
                 move_uploaded_file($nfofilename, "$nfo_dir/$id.nfo");
             }
@@ -241,11 +231,42 @@ class Upload extends Controller
             // Shout new torrent
             $msg_shout = "New Torrent: [url=" . URLROOT . "/torrent?id=" . $id . "]" . $torrent . "[/url] has been uploaded " . ($anon == 'no' ? "by [url=" . URLROOT . "/account-details.php?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]" : "") . "";
             DB::run("INSERT INTO shoutbox (userid, date, user, message) VALUES(?,?,?,?)", [0, TimeDate::get_date_time(), 'System', $msg_shout]);
+
             //Uploaded ok message
             if ($external == 'no') {
                 $message = sprintf(Lang::T("TORRENT_UPLOAD_LOCAL"), $name, $id, $id);
             } else {
                 $message = sprintf(Lang::T("TORRENT_UPLOAD_EXTERNAL"), $name, $id);
+                // scrape external
+                $torrent = new Torrent(TORRENTDIR . "/$id.torrent");
+                try {
+                    $scraped = $torrent->scrape();
+                } catch (Exception $e) {
+                    $scraped = $torrent->errors();
+                    exit();
+                }
+                $myarray = array_shift($scraped);
+
+                $seeders = $leechers = $completed = 0;
+                if ($myarray['seeders'] > 0) {
+                    $seeders = $myarray['seeders'];
+                }
+                if ($myarray['leechers'] > 0) {
+                    $leechers = $myarray['leechers'];
+                }
+                if ($myarray['completed'] > 0) {
+                    $completed = $myarray['completed'];
+                }
+
+                if ($seeders !== null) {
+                    // Update the Torrent
+                    DB::run("
+                    UPDATE torrents
+                    SET leechers = ?, seeders = ?, times_completed = ?, last_action = ?, visible = ?
+                    WHERE id = ?",
+                    [$leechers, $seeders, $completed, TimeDate::get_date_time(), 'yes', $id]
+                    );
+                }
             }
 
             Session::flash('info', $message, URLROOT . "/torrent?id=$id");

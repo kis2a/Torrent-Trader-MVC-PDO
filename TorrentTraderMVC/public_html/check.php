@@ -201,13 +201,12 @@ try {
             }
 
             $arr[] = "addedrequests";
-            $arr[] = "clients";
-            $arr[] = "announce";
             $arr[] = "bans";
             $arr[] = "blocks";
             $arr[] = "bonus";
             $arr[] = "categories";
             $arr[] = "censor";
+            $arr[] = "clients";
             $arr[] = "comments";
             $arr[] = "completed";
             $arr[] = "countries";
