@@ -1,4 +1,4 @@
 <?php
-Style::begin(Lang::T("NEWS"));
-echo Lang::T("DISCLAIMER");
+Style::begin(Lang::T("DISCLAIMER"));
+echo Lang::T("DISCLAIMERTXT");
 Style::end();

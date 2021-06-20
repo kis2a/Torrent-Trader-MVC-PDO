@@ -58,13 +58,8 @@ torrentmenu($data['id'], $torr['external']);
         echo  Helper::ratingtor($data['id']) ;
 		// Scrape External Torrents
         if ($torr["external"] == 'yes') {
-        print("
-        <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
-            <form action='".URLROOT."/scrape/external?id=$data[id]' method='post'>
-                <input type='submit' name='submit' value=" . Lang::T("UPDATE_STATS") . " />
-            </form>");
-        } 
-        // End Scrape External Torrents
+            echo $data['scraper'];
+        }
 		?>
 </div>
     

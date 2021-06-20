@@ -46,6 +46,22 @@ class Torrent extends Controller
             Redirect::to(URLROOT . "/torrent?id=$id");
             die;
         }
+		
+		// scraper
+        $now = TimeDate::gmtime();
+        $ts = $row['last_action'];
+        if ($ts + 172800 > $now) {
+            $scraper = "
+            <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
+            <form action='".URLROOT."/scrape/external?id=".$id."' method='post'>
+            <button type='submit' class='btn btn-warning center-block' value=''>". Lang::T("Update Stats")."</button>
+            </form>";
+        } else {
+            $scraper = "<br>
+            <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
+            <font  size='4' color=#ff9900><b>Stats Recently Updated</b></font>";
+        }
+		
         if ($_SESSION["id"] == $row["owner"] || $_SESSION["edit_torrents"] == "yes") {
             $owned = 1;
         } else {
@@ -72,6 +88,7 @@ class Torrent extends Controller
             'speed' => $totalspeed,
             'id' => $id,
             'selecttor' => $torrent1,
+			'scraper' => $scraper,
         ];
         $this->view('torrent/read', $data, 'user');
     }

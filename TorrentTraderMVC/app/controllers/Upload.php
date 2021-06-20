@@ -238,35 +238,7 @@ class Upload extends Controller
             } else {
                 $message = sprintf(Lang::T("TORRENT_UPLOAD_EXTERNAL"), $name, $id);
                 // scrape external
-                $torrent = new Torrent(TORRENTDIR . "/$id.torrent");
-                try {
-                    $scraped = $torrent->scrape();
-                } catch (Exception $e) {
-                    $scraped = $torrent->errors();
-                    exit();
-                }
-                $myarray = array_shift($scraped);
-
-                $seeders = $leechers = $completed = 0;
-                if ($myarray['seeders'] > 0) {
-                    $seeders = $myarray['seeders'];
-                }
-                if ($myarray['leechers'] > 0) {
-                    $leechers = $myarray['leechers'];
-                }
-                if ($myarray['completed'] > 0) {
-                    $completed = $myarray['completed'];
-                }
-
-                if ($seeders !== null) {
-                    // Update the Torrent
-                    DB::run("
-                    UPDATE torrents
-                    SET leechers = ?, seeders = ?, times_completed = ?, last_action = ?, visible = ?
-                    WHERE id = ?",
-                    [$leechers, $seeders, $completed, TimeDate::get_date_time(), 'yes', $id]
-                    );
-                }
+                Tscraper::ScrapeId($id);
             }
 
             Session::flash('info', $message, URLROOT . "/torrent?id=$id");
