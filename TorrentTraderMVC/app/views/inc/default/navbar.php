@@ -79,6 +79,12 @@
     </ul>
     <?php endif;?>
 
+    <?php if (!$_SESSION['id']): ?>
+    <ul class="navbar-nav mr-auto">
+    <a href="<?php echo URLROOT ?>/forums"><b><?php echo Lang::T("FORUMS"); ?></b></a>&nbsp;&nbsp;
+	  </ul>
+    <?php endif;?>
+
     <ul class="navbar-nav navbar-right d-none d-sm-block">
     <?php if (isset($_SESSION['id'])): ?>
           <a href="<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION['id']; ?>">Hi <b><?php echo Users::coloredname($_SESSION['username']); ?></b></a>&nbsp;

@@ -4,7 +4,7 @@ class Messages extends Controller
 
     public function __construct()
     {
-        Auth::user();
+        $this->user = (new Auth)->user(0, 2);
         $this->messageModel = $this->model('Message');
         $this->valid = new Validation();
     }

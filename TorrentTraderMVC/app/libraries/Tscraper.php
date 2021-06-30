@@ -39,15 +39,14 @@ class Tscraper
 
     public static function scrapeall()
     {
-        // 
+        // Set A Limit ? how fast is server / how many torrents to limit ?
         //set_time_limit(15);
 
         // Rescrape torrents every x seconds. (Default: 2 days)
         $stmt = DB::run("SELECT `id`, `info_hash`, `last_action` 
                          FROM `torrents` 
                          WHERE `external` = 'yes' 
-                         AND `last_action` <= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)
-                         AND `id` = 4");
+                         AND `last_action` <= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)");
 
         foreach ($stmt as $tor) {
             self::ScrapeId($tor['id']);

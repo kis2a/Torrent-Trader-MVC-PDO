@@ -4,8 +4,7 @@ class Home extends Controller
 
     public function __construct()
     {
-        Auth::user(true);
-        $this->user = new Users();
+        $this->user = (new Auth)->user(0, 1);
     }
 
     public function index()
@@ -55,7 +54,7 @@ class Home extends Controller
                         $pic = "plus";
                     }
                     print("<br /><a href=\"javascript: klappe_news('a" . $array['id'] . "')\"><img border=\"0\" src=\"".URLROOT."/assets/images/$pic.gif\" id=\"pica" . $array['id'] . "\" alt=\"Show/Hide\" />");
-                    print("&nbsp;<b>" . $array['title'] . "</b></a> - <b>" . Lang::T("POSTED") . ":</b> " . date("d-M-y", TimeDate::utc_to_tz_time($array['added'])) . " <b>" . Lang::T("BY") . ":</b><a href='".URLROOT."/profile?id=$array[id]'>  " . $this->user->coloredname($array['username']) . "</a>");
+                    print("&nbsp;<b>" . $array['title'] . "</b></a> - <b>" . Lang::T("POSTED") . ":</b> " . date("d-M-y", TimeDate::utc_to_tz_time($array['added'])) . " <b>" . Lang::T("BY") . ":</b><a href='".URLROOT."/profile?id=$array[id]'>  " . Helper::userColour($array['username']) . "</a>");
                     print("<div id=\"ka" . $array['id'] . "\" style=\"display: $disp;\"> " . format_comment($array["body"]) . " <br /><br />" . Lang::T("COMMENTS") . " (<a href='".URLROOT."/comments?type=news&amp;id=" . $array['id'] . "'>" . number_format($numcomm) . "</a>)</div>");
 
                     $news_flag++;
@@ -79,12 +78,12 @@ class Home extends Controller
         }
         
         // Latest Torrents
-        if (MEMBERSONLY && !$_SESSION) {
+        if (!$_SESSION['loggedin']) {
             $msg = Lang::T("BROWSE_MEMBERS_ONLY");
             $data = [
                 'message' => $msg
             ];
-            $this->view('user/ok', $data);
+            $this->view('home/ok', $data);
         } else {
             $query = "SELECT torrents.id, torrents.anon, torrents.announce, torrents.category, torrents.sticky,  torrents.vip,  torrents.tube,  torrents.imdb, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, 
             categories.name AS cat_name, categories.image AS cat_pic, categories.parent_cat AS cat_parent, 

@@ -4,7 +4,7 @@ class Forums extends Controller
 
     public function __construct()
     {
-        Auth::user();
+        $this->user = (new Auth)->user(0, 1);
         $this->valid = new Validation();
         $this->forumModel = $this->model('Forum');
     }
@@ -135,7 +135,9 @@ class Forums extends Controller
         <center><form method='get' action='<?php echo URLROOT; ?>/forums/search'>
         <table cellspacing='0' cellpadding='5'>
         <tr><td valign='bottom' align='right'>Search For: </td><td align='left'><input type='text' size='40' name='keywords' /><br /></td></tr>
-        <tr><td colspan='2' align='center'><input type='submit' value='Search' /></td></tr>
+        <tr><td colspan='2' align='center'>
+        <button type='submit' class='btn btn-sm btn-warning' value='Search'>Search</button>
+        </td></tr>
         </table></form></center>
         <?php
 Style::end();
@@ -648,7 +650,8 @@ Style::end();
             ?>
         </div>
         </div>
-
+        <?php
+if ($_SESSION['loggedin']) { ?>
         <div class="row card-header1">
         <div class="col-md-3 d-none d-sm-block">
         <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_profile.png' border='0' alt='' /></a>
@@ -677,7 +680,9 @@ Style::end();
         }
         ?>
         </div>
-        </div><br>
+        </div>
+<?php } ?>
+        <br>
         <?php
         //Post Bottom
         }

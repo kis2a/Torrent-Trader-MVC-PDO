@@ -4,8 +4,7 @@ class Adminbackup extends Controller
 
     public function __construct()
     {
-        Auth::user();
-        Auth::isStaff();
+        $this->user = (new Auth)->user(_ADMINISTRATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();

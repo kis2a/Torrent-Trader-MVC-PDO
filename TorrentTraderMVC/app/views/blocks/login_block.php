@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION['loggedin'] == true) {
+if ($_SESSION['loggedin']) {
 
     $avatar = htmlspecialchars($_SESSION["avatar"]);
     if (!$avatar) {
@@ -45,4 +45,32 @@ if ($_SESSION['loggedin'] == true) {
         <!-- end content -->
 
     <?php block::end();
-}
+}/* else {
+    Block::begin('Login');
+    ?>
+<form method="post" action="<?php echo URLROOT ?>/login/submit">
+<input type="hidden" name="csrf_token" value="<?php echo Cookie::csrf_token(); ?>" />
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+	<tr><td>
+		<table border="0" cellpadding="1" align="center">
+			<tr>
+			<td align="center"><font face="verdana" size="1"><b><?php echo Lang::T("USERNAME"); ?>:</b></font></td>
+			</tr><tr>
+			<td align="center"><input type="text" size="12" name="username" /></td>
+			</tr><tr>
+			<td align="center"><font face="verdana" size="1"><b><?php echo Lang::T("PASSWORD"); ?>:</b></font></td>
+			</tr><tr>
+			<td align="center"><input type="password" size="12" name="password"  /></td>
+			</tr><tr>
+			<td align="center">
+			<button type='submit' class='btn btn-sm btn-warning' value='Login'><?php echo Lang::T("LOGIN"); ?></button>
+			</td>
+		</table>
+		</td>
+		</tr>
+	<tr>
+<td align="center">[<a href="<?php echo URLROOT ?>/signup"><?php echo Lang::T("SIGNUP");?></a>]<br />[<a href="<?php echo URLROOT ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT");?></a>]</td> </tr>
+	</table>
+    </form> 
+    <?php block::end();
+}*/

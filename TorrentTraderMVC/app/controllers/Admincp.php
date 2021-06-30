@@ -4,7 +4,7 @@ class Admincp extends Controller
 
     public function __construct()
     {
-        Auth::user();
+        $this->user = (new Auth)->user(_MODERATOR, 2);
         Auth::isStaff();
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();

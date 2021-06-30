@@ -14,7 +14,9 @@ class Block
             $TTCache->Set("blocks_left", $blocks, 900);
         }
         foreach ($blocks as $blockfilename) {
-            include "../app/views/blocks/" . $blockfilename . "_block.php";
+            if (!in_array($_GET['url'], ISURL)) {
+                include "../app/views/blocks/" . $blockfilename . "_block.php";
+            }
         }
     }
 
@@ -31,8 +33,22 @@ class Block
             $TTCache->Set("blocks_right", $blocks, 900);
         }
         foreach ($blocks as $blockfilename) {
-            include "../app/views/blocks/" . $blockfilename . "_block.php";
+            if (!in_array($_GET['url'], ISURL)) {
+                include "../app/views/blocks/" . $blockfilename . "_block.php";
+            }
         }
+    }
+
+    public static function size()
+    {
+        $size = 8;
+        if (!RIGHTNAV || !LEFTNAV) {
+            $size = 10;
+        }
+        if (!RIGHTNAV && !LEFTNAV) {
+            $size = 12;
+        }
+        return $size;
     }
 
     public static function middle()
@@ -48,7 +64,9 @@ class Block
             $TTCache->Set("blocks_middle", $blocks, 900);
         }
         foreach ($blocks as $blockfilename) {
-            include "../app/views/blocks/" . $blockfilename . "_block.php";
+            if (!in_array($_GET['url'], ISURL)) {
+                include "../app/views/blocks/" . $blockfilename . "_block.php";
+            }
         }
     }
 

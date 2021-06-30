@@ -4,7 +4,7 @@ class Group extends Controller {
 
     public function __construct()
     {
-        Auth::user();
+        $this->user = (new Auth)->user(0, 2);
         $this->countriesModel = $this->model('Countries');
         $this->groupsModel = $this->model('Groups');
     }

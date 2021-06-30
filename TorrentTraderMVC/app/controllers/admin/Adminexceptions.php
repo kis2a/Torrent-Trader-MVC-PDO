@@ -3,8 +3,7 @@ class Adminexceptions extends Controller
 {
     public function __construct()
     {
-        Auth::user();
-        Auth::isStaff();
+        $this->user = (new Auth)->user(_ADMINISTRATOR, 2);
     }
 
     public function index() {

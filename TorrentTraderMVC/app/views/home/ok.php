@@ -1,6 +1,6 @@
                         <div class="card">
                             <div class="card-header">
-                                Message
+                                Torrents
                             </div>
                             <div class="card-body">
                             <div class="alert alert-info">

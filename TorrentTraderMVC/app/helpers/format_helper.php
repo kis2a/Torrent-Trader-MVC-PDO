@@ -93,7 +93,7 @@ function format_comment($text)
     //[hr=#ffffff] [hr=red]
     $s = preg_replace("/\[hr=((#[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9])|([a-zA-z]+))\]/i", "<hr color=\"\\1\"/>", $s);
     //[hide]Link[/hide]
-    if (HIDEBBCODE) {
+    if (HIDEBBCODE && $_SESSION['loggedin']) {
         $id = (int) Input::get("topicid");
         $reply = DB::run("SELECT * FROM forum_posts WHERE topicid=$id AND userid=$_SESSION[id]");
         if ($reply->rowCount() == 0) {

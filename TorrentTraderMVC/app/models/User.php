@@ -57,9 +57,11 @@ class User
         return $row;
     }
 
-    public function updatelogin($id)
+    public function updatelogin($token, $id)
     {
-        $this->db->run("UPDATE users SET last_login = ? WHERE id = ? ", [Helper::get_date_time(), $id]);
+        $this->db->run("UPDATE users SET last_login=?, token=? WHERE id=?", [Helper::get_date_time(), $token, $id]);
+            
+       //$this->db->run("UPDATE users SET last_login = ? WHERE id = ? ", [Helper::get_date_time(), $id]);
     }
 
     // Get Email&Id by Email

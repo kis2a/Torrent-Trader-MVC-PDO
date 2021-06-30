@@ -4,51 +4,46 @@ class Login extends Controller
 
     public function __construct()
     {
-        Auth::ipBanned();
-        Auth::isClosed();
+        $this->user = (new Auth)->user(0, 0);
 		$this->userModel = $this->model('User');
     }
 
     public function index()
     {
+        $token = Cookie::csrf_token();
         $data = [
+            'token' =>$token,
             'title' => Lang::T("LOGIN")
         ];
         $this->view('user/login', $data, 'user');
     }
 
     public function submit() {
-        if (Token::check($_SESSION['ttttt']) == false) {
-            show_error_msg("Error", "Issue with token. Please try again.");
-        }
+
+        //var_dump($_COOKIE['csrf_token']); die('Just running some updates');
         // check if using google captcha
         (new Captcha)->response($_POST['g-recaptcha-response']);
-        
-        if (Input::exist()) {
+        if (Input::exist() && Cookie::csrf_check()) {
+         //   if (Input::exist()) {
+             //Cookie::csrf_check();
             $username = Input::get("username");
             $password = Input::get("password");
             $sql = $this->userModel->getUserByUsername($username);
             if (!$sql || !password_verify($password, $sql->password)) {
-                $message = Lang::T("LOGIN_INCORRECT");
+                Redirect::autolink(URLROOT . "/logout", Lang::T("LOGIN_INCORRECT"));
             } elseif ($sql->status == "pending") {
-                $message = Lang::T("ACCOUNT_PENDING");
+                Redirect::autolink(URLROOT . "/logout", Lang::T("ACCOUNT_PENDING"));
             } elseif ($sql->enabled == "no") {
-                $message = Lang::T("ACCOUNT_DISABLED");
+                Redirect::autolink(URLROOT . "/logout", Lang::T("ACCOUNT_DISABLED"));
             }
 
-            if (!$message) {
-                Cookie::set1('id', $sql->id, 58585858);
-                Cookie::set1('password', $sql->password, 58585858);
-                Cookie::set1("login_fingerprint", $this->loginString(), 58585858);
-                $token = $sql->password;
-                //$this->userModel->updatelogin($sql->id);
-                DB::run("UPDATE users SET last_login=?,token=? WHERE id=?", [Helper::get_date_time(), $token, $sql->id]);
-                Redirect::to(URLROOT."/home");
-            } else {
-                Session::flash('info', $message, URLROOT."/login");
-            }
+            Cookie::set('id', $sql->id, 5485858, "/");
+            Cookie::set('password', $sql->password, 5485858, "/");
+            Cookie::set("key_token", $this->loginString(), 5485858, "/");
+            $this->userModel->updatelogin($this->loginString(), $sql->id);
+            Redirect::to(URLROOT."/home");
         } else {
-            Redirect::to(URLROOT."/login");
+            Redirect::to(URLROOT."/logout");
         }
     }
 
@@ -56,6 +51,6 @@ class Login extends Controller
     {
         $ip = Helper::getIP();
         $browser = Helper::browser();
-        return hash("sha512", $ip, $browser);
+        return md5($browser.$browser);
     }
 }

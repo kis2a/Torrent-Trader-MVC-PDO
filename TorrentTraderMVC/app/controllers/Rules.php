@@ -4,7 +4,7 @@ class Rules extends Controller
 
     public function __construct()
     {
-        Auth::user();
+        $this->user = $this->user = (new Auth)->user(0, 2);
         $this->rulesModel = $this->model('Rule');
     }
 

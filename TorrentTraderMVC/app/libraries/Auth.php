@@ -3,61 +3,70 @@
 class Auth
 {
 
-    public static function user($autoclean = false)
+    public function __construct()
     {
-        $db = new Database();
+        $this->db = new Database();
+    }
+
+    public function user($class = 0, $force = 0, $autoclean = false)
+    {
         self::ipBanned();
-        self::isClosed();
-        if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["login_fingerprint"] != self::loginString()) {
-            Redirect::to(URLROOT . "/logout");
-        } else {
-            // Put User Details in Session Array
-            $message = null;
-            if (Session::get('message')) {
-                $message = $_SESSION['message'];
-            }
-            $token = null;
-            if (Session::get('ttttt')) {
-                $token = $_SESSION['ttttt'];
-            }
-            
-            try {
-                $res = DB::run("SELECT * FROM `users` LEFT OUTER JOIN `groups` ON users.class=groups.group_id WHERE id = $_COOKIE[id] AND users.enabled='yes' AND users.status ='confirmed'");
-            } catch (Exception $e) {
-                Redirect::autolink(URLROOT . "/logout", 'Issue With User Auth');
-            }
-
-            //$res = $db->run("SELECT * FROM users INNER JOIN groups ON users.class=groups.group_id WHERE id=? AND users.enabled=? AND users.status =? ", [$_COOKIE["id"], 'yes', 'confirmed']);
-            $row = $res->fetch(PDO::FETCH_ASSOC);
-
-            if ($row['token'] != $_COOKIE['password']) {
-                Redirect::to(URLROOT . "/logout");
-            }
-
-            if ($row) {
-                $where = Helper::where($_SERVER['REQUEST_URI'], $row["id"], 0);
-                $db->run("UPDATE users SET last_access=?,ip=?,page=? WHERE id=?", [Helper::get_date_time(), Helper::getIP(), $where, $row["id"]]);
-                $_SESSION = $row;
-                $_SESSION["ttttt"] = $token;
-                $_SESSION["loggedin"] = true;
-                $_SESSION['login_fingerprint'] = self::loginString();
-                $_SESSION['message'] = $message;
-                unset($row);
-            } else {
-                Redirect::to(URLROOT . "/logout");
-            }
-        }
-
+        
         if ($autoclean) {
             autoclean();
         }
+
+Cookie::csrf_token();
+
+        if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["key_token"] != self::loginString()) {
+            self::isClosed();
+            $this->isLoggedIn($force);
+            return;
+
+        } else {
+
+            try {
+                $res = $this->db->run("SELECT * FROM `users` LEFT OUTER JOIN `groups` ON users.class=groups.group_id WHERE id = $_COOKIE[id] AND users.enabled='yes' AND users.status ='confirmed'");
+            } catch (Exception $e) {
+                Cookie::destroyAll();
+                Redirect::autolink(URLROOT . "/logout", 'Issue With User Auth');
+            }
+            $row = $res->fetch(PDO::FETCH_ASSOC);
+
+            if ($row['password'] != $_COOKIE['password']) {
+                Redirect::to(URLROOT . "/logout");
+            }
+            if ($row['id'] != $_COOKIE['id']) {
+                Redirect::to(URLROOT . "/logout");
+            }
+            if($class != 0 && $class > $row['class']) {
+                Redirect::autolink(URLROOT . "/index", Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
+            }
+            if ($row) {
+                $user = $row;
+                $message = null;
+                if (Session::get('message')) {
+                    $message = $_SESSION['message'];
+                }
+                
+                $where = Helper::where($_SERVER['REQUEST_URI'], $row["id"], 0);
+                $this->db->run("UPDATE users SET last_access=?,ip=?,page=? WHERE id=?", [Helper::get_date_time(), Helper::getIP(), $where, $row["id"]]);
+                $_SESSION = $row;
+                $_SESSION["loggedin"] = true;
+                $_SESSION['message'] = $message;
+                unset($row);
+                self::isClosed();
+                return $user;
+            }
+        }
+
     }
 
     private static function loginString()
     {
         $ip = Helper::getIP();
         $browser = Helper::browser();
-        return hash("sha512", $ip, $browser);
+        return md5($browser.$browser);
     }
 
     public static function ipBanned()
@@ -67,6 +76,20 @@ class Auth
             return;
         }
         Ip::checkipban($ip);
+    }
+
+    public function isLoggedIn($force = 0)
+    {
+        // If force 0 guest view, force 1 use config membersonly, force 2 always hidden from guest
+        if ($force == 1 && MEMBERSONLY) {
+            if (!$_SESSION['loggedin']) {
+                Redirect::to(URLROOT . "/logout");
+            }
+        } elseif ($force == 2) {
+            if (!$_SESSION['loggedin']) {
+                Redirect::to(URLROOT . "/login");
+            }
+        }
     }
 
     public static function isStaff()

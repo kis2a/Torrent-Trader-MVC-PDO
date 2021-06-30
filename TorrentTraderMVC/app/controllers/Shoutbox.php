@@ -3,7 +3,7 @@ class Shoutbox extends Controller
 {
     public function __construct()
     {
-        Auth::user();
+        $this->user = (new Auth)->user(0, 0);
         //$this->shoutModel = $this->model('Shout');
         $this->logModel = $this->model('Logs');
     }

@@ -62,7 +62,9 @@
 <input type='hidden' name='action' value='search' />
 <table cellspacing='0' cellpadding='5'>
 <tr><td valign='bottom' align='right'>Search For: </td><td align='left'><input type='text' size='40' name='keywords' /><br /></td></tr>
-<tr><td colspan='2' align='center'><input type='submit' value='Search' /></td></tr>
+<tr><td colspan='2' align='center'>
+<button type='submit' class='btn btn-sm btn-warning' value='Search'>Search2</button>
+</td></tr>
 </table></form></center>
 </div>
 </div>

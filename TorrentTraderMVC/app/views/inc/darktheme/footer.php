@@ -1,3 +1,6 @@
+<?php if (MIDDLENAV) {?>
+  <?php Block::middle();?>
+  <?php }?>
 </div>
 <!-- END MIDDLE COLUMN -->
 <!-- START RIGHT COLUMN -->
