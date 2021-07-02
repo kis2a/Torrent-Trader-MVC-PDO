@@ -31,7 +31,6 @@ define('SITENAME', 'TorrentTraderMVC');
 define('_SITEDESC', 'A PHP support forum for Torrent Trader');
 define('SITEEMAIL', 'something@email.com'); //Emails will be sent from this address
 define('VERSION', 'PDO');
-define('_SITEDESC', 'A PHP support forum for Torrent Trader');
 // Caching settings
 define('CACHE_TYPE', 'disk'); // disk = Save cache to disk, memcache = Use memcache, apc = Use APC, xcache = Use XCache
 define('MEMCACHE_HOST', 'localhost'); // Host memcache is running on
@@ -43,7 +42,7 @@ define('DEFAULTLANG', 'english'); //DEFAULT LANGUAGE ID
 define('DEFAULTTHEME', 'darktheme'); //DEFAULT THEME ID
 define('CHARSET', 'utf-8'); //Site Charset
 define('ANNOUNCELIST', URLROOT . '/announce.php'); //seperate via comma
-define('MEMBERSONLY', false); //MAKE MEMBERS SIGNUP
+define('MEMBERSONLY', true); //MAKE MEMBERS SIGNUP
 define('MEMBERSONLY_WAIT', true); //ENABLE WAIT TIMES FOR BAD RATIO
 define('ALLOWEXTERNAL', true); // Work in Progress  Enable Uploading of external tracked torrents
 define('UPLOADERSONLY', false); //Limit uploading to uploader group only

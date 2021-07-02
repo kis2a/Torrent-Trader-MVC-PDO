@@ -1,5 +1,5 @@
 <?php
-//if ($_SESSION['loggedin'] == true) {
+if ($_SESSION['loggedin'] == true) {
     Block::begin("Server Load");
             if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
     
@@ -136,4 +136,4 @@
         <!-- end content -->
         <?php
         block::end();
-//}
+}
