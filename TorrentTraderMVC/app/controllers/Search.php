@@ -5,7 +5,7 @@ class Search extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 2);
         $this->torrentModel = $this->model('Torrents');
         $this->valid = new Validation();
     }

@@ -4,47 +4,42 @@ class Report extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
-        // $this->userModel = $this->model('User');
+        $this->session = (new Auth)->user(0, 2);
+        $this->reportModel = $this->model('Reports');
     }
 
     public function index()
     {
-        Session::flash('info', Lang::T("NO_ID"), URLROOT."/home");
+        Redirect::autolink(URLROOT, Lang::T("NO_ID"));
     }
 
     public function user()
     {
-        $takeuser = (int) $_POST["user"];
-        $takereason = $_POST["reason"];
-        $user = (int) $_GET["user"];
+        $takeuser = (int) Input::get("user");
+        $takereason = Input::get("reason");
+        $user = (int) Input::get("id");
 
-        if (!empty($takeuser)) {
+        if ($takeuser) {
             if (empty($takereason)) {
-                Session::flash('info',  Lang::T("YOU_MUST_ENTER_A_REASON"), URLROOT."/report/user?user=$user");
-                die;
+                Redirect::autolink(URLROOT."/report/user?user=$user", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = DB::run("SELECT id FROM reports WHERE addedby =? AND votedfor =? AND type =?", [$_SESSION['id'], $takeuser, 'user']);
+            $res = $this->reportModel->selectReport($_SESSION['id'], $takeuser, 'user');
             if ($res->rowCount() == 0) {
-                DB::run("INSERT into reports (addedby,votedfor,type,reason) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $takeuser, 'user', $takereason]);
-                $msg = "User: $takeuser, Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>";
-                Session::flash('info',  $msg, URLROOT."/profile?id=$user");
-                die();
+                $this->reportModel->insertReport($_SESSION['id'], $takeuser, 'user', $takereason);
+                Redirect::autolink(URLROOT."/profile?id=$user", "User: $takeuser, Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
-                $msg = Lang::T("YOU_HAVE_ALREADY_REPORTED") . " user $takeuser";
-                Session::flash('info',  $msg, URLROOT."/profile?id=$user");
-                die();
+                Redirect::autolink(URLROOT."/profile?id=$user", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " user $takeuser");
             }
         }
 
         if ($user != "") {
             $res = DB::run("SELECT username, class FROM users WHERE id=?", [$user]);
             if ($res->rowCount() == 0) {
-                Session::flash('danger',  Lang::T("INVALID_USERID"), URLROOT."/home");
-                die();
+                Redirect::autolink(URLROOT, Lang::T("INVALID_USERID"));
             }
             $arr = $res->fetch(PDO::FETCH_ASSOC);
             $title = 'Report';
+            // Template
             $data = [
                 'title' => $title,
                 'username' => $arr['username'],
@@ -53,42 +48,37 @@ class Report extends Controller
             $this->view('report/user', $data, 'user');
             die();
         } else {
-            Session::flash('info', Lang::T("MISSING_INFO"), URLROOT."/profile?id=$user");
+            Redirect::autolink(URLROOT."/profile?id=$user", Lang::T("MISSING_INFO"));
         }
     }
 
     public function torrent()
     {
-        $taketorrent = (int) $_POST["torrent"];
-        $takereason = $_POST["reason"];
-        $torrent = (int) $_GET["torrent"];
+        $taketorrent = (int) Input::get("torrent");
+        $takereason = Input::get("reason");
+        $torrent = (int) Input::get("torrent");
 
         if (($taketorrent != "") && ($takereason != "")) {
             if (!$takereason) {
-                Session::flash('info', Lang::T("YOU_MUST_ENTER_A_REASON"), URLROOT."/report/torrent?torrent=$torrent");
-                die;
+                Redirect::autolink(URLROOT."/report/torrent?torrent=$torrent", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = DB::run("SELECT id FROM reports WHERE addedby =? AND votedfor =? AND type =?", [$_SESSION['id'], $taketorrent, 'torrent']);
+            $res = $this->reportModel->selectReport($_SESSION['id'], $taketorrent, 'torrent');
             if ($res->rowCount() == 0) {
-                DB::run("INSERT into reports (addedby,votedfor,type,reason) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $taketorrent, 'torrent', $takereason]);
-                $msg = "Torrent with id: $taketorrent, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>";
-                Session::flash('info', $msg, URLROOT."/torrent?id=$torrent");
-                die();
+                $this->reportModel->insertReport($_SESSION['id'], $taketorrent, 'torrent', $takereason);
+                Redirect::autolink(URLROOT."/torrent?id=$torrent", "Torrent with id: $taketorrent, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
-                $msg = Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $taketorrent";
-                Session::flash('info', $msg, URLROOT."/torrent?id=$torrent");
-                die();
+                Redirect::autolink(URLROOT."/torrent?id=$torrent", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $taketorrent");
             }
         }
 
         if ($torrent != "") {
             $res = DB::run("SELECT name FROM torrents WHERE id=?", [$torrent]);
             if ($res->rowCount() == 0) {
-                Session::flash('info', 'Invalid TorrentID', URLROOT."/torrent?id=$torrent");
-                die();
+                Redirect::autolink(URLROOT."/torrent?id=$torrent", 'Invalid TorrentID');
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
             $title = 'Report';
+            // Template
             $data = [
                 'title' => $title,
                 'name' => $arr['name'],
@@ -97,16 +87,16 @@ class Report extends Controller
             $this->view('report/torrent', $data, 'user');
             die();
         } else {
-            Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/torrent?id=$torrent");
+            Redirect::autolink(URLROOT."/torrent?id=$torrent", Lang::T("MISSING_INFO"));
         }
     }
 
     public function comment()
     {
-        $takecomment = (int) $_POST["comment"];
-        $takereason = $_POST["reason"];
-        $comment = (int) $_GET["comment"]; 
-        $type = $_GET["type"];
+        $takecomment = (int) Input::get("comment");
+        $takereason = Input::get("reason");
+        $comment = (int) Input::get("comment"); 
+        $type = Input::get("type");
         if ($type == "req") {
             $whattype = 'req';
         } else {
@@ -114,30 +104,26 @@ class Report extends Controller
         }
         if (($takecomment != "") && ($takereason != "")) {
             if (!$takereason) {
-                Session::flash('info', Lang::T("YOU_MUST_ENTER_A_REASON"), URLROOT."/report/comment?comment=$comment");
-                die;
+                Redirect::autolink(URLROOT."/report/comment?comment=$comment", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = DB::run("SELECT id FROM reports WHERE addedby =? AND votedfor =? AND type =?", [$_SESSION['id'], $takecomment, $whattype]);
+            $res = $this->reportModel->selectReport($_SESSION['id'], $takecomment, $whattype);
             if ($res->rowCount() == 0) {
-                DB::run("INSERT into reports (addedby,votedfor,type,reason) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $takecomment, $whattype, $takereason]);
-                $msg = "Comment with id: $takecomment, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>";
-                Session::flash('info', $msg, URLROOT."/home");
-                die();
+                $this->reportModel->insertReport($_SESSION['id'], $takecomment, $whattype, $takereason);
+                Redirect::autolink(URLROOT, "Comment with id: $takecomment, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
-                $msg = Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $takecomment";
-                Session::flash('info', $msg, URLROOT."/home");
-                die();
+                Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $takecomment");
             }
         }
 
         if ($comment != "") {
             $res = DB::run("SELECT id, text FROM comments WHERE id=?", [$comment]);
             if ($res->rowCount() == 0) {
-                Session::flash('info', "Invalid Comment", URLROOT."/home");
+                Redirect::autolink(URLROOT, "Invalid Comment");
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
             $title = 'Report';
+            // Template
             $data = [
                 'type' => $type,
                 'title' => $title,
@@ -147,44 +133,39 @@ class Report extends Controller
             $this->view('report/comment', $data, 'user');
             die();
         } else {
-            Session::flash('info', Lang::T("MISSING_INFO") . ".", URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("MISSING_INFO"));
         }
     }
 
     public function forum()
     {
-        $takeforumid = (int) $_POST["forumid"];
-        $takeforumpost = (int) $_POST["forumpost"];
-        $takereason = $_POST["reason"];
-        $forumid = (int) $_GET["forumid"];
-        $forumpost = (int) $_GET["forumpost"];
+        $takeforumid = (int) Input::get("forumid");
+        $takeforumpost = (int) Input::get("forumpost");
+        $takereason = Input::get("reason");
+        $forumid = (int) Input::get("forumid");
+        $forumpost = (int) Input::get("forumpost");
 
         if (($takeforumid != "") && ($takereason != "")) {
             if (!$takereason) {
-                Session::flash('danger', Lang::T("YOU_MUST_ENTER_A_REASON"), URLROOT."/home");
-                die;
+                Redirect::autolink(URLROOT, Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = DB::run("SELECT id FROM reports WHERE addedby =? AND votedfor=? AND votedfor_xtra=? AND type =?", [$_SESSION['id'], $takeforumid, $takeforumpost, 'forum']);
+            $res = $this->reportModel->selectForumReport($_SESSION['id'], $takeforumid, $takeforumpost, 'forum');
             if ($res->rowCount() == 0) {
-                DB::run("INSERT into reports (addedby,votedfor,votedfor_xtra,type,reason) VALUES (?, ?, ?, ?, ?)", [$_SESSION['id'], $takeforumid, $takeforumpost, 'forum', $takereason]);
-                $mss = "User: $_SESSION[username], Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>";
-                Session::flash('danger', $mss, URLROOT."/home");
-                die();
+                $this->reportModel->insertReport($_SESSION['id'], $takeforumid, 'forum', $takereason, $takeforumpost);
+                Redirect::autolink(URLROOT, "User: $_SESSION[username], Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
-                $mss = Lang::T("YOU_HAVE_ALREADY_REPORTED") . " post $takeforumid";
-                Session::flash('danger', $mss, URLROOT."/home");
-                die();
+                Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_ALREADY_REPORTED") . " post $takeforumid");
             }
         }
 
         if (($forumid != "") && ($forumpost != "")) {
             $res = DB::run("SELECT subject FROM forum_topics WHERE id=?", [$forumid]);
             if ($res->rowCount() == 0) {
-                Session::flash('danger', "Invalid Forum ID", URLROOT."/home");
-                die();
+                Redirect::autolink(URLROOT, "Invalid Forum ID");
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
             $title = 'Report';
+            // Template
             $data = [
                 'title' => $title,
                 'subject' => $arr['subject'],
@@ -192,9 +173,10 @@ class Report extends Controller
                 'forumid' => $forumid,
             ];
             $this->view('report/forum', $data, 'user');
-            die;
+            die();
         }
-        Session::flash('danger', Lang::T("MISSING_INFO") . ".", URLROOT."/home");
+        
+        Redirect::autolink(URLROOT, Lang::T("MISSING_INFO"));
     }
 
 }

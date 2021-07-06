@@ -1,4 +1,4 @@
-<?php include APPROOT.'/views/message/messagenavbar.php'; ?>
+<?php include APPROOT.'/views/message/messagenavbar.php'; ?><br>
 <form name="form" action="<?php echo URLROOT; ?>/messages/submit" method="post">
 <center>
     <label for="reciever">Reciever:</label>&nbsp;
@@ -14,7 +14,7 @@
     </select><br>
     
     <label for="subject">Subject:</label>&nbsp;
-    <input type="text" name="subject" size="50" placeholder="Subject" id="subject">
+    <input type="text" name="subject" size="50" placeholder="Subject" id="subject"><br>
     </center>
     <?php print textbbcode("form", "body", "$body");?><br>
 <center>

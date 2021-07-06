@@ -4,7 +4,7 @@ class Recover extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 0);
+        $this->session = (new Auth)->user(0, 0);
         $this->userModel = $this->model('User');
         $this->pdo = new Database();
         $this->valid = new Validation();
@@ -12,7 +12,9 @@ class Recover extends Controller
 
     public function index()
     {
-        $data = [];
+        $data = [
+            'title' => 'Recover Account'
+        ];
         $this->view('user/recover', $data, 'user');
     }
 
@@ -23,11 +25,11 @@ class Recover extends Controller
         if (Input::exist()) {
             $email = Input::get("email");
             if (!$this->valid->validEmail($email)) {
-                Session::flash('info', Lang::T("EMAIL_ADDRESS_NOT_VAILD"), URLROOT . "/home");
+                Redirect::autolink(URLROOT . "/home", Lang::T("EMAIL_ADDRESS_NOT_VAILD"));
             } else {
                 $arr = $this->userModel->getIdEmailByEmail($email);
                 if (!$arr) {
-                    Session::flash('info', Lang::T("EMAIL_ADDRESS_NOT_FOUND"), URLROOT . "/home");
+                    Redirect::autolink(URLROOT . "/home", Lang::T("EMAIL_ADDRESS_NOT_FOUND"));
                 }
                 if ($arr) {
                     $sec = mksecret();
@@ -39,7 +41,7 @@ class Recover extends Controller
                     $TTMail = new TTMail();
                     $TTMail->Send($email, Lang::T("ACCOUNT_DETAILS"), $body, "", "-f$emailmain");
                     $res2 = $this->userModel->setSecret($sec, $email);
-                    Session::flash('info', sprintf(Lang::T('MAIL_RECOVER'), htmlspecialchars($email)), URLROOT . "/home");
+                    Redirect::autolink(URLROOT . "/home", sprintf(Lang::T('MAIL_RECOVER'), htmlspecialchars($email)));
                 }
             }
         }
@@ -47,7 +49,8 @@ class Recover extends Controller
 
     public function confirm()
     {
-        $data = [];
+        $data = [
+            'title' => 'Recover Account'];
         $this->view('user/confirm', $data, 'user');
     }
 
@@ -59,21 +62,21 @@ class Recover extends Controller
             $password = Input::get("password");
             $password1 = Input::get("password1");
             if (empty($password) || empty($password1)) {
-                Session::flash('info', Lang::T("NO_EMPTY_FIELDS"), URLROOT . "/home");
+                Redirect::autolink(URLROOT . "/home", Lang::T("NO_EMPTY_FIELDS"));
             } elseif ($password != $password1) {
-                Session::flash('info', Lang::T("PASSWORD_NO_MATCH"), URLROOT . "/home");
+                Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_NO_MATCH"));
             } else {
                 $count = $this->pdo->run("SELECT COUNT(*) FROM users WHERE id=? AND secret=?", [$id, $secret])->fetchColumn();
                 if ($count != 1) {
-                    Session::flash('info', Lang::T("NO_SUCH_USER"), URLROOT . "/home");
+                    Redirect::autolink(URLROOT . "/home", Lang::T("NO_SUCH_USER"));
                 }
                 $newsec = mksecret();
                 $wantpassword = password_hash($password, PASSWORD_BCRYPT);
                 $stmt = $this->userModel->recoverUpdate($wantpassword, $newsec, $id, $secret);
-                Session::flash('info', Lang::T("PASSWORD_CHANGED_OK"), URLROOT . "/home");
+                Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_CHANGED_OK"));;
             }
         } else {
-            Session::flash('info', Lang::T("Wrong Imput"), URLROOT . "/home");
+            Redirect::autolink(URLROOT . "/home", Lang::T("Wrong Imput"));
         }
     }
 }

@@ -4,7 +4,7 @@ class Adminstylesheet extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(_ADMINISTRATOR, 2);
+        $this->session = (new Auth)->user(_ADMINISTRATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();

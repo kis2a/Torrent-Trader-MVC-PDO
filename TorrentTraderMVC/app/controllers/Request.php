@@ -3,7 +3,7 @@ class Request extends Controller
 {
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 2);
         $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();
@@ -12,15 +12,15 @@ class Request extends Controller
     public function index()
     {
         if ($_SESSION["view_torrents"] == "no") {
-            Session::flash("info", "You do not have the proper rights to view requests!", URLROOT . "/home");
+            Redirect::autolink(URLROOT, "You do not have the proper rights to view requests!");
         }
 
         if (REQUESTSON) {
-            $categ = (int) $_GET["category"];
-            $requestorid = (int) $_GET["requestorid"];
-            $sort = $_GET["sort"];
-            $search = $_GET["search"];
-            $filter = $_GET["filter"];
+            $categ = (int) Input::get("category");
+            $requestorid = (int) Input::get("requestorid");
+            $sort = Input::get("sort");
+            $search = Input::get("search");
+            $filter = Input::get("filter");
             $search = " AND requests.request like '%$search%' ";
             if ($sort == "votes") {
                 $sort = " order by hits desc ";
@@ -65,27 +65,26 @@ class Request extends Controller
             ];
             $this->view('request/index', $data, 'user');
         } else {
-            Session::flash("info", "Request are not available", URLROOT . "/home");
-            die;
+            Redirect::autolink(URLROOT, "Request are not available");
         }
     }
 
 
     public function edit()
     {
-        if ($_SESSION["class"] < 5) {
-            Session::flash('info', "Access denied.", URLROOT."/request");
+        if ($this->session["class"] < _MODERATOR) {
+            Redirect::autolink(URLROOT . "/request", "Access denied.");
         }
-        $id = (int) $_GET["id"];
+        $id = (int) Input::get("id");
         if (!$this->valid->validId($id)) {
-            Session::flash('info', "You must select a category to put the request in!", URLROOT."/request");
+            Redirect::autolink(URLROOT . "/request", "You must select a category to put the request in!");
         }
-        $descr = $_POST["desc"];
-        $cat = $_POST["cat"];
-        $filled = $_POST["filled"];
-        $request = $_POST["request"];
-        $filledby = $_POST["filledby"];
-        if (!empty($_POST)) {
+        $descr = Input::get("desc");
+        $cat = Input::get("cat");
+        $filled = Input::get("filled");
+        $request = Input::get("request");
+        $filledby = Input::get("filledby");
+        if (Input::exist()) {
             if (!$filled) {
                 DB::run("UPDATE requests SET cat=?, request=?, descr=?, filled =?, filled=? WHERE id = ?", [$cat, $request, $descr, 'yes', $filled, $id]);
             } else {
@@ -103,16 +102,17 @@ class Request extends Controller
 
     public function delete()
     {
-        if (($_SESSION['class']) > 5) {
-            if (empty($_POST["delreq"])) {
-                Session::flash('info', "You must select at least one request to delete", URLROOT."/request");
+        $delreq = Input::get('delreq');
+        if (($this->session['class']) > _UPLOADER) {
+            if ($delreq) {
+                Redirect::autolink(URLROOT . "/request", "You must select at least one request to delete");
                 die;
             }
             $do = "DELETE FROM requests WHERE id IN (" . implode(", ", $_POST['delreq']) . ")";
             $do2 = "DELETE FROM addedrequests WHERE requestid IN (" . implode(", ", $_POST['delreq']) . ")";
             $res2 = DB::run($do2);
             $res = DB::run($do);
-            Session::flash('info', "Request Deleted OK", URLROOT."/request");
+            Redirect::autolink(URLROOT . "/request", "Request Deleted OK");
         } else {
             foreach ($_POST['delreq'] as $del_req) {
                 $query = DB::run("SELECT * FROM requests WHERE userid=$_SESSION[id] AND id = $del_req");
@@ -120,9 +120,9 @@ class Request extends Controller
                 if ($num > 0) {
                     $res2 = DB::run("DELETE FROM requests WHERE id IN ($del_req)");
                     $res = DB::run("DELETE FROM addedrequests WHERE requestid IN ($del_req)");
-                    Session::flash('info', "Request ID $del_req Deleted", URLROOT."/request");
+                    Redirect::autolink(URLROOT . "/request", "Request ID $del_req Deleted", URLROOT."/request");
                 } else {
-                    Session::flash('info', "No Permission to delete Request ID $del_req", URLROOT."/request");
+                    Redirect::autolink(URLROOT . "/request", "No Permission to delete Request ID $del_req");
                 }
             }
         }
@@ -137,24 +137,24 @@ class Request extends Controller
             ];
             $this->view('request/makereq', $data, 'user');
         } else {
-            Session::flash("info", "Request are not available", URLROOT . "/home");
+            Redirect::autolink(URLROOT . "/request", "Request are not available");
         }
     }
 
     public function confirmreq()
     {
-        if ($_SESSION['class'] < _MODERATOR) {
-            Session::flash('info', "Only Moderators can request - For show only", URLROOT . "/request/makereq");
+        if ($this->session['class'] < _MODERATOR) {
+            Redirect::autolink(URLROOT . "/request/makereq", "Only Moderators can request - For show only");
         }
-        $requesttitle = $_POST["requesttitle"];
+        $requesttitle = Input::get("requesttitle");
         if (!$requesttitle) {
-            Session::flash('info', "You must enter a request!", URLROOT . "/request/makereq");
+            Redirect::autolink(URLROOT . "/request/makereq", "You must enter a request!");
         }
-        $cat = $_POST["cat"];
+        $cat = Input::get("cat");
         if ($cat == 0) {
-            Session::flash('info', "Category cannot be empty!", URLROOT . "/request/makereq");
+            Redirect::autolink(URLROOT . "/request/makereq", "Category cannot be empty!");
         }
-        $descr = $_POST["descr"];
+        $descr = Input::get("descr");
         DB::run("INSERT INTO requests (hits, userid, cat, request, descr, added) VALUES(?,?,?,?,?,?)", [1, $_SESSION['id'], $cat, $requesttitle, $descr, TimeDate::get_date_time()]);
         $id = DB::lastInsertId();
         DB::run("INSERT INTO addedrequests (requestid,userid) VALUES($id, $_SESSION[id])");
@@ -165,10 +165,10 @@ class Request extends Controller
 
     public function reqdetails()
     {
-        $id = (int) $_GET["id"];
+        $id = (int) Input::get("id");
         $res = DB::run("SELECT * FROM requests WHERE id = $id");
         if ($res->rowCount() != 1) {
-            Session::flash('info', "That request id doesn't exist.", URLROOT."/request");
+            Redirect::autolink(URLROOT . "/request", "That request id doesn't exist.");
         }
         $num = $res->fetch(PDO::FETCH_ASSOC);
         $s = $num["request"];
@@ -211,8 +211,8 @@ class Request extends Controller
 
     public function reqfilled()
     {
-        $filledurl = $_GET["filledurl"];
-        $requestid = (int) $_GET["requestid"];
+        $filledurl = Input::get("filledurl");
+        $requestid = (int) Input::get("requestid");
         $res = DB::run("SELECT users.username, requests.userid, requests.request FROM requests inner join users on requests.userid = users.id where requests.id = $requestid");
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         $res2 = DB::run("SELECT username FROM users where id =" . $_SESSION['id']);
@@ -221,13 +221,12 @@ class Request extends Controller
         $msg2 = "Your Request Filled";
         DB::run("UPDATE requests SET filled = '$filledurl', filledby = $_SESSION[id] WHERE id = $requestid");
         DB::run("INSERT INTO messages (poster, sender, receiver, added, subject, msg) VALUES (?,?,?,?,?,?)", [0, 0, $arr['userid'], TimeDate::get_date_time(), $msg2, $msg]);
-        $msg = "<div align=left>Request $requestid was successfully filled with <a href=$filledurl>$filledurl</a>.  User <a href=".URLROOT."/profile?id=$arr[userid]><b>$arr[username]</b></a> automatically PMd.  <br>Filled that accidently? No worries, <a href=".URLROOT."/request/reqreset?requestid=$requestid>CLICK HERE</a> to mark the request as unfilled.  Do <b>NOT</b> follow this link unless you are sure there is a problem.<br></div>";
-        Session::flash('info', $msg, URLROOT."/request");
+        Redirect::autolink(URLROOT . "/request", "Request $requestid was successfully filled with <a href=$filledurl>$filledurl</a>.  User <a href=".URLROOT."/profile?id=$arr[userid]><b>$arr[username]</b></a> automatically PMd.  <br>Filled that accidently? No worries, <a href=".URLROOT."/request/reqreset?requestid=$requestid>CLICK HERE</a> to mark the request as unfilled.  Do <b>NOT</b> follow this link unless you are sure there is a problem.");
     }
 
     public function votesview()
     {
-        $requestid = (int) $_GET['requestid'];
+        $requestid = (int) Input::get('requestid');
         $res = DB::run("select users.id as userid,users.username, users.downloaded,users.uploaded, requests.id as requestid, requests.request from addedrequests inner join users on addedrequests.userid = users.id inner join requests on addedrequests.requestid = requests.id WHERE addedrequests.requestid =$requestid");
         if (!$res->rowCount() == 0) {
             $data = [
@@ -237,37 +236,36 @@ class Request extends Controller
             ];
             $this->view('request/voteview', $data, 'user');
         } else {
-            Session::flash('info', Lang::T('No Votes Yet'), URLROOT . "/request");
+            Redirect::autolink(URLROOT . "/request", Lang::T('No Votes Yet'));
         }
     }
 
     public function addvote()
     {
-        $requestid = (int) $_GET["id"];
-        $userid = (int) $_SESSION["id"];
+        $requestid = (int) Input::get("id");
+        $userid = (int) $this->session["id"];
         $res = DB::run("SELECT * FROM addedrequests WHERE requestid=$requestid and userid = $userid");
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         $voted = $arr;
         if ($voted) {
-            Session::flash('info', 'Youve already voted for this request only 1 vote for each request is allowed', URLROOT . "/request");
+            Redirect::autolink(URLROOT . "/request", 'Youve already voted for this request only 1 vote for each request is allowed');
         } else {
             DB::run("UPDATE requests SET hits = hits + 1 WHERE id=$requestid");
             DB::run("INSERT INTO addedrequests VALUES(0, $requestid, $userid)");
-            $msg = "<p>Successfully voted for request $requestid</p><p>Back to <a href=".URLROOT."/request><b>requests</b></a></p>";
-            Session::flash('info', $msg, URLROOT . "/request");
+            Redirect::autolink(URLROOT . "/request", "<p>Successfully voted for request $requestid</p><p>Back to <a href=".URLROOT."/request><b>requests</b></a></p>");
         }
     }
 
     public function reqreset()
     {
-        $requestid = (int) $_GET["requestid"];
+        $requestid = (int) Input::get("requestid");
         $res = DB::run("SELECT userid, filledby FROM requests WHERE id =$requestid");
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         if (($_SESSION['id'] == $arr['userid']) || ($_SESSION["class"] >= 4) || ($_SESSION['id'] == $arr['filledby'])) {
             DB::run("UPDATE requests SET filled='', filledby=0 WHERE id =$requestid");
-            Session::flash('info', "Request $requestid successfully reset.", URLROOT."/request");
+            Redirect::autolink(URLROOT . "/request", "Request $requestid successfully reset.");
         } else {
-            Session::flash('info', "Sorry, cannot reset a request when you are not the owner", URLROOT."/request");
+            Redirect::autolink(URLROOT . "/request", "Sorry, cannot reset a request when you are not the owner");
         }
     }
 

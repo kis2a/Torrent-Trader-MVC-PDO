@@ -30,7 +30,7 @@
 <?php } ?>
 <?php if (YOU_TUBE) { ?>
 	<tr><td align=right><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='50' height='50' title='Click here to go to Youtube'></a> </td>
-	<td align=left><input class="form-control" type='text' name='tube' size='50' />&nbsp;<i><?php echo Lang::T("FORMAT"); ?>: </i> <span style='color:#FF0000'><b> https://www.youtube.com/watch?v=aYzVrjB-CWs</b></SPAN></td></tr>
+	<td align=left><input class="form-control" type='text' name='tube' size='50' />&nbsp;<i><?php echo Lang::T("FORMAT"); ?>: </i> <span style='color:#FFff00'><b> https://www.youtube.com/watch?v=aYzVrjB-CWs</b></SPAN></td></tr>
 <?php } ?>
 	 <tr><td colspan='2' align='center'><?php echo Lang::T("MAX_FILE_SIZE"); ?>: <?php echo mksize(IMAGEMAXFILESIZE); ?>"&nbsp;
 	 <?php echo Lang::T("ACCEPTED_FORMATS"); ?>: <?php echo implode(", ", array_unique(ALLOWEDIMAGETYPES)); ?><br /></td></tr>
@@ -45,12 +45,7 @@ foreach ($cats as $row) {
 $category .= "</select>\n";
 print("<tr><td align='right'>" . Lang::T("CATEGORY") . ": </td><td align='left'>" . $category . "</td></tr>");
 
-$language = "<select name=\"lang\">\n<option value=\"0\">" . Lang::T("UNKNOWN_NA") . "</option>\n";
-$langs = langlist();
-foreach ($langs as $row) {
-    $language .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["name"]) . "</option>\n";
-}
-$language .= "</select>\n";
+$language = Lang::select();
 print("<tr><td align='right'>" . Lang::T("LANGUAGE") . ": </td><td align='left'>" . $language . "</td></tr>");
 
 if ($_SESSION["class"] > _VIP) {
@@ -72,7 +67,7 @@ if (ANONYMOUSUPLOAD && MEMBERSONLY) {?>
 <?php
 print textbbcode("upload", "descr", "$descr");
 ?>
-<br /><br /><br /><center><input type="submit" class="btn btn-sm btn-warning" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
+<br><center><input type="submit" class="btn btn-sm btn-warning" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
 <i><?php echo Lang::T("CLICK_ONCE_IMAGE"); ?></i>
 </center>
 </form>

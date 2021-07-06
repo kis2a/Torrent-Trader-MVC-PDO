@@ -41,7 +41,7 @@ if ($data['n'] > 0) {
     if ($n > $data['n']) {
         print("<p>More than 25 items found, displaying first 25.</p>\n");
     }
-    print("<center><a href='" . URLROOT . "/forums?catchup'><b>Mark All Forums Read.</b></a></center>\n");
+    print("<center><a href='" . URLROOT . "/forums?catchup=do'><b>Mark All Forums Read.</b></a></center>\n");
 } else {
     print("<b>Nothing found</b>");
 }

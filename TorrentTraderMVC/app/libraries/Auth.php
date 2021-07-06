@@ -11,12 +11,12 @@ class Auth
     public function user($class = 0, $force = 0, $autoclean = false)
     {
         self::ipBanned();
-        
+
         if ($autoclean) {
             autoclean();
         }
 
-Cookie::csrf_token();
+        Cookie::csrf_token();
 
         if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["key_token"] != self::loginString()) {
             self::isClosed();
@@ -39,21 +39,15 @@ Cookie::csrf_token();
             if ($row['id'] != $_COOKIE['id']) {
                 Redirect::to(URLROOT . "/logout");
             }
-            if($class != 0 && $class > $row['class']) {
+            if ($class != 0 && $class > $row['class']) {
                 Redirect::autolink(URLROOT . "/index", Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
             }
             if ($row) {
-                $user = $row;
-                $message = null;
-                if (Session::get('message')) {
-                    $message = $_SESSION['message'];
-                }
-                
                 $where = Helper::where($_SERVER['REQUEST_URI'], $row["id"], 0);
                 $this->db->run("UPDATE users SET last_access=?,ip=?,page=? WHERE id=?", [Helper::get_date_time(), Helper::getIP(), $where, $row["id"]]);
+                $user = $row;
                 $_SESSION = $row;
                 $_SESSION["loggedin"] = true;
-                $_SESSION['message'] = $message;
                 unset($row);
                 self::isClosed();
                 return $user;
@@ -66,7 +60,7 @@ Cookie::csrf_token();
     {
         $ip = Helper::getIP();
         $browser = Helper::browser();
-        return md5($browser.$browser);
+        return md5($browser . $browser);
     }
 
     public static function ipBanned()

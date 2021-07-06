@@ -45,12 +45,25 @@ class Torrents
         return $stmt;
     }
 
+    public function getTorrentNameNfo($id)
+    {
+        $stmt = $this->db->run("SELECT name, nfo FROM torrents WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
+
+        return $stmt;
+    }
+
     public function getCatById()
     {
         $row = $this->db->run("
     SELECT id
     FROM categories");
 
+        return $row;
+    }
+
+    public function getIdName($id)
+    {
+        $row = $this->db->run("SELECT id, name FROM torrents WHERE id =?", [$id])->fetch(PDO::FETCH_LAZY);
         return $row;
     }
 

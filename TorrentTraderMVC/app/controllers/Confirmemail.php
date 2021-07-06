@@ -4,7 +4,7 @@ class Confirmemail extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 0);
+        $this->session = (new Auth)->user(0, 0);
         $this->userModel = $this->model('User');
         $this->pdo = new Database();
         $this->valid = new Validation();

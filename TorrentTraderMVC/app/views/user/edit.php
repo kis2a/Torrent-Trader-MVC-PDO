@@ -28,10 +28,10 @@ print("<br><b>" . Lang::T("TEAM") . ":</b><br>&nbsp;<select name='teams'>\n$data
 <?php
 print("<b>" . Lang::T("AVATAR_LINK") . ":</b> &nbsp;<input type='text' class='form-control' name='avatar' size='50' value=\"" . htmlspecialchars($selectedid["avatar"]) .
 "\" />\n<a href=" . URLROOT . "/account/avatar?id=".$data['id']."><b>Or upload file (90px x 90px)</b></a><br />");
-print("<br><b>" . Lang::T("CUSTOM_TITLE") . ":</b><br> &nbsp;<input type='text' class='form-control' name='title' size='50' value=\"" . strip_tags($selectedid["title"]) .
-"\" /><br />\n <i>" . Lang::T("HTML_NOT_ALLOWED") . "</i>");
-print("<br><b>" . Lang::T("SIGNATURE") . ":</b><br> &nbsp;<textarea name='signature'  class='form-control' >" . htmlspecialchars($selectedid["signature"]) .
-"</textarea><br />\n <i><br>" . sprintf(Lang::T("MAX_CHARS"), 150) . ", " . Lang::T("HTML_NOT_ALLOWED") . "</i>");
+print("<br><b>" . Lang::T("CUSTOM_TITLE") . ":</b><input type='text' class='form-control' name='title' size='50' value=\"" . strip_tags($selectedid["title"]) .
+"\" />\n <i>" . Lang::T("HTML_NOT_ALLOWED") . "</i><br>");
+print("<br><b>" . Lang::T("SIGNATURE") . ":</b><textarea name='signature'  class='form-control' >" . htmlspecialchars($selectedid["signature"]) .
+"</textarea>\n <i>" . sprintf(Lang::T("MAX_CHARS"), 150) . ", " . Lang::T("HTML_NOT_ALLOWED") . "</i>");
 ?>
 <br><br><b><?php echo Lang::T("RESET_PASSKEY"); ?>:</b><br> &nbsp;<input type='checkbox' name='resetpasskey' value='1' />&nbsp;<i><?php echo Lang::T("RESET_PASSKEY_MSG"); ?></i><br>
 <?php
@@ -40,7 +40,7 @@ if (SHOUTBOX) {
     <input type='checkbox' name='hideshoutbox' value='yes' ".($CURUSER['hideshoutbox'] == 'yes' ? 'checked="checked"' : '')." />
     &nbsp;".Lang::T("HIDE_SHOUT")."<br> ");
 }?>
-<br><br><b><?php echo Lang::T("TIMEZONE"); ?>:</b><br>&nbsp;<select class="form-control" name='tzoffset'' ><?php echo $data['tz']; ?></select>
+<br><b><?php echo Lang::T("TIMEZONE"); ?>:</b><select class="form-control" name='tzoffset'' ><?php echo $data['tz']; ?></select>
 
 </div>
 </div>

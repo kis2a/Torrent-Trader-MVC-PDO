@@ -4,7 +4,7 @@ class Messages extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 2);
         $this->messageModel = $this->model('Message');
         $this->valid = new Validation();
     }
@@ -25,7 +25,7 @@ class Messages extends Controller
 
     public function create()
     {
-        $id = $_GET['id']; // user id
+        $id = (int) Input::get('id');
         $data = [
             'title' => 'Messages',
             'id' => $id,
@@ -35,17 +35,17 @@ class Messages extends Controller
 
     public function submit()
     {
-        $receiver = $_POST['receiver'];
-        $subject = $_POST['subject'];
-        $body = $_POST['body'];
+        $receiver = Input::get('receiver');
+        $subject = Input::get('subject');
+        $body = Input::get('body');
         if ($body == "") {
-            Session::flash('info', "Body cannot be empty!", URLROOT . "/forums");
+            Redirect::autolink(URLROOT."/messages", "Body cannot be empty!");
         }
         if ($receiver == "") {
-            Session::flash('info', "Receiver cannot be empty!", URLROOT . "/forums");
+            Redirect::autolink(URLROOT."/messages", "Receiver cannot be empty!");
         }
         if ($subject == "") {
-            Session::flash('info', "Subject cannot be empty!", URLROOT . "/forums");
+            Redirect::autolink(URLROOT."/messages", "Subject cannot be empty!");
         }
         // Button Switch
         $this->insertbytype($_REQUEST['Update'], $receiver, $subject, $body);
@@ -60,15 +60,15 @@ class Messages extends Controller
                 } else {
                     $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'in');
                 }
-                Session::flash('info', "yeah i posted a new post!", URLROOT . "/messages/outbox");
+                Redirect::autolink(URLROOT."/messages/outbox", "Message Sent!");
                 break;
             case 'draft':
                 $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'draft');
-                Session::flash('info', "yeah i posted a draft!", URLROOT . "/messages/draft");
+                Redirect::autolink(URLROOT."/messages/draft", "Saved Message as Draft !");
                 break;
             case 'template':
                 $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'template');
-                Session::flash('info', "yeah i posted a template!", URLROOT . "/messages/templates");
+                Redirect::autolink(URLROOT."/messages/templates", "Template Created !");
                 break;
         }
     }
@@ -76,7 +76,7 @@ class Messages extends Controller
     public function read()
     {
         // Get Message Id from url
-        $id = (int) $_GET['id'];
+        $id = (int) Input::get('id');
         // Get Page from url
         $inbox = isset($_GET['inbox']) ? $_GET['inbox'] : null;
         $outbox = isset($_GET['outbox']) ? $_GET['outbox'] : null;
@@ -114,22 +114,11 @@ class Messages extends Controller
         if ($arr["unread"] == "yes" && $arr["receiver"] == $_SESSION['id']) {
             DB::run("UPDATE messages SET `unread` = 'no' WHERE `id` = $arr[id] AND `receiver` = $_SESSION[id]");
         }
-        // get history
-        $arr4 = DB::run("SELECT * FROM messages WHERE subject=? AND added <=?  ORDER BY id DESC ", [$arr["subject"], $arr['added']]);
-        // $lastposter get sender of message
-        $arr5 = DB::run("SELECT username FROM users WHERE id=?", [$arr["sender"]])->fetch();
-        $lastposter = "<a href='" . URLROOT . "/profile?id=" . $arr["sender"] . "'><b>" . Users::coloredname($arr5["username"]) . "</b></a>";
-        if ($arr["sender"] == 0) {
-            $lastposter = "<font class='error'><b>System</b></font>";
-        }
-
         $data = [
             'title' => 'Messages',
             'id' => $id,
             'button' => $button,
             'arr' => $arr,
-            'lastposter' => $lastposter,
-            'arr4' => $arr4,
             'subject' => $arr['subject'],
             'added' => $arr['added'],
             'msg' => $arr['msg'],
@@ -191,6 +180,7 @@ class Messages extends Controller
         }
 
         $data = [
+            'title' => 'Edit Message',
             'username' => $username,
             'msg' => $msg,
             'subject' => $row['subject'],

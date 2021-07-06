@@ -4,7 +4,7 @@ class Admintorrentlang extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(_MODERATOR, 2);
+        $this->session = (new Auth)->user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();
@@ -23,13 +23,13 @@ class Admintorrentlang extends Controller
 
     public function edit()
     {
-        $id = (int) $_GET["id"];
+        $id = (int) Input::get("id");
         if (!$this->valid->validId($id)) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("INVALID_ID"), 1);
+            Redirect::autolink(URLROOT . "/admintorrentlang", Lang::T("INVALID_ID"));
         }
         $res = DB::run("SELECT * FROM torrentlang WHERE id=$id");
         if ($res->rowCount() != 1) {
-            show_error_msg(Lang::T("ERROR"), "No Language with ID $id.", 1);
+            Redirect::autolink(URLROOT . "/admintorrentlang", "No Language with ID $id.");
         }
         if ($_GET["save"] == '1') {
             $name = $_POST['name'];
@@ -64,7 +64,7 @@ class Admintorrentlang extends Controller
             $newlangid = (int) $_POST["newlangid"];
             DB::run("UPDATE torrents SET torrentlang=$newlangid WHERE torrentlang=$id"); //move torrents to a new cat
             DB::run("DELETE FROM torrentlang WHERE id=$id"); //delete old cat
-            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlang", Lang::T("Language Deleted OK."));
+            Redirect::autolink(URLROOT . "/admintorrentlang", Lang::T("Language Deleted OK."));
         } else {
             $title = Lang::T("TORRENT_LANGUAGES");
             $data = [
@@ -79,7 +79,7 @@ class Admintorrentlang extends Controller
     {
         $name = $_POST['name'];
         if ($name == "") {
-            show_error_msg(Lang::T("ERROR"), "Name cannot be empty!", 1);
+            Redirect::autolink(URLROOT . "/admintorrentlang/add", "Name cannot be empty!");
         }
         $sort_index = $_POST['sort_index'];
         $image = $_POST['image'];
@@ -88,9 +88,9 @@ class Admintorrentlang extends Controller
         $image = $image;
         $ins = DB::run("INSERT INTO torrentlang (name, sort_index, image) VALUES (?, ?, ?)", [$name, $sort_index, $image]);
         if ($ins) {
-            Redirect::autolink(URLROOT . "/admintorrentlang/torrentlang", Lang::T("Language was added successfully."));
+            Redirect::autolink(URLROOT . "/admintorrentlang", Lang::T("Language was added successfully."));
         } else {
-            show_error_msg(Lang::T("ERROR"), "Unable to add Language", 1);
+            Redirect::autolink(URLROOT . "/admintorrentlang/add", "Unable to add Language");
         }
     }
 

@@ -45,27 +45,32 @@ if ($data['res']->rowCount() > 0) {
 
 if ($_SESSION["edit_users"] == "yes" && $_SESSION["control_panel"] == "yes") {
     ?>
-    <div class="row justify-content-center">
+    <center><font color=#ffff00>Warn User</font></center>
+    <div class="row justify-content-md-center">
+    <div class="col-6 border border-warning">
     <form method='post' action='<?php echo URLROOT; ?>/warning/submit'>
     <input type='hidden' name='userid' value='<?php echo $data['id']; ?>'>
     <b><?php echo Lang::T("REASON"); ?>:</b><textarea class="form-control" cols='40' rows='5' name='reason'></textarea>
     <b><?php echo Lang::T("EXPIRE"); ?>:</b><input class="form-control" type='text' size='4' name='expiry' />(days)
     <b><?php echo Lang::T("TYPE"); ?>:</b><input class="form-control" type='text' size='10' name='type' />
-    <center><button type='submit' class='btn btn-sm btn-success'><b><?php echo Lang::T("ADD_WARNING"); ?></b></button></center>
+    <center><button type='submit' class='btn btn-sm btn-warning'><b><?php echo Lang::T("ADD_WARNING"); ?></b></button></center>
     </form>
     </div>
+    </div><br>
     <?php
 }
-
 if ($_SESSION["delete_users"] == "yes" && $_SESSION["control_panel"] == "yes") {
     ?>
-    <div class="row justify-content-center">
+    <center><font color=#ffff00>Delete User</font></center>
+    <div class="row justify-content-md-center">
+    <div class="col-6 border border-warning">
     <form method='post' action='<?php echo URLROOT; ?>/profile/delete'>
     <input type='hidden' name='userid' value='<?php echo $data['id']; ?>' />
     <input type='hidden' name='username' value='<?php echo $data["username"]; ?>' />
     <b><?php echo Lang::T("REASON"); ?>:</b><input class="form-control" type='text' size='30' name='delreason' />
-    <center><button type='submit' class='btn btn-sm btn-danger'><b><?php echo Lang::T("DELETE_ACCOUNT"); ?></b></button></center>
+    <center><button type='submit' class='btn btn-sm btn-warning'><b><?php echo Lang::T("DELETE_ACCOUNT"); ?></b></button></center>
     </form>
+    </div>
     </div>
     <br>
     <center><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $data['id']; ?>'><button type='submit' class='btn btn-sm'><b>Back To Account</b></button></a></center>

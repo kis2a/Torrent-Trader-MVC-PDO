@@ -8,8 +8,8 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 <div class="row">
     <div class="col">
         <img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar"><br>
-        <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-success'><?php echo Lang::T("SEND_PM") ?></button></a>&nbsp;
-		<a href="<?php echo URLROOT ?>/report/user?user=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-danger'><?php echo Lang::T("REPORT_MEMBER") ?></button></a>&nbsp;
+        <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("PM") ?></button></a>&nbsp;
+		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
         <?php if ($_SESSION["edit_users"] == "yes") {?>
 		<a href="<?php echo URLROOT; ?>/snatched?uid=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("SNATCHLIST") ?></button></a>
         <?php } ?>
@@ -32,8 +32,8 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         $res = DB::run("SELECT name,image FROM teams WHERE id=? LIMIT 1", [$selectedid['team']]);
         if ($res->rowCount() == 1) {
              $arr = $res->fetch();
-            echo "<b>Team Member Of:</b><br>";
-            echo "<img src='" . htmlspecialchars($arr["image"]) . "' alt='' /><br />" . $arr["name"] . "<br /><br /><a href='" . URLROOT . "/teams'>[View " . Lang::T("TEAMS") . "]</a><br>";
+            echo "<br><b>Team Member Of:</b>";
+            echo "<img src='" . htmlspecialchars($arr["image"]) . "' alt='' /><br>" . $arr["name"] . "<br /><br /><a href='" . URLROOT . "/teams'>[View " . Lang::T("TEAMS") . "]</a>";
         }
         ?>
     </div>

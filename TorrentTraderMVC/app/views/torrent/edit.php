@@ -22,7 +22,7 @@ torrentmenu($data['id'], $torr['external']); ?>
     <input type='radio' name='nfoaction' value='keep' checked='checked' />Keep NFO &nbsp;
     <input type='radio' name='nfoaction' value='update' />Update NFO:<?php
     if ($torr["nfo"] == "yes") { ?>
-        &nbsp;&nbsp;<a href='<?php echo URLROOT  ?>/nfo?id=<?php echo $torr["id"]  ?>' target='_blank'>[<?php echo Lang::T("VIEW_CURRENT_NFO")  ?>]</a><?php
+        &nbsp;&nbsp;<a href='<?php echo URLROOT  ?>/nfo?id=<?php echo $torr["id"]  ?>'>[<?php echo Lang::T("VIEW_CURRENT_NFO")  ?>]</a><?php
     } else { ?>
        &nbsp;&nbsp;<font color='#ff0000'><?php echo Lang::T("NO_NFO_UPLOADED")  ?></font><?php
     } ?>

@@ -15,11 +15,30 @@ class User
         return $row;
     }
 
+    public function updateset($updateset = [], $id)
+    {
+    DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$id]);
+}
+
+    public function warnUserWithId($id)
+    {
+        $this->db->run("UPDATE users SET warned=? WHERE id=?", ['yes', $id]);
+    }
+
     public function updateUserPasswordSecret($chpassword, $secret, $id)
     {
         $row = $this->db->run("UPDATE users SET password =?, secret =?
             WHERE id =?", [$chpassword, $secret, $id]);
 
+    }
+
+    public function updateUserBits($wantusername, $wantpassword, $secret, $status, $added, $id)
+    {
+        $row = $this->db->run("
+        UPDATE users
+        SET username=?, password=?, secret=?, status=?, added=?
+        WHERE id=?",
+        [$wantusername, $wantpassword, $secret, $status, $added, $id]);
     }
 
     public function updateUserEditSecret($sec, $id)
@@ -35,6 +54,12 @@ class User
     public function selectUserEmail($id)
     {
         $row = $this->db->run("SELECT email FROM users WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public function selectInviteIdBySecret($invite, $secret)
+    {
+        $row = $this->db->run("SELECT id FROM users WHERE id = ? AND secret = ?", [$invite, $secret])->fetch(PDO::FETCH_ASSOC);
         return $row;
     }
 
@@ -81,8 +106,14 @@ class User
     // Get Email&Id by Email
     public function checkinvite()
     {
-        $stmt = $this->pdo->run("SELECT id FROM users WHERE id = $_REQUEST[invite] AND secret = " . sqlesc($_REQUEST["secret"]));
+        $stmt = $this->db->run("SELECT id FROM users WHERE id = $_REQUEST[invite] AND secret = " . sqlesc($_REQUEST["secret"]));
         $invite_row = $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function selectAvatar($id)
+    {
+        $stmt = $this->db->run("SELECT avatar FROM users WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return $stmt;
     }
 
     // Function That Removes All From An Account

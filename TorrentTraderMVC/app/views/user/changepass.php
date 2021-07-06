@@ -1,4 +1,6 @@
 <?php usermenu($data['id']); ?>
+<div class="row justify-content-md-center">
+    <div class="col-6 border border-warning">
 <div class="form-group">
     <form method="post" action="<?php echo URLROOT; ?>/account/changepw?id=<?php echo $data['id']; ?>">
     <input type="hidden" name="do" value="newpassword" />
@@ -11,7 +13,11 @@
         <input id="name" type="password" class="form-control" name="passagain" minlength="3" maxlength="25" required autofocus>
     </div>
     <div class="form-group">
+    <center>
 	    <button type="submit" class="btn btn-warning"><?php echo Lang::T("Submit"); ?></button>
+    </center>
     </div>
     </form>
+</div>
+    </div>
 </div>

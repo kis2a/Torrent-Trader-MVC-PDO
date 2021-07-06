@@ -1,5 +1,30 @@
 <?php
-print("<b> " . Lang::T("EDITCOMMENT") . " </b><p>\n");
-print("<form method=\"post\" name=\"comment\" action=\"" . URLROOT . "/comments/edit?type=$data[type]&save=1&amp;id=$data[id]\">\n");
-print textbbcode("comment", "text", htmlspecialchars($data["text"]));
-print("<p><center><input type=\"submit\"  value=\"Submit Changes\" /></center></p></form>\n");
+        if ($_GET['type'] == "news") {
+            ?>
+            <div class="row justify-content-md-center">
+            <div class="col-8 border border-warning"><br>
+            <?php
+            echo htmlspecialchars($data['newstitle']) . "<br /><br />" . format_comment($data['newsbody']) . "<br />";
+            ?><br>
+            </div>
+            </div><br>
+            <?php
+        }
+        if ($_GET['type'] == "torrent") {
+            echo torrentmenu($data['id']);
+        }
+        // Comments
+        echo "<center><a href='".URLROOT."/comments/add?type=$data[type]&amp;id=$data[id]'><b>Add Comment</b></a></center><br>";
+        
+        if ($data['commcount']) {
+            commenttable($data['commres'], $data['type']);
+            print($data['pagerbottom']);
+        } else {
+            print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
+        }
+        
+        echo "<div class='form-group'>";
+        echo "<form name='comment' method='post' action=\"comments/take?type=$data[type]&amp;id=$data[id]\">";
+        echo textbbcode("comment", "body") . "<br>";
+        echo "<center><input type=\"submit\"  value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
+        echo "</form></div>";

@@ -4,7 +4,7 @@ class Adminclient extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(_MODERATOR, 2);
+        $this->session = (new Auth)->user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
     }
 

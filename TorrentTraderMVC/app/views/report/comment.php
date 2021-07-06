@@ -2,4 +2,4 @@
 <p>Please note, this is <b>not</b> to be used to report leechers, we have scripts in place to deal with them</p>
 <b>Reason</b> (required): <form method='post' action='<?php echo URLROOT; ?>/report/comment?type=<?php echo $data["type"]; ?>'>
 <input class="form-control" type='hidden' name='comment' value='<?php echo $data['comment']; ?>' /><br>
-<input class="btn btn-sm btn-warning" type='text' size='100' name='reason' /><input type='submit'  value='Confirm' /></form>
+<input type='text' size='100' name='reason' /><input type='submit'  value='Confirm' /></form>

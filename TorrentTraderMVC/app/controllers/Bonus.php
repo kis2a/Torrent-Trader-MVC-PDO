@@ -4,7 +4,7 @@ class Bonus extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 2);
         $this->bonusModel = $this->model('Bonusmodel');
         $this->userModel = $this->model('User');
         $this->valid = new Validation();
@@ -12,17 +12,16 @@ class Bonus extends Controller
 
     public function index()
     {
-        $_POST['id'] = (int) ($_POST['id'] ?? 0);
-        if ($this->valid->validId($_POST['id'])) {
-            $row = $this->bonusModel->getBonusByPost($_POST['id']);
-            if (!$row || $_SESSION['seedbonus'] < $row->cost) {
-                Redirect::autolink("bonus", "Demand not valid.");
+        $id = (int) Input::get("id");
+        if ($this->valid->validId($id)) {
+            $row = $this->bonusModel->getBonusByPost($id);
+            if (!$row || $this->session['seedbonus'] < $row->cost) {
+                Redirect::autolink(URLROOT."/bonus", "Demand not valid.");
             }
             $cost = $row->cost;
-            $id = $_SESSION['id'];
-            $this->bonusModel->setBonus($cost, $id);
+            $this->bonusModel->setBonus($cost, $this->session['id']);
             $this->bonusswitch($row);
-            Redirect::autolink("bonus", "Your account has been credited.");
+            Redirect::autolink(URLROOT."/bonus", "Your account has been credited.");
         }
 
         $row1 = $this->bonusModel->getAll();
@@ -32,8 +31,7 @@ class Bonus extends Controller
             'usersbonus' => $_SESSION['seedbonus'],
             'configbonuspertime' => BONUSPERTIME,
             'configautoclean_interval' => floor(ADDBONUS / 60),
-			'getid' => $_GET['id'],
-            'usersid' => $_SESSION['id'],
+			'usersid' => $this->session['id'],
         ];
         $this->view('bonus/index', $data, 'user');
     }

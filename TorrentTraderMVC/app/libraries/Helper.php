@@ -705,7 +705,7 @@ class Helper
 
     public static function echolanglist()
     {
-        $langs = langlist();
+        $langs = langlist(); 
         $language = "<option value=\"0\">---- " . Lang::T("NONE_SELECTED") . " ----</option>\n";
         foreach ($langs as $row) {
             $language .= "<option value=\"" . $row["id"] . "\">" . $row["name"] . "</option>\n";

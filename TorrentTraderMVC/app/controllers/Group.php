@@ -4,7 +4,7 @@ class Group extends Controller {
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 2);
         $this->countriesModel = $this->model('Countries');
         $this->groupsModel = $this->model('Groups');
     }
@@ -16,13 +16,13 @@ class Group extends Controller {
 
     public function members()
     {
-        if ($_SESSION["view_users"] == "no") {
-            Session::flash('info', Lang::T("NO_USER_VIEW"), URLROOT."/home");
+        if ($this->session["view_users"] == "no") {
+            Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
 
-        $search = trim(Input::get('search'));
-        $class = (int) (Input::get('class'));
-        $letter = trim(Input::get('letter'));
+        $search = Input::get('search');
+        $class = (int) Input::get('class');
+        $letter = Input::get('letter');
         if (!$class) {
             unset($class);
         }
@@ -88,7 +88,7 @@ class Group extends Controller {
 
         $res = $this->groupsModel->getStaffLevel($where);
         if ($res->rowCount() == 0) {
-            Session::flash('info', Lang::T("NO_STAFF_HERE"), URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("NO_STAFF_HERE"));
         }
         $title = Lang::T("STAFF");
         $data = [

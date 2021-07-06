@@ -1,5 +1,5 @@
-<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-success'>All Request</button></a>&nbsp;
-<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-success'>View my requests</button></a>
+<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-warning'>All Request</button></a>&nbsp;
+<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-warning'>View my requests</button></a>
 <br><br>
 <b><font color='#ff9900'>If this is abused, it will be for VIP only!</font></b>
 <br><br>
@@ -26,7 +26,8 @@
     }
     echo $catdropdown?>
     </select>
-<tr><td align=center>Additional Information <b>(Optional - but be generous!</b>)<br><textarea name=descr rows=7 cols=60></textarea>
-<tr><td align=center><button  class='btn btn-sm btn-success'><?php echo Lang::T('SUBMIT') ?></button>
+<tr><td align=center>Additional Information <b>(Optional - but be generous!</b>)<br>
+<textarea class="form-control" id="descr" name="descr" rows="7"></textarea>
+<tr><td align=center><button  class='btn btn-sm btn-warning'><?php echo Lang::T('SUBMIT') ?></button>
 </form>
 </table></CENTER>

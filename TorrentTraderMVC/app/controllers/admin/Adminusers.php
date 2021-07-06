@@ -4,7 +4,7 @@ class Adminusers extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(_MODERATOR, 2);
+        $this->session = (new Auth)->user(_MODERATOR, 2);
         $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
         $this->valid = new Validation();
@@ -27,10 +27,10 @@ class Adminusers extends Controller
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($_POST["username"] == "" || $_POST["password"] == "" || $_POST["email"] == "") {
-                show_error_msg("Error", "Missing form data.");
+                Redirect::autolink(URLROOT . "/adminusers", "Missing form data.");
             }
             if ($_POST["password"] != $_POST["password2"]) {
-                show_error_msg("Error", "Passwords mismatch.");
+                Redirect::autolink(URLROOT . "/adminusers", "Passwords mismatch.");
             }
             $username = $_POST["username"];
             $password = $_POST["password"];

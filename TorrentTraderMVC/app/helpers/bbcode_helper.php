@@ -141,7 +141,7 @@ function textbbcode($form, $name, $content = "")
         <div class="col-10">
         <?php
         // Refresh And Preview Button
-        print("<center><input type='reset' value='Refresh' />&nbsp;<input type='button' value='Preview' onClick='visualisation()' /></center><br>");
+        print("<center><input type='reset' class='btn btn-sm btn-warning' value='Refresh' />&nbsp;<input type='button' class='btn btn-sm btn-warning' value='Preview' onClick='visualisation()' /></center><br>");
         // Creation of the Preview Area
         print("<div id='previsualisation' width='200px' height='200px'></div></font></center></div><br>");
         ?>

@@ -3,7 +3,7 @@ class Adminfaq extends Controller
 {
     public function __construct()
     {
-        $this->user = (new Auth)->user(_MODERATOR, 2);
+        $this->session = (new Auth)->user(_MODERATOR, 2);
         $this->faqModel = $this->model('Faqs');
         $this->valid = new Validation();
     }

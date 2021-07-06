@@ -1,4 +1,4 @@
-<?php usermenu($data['getid']); ?>
+<?php usermenu($data['usersid']); ?>
   <center>
   This page displays the options that you can redeem accumulated points against depending on the share of torrents. <font color=yellow><b><?php echo $data['usersbonus']; ?></font></b>
   </center>
@@ -16,7 +16,7 @@
       <td><?php echo htmlspecialchars($row->title); ?></td>
       <td><?php echo htmlspecialchars($row->descr); ?></td>
       <td><?php echo $row->cost; ?></td>
-      <td><input type="submit" value="Exchange"></td>
+      <td><input type="submit"  class='btn btn-sm btn-warning' value="Exchange"></td>
   </tr></tbody>
   </form>
   <?php endforeach;?>
@@ -25,6 +25,6 @@
      <li>You recieve <font color=red><?php echo $data['configbonuspertime']; ?></font> points per <?php echo $data['configautoclean_interval']; ?> minutes the system registers you as a seeder by torrent.</li>
   </ul>
   <ul>
-     <li><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'>Return to profile</a></li>
+     <li><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $data['usersid']; ?>'>Return to profile</a></li>
   </ul>
   </div>

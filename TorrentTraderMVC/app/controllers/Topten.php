@@ -3,7 +3,7 @@ class Topten extends Controller
 {
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 2);
         // $this->userModel = $this->model('User');
     }
 

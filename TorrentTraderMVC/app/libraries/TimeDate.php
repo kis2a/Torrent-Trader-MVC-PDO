@@ -179,4 +179,20 @@ class TimeDate
 
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
+
+    public static function timeZoneDropDown($tzoffset)
+    {
+        global $tzs;
+        $tz = '';
+        ksort($tzs);
+        reset($tzs);
+        while (list($key, $val) = thisEach($tzs)) {
+            if ($tzoffset == $key) {
+                $tz .= "<option value=\"$key\" selected='selected'>$val[0]</option>\n";
+            } else {
+                $tz .= "<option value=\"$key\">$val[0]</option>\n";
+            }
+        }
+        return $tz;
+    }
 }

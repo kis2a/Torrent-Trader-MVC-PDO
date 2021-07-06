@@ -31,13 +31,13 @@
 	<input id="age" type="text" class="form-control" name="age" minlength="2" required autofocus>
 </div>
 <div class="form-group">
-	<label for="country"><?php echo Lang::T("COUNTRY"); ?>:</label>
+	<label for="country"><?php echo Lang::T("COUNTRY"); ?>:</label><br>
 	<select name="country" size="1">
 		<?php Countries::echoCountry(); ?>
 	</select>
 </div>
 
-<label for="name"><?php echo Lang::T("GENDER"); ?>:</label>
+<label for="name"><?php echo Lang::T("GENDER"); ?>:</label><br>
 <div class="form-check form-check-inline">
   <input class="form-check-input" type="checkbox" name="gender" id="Male" value="Male">
   <label class="form-check-label" for="gender">Male</label>
@@ -45,10 +45,10 @@
 <div class="form-check form-check-inline">
   <input class="form-check-input" type="checkbox" name="gender" id="Female" value="Female">
   <label class="form-check-label" for="gender">Female</label>
-</div>
+</div><br><br>
 
 <div class="form-group">
-	<label for="client"><?php echo Lang::T("PREF_BITTORRENT_CLIENT"); ?>:</label>
+	<label for="client"><?php echo Lang::T("PREF_BITTORRENT_CLIENT"); ?>:</label><br>
 	<input id="client" type="text" class="form-control" name="client" minlength="3" maxlength="25" required autofocus>
 </div>
 <div class="form-group no-margin">

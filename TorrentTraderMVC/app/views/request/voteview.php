@@ -1,5 +1,5 @@
-<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-success'>All Request</button></a>&nbsp;
-<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-success'>View my requests</button></a>
+<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-warning'>All Request</button></a>&nbsp;
+<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-warning'>View my requests</button></a>
 
 <p><center><a href='<?php echo URLROOT ?>/request/addvote?id=<?php echo $data['requestid'] ?>'><b><?php echo Lang::T('VOTE_FOR_THIS') ?>   <?php echo Lang::T('REQUEST') ?></b></a></center></p>
 
@@ -10,8 +10,7 @@
 <th><?php echo Lang::T('RATIO') ?></th></tr></thead>
 <?php
 while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
-var_dump($arr);
-    if ($arr["downloaded"] > 0) {
+   if ($arr["downloaded"] > 0) {
         $ratio = number_format($arr["uploaded"] / $arr["downloaded"], 3);
         $ratio = "<font color=" . get_ratio_color($ratio) . ">$ratio</font>";
     } elseif ($arr["uploaded"] > 0) {

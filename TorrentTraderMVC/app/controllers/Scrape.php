@@ -3,7 +3,7 @@ class Scrape extends Controller
 {
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
+        $this->session = (new Auth)->user(0, 0);
         $this->torrentModel = $this->model('Torrents');
         $this->valid = new Validation();
         $this->logsModel = $this->model('Logs');
@@ -58,7 +58,7 @@ class Scrape extends Controller
 
     public function external()
     {
-        $id = $_GET['id'];
+        $id = Input::get('id');
         $resu = DB::run("SELECT id, info_hash FROM torrents WHERE external = 'yes' AND id = $id");
         while ($rowu = $resu->fetch(PDO::FETCH_ASSOC)) {
             $torrent = new Torrent(TORRENTDIR . "/$rowu[id].torrent");

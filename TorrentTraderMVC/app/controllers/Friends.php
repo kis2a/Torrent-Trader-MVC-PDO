@@ -4,24 +4,27 @@ class Friends extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
-        // $this->userModel = $this->model('User');
+        $this->session = (new Auth)->user(0, 2);
+        $this->userModel = $this->model('User');
+        $this->friendModel = $this->model('Friend');
         $this->valid = new Validation();
     }
 
     public function index()
     {
-        $userid = (int) $_GET['id'];
+        $userid = (int) Input::get('id');
         if (!$this->valid->validId($userid)) {
-            Session::flash('info', "Invalid ID $userid.", URLROOT . "/home");
+            Redirect::autolink(URLROOT, "Invalid ID $userid.");
         }
-        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $userid) {
-            Session::flash('info', Lang::T("NO_USER_VIEW"), URLROOT);
+        if ($this->session["view_users"] == "no" && $this->session["id"] != $userid) {
+            Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         $res = DB::run("SELECT * FROM users WHERE id=$userid");
         $user = $res->fetch(PDO::FETCH_ASSOC);
-        $enemy = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$userid AND friend='enemy' ORDER BY name");
-        $friend = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$userid AND friend='friend' ORDER BY name");
+        $enemy = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$user[id] AND friend='enemy' ORDER BY name");
+        $friend = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$user[id] AND friend='friend' ORDER BY name");
+        
+        // Template
         $data = [
             'title' => 'Friend Lists',
             'sql' => $user,

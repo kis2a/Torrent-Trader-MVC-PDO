@@ -25,4 +25,27 @@ class Countries
         echo $countries;
     }
 
+    public function getCountryName($id)
+    {
+        $res = DB::run("SELECT name FROM countries WHERE id=? LIMIT 1", [$id]);
+        if ($res->rowCount() == 1) {
+            $arr = $res->fetch();
+            $country = "$arr[name]";
+        }
+        if (!$country) {
+            $country = "<b>Unknown</b>";
+        }
+        return $country;
+    }
+
+    public function pickCountry($country)
+    {
+        $countries = "<option value='0'>----</option>\n";
+        $ct_r = DB::run("SELECT id,name from countries ORDER BY name");
+        while ($ct_a = $ct_r->fetch(PDO::FETCH_LAZY)) {
+            $countries .= "<option value='$ct_a[id]'" . ($country == $ct_a['id'] ? " selected='selected'" : "") . ">$ct_a[name]</option>\n";
+        }
+        return $countries;
+    }
+
 }

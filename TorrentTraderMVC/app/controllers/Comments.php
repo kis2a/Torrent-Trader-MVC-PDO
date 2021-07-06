@@ -3,57 +3,65 @@ class Comments extends Controller
 {
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 2);
-        // $this->userModel = $this->model('User');
+        $this->session = (new Auth)->user(0, 2);
+        $this->newsModel = $this->model('News');
+        $this->commentModel = $this->model('Comment');
+        $this->torrentModel = $this->model('Torrents');
         $this->logsModel = $this->model('Logs');
     }
 
     public function index()
     {
-        $id = (int) ($_GET["id"] ?? 0);
-        $type = $_GET["type"];
+        $id = (int) Input::get("id");
+        $type = Input::get("type");
         if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
-            Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
-        //NEWS
+        
         if ($type == "news") {
-            $res = DB::run("SELECT * FROM news WHERE id =?", [$id]);
-            $row = $res->fetch(PDO::FETCH_LAZY);
+            $row = $this->newsModel->selectAll($id);
             if (!$row) {
-                Session::flash('warning', "News id invalid", URLROOT."/comments?type=news&id=$id");
+                Redirect::autolink(URLROOT."/comments?type=news&id=$id", "News id invalid");
             }
-            Style::header(Lang::T("COMMENTS"));
-            Style::begin(Lang::T("NEWS"));
-            echo htmlspecialchars($row['title']) . "<br /><br />" . format_comment($row['body']) . "<br />";
-            Style::end();
+            $title = Lang::T("NEWS");
         }
 
-        $title = Lang::T("COMMENTS");
-        Style::header(Lang::T("COMMENTS"));
-        Style::begin($title);
-        //TORRENT
-        
         if ($type == "torrent") {
-            torrentmenu($id);
-            $res = DB::run("SELECT id, name FROM torrents WHERE id =?", [$id]);
-            $row = $res->fetch(PDO::FETCH_LAZY);
+            $row = $this->torrentModel->getIdName($id);
             if (!$row) {
-                Session::flash('warning', "News id invalid", URLROOT."/home");
+                Redirect::autolink(URLROOT, "Invalid Torrent");
             }
             $title = Lang::T("COMMENTSFOR") . "<a href='torrent?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</a>";
         }
 
         if ($type == "req") {
-            $res = DB::run("SELECT * FROM comments WHERE req =?", [$id]);
-            $row = $res->fetch(PDO::FETCH_LAZY);
+            $row = $this->commentModel->selectByRequest($id);
             if (!$row) {
-                Session::flash('warning', "Request id invalid", URLROOT."/home");
+                Redirect::autolink(URLROOT, "Request id invalid");
             }
             $title = Lang::T("COMMENTSFOR") . "<a href='".URLROOT."/request'>" . htmlspecialchars($row['name']) . "</a>";
         }
+        
+        $pager = $this->commentPager($id, $type);
+        // Template
+        $data = [
+            'title' => $title,
+            'pagertop' => $pager['pagertop'],
+            'commres' => $pager['commres'],
+            'pagerbottom' => $pager['pagerbottom'],
+            'limit' => $pager['limit'],
+            'commcount' => $pager['commcount'],
+            'row' => $row,
+            'newsbody' => $row['body'],
+            'newstitle' => $row['title'],
+            'type' => $type,
+            'id' => $id
+        ];
+        $this->view('comments/index', $data, 'user');
+    }
 
-        echo "<center><a href='".URLROOT."/comments/add?type=$type&amp;id=$id'><b>Add Comment</b></a></center><br>";
-
+    public function commentPager($id, $type)
+    {
         $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE $type =?", [$id])->fetchColumn();
         if ($commcount) {
             list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "comments?id=$id&amp;type=$type");
@@ -61,29 +69,23 @@ class Comments extends Controller
         } else {
             unset($commres);
         }
-        if ($commcount) {
-            commenttable($commres, $type);
-            print($pagerbottom);
-        } else {
-            print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
-        }
-        
-        echo "<div class='form-group'>";
-        echo "<form name='comment' method='post' action=\"comments/take?type=$type&amp;id=$id\">";
-        echo textbbcode("comment", "body") . "<br>";
-        echo "<center><input type=\"submit\"  value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
-        echo "</form></div>";
-        Style::end();
-        Style::footer();
+        return $pager = [
+            'pagertop' => $pagertop,
+            'commres' => $commres,
+            'pagerbottom' => $pagerbottom,
+            'limit' => $limit,
+            'commcount' => $commcount,
+        ];
     }
 
     public function add()
     {
-        $id = (int) ($_GET["id"] ?? 0);
-        $type = $_GET["type"];
+        $id = (int) Input::get("id");
+        $type = Input::get("type");
         if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
-            Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
-        }$data = [
+            Redirect::autolink(URLROOT, Lang::T("ERROR"));
+        }
+        $data = [
             'title' => 'Add Comment',
             'id' => $id,
             'type' => $type,
@@ -93,41 +95,40 @@ class Comments extends Controller
 
     public function edit()
     {
-        $id = (int) ($_GET["id"] ?? 0);
-        $type = $_GET["type"];
-        $edit = (int) ($_GET["edit"] ?? 0);
+        $id = (int) Input::get("id");
+        $type = Input::get("type");
         if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
-            Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
         $row = DB::run("SELECT user FROM comments WHERE id=?", [$id])->fetch();
         if (($type == "torrent" && $_SESSION["edit_torrents"] == "no" || $type == "news" && $_SESSION["edit_news"] == "no") && $_SESSION['id'] != $row['user'] || $type == "req" && $_SESSION['id'] != $row['user']) {
-            Session::flash('warning', Lang::T("ERR_YOU_CANT_DO_THIS"), URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("ERR_YOU_CANT_DO_THIS"));
         }
         $save = (int) $_GET["save"];
         if ($save) {
             $text = $_POST['text'];
             $result = DB::run("UPDATE comments SET text=? WHERE id=?", [$text, $id]);
             Logs::write(Users::coloredname($_SESSION['username']) . " has edited comment: ID:$id");
-            Session::flash('warning', "Comment Edited OK", URLROOT."/home");
+            Redirect::autolink(URLROOT, "Comment Edited OK");
         }
-        $arr = DB::run("SELECT * FROM comments WHERE id=?", [$id])->fetch();
+        $arr = $this->commentModel->selectAll($id);
 
         $data = [
             'title' => 'Edit Comment',
-            'text' => $arr["text"],
+            'text' => $arr->text,
             'id' => $id,
             'type' => $type,
         ];
-        $this->view('comments/index', $data, 'user');
+        $this->view('comments/edit', $data, 'user');
         die();
     }
 
     public function delete()
     {
-        $id = (int) ($_GET["id"] ?? 0);
-        $type = $_GET["type"];
+        $id = (int) Input::get("id");
+        $type = Input::get("type");
         if ($_SESSION["delete_news"] == "no" && $type == "news" || $_SESSION["delete_torrents"] == "no" && $type == "torrent") {
-            Session::flash('warning', Lang::T("ERR_YOU_CANT_DO_THIS"), URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("ERR_YOU_CANT_DO_THIS"));
         }
         if ($type == "torrent") {
             $res = DB::run("SELECT torrent FROM comments WHERE id=?", [$id]);
@@ -136,38 +137,35 @@ class Comments extends Controller
                 DB::run("UPDATE torrents SET comments = comments - 1 WHERE id = $row[torrent]");
             }
         }
-        DB::run("DELETE FROM comments WHERE id =?", [$id]);
+        $this->commentModel->delete($id);
         Logs::write(Users::coloredname($_SESSION['username']) . " has deleted comment: ID: $id");
-        Session::flash('warning', "Comment deleted OK", URLROOT."/home");
+        Redirect::autolink(URLROOT, "Comment deleted OK");
     }
 
     public function take()
     {
-        $id = (int) ($_GET["id"] ?? 0);
-        $type = $_GET["type"];
-        $body = $_POST['body'];
+        $id = (int) Input::get("id");
+        $type = Input::get("type");
+        $body = Input::get('body');
         if (!$body) {
-            Session::set('message', Lang::T("YOU_DID_NOT_ENTER_ANYTHING"));
-            Redirect::to(URLROOT . "/comments?type=$type&id=$id");
+            Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", Lang::T("YOU_DID_NOT_ENTER_ANYTHING"));
         }
         if ($type == "torrent") {
             DB::run("UPDATE torrents SET comments = comments + 1 WHERE id = $id");
         }
-        $ins = DB::run("INSERT INTO comments (user, " . $type . ", added, text) VALUES (?, ?, ?, ?)", [$_SESSION["id"], $id, TimeDate::get_date_time(), $body]);
+        $ins =$this->commentModel->insert($type, $_SESSION["id"], $id, TimeDate::get_date_time(), $body);
         if ($ins) {
-            Session::set('message', "Your Comment was added successfully.",URLROOT."/home" );
-            Redirect::to(URLROOT . "/comments?type=$type&id=$id");
+            Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", "Your Comment was added successfully.");
         } else {
-            Session::set('message', Lang::T("UNABLE_TO_ADD_COMMENT"));
-            Redirect::to(URLROOT . "/comments?type=$type&id=$id");
+            Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", Lang::T("UNABLE_TO_ADD_COMMENT"));
         }
     }
 
     public function user()
     {
-        $id = (int) ($_GET["id"] ?? 0);
+        $id = (int) Input::get("id");
         if (!isset($id) || !$id) {
-            Session::flash('warning', Lang::T("ERROR"), URLROOT."/home");
+            Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
 
         $res = DB::run("SELECT 
@@ -179,8 +177,9 @@ class Comments extends Controller
             WHERE user = $id ORDER BY comments.id "); //$limit
         $row = $res->fetch(PDO::FETCH_LAZY);
         if (!$row) {
-            Session::flash('warning', "User id invalid", URLROOT."/home");
+            Redirect::autolink(URLROOT, "User id invalid");
         }
+
         $title = Lang::T("COMMENTSFOR") . "<a href='profile?id=" . $row['user'] . "'>&nbsp;$row[username]</a>";
 
         Style::header(Lang::T("COMMENTS"));

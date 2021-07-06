@@ -4,7 +4,7 @@ class Login extends Controller
 
     public function __construct()
     {
-        $this->user = (new Auth)->user(0, 0);
+        $this->session = (new Auth)->user(0, 0);
 		$this->userModel = $this->model('User');
     }
 
@@ -18,14 +18,11 @@ class Login extends Controller
         $this->view('user/login', $data, 'user');
     }
 
-    public function submit() {
-
-        //var_dump($_COOKIE['csrf_token']); die('Just running some updates');
+    public function submit()
+    {
         // check if using google captcha
         (new Captcha)->response($_POST['g-recaptcha-response']);
         if (Input::exist() && Cookie::csrf_check()) {
-         //   if (Input::exist()) {
-             //Cookie::csrf_check();
             $username = Input::get("username");
             $password = Input::get("password");
             $sql = $this->userModel->getUserByUsername($username);
