@@ -6,7 +6,7 @@ class Invite extends Controller
     {
         $this->session = Auth::user(0, 2);
         //$this->userModel = $this->model('User');
-        
+
     }
 
     public function index()
@@ -22,7 +22,7 @@ class Invite extends Controller
             Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_NO_INVITES_MSG"));
         }
         $data = [
-            'title' => 'Invite User'
+            'title' => 'Invite User',
         ];
         View::render('invite/index', $data, 'user');
     }
@@ -55,35 +55,30 @@ class Invite extends Controller
             $secret = Helper::mksecret();
             $username = "invite_" . Helper::mksecret(20);
             $ret = DB::run("INSERT INTO users (username, secret, email, status, invited_by, added, stylesheet, language) VALUES (?,?,?,?,?,?,?,?)",
-            [$username, $secret, $email, 'pending', $_SESSION["id"], TimeDate::get_date_time(), DEFAULTTHEME, DEFAULTLANG]);
+                [$username, $secret, $email, 'pending', $_SESSION["id"], TimeDate::get_date_time(), DEFAULTTHEME, DEFAULTLANG]);
             $id = DB::lastInsertId();
             $invitees = "$id $_SESSION[invitees]";
             DB::run("UPDATE users SET invites = invites - 1, invitees='$invitees' WHERE id = $_SESSION[id]");
             $mess = strip_tags($_POST["mess"]);
-                    $names = SITENAME;
-                    $links = URLROOT;
-                    $emailmain = SITEEMAIL;
-            $body = <<<EOD
-                    You have been invited to $names by $_SESSION[username]. They have specified this address ($email) as your email.
-                    If you do not know this person, please ignore this email. Please do not reply.
-        
-                    Message:
-                    -------------------------------------------------------------------------------
-                    $mess
-                    -------------------------------------------------------------------------------
-        
-                    This is a private site and you must agree to the rules before you can enter:
-        
-                    $links/rules.php
-                    $links/faq.php
-        
-                    To confirm your invitation, you have to follow this link:
-                    $links/signup?invite=$id&secret=$secret
-        
-                    After you do this, you will be able to use your new account. If you fail to
-                    do this, your account will be deleted within a few days. We urge you to read
-                    the RULES and FAQ before you start using $names.
-                    EOD;
+            $names = SITENAME;
+            $links = URLROOT;
+            $emailmain = SITEEMAIL;
+	$body = <<<EOD
+You have been invited to $names by $_SESSION[username]. They have specified this address ($email) as your email.
+If you do not know this person, please ignore this email. Please do not reply.
+Message:
+-------------------------------------------------------------------------------
+$mess
+-------------------------------------------------------------------------------
+This is a private site and you must agree to the rules before you can enter:
+$links/rules.php
+$links/faq.php
+To confirm your invitation, you have to follow this link:
+$links/signup?invite=$id&secret=$secret
+After you do this, you will be able to use your new account. If you fail to
+do this, your account will be deleted within a few days. We urge you to read
+the RULES and FAQ before you start using $names.
+EOD;
             $TTMail = new TTMail();
             $TTMail->Send($email, "$names user registration confirmation", $body, "", "-f$emailmain");
             Redirect::autolink(URLROOT, Lang::T("A_CONFIRMATION_EMAIL_HAS_BEEN_SENT") . " (" . htmlspecialchars($email) . "). " . Lang::T("ACCOUNT_CONFIRM_SENT_TO_ADDY_REST") . " <br/ >");
@@ -98,14 +93,14 @@ class Invite extends Controller
         if (!Validate::Id($id)) {
             $id = $this->session["id"];
         }
-        $res = DB::run("SELECT * FROM users WHERE status = 'confirmed' AND invited_by = $id ORDER BY username");
+        $res = DB::run("SELECT * FROM users WHERE status = ? AND invited_by = ? ORDER BY username", ['confirmed', $id]);
         $num = $res->rowCount();
         $invitees = number_format(get_row_count("users", "WHERE status = 'confirmed' && invited_by = $id"));
         if ($invitees == 0) {
-            Redirect::autolink(URLROOT."/profile?id=$id", "This member has no invitees");
+            Redirect::autolink(URLROOT . "/profile?id=$id", "This member has no invitees");
         }
         if ($id != $this->session["id"]) {
-            $title = "Invite Tree for [<a href=".URLROOT."/profile?id=$id>" . $id . "</a>]";
+            $title = "Invite Tree for [<a href=" . URLROOT . "/profile?id=$id>" . $id . "</a>]";
         } else {
             $title = "You have $invitees invitees " . User::coloredname($_SESSION["username"]) . "";
         }

@@ -33,7 +33,7 @@ if ($page <= 0) {
 $per_page = 5; // Set how many records do you want to display per page.
 $startpoint = ($page * $per_page) - $per_page;
 $statement = "`users` ORDER BY `id` ASC"; // Change `users` & 'id' according to your table name.
-$results = $this->groupsModel->getGroupsearch($data['query1'], $startpoint, $per_page);
+$results = Groups::getGroupsearch($data['query1'], $startpoint, $per_page);
 if ($results->rowCount()) { ?>
     <br />
     <div class='table-responsive'> <table class='table table-striped'><thead>

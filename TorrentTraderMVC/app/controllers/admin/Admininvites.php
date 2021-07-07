@@ -43,7 +43,7 @@ class Admininvites extends Controller
     
     public function pending()
     {
-        $do = $_GET['do']; // todo
+        $do = $_POST['do']; // todo
         if ($do == "del") {
             if (!@count($_POST["users"])) {
                 Redirect::autolink(URLROOT . '/admininvites/pending', "Nothing Selected.");

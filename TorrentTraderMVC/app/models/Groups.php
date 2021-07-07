@@ -43,9 +43,9 @@ class Groups
         return $row;
     }
 
-    public function getGroupsearch($query, $startpoint, $per_page)
+    public static function getGroupsearch($query, $startpoint, $per_page)
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT users.*, groups.level FROM users INNER JOIN `groups` ON groups.group_id=users.class WHERE $query ORDER BY username LIMIT {$startpoint} , {$per_page}");
         return $row;
     }
@@ -58,7 +58,7 @@ public static function get_user_class_name($i)
     if ($i == $_SESSION["class"]) {
         return $_SESSION["level"];
     }
-    $res = $pdo->run("SELECT level FROM `groups` WHERE group_id=" . $i . "");
+    $res = DB::run("SELECT level FROM `groups` WHERE group_id=" . $i . "");
     $row = $res->fetch(PDO::FETCH_LAZY);
     return $row[0];
 }
