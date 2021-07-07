@@ -120,4 +120,37 @@ class Style
         echo '</div></div><br>';
     }
 
+    public static function size()
+    {
+        $size = 8;
+        if (!RIGHTNAV || !LEFTNAV) {
+            $size = 10;
+        }
+        if (!RIGHTNAV && !LEFTNAV) {
+            $size = 12;
+        }
+        return $size;
+    }
+
+    public static function block_begin($caption = "-", $align = "justify")
+    {
+        $blockId = 'b-' . sha1($caption);
+        ?>
+        <div class="card">
+            <div class="card-header">
+                <?php echo $caption ?>
+                <a data-toggle="collapse" href="#" class="showHide" id="<?php echo $blockId; ?>" style="float: right;"></a>
+            </div>
+            <div class="card-body slidingDiv<?php echo $blockId; ?>">
+            <?php
+    }
+
+    public static function block_end()
+    {
+            ?>
+            </div>
+        </div>
+        <?php
+    }
+
 }

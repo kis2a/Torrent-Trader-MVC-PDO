@@ -23,7 +23,7 @@ Style::begin($data['title']);
                     $row1 = $result1->fetch(PDO::FETCH_ASSOC);
                 }
                 if ($row1['username']) {
-                    print '<tr><td><a href="' . URLROOT . '/users/profile?id=' . $row['uid'] . '"><b>' . Users::coloredname($row1['username']) . '</b></a></td>';
+                    print '<tr><td><a href="' . URLROOT . '/users/profile?id=' . $row['uid'] . '"><b>' . User::coloredname($row1['username']) . '</b></a></td>';
                 } else {
                     print '<tr><td>' . $row['ip'] . '</td>';
                 }

@@ -4,7 +4,7 @@ class Login extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 0);
+        $this->session = Auth::user(0, 0);
 		$this->userModel = $this->model('User');
     }
 
@@ -15,7 +15,7 @@ class Login extends Controller
             'token' =>$token,
             'title' => Lang::T("LOGIN")
         ];
-        $this->view('user/login', $data, 'user');
+        View::render('user/login', $data, 'user');
     }
 
     public function submit()
@@ -46,8 +46,8 @@ class Login extends Controller
 
     private function loginString()
     {
-        $ip = Helper::getIP();
-        $browser = Helper::browser();
+        $ip = Ip::getIP();
+        $browser = Ip::agent();
         return md5($browser.$browser);
     }
 }

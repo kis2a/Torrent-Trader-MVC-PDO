@@ -4,10 +4,10 @@ class Admingroups extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_SUPERMODERATOR, 2);
+        $this->session = Auth::user(_SUPERMODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -17,7 +17,7 @@ class Admingroups extends Controller
             'title' => Lang::T("Groups Management"),
             'getlevel' => $getlevel,
         ];
-        $this->view('groups/admin/view', $data, 'admin');
+        View::render('groups/admin/view', $data, 'admin');
     }
 
     public function edit()
@@ -25,13 +25,13 @@ class Admingroups extends Controller
         $group_id = intval($_GET["group_id"]);
         $rlevel = DB::run("SELECT * FROM `groups` WHERE group_id=?", [$group_id]);
         if (!$rlevel) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("CP_NO_GROUP_ID_FOUND"), 1);
+            Redirect::autolink(URLROOT . '/admingroup', Lang::T("CP_NO_GROUP_ID_FOUND"));
         }
         $data = [
             'title' => Lang::T("Groups Management"),
             'rlevel' => $rlevel,
         ];
-        $this->view('groups/admin/edit', $data, 'admin');
+        View::render('groups/admin/edit', $data, 'admin');
     }
 
     public function update()
@@ -56,7 +56,7 @@ class Admingroups extends Controller
         //Needs to be secured!!!!
         $group_id = intval($_GET["group_id"]);
         if (($group_id == "1") || ($group_id == "7")) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("CP_YOU_CANT_DEL_THIS_GRP"), 1);
+            Redirect::autolink(URLROOT . '/admingroup', Lang::T("CP_YOU_CANT_DEL_THIS_GRP"));
         }
         DB::run("DELETE FROM `groups` WHERE group_id=?", [$group_id]);
         Redirect::autolink(URLROOT . "/admingroups/groups", Lang::T("CP_DEL_OK"));
@@ -69,7 +69,7 @@ class Admingroups extends Controller
             'title' => Lang::T("Groups Management"),
             'rlevel' => $rlevel,
         ];
-        $this->view('groups/admin/add', $data, 'admin');
+        View::render('groups/admin/add', $data, 'admin');
     }
 
     public function addnew()
@@ -80,7 +80,7 @@ class Admingroups extends Controller
         $rlevel = DB::run("SELECT * FROM `groups` WHERE group_id=?", [$group_id]);
         $level = $rlevel->fetch(PDO::FETCH_ASSOC);
         if (!$level) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("CP_INVALID_ID"), 1);
+            Redirect::autolink(URLROOT . '/admingroup/add', Lang::T("CP_INVALID_ID"));
         }
         DB::run("INSERT INTO `groups`
         (level, color, view_torrents, edit_torrents, delete_torrents, view_users, edit_users, delete_users,

@@ -1,12 +1,12 @@
 <?php if (MIDDLENAV) {?>
-  <?php Block::middle();?>
+  <?php Blocks::middle();?>
   <?php }?>
 </div>
 <!-- END MIDDLE COLUMN -->
 <!-- START RIGHT COLUMN -->
 <?php if (RIGHTNAV) {?>
   <div class="col-sm-2">
-        <?php Block::right();?>
+        <?php Blocks::right();?>
     </div>
     <?php }?>
     <!-- END RIGHT COLUMN -->

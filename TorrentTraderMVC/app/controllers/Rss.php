@@ -4,9 +4,9 @@ class Rss extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         // $this->userModel = $this->model('User');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -26,7 +26,7 @@ class Rss extends Controller
             $cats = implode(", ", array_unique(array_map("intval", explode(",", (string) $cat))));
             $wherea[] = "category in ($cats)";
         }
-        if ($this->valid->validId($_GET["user"])) {
+        if (Validate::Id($_GET["user"])) {
             $wherea[] = "owner=$_GET[user]";
         }
         if ($wherea) {
@@ -64,7 +64,7 @@ class Rss extends Controller
             'title' => Lang::T("CUSTOM_RSS_XML_FEED"),
             'resqn' => $resqn
         ];
-        $this->view('rss/custom', $data, 'user');
+        View::render('rss/custom', $data, 'user');
     }
 
     
@@ -98,7 +98,7 @@ class Rss extends Controller
                 $param = "";
             }
             $mss = "Your RSS link is: <a href=\"".URLROOT."/rss$param\">".URLROOT."/rss$param</a><br/><br/>";
-            Session::flash('warning', $mss, 1);
+                Redirect::autolink(URLROOT, $mss);
         }
     }
 }

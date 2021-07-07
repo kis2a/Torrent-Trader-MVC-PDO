@@ -84,7 +84,7 @@ class User
 
     public function updatelogin($token, $id)
     {
-        $this->db->run("UPDATE users SET last_login=?, token=? WHERE id=?", [Helper::get_date_time(), $token, $id]);
+        $this->db->run("UPDATE users SET last_login=?, token=? WHERE id=?", [TimeDate::get_date_time(), $token, $id]);
             
        //$this->db->run("UPDATE users SET last_login = ? WHERE id = ? ", [Helper::get_date_time(), $id]);
     }
@@ -130,6 +130,63 @@ class User
         $this->db->run("DELETE FROM pollanswers WHERE userid = $userid");
         // snatch
         $this->db->run("DELETE FROM `snatched` WHERE `uid` = '$userid'");
+    }
+
+    public static function coloredname($name)
+    {
+        $db = new Database();
+        $classy = $db->run("SELECT u.class, u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
+        $gcolor = $classy->Color;
+        if ($classy->donated > 0) {
+            $star = "<img src='" . URLROOT . "/assets/images/donor.png' alt='donated' border='0' width='15' height='15'>";
+        } else {
+            $star = "";
+        }
+        if ($classy->warned == "yes") {
+            $warn = "<img src='" . URLROOT . "/assets/images/warn.png' alt='Warn' border='0'>";
+        } else {
+            $warn = "";
+        }
+        if ($classy->enabled == "no") {
+            $disabled = "<img src='" . URLROOT . "/assets/images/disabled.png' title='Disabled' border='0'>";
+        } else {
+            $disabled = "";
+        }
+        return stripslashes("<font color='" . $gcolor . "'>" . $name . "" . $star . "" . $warn . "" . $disabled . "</font>");
+    }
+
+    public static function where($where, $userid, $update = 1)
+    {
+        $db = new Database();
+        if (!Validate::ID($userid)) {
+            die;
+        }
+        if (empty($where)) {
+            $where = "Unknown Location...";
+        }
+        if ($update) {
+            $db->run("UPDATE users SET page=? WHERE id=?", [$where, $userid]);
+        }
+        if (!$update) {
+            return $where;
+        } else {
+            return;
+        }
+    }
+
+    public static function echouser($id)
+    {
+        if ($id != '') {
+            $username = DB::run("SELECT username FROM users WHERE id=$id")->fetchColumn();
+            $user = "<option value=\"$id\">$username</option>\n";
+        } else {
+            $user = "<option value=\"0\">---- " . Lang::T("NONE_SELECTED") . " ----</option>\n";
+        }
+        $stmt = DB::run("SELECT * FROM users")->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($stmt as $arr) {
+            $user .= "<option value=\"$arr[id]\">$arr[username]</option>\n";
+        }
+        echo $user;
     }
 
 }

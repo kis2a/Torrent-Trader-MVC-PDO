@@ -1,7 +1,7 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
 	$db = Database::instance();
-    Block::begin(Lang::T("THEME") . " / " . Lang::T("LANGUAGE"));
+    Style::block_begin(Lang::T("THEME") . " / " . Lang::T("LANGUAGE"));
     $stylesheets = '';
     $languages = '';
     $ss_r = $db->run("SELECT * from stylesheets");
@@ -63,5 +63,5 @@ if ($_SESSION['loggedin'] == true) {
   </form>
 
 <?php
-    block::end();
+    Style::block_end();
 }

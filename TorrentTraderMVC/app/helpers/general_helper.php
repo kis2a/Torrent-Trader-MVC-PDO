@@ -1,30 +1,10 @@
 <?php
 // get image embeded image
-///////////////////////////////////////////////////////////////////
 function data_uri($file, $mime) 
 {  
     $contents = file_get_contents($file);
     $base64   = base64_encode($contents); 
     return ('data:' . $mime . ';base64,' . $base64);
-}
-
-// Function To Display Error Messages
-function show_error_msg($title, $message, $wrapper = "1")
-{
-    if ($wrapper) {
-        ob_start();
-        ob_clean();
-        Style::header($title);
-    }
-
-    Style::begin("<font class='error'>" . htmlspecialchars($title) . "</font>");
-    echo '<div class="alert alert-info">'.$message.'</div>';
-    Style::end();
-
-    if ($wrapper) {
-        Style::footer();
-        die();
-    }
 }
 
 // Function To Count A Data Established In A Data Table
@@ -155,19 +135,19 @@ function uploadimage($x, $imgname, $tid)
         $y = $x + 1;
         $im = getimagesize($_FILES["image$x"]["tmp_name"]);
         if (!$im[2]) {
-            show_error_msg(Lang::T("ERROR"), "Invalid Image $y.", 1);
+            Redirect::autolink(URLROOT.$_SERVER["HTTP_REFERER"], "Invalid Image $y.");
         }
         if (!array_key_exists($im['mime'], $allowed_types)) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("INVALID_FILETYPE_IMAGE"), 1);
+            Redirect::autolink(URLROOT.$_SERVER["HTTP_REFERER"], Lang::T("INVALID_FILETYPE_IMAGE"));
         }
         if ($_FILES["image$x"]["size"] > IMAGEMAXFILESIZE) {
-            show_error_msg(Lang::T("ERROR"), sprintf(Lang::T("INVAILD_FILE_SIZE_IMAGE"), $y), 1);
+            Redirect::autolink(URLROOT.$_SERVER["HTTP_REFERER"], sprintf(Lang::T("INVAILD_FILE_SIZE_IMAGE"), $y));
         }
         $uploaddir = "$imagesdir/";
         $ifilename = $tid . $x . $allowed_types[$im['mime']];
         $copy = copy($_FILES["image$x"]["tmp_name"], $uploaddir . $ifilename);
         if (!$copy) {
-            show_error_msg(Lang::T("ERROR"), sprintf(Lang::T("ERROR_UPLOADING_IMAGE"), $y), 1);
+            Redirect::autolink(URLROOT.$_SERVER["HTTP_REFERER"], sprintf(Lang::T("ERROR_UPLOADING_IMAGE"), $y));
         }
         return $ifilename;
     }

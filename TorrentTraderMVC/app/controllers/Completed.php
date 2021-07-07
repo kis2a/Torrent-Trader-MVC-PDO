@@ -4,9 +4,9 @@ class Completed extends Controller {
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         // $this->userModel = $this->model('User');
-        $this->valid = new Validation();
+        
     }
     
     public function index()
@@ -33,7 +33,7 @@ class Completed extends Controller {
             'res' => $res,
             'id' => $id,
         ];
-        $this->view('torrent/completed', $data, 'user');
+        View::render('torrent/completed', $data, 'user');
     }
 
 }

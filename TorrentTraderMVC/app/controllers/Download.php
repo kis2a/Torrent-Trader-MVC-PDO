@@ -4,7 +4,7 @@ class Download extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         // $this->userModel = $this->model('User');
     }
 
@@ -13,14 +13,14 @@ class Download extends Controller
         // Ban Download
         $subbanned = DB::run("SELECT id FROM users WHERE id=? AND downloadbanned=? LIMIT 1", [$_SESSION['id'], 'no']);
         if ($subbanned->rowCount() < 1) {
-            Session::flash('info', "You are banned from downloading please contact staff if you feel this is a mistake !", URLROOT."/index");
+                Redirect::autolink(URLROOT, "You are banned from downloading please contact staff if you feel this is a mistake !");
         }
         if ($_SESSION["can_download"] == "no") {
-            Session::flash('info', Lang::T("NO_PERMISSION_TO_DOWNLOAD"), URLROOT."/index");
+                Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION_TO_DOWNLOAD"));
         }
         $id = (int) $_GET["id"];
         if (!$id) {
-            Session::flash('info', Lang::T("ID_NOT_FOUND_MSG_DL"), URLROOT."/index");
+                Redirect::autolink(URLROOT, Lang::T("ID_NOT_FOUND_MSG_DL"));
         }
         
         $fn = TORRENTDIR."/$id.torrent";
@@ -28,19 +28,19 @@ class Download extends Controller
         $row = $res->fetch(PDO::FETCH_ASSOC);
         $vip = $row['vip'];
         if ($_SESSION['class'] < _VIP && $vip == "yes") {
-            Session::flash('info', "<b>You can not download, you have to be VIP</b>", $_SERVER['HTTP_REFERER']);
+                Redirect::autolink($_SERVER['HTTP_REFERER'], "<b>You can not download, you have to be VIP</b>");
         }
         if (!$row) {
-            Session::flash('info', Lang::T("ID_NOT_FOUND"), $_SERVER['HTTP_REFERER']);
+                Redirect::autolink(URLROOT . '/home', Lang::T("ID_NOT_FOUND"));
         }
         if ($row["banned"] == "yes") {
-            Session::flash('info', Lang::T("BANNED_TORRENT"), $_SERVER['HTTP_REFERER']);
+                Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("BANNED_TORRENT"));
         }
         if (!is_file($fn)) {
-            Session::flash('info', Lang::T("FILE_NOT_FILE"), $_SERVER['HTTP_REFERER']);
+                Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("FILE_NOT_FILE"));
         }
         if (!is_readable($fn)) {
-            Session::flash('info', Lang::T("FILE_UNREADABLE"), $_SERVER['HTTP_REFERER']);
+                Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("FILE_UNREADABLE"));
         }
         $name = $row['filename'];
         $friendlyurl = str_replace("http://", "", URLROOT);
@@ -54,7 +54,7 @@ class Download extends Controller
             $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', $_SESSION['id']]);
             $like = $data->fetch(PDO::FETCH_ASSOC);
                 if (!$like) {
-                    Session::flash('info', Lang::T("PLEASE_THANK"), $_SERVER['HTTP_REFERER']);
+                        Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("PLEASE_THANK"));
                 }
             }
         }

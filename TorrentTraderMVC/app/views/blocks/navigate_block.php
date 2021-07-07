@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    Block::begin(Lang::T("NAVIGATION"));
+    Style::block_begin(Lang::T("NAVIGATION"));
     ?>
 
     <div class="list-group">
@@ -28,5 +28,5 @@ if ($_SESSION["view_torrents"] == "yes") {?>
     </div>
 	<!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

@@ -4,10 +4,10 @@ class Adminsnatched extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2); // should check admin here
+        $this->session = Auth::user(_MODERATOR, 2); // should check admin here
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
 
@@ -15,7 +15,7 @@ class Adminsnatched extends Controller
     {
         if ($_POST['do'] == 'delete') {
             if (!@count($_POST['ids'])) {
-                show_error_msg(Lang::T("ERROR"), "Nothing Selected.", 1);
+                Redirect::autolink(URLROOT."/adminsnatched", "Nothing Selected.");
             }
             $ids = array_map('intval', $_POST['ids']);
             $ids = implode(',', $ids);
@@ -40,7 +40,7 @@ class Adminsnatched extends Controller
                 'pagerbottom' => $pagerbottom,
                 'res' => $res,
             ];
-            $this->view('snatched/admin/hitnrun', $data);
+            View::render('snatched/admin/hitnrun', $data);
             require APPROOT . '/views/admin/footer.php';
         } else {
             require APPROOT . '/views/admin/header.php';

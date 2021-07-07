@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin']) {
-    Block::begin(Lang::T("SEARCH"));
+    Style::block_begin(Lang::T("SEARCH"));
     ?>
 
         <!-- content -->
@@ -37,5 +37,5 @@ if ($_SESSION['loggedin']) {
 	</form>
     <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

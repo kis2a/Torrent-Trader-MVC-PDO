@@ -4,10 +4,10 @@ class Upload extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->userModel = $this->model('User');
         $this->pdo = new Database();
-        $this->valid = new Validation();
+        
         $this->countriesModel = $this->model('Countries');
         $this->shoutboxModel = $this->model('Shoutboxs');
         $this->filesModel = $this->model('Files');
@@ -18,10 +18,10 @@ class Upload extends Controller
     {
         // Checks
         if ($_SESSION["can_upload"] == "no") {
-            Session::flash('info', Lang::T("UPLOAD_NO_PERMISSION"), URLROOT . '/home');
+                Redirect::autolink(URLROOT, Lang::T("UPLOAD_NO_PERMISSION"));
         }
         if (UPLOADERSONLY && $_SESSION["class"] < 4) {
-            Session::flash('info', Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"), URLROOT . '/home');
+                Redirect::autolink(URLROOT, Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"));
         }
     }
 
@@ -36,7 +36,7 @@ class Upload extends Controller
             'title' => Lang::T("UPLOAD"),
             'announce_urls' => $announce_urls,
         ];
-        $this->view('torrent/upload', $data, 'user');
+        View::render('torrent/upload', $data, 'user');
     }
 
     public function submit()
@@ -93,13 +93,13 @@ class Upload extends Controller
             $langid = (int) Input::get("lang");
             $catid = (int) Input::get("type");
 
-            if (!$this->valid->validId($catid)) {
+            if (!Validate::Id($catid)) {
                 $message = Lang::T("UPLOAD_NO_CAT");
             }
             if (!empty(Input::get('tube'))) {
                 $tube = Input::get('tube');
             }
-            if (!$this->valid->validFilename($fname)) {
+            if (!Validate::Filename($fname)) {
                 $message = Lang::T("UPLOAD_INVALID_FILENAME");
             }
             if (!preg_match('/^(.+)\.torrent$/si', $fname, $matches)) {

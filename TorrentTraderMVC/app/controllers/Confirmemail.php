@@ -4,10 +4,10 @@ class Confirmemail extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 0);
+        $this->session = Auth::user(0, 0);
         $this->userModel = $this->model('User');
         $this->pdo = new Database();
-        $this->valid = new Validation();
+        
     }
 
     // Confirm by email (siteconfig - first contact)
@@ -31,12 +31,12 @@ class Confirmemail extends Controller
         if ($md5 != $row->secret) {
             Redirect::autolink(URLROOT . "/home", Lang::T("SIGNUP_ACTIVATE_LINK"));
         }
-        $secret = mksecret();
+        $secret = Helper::mksecret();
         $upd = $this->pdo->run("UPDATE `users` SET `secret` =?, `status` =? WHERE `id` =? AND `secret` =? AND `status` =?", [$secret, 'confirmed', $id, $row->secret, 'pending']);
         if (!$upd) {
             Redirect::autolink(URLROOT . "/home", Lang::T("SIGNUP_UNABLE"));
         }
-        Session::flash('info', Lang::T("ACCOUNT_ACTIVATED"), URLROOT."/login");
+    Redirect::autolink(URLROOT . '/login', Lang::T("ACCOUNT_ACTIVATED"));
     }
 
     // user confirm email reset (reset own email)

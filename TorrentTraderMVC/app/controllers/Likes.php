@@ -4,15 +4,15 @@ class Likes extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
-        $this->valid = new Validation();
+        $this->session = Auth::user(0, 2);
+        
     }
 
     // Thanks on index
     public function index()
     {
         $id = (int) Input::get('id');
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "No ID");
         }
         DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent']);
@@ -22,7 +22,7 @@ class Likes extends Controller
     public function details()
     {
         $id = (int) Input::get('id');
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "No ID");
         }
         DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent']);
@@ -32,7 +32,7 @@ class Likes extends Controller
     public function liketorrent()
     {
         $id = (int) Input::get('id');
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "No ID");
         }
         DB::run("INSERT INTO likes (user, liked, added, type, reaction) VALUES (?, ?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent', 'like']);
@@ -42,7 +42,7 @@ class Likes extends Controller
     public function unliketorrent()
     {
         $id = (int) Input::get('id');
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "No ID");
         }
         DB::run("DELETE FROM likes WHERE user=? AND liked=? AND type=?", [$_SESSION['id'], $id, 'torrent']);
@@ -52,7 +52,7 @@ class Likes extends Controller
     public function likeforum()
     {
         $id = (int) Input::get('id');
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "No ID");
         }
         DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'forum']);

@@ -1,7 +1,7 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
     $db = Database::instance();
-    Block::begin(Lang::T("LATEST_TORRENTS"));
+    Style::block_begin(Lang::T("LATEST_TORRENTS"));
     $expire = 900; // time in seconds
     $TTCache = new Cache();
     if (($latestuploadsrecords = $TTCache->Get("latestuploadsblock", $expire)) === false) {
@@ -27,5 +27,5 @@ if ($_SESSION['loggedin'] == true) {
 	<?php } ?>
 	<!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

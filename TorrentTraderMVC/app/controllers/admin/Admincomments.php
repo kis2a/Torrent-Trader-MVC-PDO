@@ -4,10 +4,10 @@ class Admincomments extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -26,7 +26,7 @@ class Admincomments extends Controller
             'pagerbottom' => $pagerbottom,
             'count' => $count,
         ];
-        $this->view('comments/admin/index', $data, 'admin');
+        View::render('comments/admin/index', $data, 'admin');
     }
 
 }

@@ -49,4 +49,29 @@ class Groups
     SELECT users.*, groups.level FROM users INNER JOIN `groups` ON groups.group_id=users.class WHERE $query ORDER BY username LIMIT {$startpoint} , {$per_page}");
         return $row;
     }
+
+    
+// Function That Returns The Group Name
+public static function get_user_class_name($i)
+{
+    $pdo = new Database();
+    if ($i == $_SESSION["class"]) {
+        return $_SESSION["level"];
+    }
+    $res = $pdo->run("SELECT level FROM `groups` WHERE group_id=" . $i . "");
+    $row = $res->fetch(PDO::FETCH_LAZY);
+    return $row[0];
+}
+
+// Function To List Groups Of Members Of The Database
+public static function classlist()
+{
+    $pdo = new Database();
+    $ret = array();
+    $res = $pdo->run("SELECT * FROM `groups` ORDER BY group_id ASC");
+    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
+        $ret[] = $row;
+    }
+    return $ret;
+}
 }

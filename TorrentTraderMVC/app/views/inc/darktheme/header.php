@@ -28,9 +28,9 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
   <!-- START LEFT COLUMN -->
   <?php if (LEFTNAV) {?>
     <div class="col-sm-2 d-none d-sm-block sidenav">
-  <?php Block::left();?>
+  <?php Blocks::left();?>
      </div>
   <?php }?>
   <!-- END LEFT COLUMN -->
   <!-- START MIDDLE COLUMN -->
-    <div class="col-sm-<?php echo Block::size() ?>">
+    <div class="col-sm-<?php echo Style::size() ?>">

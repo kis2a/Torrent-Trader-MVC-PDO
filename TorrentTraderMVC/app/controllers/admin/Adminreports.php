@@ -4,10 +4,10 @@ class Adminreports extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
 
@@ -61,7 +61,7 @@ class Adminreports extends Controller
             'res' => $res,
             'page' => $page,
         ];
-        $this->view('report/admin/index', $data, 'admin');
+        View::render('report/admin/index', $data, 'admin');
     }
 
 
@@ -69,23 +69,23 @@ class Adminreports extends Controller
     {
         if ($_POST["mark"]) {
             if (!@count($_POST["reports"])) {
-                show_error_msg(Lang::T("ERROR"), "Nothing selected to mark.", 1);
+                Redirect::autolink(URLROOT."/adminreports", "Nothing selected to mark.");
             }
             $ids = array_map("intval", $_POST["reports"]);
             $ids = implode(",", $ids);
             DB::run("UPDATE reports SET complete = '1', dealtwith = '1', dealtby = '$_SESSION[id]' WHERE id IN ($ids)");
             header("Refresh: 2; url=" . URLROOT . "/adminreports");
-            show_error_msg(Lang::T("SUCCESS"), Lang::T("CP_ENTRIES_MARK_COMP"), 1);
+            Redirect::autolink(URLROOT."/adminreports", Lang::T("CP_ENTRIES_MARK_COMP"));
         }
         if ($_POST["del"]) {
             if (!@count($_POST["reports"])) {
-                show_error_msg(Lang::T("ERROR"), "Nothing selected to delete.", 1);
+                Redirect::autolink(URLROOT."/adminreports", "Nothing selected to delete.");
             }
             $ids = array_map("intval", $_POST["reports"]);
             $ids = implode(",", $ids);
             DB::run("DELETE FROM reports WHERE id IN ($ids)");
             header("Refresh: 2; url=" . URLROOT . "/adminreports");
-            show_error_msg(Lang::T("SUCCESS"), "Entries marked deleted.", 1);
+            Redirect::autolink(URLROOT."/adminreports", "Entries marked deleted.");
         }
     }
 

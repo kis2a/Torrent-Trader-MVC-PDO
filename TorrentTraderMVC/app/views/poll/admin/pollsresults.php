@@ -16,7 +16,7 @@ while ($res = $data['poll']->fetch(PDO::FETCH_LAZY)) {
     $sond = DB::run("SELECT question FROM polls WHERE id =?", [$res['pollid']])->fetch();
     ?>
     <tr>
-    <td><b><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $user["id"]; ?>"><?php echo Users::coloredname($user['username']); ?></a></b></td>
+    <td><b><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $user["id"]; ?>"><?php echo User::coloredname($user['username']); ?></a></b></td>
     <td><?php echo $sond['question']; ?></td>
     <td><?php echo $vote["$option"]; ?></td>
     </tr>

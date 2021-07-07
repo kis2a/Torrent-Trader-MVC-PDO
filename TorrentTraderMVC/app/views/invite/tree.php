@@ -12,7 +12,7 @@
 for ($i = 1; $i <= $data['num']; $i++) {
     $arr = $data['res']->fetch(PDO::FETCH_ASSOC);
     if ($arr["invited_by"] != $_SESSION['id'] && $_SESSION["class"] < 5) {
-        Session::flash('info', "<b>Access Denied</b>", URLROOT . "/profile?id=$data[id]");
+            Redirect::autolink(URLROOT . "/profile?id=$data[id]", "<b>Access Denied</b>");
     }
     if ($arr['added'] == '0000-00-00 00:00:00') {
         $arr['added'] = '---';
@@ -31,14 +31,14 @@ for ($i = 1; $i <= $data['num']; $i++) {
     } else {
         $warned = "<font color=red><b>Yes</b></font>";
     }
-    $class = get_user_class_name($arr["class"]);
+    $class = Groups::get_user_class_name($arr["class"]);
     $added = substr($arr['added'], 0, 10);
     $last_access = substr($arr['last_access'], 0, 10);
     $downloaded = mksize($arr["downloaded"]);
     $uploaded = mksize($arr["uploaded"]);
     ?>
     <tbody><tr>
-    <td><a href='<?php echo URLROOT; ?>/profile?id=$arr[id]'><b><?php echo Users::coloredname($arr['username']); ?></b></a></td>
+    <td><a href='<?php echo URLROOT; ?>/profile?id=$arr[id]'><b><?php echo User::coloredname($arr['username']); ?></b></a></td>
 	<td><?php echo $class; ?></td>
 	<td><?php echo $added; ?></td>
 	<td><?php echo $last_access; ?></td>

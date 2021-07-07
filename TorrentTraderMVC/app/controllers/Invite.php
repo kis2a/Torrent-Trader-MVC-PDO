@@ -4,9 +4,9 @@ class Invite extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         //$this->userModel = $this->model('User');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -24,14 +24,14 @@ class Invite extends Controller
         $data = [
             'title' => 'Invite User'
         ];
-        $this->view('invite/index', $data, 'user');
+        View::render('invite/index', $data, 'user');
     }
 
     public function submit()
     {
         if (Input::get("take")) {
             $email = Input::get("email");
-            if (!$this->valid->validEmail($email)) {
+            if (!Validate::Email($email)) {
                 Redirect::autolink(URLROOT, Lang::T("INVALID_EMAIL_ADDRESS"));
             }
             //check email isnt banned
@@ -52,8 +52,8 @@ class Invite extends Controller
                 Redirect::autolink(URLROOT, $message);
             }
 
-            $secret = mksecret();
-            $username = "invite_" . mksecret(20);
+            $secret = Helper::mksecret();
+            $username = "invite_" . Helper::mksecret(20);
             $ret = DB::run("INSERT INTO users (username, secret, email, status, invited_by, added, stylesheet, language) VALUES (?,?,?,?,?,?,?,?)",
             [$username, $secret, $email, 'pending', $_SESSION["id"], TimeDate::get_date_time(), DEFAULTTHEME, DEFAULTLANG]);
             $id = DB::lastInsertId();
@@ -95,7 +95,7 @@ class Invite extends Controller
     public function invitetree()
     {
         $id = Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             $id = $this->session["id"];
         }
         $res = DB::run("SELECT * FROM users WHERE status = 'confirmed' AND invited_by = $id ORDER BY username");
@@ -107,7 +107,7 @@ class Invite extends Controller
         if ($id != $this->session["id"]) {
             $title = "Invite Tree for [<a href=".URLROOT."/profile?id=$id>" . $id . "</a>]";
         } else {
-            $title = "You have $invitees invitees " . Users::coloredname($_SESSION["username"]) . "";
+            $title = "You have $invitees invitees " . User::coloredname($_SESSION["username"]) . "";
         }
         $data = [
             'title' => $title,
@@ -116,6 +116,6 @@ class Invite extends Controller
             'res' => $res,
             'num' => $num,
         ];
-        $this->view('invite/tree', $data, 'user');
+        View::render('invite/tree', $data, 'user');
     }
 }

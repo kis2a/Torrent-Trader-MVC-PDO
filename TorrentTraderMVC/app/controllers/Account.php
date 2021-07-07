@@ -3,7 +3,7 @@ class Account extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->userModel = $this->model('User');
     }
 
@@ -30,7 +30,7 @@ class Account extends Controller
                     $message = Lang::T("PASSWORDS_NOT_MATCH");
                 }
                 $chpassword = password_hash($chpassword, PASSWORD_BCRYPT);
-                $secret = mksecret();
+                $secret = Helper::mksecret();
             }
             if ((!$chpassword) || (!$passagain)) {
                 $message = "You must enter something!";
@@ -48,7 +48,7 @@ class Account extends Controller
         $data = [
             'id' => $id,
         ];
-        $this->view('user/changepass', $data, 'user');
+        View::render('user/changepass', $data, 'user');
     }
 
     public function email()
@@ -60,7 +60,7 @@ class Account extends Controller
 
         if (Input::exist()) {
             $email = $_POST["email"];
-            $sec = mksecret();
+            $sec = Helper::mksecret();
             $obemail = rawurlencode($email);
             $sitename = URLROOT;
             $body = <<<EOD
@@ -86,7 +86,7 @@ class Account extends Controller
             'id' => $id,
             'email' => $user['email'],
         ];
-        $this->view('user/changeemail', $data, 'user');
+        View::render('user/changeemail', $data, 'user');
     }
 
     public function avatar()
@@ -115,7 +115,7 @@ class Account extends Controller
         $data = [
             'id' => $id,
         ];
-        $this->view('user/avatar', $data, 'user');
+        View::render('user/avatar', $data, 'user');
     }
 
 }

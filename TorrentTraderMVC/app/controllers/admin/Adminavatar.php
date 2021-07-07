@@ -4,10 +4,10 @@ class Adminavatar extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2); // should check admin here
+        $this->session = Auth::user(_MODERATOR, 2); // should check admin here
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -26,7 +26,7 @@ class Adminavatar extends Controller
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('user/admin/avatar', $data, 'admin');
+        View::render('user/admin/avatar', $data, 'admin');
     }
 
 }

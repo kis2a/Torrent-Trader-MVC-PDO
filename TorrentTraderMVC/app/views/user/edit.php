@@ -12,7 +12,7 @@ $acceptpms = $selectedid['acceptpms'] == "yes";
 print("<b>" . Lang::T("ACCEPT_PMS") . ":</b> <br>&nbsp;<input type='radio' name='acceptpms'" . ($acceptpms ? " checked='checked'" : "") .
     " value='yes' /><b>" . Lang::T("FROM_ALL") . "</b> <input type='radio' name='acceptpms'" .
     ($acceptpms ? "" : " checked='checked'") . " value='no' /><b>" . Lang::T("FROM_STAFF_ONLY") . "</b><br /><i>" . Lang::T("ACCEPTPM_WHICH_USERS") . "</i><br>");
-    print("<br><b>" . Lang::T("ACCOUNT_PRIVACY_LVL") . ":</b> <br>&nbsp;" . priv("normal", "<b>" . Lang::T("NORMAL") . "</b>") . " " . priv("low", "<b>" . Lang::T("LOW") . "</b>") . " " . priv("strong", "<b>" . Lang::T("STRONG") . "</b>") . "<br /><i>" . Lang::T("ACCOUNT_PRIVACY_LVL_MSG") . "</i>");
+    print("<br><b>" . Lang::T("ACCOUNT_PRIVACY_LVL") . ":</b> <br>&nbsp;" . Helper::priv("normal", "<b>" . Lang::T("NORMAL") . "</b>") . " " . Helper::priv("low", "<b>" . Lang::T("LOW") . "</b>") . " " . Helper::priv("strong", "<b>" . Lang::T("STRONG") . "</b>") . "<br /><i>" . Lang::T("ACCOUNT_PRIVACY_LVL_MSG") . "</i>");
 print("<br><br><b>" . Lang::T("EMAIL_NOTIFICATION") . ":</b><br>&nbsp;<input type='checkbox' name='pmnotif' " . (strpos($selectedid['notifs'], "[pm]") !== false ? " checked='checked'" : "") .
     " value='yes' /><b>" . Lang::T("PM_NOTIFY_ME") . "</b><br /><i>" . Lang::T("EMAIL_WHEN_PM") . "</i><br>");
 print("<br><b>" . Lang::T("THEME") . ":</b><br>&nbsp;<select name='stylesheet'>$data[stylesheets]</select><br>");

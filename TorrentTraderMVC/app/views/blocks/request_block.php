@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    Block::begin("Latest Requests");
+    Style::block_begin("Latest Requests");
     $TTCache = new Cache();
     $expires = 600; // Cache time in seconds 10 mins
     if (($rows = $TTCache->Get("request_block", $expires)) === false) {
@@ -27,5 +27,5 @@ if ($_SESSION['loggedin'] == true) {
     ?>
     <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

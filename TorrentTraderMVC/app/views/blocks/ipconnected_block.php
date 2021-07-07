@@ -1,13 +1,12 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    Block::begin(Lang::T("Ip Details"));
-    $info = new IPconnected();
+    Style::block_begin(Lang::T("Ip Details"));
 
-    $osName = $info->operatingSystem();
-    $osVersion = $info->osVersion();
-    $browserName = $info->browser()['browser'];
-    $browserVersion = $info->browserVersion();
-    $ip = $info->ip();
+    $osName = Ip::operatingSystem();
+    $osVersion = Ip::osVersion();
+    $browserName = Ip::browser()['browser'];
+    $browserVersion = Ip::browserVersion();
+    $ip = Ip::getip();
 
     echo '<font color=orange><b>Op Sys&nbsp;</b></font>' . $osName;
     echo '<br><font color=orange><b>Version&nbsp;</b></font>' . $osVersion;
@@ -16,5 +15,5 @@ if ($_SESSION['loggedin'] == true) {
     echo '<br><font color=orange><b>Ip&nbsp;</b></font>' . $ip; ?>
     <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

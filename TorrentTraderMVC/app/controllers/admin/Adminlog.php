@@ -4,10 +4,10 @@ class Adminlog extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_SUPERMODERATOR, 2);
+        $this->session = Auth::user(_SUPERMODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -29,7 +29,7 @@ class Adminlog extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('log/admin/sitelog', $data, 'admin');
+        View::render('log/admin/sitelog', $data, 'admin');
     }
 
     public function delete() {
@@ -38,7 +38,7 @@ class Adminlog extends Controller
                 DB::run("DELETE FROM `log`");
             } else {
                 if (!@count($_POST["del"])) {
-                    show_error_msg(Lang::T("ERROR"), Lang::T("NOTHING_SELECTED"), 1);
+                    Redirect::autolink(URLROOT."/adminlog", Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);

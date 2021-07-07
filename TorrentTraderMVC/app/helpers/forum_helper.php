@@ -65,7 +65,7 @@ function update_topic_last_post($topicid)
 {
     $pdo = new Database();
     $res = DB::run("SELECT id FROM forum_posts WHERE topicid=? ORDER BY id DESC LIMIT 1", [$topicid]);
-    $arr = $res->fetch(PDO::FETCH_LAZY) or Session::flash('info', 'No post found', URLROOT . "/forums");
+    $arr = $res->fetch(PDO::FETCH_LAZY) or Redirect::autolink(URLROOT . '/forums', 'No post found');
     $postid = $arr[0];
     $pdo->run("UPDATE forum_topics SET lastpost=? WHERE id=?", [$postid, $topicid]);
 }
@@ -133,12 +133,12 @@ function insert_compose_frame($id, $newtopic = true)
     $pdo = new Database();
     if ($newtopic) {
         $res = $pdo->run("SELECT name FROM forum_forums WHERE id=$id");
-        $arr = $res->fetch(PDO::FETCH_ASSOC) or Session::flash('info', Lang::T("FORUM_BAD_FORUM_ID"), URLROOT . "/forums");
+        $arr = $res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', Lang::T("FORUM_BAD_FORUM_ID"));
         $forumname = stripslashes($arr["name"]);
         print("<p align='center'><b>" . Lang::T("FORUM_NEW_TOPIC") . " <a href='" . URLROOT . "/forums/viewforum&amp;forumid=$id'>$forumname</a></b></p>\n");
     } else {
         $res = $pdo->run("SELECT * FROM forum_topics WHERE id=$id");
-        $arr = $res->fetch(PDO::FETCH_ASSOC) or Session::flash('info', Lang::T("FORUMS_NOT_FOUND_TOPIC"), URLROOT . "/forums");
+        $arr = $res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_NOT_FOUND_TOPIC"));
         $subject = stripslashes($arr["subject"]);
         print("<p align='center'>" . Lang::T("FORUM_REPLY_TOPIC") . ": <a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$id'>$subject</a></p>");
     }
@@ -231,7 +231,7 @@ function latestforumposts()
             $res = $db->run("SELECT id, username FROM users WHERE id=$userid");
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
-                $username = "<a href='" . URLROOT . "/profile?id=$userid'>" . Users::coloredname($arr['username']) . "</a>";
+                $username = "<a href='" . URLROOT . "/profile?id=$userid'>" . User::coloredname($arr['username']) . "</a>";
             } else {
                 $username = "Unknown[$topic_userid]";
             }
@@ -239,7 +239,7 @@ function latestforumposts()
             $res = $db->run("SELECT username FROM users WHERE id=?", [$topic_userid]);
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
-                $author = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . Users::coloredname($arr['username']) . "</a>";
+                $author = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . User::coloredname($arr['username']) . "</a>";
             } else {
                 $author = "Unknown[$topic_userid]";
             }
@@ -277,13 +277,13 @@ function latestforumposts()
 function lastpostdetails($lastpostid) {
     $post_res = DB::run("SELECT added,topicid,userid FROM forum_posts WHERE id=$lastpostid");
     if ($post_res->rowCount() == 1) {
-        $post_arr = $post_res->fetch(PDO::FETCH_ASSOC) or Session::flash('info', "Bad forum last_post", URLROOT . "/forums");
+        $post_arr = $post_res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', "Bad forum last_post");
         $lastposterid = $post_arr["userid"];
         $lastpostdate = TimeDate::utc_to_tz($post_arr["added"]);
         $lasttopicid = $post_arr["topicid"];
         $user_res = DB::run("SELECT username FROM users WHERE id=$lastposterid");
         $user_arr = $user_res->fetch(PDO::FETCH_ASSOC);
-        $lastposter = Users::coloredname($user_arr["username"]);
+        $lastposter = User::coloredname($user_arr["username"]);
         $topic_res = DB::run("SELECT subject FROM forum_topics WHERE id=$lasttopicid");
         $topic_arr = $topic_res->fetch(PDO::FETCH_ASSOC);
         $lasttopic = stripslashes(htmlspecialchars($topic_arr['subject']));

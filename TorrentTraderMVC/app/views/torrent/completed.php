@@ -16,7 +16,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     $peers = (get_row_count("peers", "WHERE torrent = '$data[id]' AND userid = '$row[id]' AND seeder = 'yes'")) ? "<font color='green'>" . Lang::T("YES") . "</font>" : "<font color='#ff0000'>" . Lang::T("NO") . "</font>";
     ?>
     <tr>
-    <td class="table_col1"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
+    <td class="table_col1"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>"><?php echo User::coloredname($row['username']); ?></a></td>
     <td class="table_col2"><?php echo $peers; ?></td>
     <td class="table_col1"><?php echo TimeDate::utc_to_tz($row["date"]); ?></td>
     <td class="table_col2"><?php echo number_format($ratio, 2); ?></td>

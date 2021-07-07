@@ -87,7 +87,7 @@
 
     <ul class="navbar-nav navbar-right d-none d-sm-block">
     <?php if (isset($_SESSION['id'])): ?>
-          <a href="<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION['id']; ?>">Hi <b><?php echo Users::coloredname($_SESSION['username']); ?></b></a>&nbsp;
+          <a href="<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION['id']; ?>">Hi <b><?php echo User::coloredname($_SESSION['username']); ?></b></a>&nbsp;
     <?php
     if ($_SESSION["uploaded"] > 0 && $_SESSION["downloaded"] == 0) {
         $userratio = 'Inf.';

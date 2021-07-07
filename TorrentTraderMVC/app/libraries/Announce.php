@@ -91,10 +91,10 @@ class Announce
         }
         */
         $countslot = DB::run("SELECT DISTINCT torrent 
-                              FROM peers WHERE userid =? AND seeder=?", [$userid, 'no']);
+                              FROM peers WHERE userid =? AND seeder=?", [$id, 'no']);
         $slot = $countslot->rowCount();
         if ($slot >= $maxslots) {
-            die(Announce::track("Maximum Slot exceeded! You may only download $maxslot torrent at a time."));
+            die(Announce::track("Maximum Slot exceeded! You may only download $slot torrent at a time."));
         }
 
         return $peer;

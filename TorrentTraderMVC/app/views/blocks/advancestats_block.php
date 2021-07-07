@@ -25,7 +25,7 @@ while ($row = $result->fetch(PDO::FETCH_LAZY)) {
 }
 $localpeers = $leechers + $seeders;
 if ($_SESSION['loggedin'] === true && $_SESSION["edit_users"] == "yes") {
-	Block::begin(Lang::T("STATS"));
+	Style::block_begin(Lang::T("STATS"));
     ?>
 
 		<!-- content -->
@@ -78,6 +78,6 @@ if ($_SESSION["edit_users"] == "no") {
 
        <!-- end content -->
 
-   <?php block::end();
+   <?php Style::block_end();
 }
 ?>

@@ -4,7 +4,7 @@ class Group extends Controller {
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->countriesModel = $this->model('Countries');
         $this->groupsModel = $this->model('Groups');
     }
@@ -58,7 +58,7 @@ class Group extends Controller {
             'query1' => $query,
             'query2' => $q
         ];
-        $this->view('groups/index', $data, 'user');
+        View::render('groups/index', $data, 'user');
     }
 
     public function staff()
@@ -70,7 +70,7 @@ class Group extends Controller {
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $table[$row['class']] = ($table[$row['class']] ?? '') .
             "<td><img src='" . URLROOT . "/assets/images/button_o" . ($row["last_access"] > $dt ? "n" : "ff") . "line.png' alt='' /> " .
-            "<a href='" . URLROOT . "/profile?id=" . $row["id"] . "'>" . Users::coloredname($row["username"]) . "</a> " .
+            "<a href='" . URLROOT . "/profile?id=" . $row["id"] . "'>" . User::coloredname($row["username"]) . "</a> " .
                 "<a href='" . URLROOT . "/messages/create?id=" . $row["id"] . "'><img src='" . URLROOT . "/assets/images/button_pm.gif' border='0' alt='' /></a></td>";
             $col[$row['class']] = ($col[$row['class']] ?? 0) + 1;
             if ($col[$row["class"]] <= 4) {
@@ -96,7 +96,7 @@ class Group extends Controller {
             'sql' => $res,
             'table' => $table,
         ];
-        $this->view('groups/staff', $data, 'user');
+        View::render('groups/staff', $data, 'user');
     }
 
 }

@@ -4,9 +4,9 @@ class Nfo extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->torrentModel = $this->model('Torrents');
-        $this->valid = new Validation();
+        
         $this->logsModel = $this->model('Logs');
     }
 
@@ -42,7 +42,7 @@ class Nfo extends Controller
                 'titleedit' => $titleedit,
                 'nfo' => $nfo,
             ];
-            $this->view('nfo/index', $data, 'user');
+            View::render('nfo/index', $data, 'user');
         } else {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO Found but error"));
         }
@@ -55,7 +55,7 @@ class Nfo extends Controller
         if ($this->session["edit_torrents"] == "no") {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
         }
-        if ((!$this->valid->validId($id)) || (!$contents = file_get_contents($nfo))) {
+        if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }
         $data = [
@@ -63,7 +63,7 @@ class Nfo extends Controller
             'title' => "Edid NFO",
             'contents' => $contents,
         ];
-        $this->view('nfo/edit', $data, 'user');
+        View::render('nfo/edit', $data, 'user');
     }
 
     public function submit()
@@ -73,7 +73,7 @@ class Nfo extends Controller
         if ($this->session["edit_torrents"] == "no") {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
         }
-        if ((!$this->valid->validId($id)) || (!$contents = file_get_contents($nfo))) {
+        if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }
         if (is_file($nfo)) {
@@ -92,7 +92,7 @@ class Nfo extends Controller
         if ($this->session["edit_torrents"] == "no") {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
         }
-        if ((!$this->valid->validId($id)) || (!$contents = file_get_contents($nfo))) {
+        if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }
         $reason = htmlspecialchars(Input::get("reason"));

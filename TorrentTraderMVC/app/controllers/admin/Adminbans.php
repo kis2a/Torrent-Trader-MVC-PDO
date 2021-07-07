@@ -4,10 +4,10 @@ class Adminbans extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -20,7 +20,7 @@ class Adminbans extends Controller
         $do = $_GET['do'];
         if ($do == "del") {
             if (!@count($_POST["delids"])) {
-                show_error_msg(Lang::T("ERROR"), Lang::T("NONE_SELECTED"), 1);
+                Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("NONE_SELECTED"));
             }
             $delids = array_map('intval', $_POST["delids"]);
             $delids = implode(', ', $delids);
@@ -37,7 +37,7 @@ class Adminbans extends Controller
                 }
                 Logs::write("IP Ban ($first - $last) was removed by $_SESSION[id] ($_SESSION[username])");
             }
-            Session::flash('info', "Ban(s) deleted.", URLROOT."/adminbans/ip");
+                Redirect::autolink(URLROOT . '/adminbans/ip', "Ban(s) deleted.");
         }
 
         if ($do == "add") {
@@ -45,7 +45,7 @@ class Adminbans extends Controller
             $last = trim($_POST["last"]);
             $comment = trim($_POST["comment"]);
             if ($first == "" || $last == "" || $comment == "") {
-                Session::flash('info', Lang::T("MISSING_FORM_DATA") . ". Go back and try again",  URLROOT."/adminbans/ip");
+                    Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("MISSING_FORM_DATA"));
             }
             $comment = $comment;
             $added = Helper::get_date_time();
@@ -53,13 +53,13 @@ class Adminbans extends Controller
             $err = $bins->errorCode();
             switch ($err) {
                 case 1062:
-                    Session::flash('info', "Duplicate ban.",  URLROOT."/adminbans/ip");
+                        Redirect::autolink(URLROOT . '/adminbans/ip', "Duplicate ban.");
                     break;
                 case 0:
-                    Session::flash('info', "Ban added.",  URLROOT."/adminbans/ip");
+                        Redirect::autolink(URLROOT . '/adminbans/ip', "Ban added.");
                     break;
                 default:
-                    Session::flash('info', Lang::T("THEME_DATEBASE_ERROR") . " " . htmlspecialchars($bins->errorInfo()),  URLROOT."/adminbans/ip");
+                        Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("THEME_DATEBASE_ERROR") . " " . htmlspecialchars($bins->errorInfo()));
             }
         }
 
@@ -74,14 +74,13 @@ class Adminbans extends Controller
             'pagertop' => $pagertop,
             'res' => $res,
         ];
-        $this->view('bans/admin/ip', $data, 'admin');
+        View::render('bans/admin/ip', $data, 'admin');
     }
 
     public function email()
     {
         $remove = (int) $_GET['remove'];
-        $valid = new Validation();
-        if ($valid->validId($remove)) {
+        if (Validate::Id($remove)) {
             DB::run("DELETE FROM email_bans WHERE id=$remove");
             Logs::write(sprintf(Lang::T("EMAIL_BANS_REM"), $remove, $_SESSION["username"]));
         }
@@ -89,7 +88,7 @@ class Adminbans extends Controller
             $mail_domain = trim($_POST["mail_domain"]);
             $comment = trim($_POST["comment"]);
             if (!$mail_domain || !$comment) {
-                show_error_msg(Lang::T("ERROR"), Lang::T("MISSING_FORM_DATA") . ".", 0);
+                Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("MISSING_FORM_DATA") . ".");
                 require APPROOT . '/views/admin/footer.php';
                 die;
             }
@@ -98,7 +97,7 @@ class Adminbans extends Controller
             $added = TimeDate::get_date_time();
             $ins = DB::run("INSERT INTO email_bans (added, addedby, mail_domain, comment) VALUES(?,?,?,?)", [$added, $_SESSION['id'], $mail_domain, $comment]);
             Logs::write(sprintf(Lang::T("EMAIL_BANS_ADD"), $mail_domain, $_SESSION["username"]));
-            show_error_msg(Lang::T("COMPLETE"), Lang::T("EMAIL_BAN_ADDED"), 0);
+            Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("EMAIL_BAN_ADDED"));
             require APPROOT . '/views/admin/footer.php';
             die;
         }
@@ -117,7 +116,7 @@ class Adminbans extends Controller
             'pagerbottom' => $pagerbottom,
             'limit' => $limit,
         ];
-        $this->view('bans/admin/email', $data, 'admin');
+        View::render('bans/admin/email', $data, 'admin');
     }
 
     public function torrent()
@@ -137,6 +136,6 @@ class Adminbans extends Controller
             'pagertop' => $pagertop,
             'resqq' => $resqq,
         ];
-        $this->view('bans/admin/torrents', $data, 'admin');
+        View::render('bans/admin/torrents', $data, 'admin');
     }
 }

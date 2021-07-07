@@ -5,9 +5,9 @@ class Import extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->torrentModel = $this->model('Torrents');
-        $this->valid = new Validation();
+        
         $this->logsModel = $this->model('Logs');
     }
 
@@ -25,7 +25,7 @@ class Import extends Controller
         closedir($dh);
         // check access and rights
         if ($_SESSION["edit_torrents"] != "yes") {
-            show_error_msg(Lang::T("ERROR"), Lang::T("ACCESS_DENIED"), 1);
+            Redirect::autolink(URLROOT, Lang::T("ACCESS_DENIED"));
         }
         //generate announce_urls[] from config.php
         $announce_urls = explode(",", strtolower(ANNOUNCELIST));
@@ -37,7 +37,7 @@ class Import extends Controller
             echo "<center>";
             //check form data
             $catid = (int) $_POST["type"];
-            if (!$this->valid->validId($catid)) {
+            if (!Validate::Id($catid)) {
                 $message = Lang::T("UPLOAD_NO_CAT");
             }
 
@@ -123,7 +123,7 @@ class Import extends Controller
                 Style::footer();
                 die;
             } else {
-                show_error_msg(Lang::T("UPLOAD_FAILED"), $message, 1);
+                Redirect::autolink(URLROOT, $message);
             }
 
         }

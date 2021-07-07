@@ -4,10 +4,10 @@ class Adminshoutbox extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function history()
@@ -17,7 +17,7 @@ class Adminshoutbox extends Controller
             'title' => 'Staff History',
             'sql' => $result,
         ];
-        $this->view('shoutbox/history', $data, 'admin');
+        View::render('shoutbox/history', $data, 'admin');
     }
 
     public function index()
@@ -25,7 +25,7 @@ class Adminshoutbox extends Controller
         $data = [
             'title' => 'Staff Chat',
         ];
-        $this->view('shoutbox/admin/staffbox', $data, 'admin');
+        View::render('shoutbox/admin/staffbox', $data, 'admin');
     }
 
     public function loadchat()
@@ -52,7 +52,7 @@ class Adminshoutbox extends Controller
                     <a class="pull-left d-none d-sm-block" href="#">
                     <?php echo $av ?>
                     <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
-                    <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
+                    <b><?php echo User::coloredname($row['user']) ?>:</b></a>
                     </a>
                     <?php
                     if ($_SESSION['class'] > _UPLOADER) {
@@ -116,6 +116,6 @@ class Adminshoutbox extends Controller
         $data = [
             'title' => Lang::T("CLEAR_SHOUTBOX"),
         ];
-        $this->view('shoutbox/admin/clear', $data, 'admin');
+        View::render('shoutbox/admin/clear', $data, 'admin');
     }
 }

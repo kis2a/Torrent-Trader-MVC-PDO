@@ -4,10 +4,10 @@ class Adminwarning extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -22,7 +22,7 @@ class Adminwarning extends Controller
             'count' => $count,
             'res' => $res,
         ];
-        $this->view('warning/admin/warned', $data, 'admin');
+        View::render('warning/admin/warned', $data, 'admin');
     }
 
     public function submit()

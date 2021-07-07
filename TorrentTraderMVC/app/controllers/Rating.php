@@ -3,14 +3,14 @@ class Rating extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
-        $this->valid = new Validation();
+        $this->session = Auth::user(0, 2);
+        
     }
 
     public function index()
     { 
         $id = (int) Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT . "//torrent?id=$id", Lang::T("THATS_NOT_A_VALID_ID"));
         }
         if (Input::get("takerating") == 'yes') {

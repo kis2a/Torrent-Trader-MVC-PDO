@@ -1,5 +1,5 @@
 <?php
-class Block
+class Blocks
 {
     public static function left()
     {
@@ -37,18 +37,6 @@ class Block
                 include "../app/views/blocks/" . $blockfilename . "_block.php";
             }
         }
-    }
-
-    public static function size()
-    {
-        $size = 8;
-        if (!RIGHTNAV || !LEFTNAV) {
-            $size = 10;
-        }
-        if (!RIGHTNAV && !LEFTNAV) {
-            $size = 12;
-        }
-        return $size;
     }
 
     public static function middle()
@@ -103,25 +91,57 @@ class Block
         }
     }
 
-    public static function begin($caption = "-", $align = "justify")
+    public static function getblock($enabled)
     {
-        $blockId = 'b-' . sha1($caption);
-        ?>
-        <div class="card">
-            <div class="card-header">
-                <?php echo $caption ?>
-                <a data-toggle="collapse" href="#" class="showHide" id="<?php echo $blockId; ?>" style="float: right;"></a>
-            </div>
-            <div class="card-body slidingDiv<?php echo $blockId; ?>">
-            <?php
+        $isenabled = DB::run("SELECT named, name, description, position, sort 
+                 FROM blocks WHERE enabled=$enabled ORDER BY position, sort");
+        return $isenabled;
     }
 
-    public static function end()
+    public static function getposition($position)
     {
-            ?>
-            </div>
-        </div>
-        <?php
+        $getposition = DB::run("SELECT position FROM blocks 
+                                WHERE position='left' AND enabled=1")->rowCount() + 1;
+        return $getposition;
+    }
+
+    public static function delete($delthis)
+    {
+        DB::run("DELETE FROM blocks WHERE id=?" [$delthis]);
+    }
+
+    public static function update($position, $sort, $id)
+    {
+        DB::run("UPDATE blocks SET position = ?, sort =? WHERE id =? ", [$position, $sort, $id]);
+    }
+
+    public static function move($id)
+    {
+        $move = DB::run("SELECT position, sort, id FROM blocks WHERE id = ?" [$id]);
+        return $move;
+    }
+
+    public static function getall()
+    {
+        $arr = DB::run("SELECT * FROM blocks ORDER BY id");
+        return $arr;
+    }
+
+    public static function getorder()
+    {
+        $arr = DB::run("SELECT * FROM blocks ORDER BY enabled DESC, position, sort");
+        return $arr;
+    }
+
+    public static function getname()
+    {
+        $arr = DB::run("SELECT name FROM blocks");
+        return $arr;
+    }
+
+    public static function insert($wantedname, $name, $description)
+    {
+        DB::run("INSERT INTO blocks (named, name, description, position, enabled, sort) VALUES (?,?,?,?,?,?)", [$wantedname, $name, $description, 'left', 0, 0]);
     }
 
 }

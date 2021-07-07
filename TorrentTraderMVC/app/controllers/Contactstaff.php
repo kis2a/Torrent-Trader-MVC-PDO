@@ -3,9 +3,9 @@ class Contactstaff extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         // $this->userModel = $this->model('User');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -13,7 +13,7 @@ class Contactstaff extends Controller
         $data = [
             'title' => 'Contact Staff',
         ];
-        $this->view('contactstaff/index', $data, 'user');
+        View::render('contactstaff/index', $data, 'user');
     }
 
     public function submit()

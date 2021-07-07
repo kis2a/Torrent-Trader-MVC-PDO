@@ -1,7 +1,7 @@
 <?php
 if ((INVITEONLY || ENABLEINVITES) && $_SESSION['loggedin'] == true) {
     $invites = $_SESSION["invites"];
-    Block::begin(Lang::T("INVITES"));
+    Style::block_begin(Lang::T("INVITES"));
     ?>
 
 	<table border="0" width="100%">
@@ -28,5 +28,5 @@ if ((INVITEONLY || ENABLEINVITES) && $_SESSION['loggedin'] == true) {
 
        <!-- end content -->
 
-	<?php block::end();
+	<?php Style::block_end();
 }

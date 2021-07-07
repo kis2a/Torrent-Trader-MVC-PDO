@@ -25,8 +25,8 @@
     </tr></thead><tbody>
     <?php while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)): ?>
     <tr>
-        <td class="table_col1" align="center"><a href="<?php echo URLROOT; ?>/users/profile?id=<?php echo $row["id"]; ?>"><?php echo Users::coloredname($row["username"]); ?></a></td>
-        <td class="table_col2" align="center"><?php echo get_user_class_name($row["class"]); ?></td>
+        <td class="table_col1" align="center"><a href="<?php echo URLROOT; ?>/users/profile?id=<?php echo $row["id"]; ?>"><?php echo User::coloredname($row["username"]); ?></a></td>
+        <td class="table_col2" align="center"><?php echo Groups::get_user_class_name($row["class"]); ?></td>
         <td class="table_col1" align="center"><?php echo $row["email"]; ?></td>
         <td class="table_col2" align="center"><?php echo $row["ip"]; ?></td>
         <td class="table_col1" align="center"><?php echo TimeDate::utc_to_tz($row["added"]); ?></td>

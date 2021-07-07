@@ -4,10 +4,10 @@ class Adminstylesheet extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_ADMINISTRATOR, 2);
+        $this->session = Auth::user(_ADMINISTRATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
 
@@ -18,7 +18,7 @@ class Adminstylesheet extends Controller
             'title' => Lang::T("THEME_MANAGEMENT"),
             'sql' => $res
         ];
-        $this->view('stylesheet/admin/index', $data, 'admin');
+        View::render('stylesheet/admin/index', $data, 'admin');
     }
 
 
@@ -34,27 +34,27 @@ class Adminstylesheet extends Controller
                     $error .= Lang::T("THEME_FOLDER_NAME_WAS_EMPTY");
                 }
                 if ($error) {
-                    show_error_msg(Lang::T("ERROR"), Lang::T("THEME_NOT_ADDED_REASON") . " $error", 1);
+                    Redirect::autolink(URLROOT."/adminstylesheet/add", Lang::T("THEME_NOT_ADDED_REASON") . " $error");
                 }
                 if ($qry = DB::run("INSERT INTO stylesheets (name, uri) VALUES (?, ?)", [$_POST["name"], $_POST["uri"]])) {
-                    show_error_msg(Lang::T("SUCCESS"), "Theme '" . htmlspecialchars($_POST["name"]) . "' added.", 0);
+                    Redirect::autolink(URLROOT."/adminstylesheet/add", "Theme '" . htmlspecialchars($_POST["name"]) . "' added.");
                 } elseif ($qry->errorCode() == 1062) {
-                    show_error_msg(Lang::T("FAILED"), Lang::T("THEME_ALREADY_EXISTS"), 0);
+                    Redirect::autolink(URLROOT."/adminstylesheet/add", Lang::T("THEME_ALREADY_EXISTS"));
                 } else {
-                    show_error_msg(Lang::T("FAILED"), Lang::T("THEME_NOT_ADDED_DB_ERROR") . " " . $qry->errorInfo(), 0);
+                    Redirect::autolink(URLROOT."/adminstylesheet/add", Lang::T("THEME_NOT_ADDED_DB_ERROR") . " " . $qry->errorInfo());
                 }
             }
         }
             $data = [
                 'title' => Lang::T("Theme")
             ];
-            $this->view('stylesheet/admin/add', $data, 'admin');
+            View::render('stylesheet/admin/add', $data, 'admin');
     }   
     
     public function delete()
     {
             if (!@count($_POST["ids"])) {
-                show_error_msg(Lang::T("ERROR"), Lang::T("NOTHING_SELECTED"), 1);
+                Redirect::autolink(URLROOT."/adminstylesheet", Lang::T("NOTHING_SELECTED"));
             }
             $ids = array_map("intval", $_POST["ids"]);
             $ids = implode(', ', $ids);

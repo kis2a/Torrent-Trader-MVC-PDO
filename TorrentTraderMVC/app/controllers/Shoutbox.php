@@ -3,7 +3,7 @@ class Shoutbox extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 0);
+        $this->session = Auth::user(0, 0);
         $this->shoutModel = $this->model('Shoutboxs');
         $this->logModel = $this->model('Logs');
         $this->userModel = $this->model('User');
@@ -38,7 +38,7 @@ class Shoutbox extends Controller
                 <a class="pull-left d-none d-sm-block" href="#">
                 <?php echo $av ?>
                 <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
-                <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
+                <b><?php echo User::coloredname($row['user']) ?>:</b></a>
                 </a>
                 <?php
                 if ($this->session['class'] > _UPLOADER) {
@@ -130,7 +130,7 @@ class Shoutbox extends Controller
             'title' => 'History',
             'sql' => $result,
         ];
-        $this->view('shoutbox/history', $data, 'user');
+        View::render('shoutbox/history', $data, 'user');
     }
 
 }

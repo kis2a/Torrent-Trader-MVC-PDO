@@ -16,7 +16,7 @@
     if ($row["anon"] == "yes" && ($_SESSION["edit_torrents"] == "no" || $_SESSION["id"] != $row["owner"])) {
         $owner = Lang::T("ANONYMOUS");
     } elseif ($row["username"]) {
-        $owner = "<a href='".URLROOT."/profile?id=" . $row["owner"] . "'>" . Users::coloredname($row["username"]) . "</a>";
+        $owner = "<a href='".URLROOT."/profile?id=" . $row["owner"] . "'>" . User::coloredname($row["username"]) . "</a>";
     } else {
         $owner = Lang::T("UNKNOWN_USER");
     }

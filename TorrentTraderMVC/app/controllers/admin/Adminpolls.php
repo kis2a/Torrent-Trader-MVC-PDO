@@ -4,10 +4,10 @@ class Adminpolls extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -17,7 +17,7 @@ class Adminpolls extends Controller
             'title' => Lang::T("POLLS_MANAGEMENT"),
             'query' => $query,
         ];
-        $this->view('poll/admin/pollsview', $data, 'admin');
+        View::render('poll/admin/pollsview', $data, 'admin');
     }
 
     public function results()
@@ -27,14 +27,14 @@ class Adminpolls extends Controller
             'title' => Lang::T("POLLS_MANAGEMENT"),
             'poll' => $poll,
         ];
-        $this->view('poll/admin/pollsresults', $data, 'admin');
+        View::render('poll/admin/pollsresults', $data, 'admin');
     }
 
     public function delete()
     {
         $id = (int) $_GET["id"];
-        if (!$this->valid->validId($id)) {
-            show_error_msg(Lang::T("ERROR"), sprintf(Lang::T("CP_NEWS_INVAILD_ITEM_ID"), $id), 1);
+        if (!Validate::Id($id)) {
+            Redirect::autolink(URLROOT."/adminpolls", sprintf(Lang::T("CP_NEWS_INVAILD_ITEM_ID").$id));
         }
         DB::run("DELETE FROM polls WHERE id=?", [$id]);
         DB::run("DELETE FROM pollanswers WHERE  pollid=?", [$id]);
@@ -51,7 +51,7 @@ class Adminpolls extends Controller
             'res' => $res,
             'id' => $pollid
         ];
-        $this->view('poll/admin/pollsadd', $data, 'admin');
+        View::render('poll/admin/pollsadd', $data, 'admin');
     }
 
     public function save()
@@ -74,11 +74,11 @@ class Adminpolls extends Controller
         $sort = (int) $_POST["sort"];
 
         if (!$question || !$option0 || !$option1) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("MISSING_FORM_DATA") . "!", 1);
+            Redirect::autolink(URLROOT."/adminpolls", Lang::T("MISSING_FORM_DATA") . "!");
         }
         if ($subact == "edit") {
-            if (!$this->valid->validId($pollid)) {
-                show_error_msg(Lang::T("ERROR"), Lang::T("INVALID_ID"), 1);
+            if (!Validate::Id($pollid)) {
+                Redirect::autolink(URLROOT."/adminpolls", Lang::T("INVALID_ID"));
             }
             DB::run("UPDATE polls SET " .
                 "question = ?, " .

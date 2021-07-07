@@ -4,9 +4,9 @@ class Messages extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->messageModel = $this->model('Message');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -20,7 +20,7 @@ class Messages extends Controller
             'draft' => $arr['draft'],
             'template' => $arr['template'],
         ];
-        $this->view('message/overview', $data, 'user');
+        View::render('message/overview', $data, 'user');
     }
 
     public function create()
@@ -30,7 +30,7 @@ class Messages extends Controller
             'title' => 'Messages',
             'id' => $id,
         ];
-        $this->view('message/create', $data, 'user');
+        View::render('message/create', $data, 'user');
     }
 
     public function submit()
@@ -107,7 +107,7 @@ class Messages extends Controller
         $arr = $res->fetch(PDO::FETCH_ASSOC);
 
         if ($arr["sender"] != $_SESSION['id'] && $arr["receiver"] != $_SESSION['id']) {
-            Session::flash('info', "Not your Message!", URLROOT);
+                Redirect::autolink(URLROOT . '/home', "Not your Message!");
         }
 
         // mark read
@@ -123,7 +123,7 @@ class Messages extends Controller
             'added' => $arr['added'],
             'msg' => $arr['msg'],
         ];
-        $this->view('message/read', $data, 'user');
+        View::render('message/read', $data, 'user');
     }
 
     public function reply()
@@ -149,7 +149,7 @@ class Messages extends Controller
             'subject' => $row['subject'],
             'id' => $row['id'],
         ];
-        $this->view('message/reply', $data, 'user');
+        View::render('message/reply', $data, 'user');
     }
 
     public function update()
@@ -162,14 +162,14 @@ class Messages extends Controller
                 $msg = isset($_POST['msg']) ? $_POST['msg'] : '';
                 // Update the record
                 $stmt = DB::run('UPDATE messages SET subject = ?, msg = ? WHERE id = ?', [$subject, $msg, $id]);
-                Session::flash('info', "Edited Successfully!", URLROOT . "/messages/inbox");
+                    Redirect::autolink(URLROOT . '/messages/inbox', "Edited Successfully !");
             }
 
             $stmt = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $msg = $row['msg'];
             if (!$row) {
-                Session::flash('info', "Message does not exist with that ID!", URLROOT . "/messages/inbox");
+                    Redirect::autolink(URLROOT . '/messages/inbox', "Message does not exist with that ID!");
             }
             // get the username
             $stmt7 = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
@@ -186,7 +186,7 @@ class Messages extends Controller
             'subject' => $row['subject'],
             'id' => $row['id'],
         ];
-        $this->view('message/edit', $data, 'user');
+        View::render('message/edit', $data, 'user');
     }
 
     public function inbox()
@@ -196,14 +196,14 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST["read"]) {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/inbox");
+                        Redirect::autolink(URLROOT . '/messages/inbox', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("UPDATE messages SET `unread` = 'no' WHERE `id` IN ($ids)");
             } else {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/inbox");
+                        Redirect::autolink(URLROOT . '/messages/inbox', Lang::T("NOTHING_SELECTED"));
                 }
 
                 $ids = array_map("intval", $_POST["del"]);
@@ -211,7 +211,7 @@ class Messages extends Controller
                 DB::run("DELETE FROM messages WHERE `location` = 'in' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
                 DB::run("UPDATE messages SET `location` = 'out' WHERE `location` = 'both' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
             }
-            Session::flash('info', "Action Completed", URLROOT . "/messages/inbox");
+                Redirect::autolink(URLROOT . '/messages/inbox', "Action Completed");
             die;
         }
 
@@ -232,7 +232,7 @@ class Messages extends Controller
             'pagerbottom' => $pagerbottom,
             'mainsql' => $res,
         ];
-        $this->view('message/inbox', $data, 'user');
+        View::render('message/inbox', $data, 'user');
     }
 
     public function outbox()
@@ -242,14 +242,14 @@ class Messages extends Controller
         if ($do == "del") {
             if (!empty($_POST)) {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/inbox");
+                        Redirect::autolink(URLROOT . '/messages/outbox', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("UPDATE messages SET `location` = 'in' WHERE `location` = 'both' AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
                 DB::run("DELETE FROM messages WHERE `location` IN ('out', 'draft', 'template') AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
             }
-            Session::flash('info', "Action Completed", URLROOT . "/messages/outbox");
+                Redirect::autolink(URLROOT . '/messages/outbox', "Action Completed");
             die;
         }
 
@@ -267,7 +267,7 @@ class Messages extends Controller
             'pagerbottom' => $pagerbottom,
             'mainsql' => $res,
         ];
-        $this->view('message/outbox', $data, 'user');
+        View::render('message/outbox', $data, 'user');
     }
 
     public function templates()
@@ -277,13 +277,13 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST) {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/templates");
+                        Redirect::autolink(URLROOT . '/messages/templates', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("DELETE FROM messages WHERE `sender` = $_SESSION[id] AND `location` = 'template' AND `id` IN ($ids)");
             }
-            Session::flash('info', "Action Completed", URLROOT . "/messages/templates");
+                Redirect::autolink(URLROOT . '/messages/templates', "Action Completed");
             die;
         }
 
@@ -301,7 +301,7 @@ class Messages extends Controller
             'pagename' => $pagename,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('message/template', $data, 'user');
+        View::render('message/template', $data, 'user');
     }
 
     public function draft()
@@ -311,13 +311,13 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST) {
                 if (!@count($_POST["del"])) {
-                    Session::flash('info', Lang::T("NOTHING_SELECTED"), URLROOT . "/messages/draft");
+                        Redirect::autolink(URLROOT . '/messages/draft', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("DELETE FROM messages WHERE `sender` = $_SESSION[id] AND `location` = 'draft' AND `id` IN ($ids)");
             }
-            Session::flash('info', "Action Completed", URLROOT . "/messages/draft");
+                Redirect::autolink(URLROOT . '/messages/draft', "Action Completed");
             die;
         }
 
@@ -335,7 +335,7 @@ class Messages extends Controller
             'pagename' => $pagename,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('message/draft', $data, 'user');
+        View::render('message/draft', $data, 'user');
     }
 
 }

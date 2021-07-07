@@ -3,12 +3,12 @@ class Warning extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->userModel = $this->model('User');
         $this->warningModel = $this->model('Warnings');
         $this->messageModel = $this->model('Message');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -29,7 +29,7 @@ class Warning extends Controller
         // Get Warnings
         $warning = $this->warningModel->getWarningById($user['id']);
         // Title
-        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Helper::userColour($user["username"]));
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
         // Template
         $data = [
             'title' => $title,
@@ -37,7 +37,7 @@ class Warning extends Controller
             'id' => $user['id'],
             'username' => $user['username'],
         ];
-        $this->view('warning/index', $data, 'user');
+        View::render('warning/index', $data, 'user');
     }
 
     public function submit()
@@ -51,7 +51,7 @@ class Warning extends Controller
         if ($this->session["edit_users"] != "yes") {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
-        if (!$this->valid->validId($userid)) {
+        if (!Validate::Id($userid)) {
             Redirect::autolink(URLROOT . '/group/members', Lang::T("INVALID_USERID"));
         }
         if (!$reason || !$expiry || !$type) {

@@ -18,7 +18,7 @@
             <a class="pull-left d-none d-sm-block" href="#">
             <?php echo $av ?>
             <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
-            <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
+            <b><?php echo User::coloredname($row['user']) ?>:</b></a>
             </a>
             <?php
             if ($_SESSION['class'] > _UPLOADER) {

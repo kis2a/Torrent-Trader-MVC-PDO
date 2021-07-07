@@ -78,11 +78,10 @@ $options = array("(any)", "enabled", "disabled");
 	<td class="table_col2"><select name="c"><option value='1'>(any)</option>
 	<?php
 $class = $_GET['c'];
-        $valid = new Validation();
 if (!$valid->validId($class)) {
             $class = '';
         }
-        $groups = classlist();
+        $groups = Groups::classlist();
         foreach ($groups as $group) {
             $id = $group["group_id"] + 2;
             echo "<option value='$id' " . ($class == $id ? " selected='selected'" : "") . ">" . htmlspecialchars($group["level"]) . "</option>\n";
@@ -273,9 +272,8 @@ $options = array("(any)", "Yes", "No");
                 $where_is .= isset($where_is) ? " AND (" : "(";
                 foreach ($emaila as $email) {
                     if (strpos($email, '*') === false && strpos($email, '?') === false && strpos($email, '%') === false) {
-                        $valid = new Validation();
-                        if (!$valid->validemail($email)) {
-                            show_error_msg(Lang::T("ERROR"), "Bad email.");
+                        if (!Validate::Email($email)) {
+                            Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad email.");
                         }
                         $email_is .= (isset($email_is) ? " OR " : "") . "u.email =" . sqlesc($email);
                     } else {
@@ -289,7 +287,6 @@ $options = array("(any)", "Yes", "No");
             //class
             // NB: the c parameter is passed as two units above the real one
             $class = $_GET['c'] - 2;
-            $valid = new Validation();
             if ($valid->validId($class + 1)) {
                 $where_is .= (isset($where_is) ? " AND " : "") . "u.class=$class";
                 $q .= ($q ? "&amp;" : "") . "c=" . ($class + 2);
@@ -299,7 +296,7 @@ $options = array("(any)", "Yes", "No");
             if ($ip) {
                 $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
                 if (!preg_match($regex, $ip)) {
-                    show_error_msg(Lang::T("ERROR"), "Bad IP.");
+                    Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad IP.");
                 }
                 $mask = trim($_GET['ma']);
                 if ($mask == "" || $mask == "255.255.255.255") {
@@ -308,12 +305,12 @@ $options = array("(any)", "Yes", "No");
                     if (substr($mask, 0, 1) == "/") {
                         $n = substr($mask, 1, strlen($mask) - 1);
                         if (!is_numeric($n) or $n < 0 or $n > 32) {
-                            show_error_msg(Lang::T("ERROR"), "Bad subnet mask.");
+                            Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad subnet mask.");
                         } else {
                             $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
                         }
                     } elseif (!preg_match($regex, $mask)) {
-                        show_error_msg(Lang::T("ERROR"), "Bad subnet mask.");
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad subnet mask.");
                     }
                     $where_is .= (isset($where_is) ? " AND " : "") . "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
                     $q .= ($q ? "&amp;" : "") . "ma=$mask";
@@ -333,7 +330,7 @@ $options = array("(any)", "Yes", "No");
                     $where_is .= " u.uploaded > 0 and u.downloaded = 0";
                 } else {
                     if (!is_numeric($ratio) || $ratio < 0) {
-                        show_error_msg(Lang::T("ERROR"), "Bad ratio.");
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad ratio.");
                     }
                     $where_is .= isset($where_is) ? " AND " : "";
                     $where_is .= " (u.uploaded/u.downloaded)";
@@ -342,10 +339,10 @@ $options = array("(any)", "Yes", "No");
                     if ($ratiotype == "3") {
                         $ratio2 = trim($_GET['r2']);
                         if (!$ratio2) {
-                            show_error_msg(Lang::T("ERROR"), "Two ratios needed for this type of search.");
+                            Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Two ratios needed for this type of search.");
                         }
                         if (!is_numeric($ratio2) or $ratio2 < $ratio) {
-                            show_error_msg(Lang::T("ERROR"), "Bad second ratio.");
+                            Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad second ratio.");
                         }
                         $where_is .= " BETWEEN $ratio and $ratio2";
                         $q .= ($q ? "&amp;" : "") . "r2=$ratio2";
@@ -405,7 +402,7 @@ $options = array("(any)", "Yes", "No");
             $ul = trim($_GET['ul']);
             if ($ul) {
                 if (!is_numeric($ul) || $ul < 0) {
-                    show_error_msg(Lang::T("ERROR"), "Bad uploaded amount.");
+                    Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad uploaded amount.");
                 }
                 $where_is .= isset($where_is) ? " AND " : "";
                 $where_is .= " u.uploaded ";
@@ -414,10 +411,10 @@ $options = array("(any)", "Yes", "No");
                 if ($ultype == "3") {
                     $ul2 = trim($_GET['ul2']);
                     if (!$ul2) {
-                        show_error_msg(Lang::T("ERROR"), "Two uploaded amounts needed for this type of search.");
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Two uploaded amounts needed for this type of search.");
                     }
                     if (!is_numeric($ul2) or $ul2 < $ul) {
-                        show_error_msg(Lang::T("ERROR"), "Bad second uploaded amount.");
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad second uploaded amount.");
                     }
                     $where_is .= " BETWEEN " . $ul * $unit . " and " . $ul2 * $unit;
                     $q .= ($q ? "&amp;" : "") . "ul2=$ul2";
@@ -434,7 +431,7 @@ $options = array("(any)", "Yes", "No");
             $dl = trim($_GET['dl']);
             if ($dl) {
                 if (!is_numeric($dl) || $dl < 0) {
-                    show_error_msg(Lang::T("ERROR"), "Bad downloaded amount.");
+                    Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad downloaded amount.");
                 }
                 $where_is .= isset($where_is) ? " AND " : "";
                 $where_is .= " u.downloaded ";
@@ -443,10 +440,10 @@ $options = array("(any)", "Yes", "No");
                 if ($dltype == "3") {
                     $dl2 = trim($_GET['dl2']);
                     if (!$dl2) {
-                        show_error_msg(Lang::T("ERROR"), "Two downloaded amounts needed for this type of search.");
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Two downloaded amounts needed for this type of search.");
                     }
                     if (!is_numeric($dl2) or $dl2 < $dl) {
-                        show_error_msg(Lang::T("ERROR"), "Bad second downloaded amount.");
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Bad second downloaded amount.");
                     }
                     $where_is .= " BETWEEN " . $dl * $unit . " and " . $dl2 * $unit;
                     $q .= ($q ? "&amp;" : "") . "dl2=$dl2";
@@ -463,7 +460,7 @@ $options = array("(any)", "Yes", "No");
             $date = trim($_GET['d']);
             if ($date) {
                 if (!$date = mkdate($date)) {
-                    show_error_msg(Lang::T("ERROR"), "Invalid date.");
+                    Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Invalid date.");
                 }
                 $q .= ($q ? "&amp;" : "") . "d=$date";
                 $datetype = $_GET['dt'];
@@ -478,12 +475,12 @@ $options = array("(any)", "Yes", "No");
                         $date2 = mkdate(trim($_GET['d2']));
                         if ($date2) {
                             if (!$date = mkdate($date)) {
-                                show_error_msg(Lang::T("ERROR"), "Invalid date.");
+                                Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Invalid date.");
                             }
                             $q .= ($q ? "&amp;" : "") . "d2=$date2";
                             $where_is .= " BETWEEN '$date' and '$date2'";
                         } else {
-                            show_error_msg(Lang::T("ERROR"), "Two dates needed for this type of search.");
+                            Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Two dates needed for this type of search.");
                         }
                     } elseif ($datetype == "1") {
                         $where_is .= "< '$date'";
@@ -496,7 +493,7 @@ $options = array("(any)", "Yes", "No");
             $last = trim($_GET['ls']);
             if ($last) {
                 if (!$last = mkdate($last)) {
-                    show_error_msg(Lang::T("ERROR"), "Invalid date.");
+                    Redirect::autolink(URLROOT."/adminusers/advancedsearch", "Invalid date.");
                 }
                 $q .= ($q ? "&amp;" : "") . "ls=$last";
                 $lasttype = $_GET['lst'];
@@ -513,7 +510,7 @@ $options = array("(any)", "Yes", "No");
                             $where_is .= " BETWEEN '$last' and '$last2'";
                             $q .= ($q ? "&amp;" : "") . "ls2=$last2";
                         } else {
-                            show_error_msg(Lang::T("ERROR"), "The second date is not valid.");
+                            Redirect::autolink(URLROOT."/adminusers/advancedsearch", "The second date is not valid.");
                         }
                     } elseif ($lasttype == "1") {
                         $where_is .= "< '$last'";
@@ -601,7 +598,7 @@ $options = array("(any)", "Yes", "No");
             $res = DB::run($query, $params)->fetchAll();
 
             if (!$res) {
-                show_error_msg("Warning", "No user was found.", 0);
+                Redirect::autolink(URLROOT."/adminusers/advancedsearch", "No user was found.");
             } else {
                 if ($count > $perpage) {
                     echo $pagertop;
@@ -645,7 +642,7 @@ $options = array("(any)", "Yes", "No");
                     $auxres = DB::run("SELECT COUNT(id) FROM comments WHERE user = " . $user['id']);
                     $n = $auxres->fetch();
                     $n_comments = $n[0];
-                    echo "<tr><td class='table_col1' align='center'><b><a href='" . URLROOT . "/users/profile?id=$user[id]'>" . Users::coloredname($user['username']) . "</a></b></td>" .
+                    echo "<tr><td class='table_col1' align='center'><b><a href='" . URLROOT . "/users/profile?id=$user[id]'>" . User::coloredname($user['username']) . "</a></b></td>" .
                     "<td class='table_col2' align='center'>" . $ipstr . "</td><td class='table_col1' align='center'>" . $user['email'] . "</td>" .
                     "<td class='table_col2' align='center'>" . TimeDate::utc_to_tz($user['added']) . "</td>" .
                     "<td class='table_col1' align='center'>" . $user['last_access'] . "</td>" .

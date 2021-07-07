@@ -1,7 +1,7 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
     $_GET['search'] = $_GET['search'] ?? '';
-    Block::begin(Lang::T("SEARCH"));
+    Style::block_begin(Lang::T("SEARCH"));
     ?>
         <!-- content -->
 	<form method="get" action="<?php echo URLROOT; ?>/search" class="form-inline">
@@ -13,6 +13,6 @@ if ($_SESSION['loggedin'] == true) {
 		</div>
 	</form>
 	<?php
-    block::end();
+    Style::block_end();
 }
 ?>

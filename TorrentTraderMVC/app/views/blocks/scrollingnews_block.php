@@ -2,7 +2,7 @@
 if ($_SESSION['loggedin'] == true) {
     if (NEWSON) { //check news is turned on first
         $db = Database::instance();
-Block::begin(Lang::T("LATEST_NEWS"));
+Style::block_begin(Lang::T("LATEST_NEWS"));
         $res = $db->run("SELECT * FROM news ORDER BY added DESC LIMIT 10"); ?>
 	<style type="text/css">
 
@@ -88,6 +88,6 @@ if ($res->rowCount()) {?>
     <!-- end content -->
 
 <?php
-block::end();
+Style::block_end();
     }
 }

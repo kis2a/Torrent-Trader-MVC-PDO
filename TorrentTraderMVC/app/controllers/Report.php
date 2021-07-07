@@ -4,7 +4,7 @@ class Report extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->reportModel = $this->model('Reports');
     }
 
@@ -45,7 +45,7 @@ class Report extends Controller
                 'username' => $arr['username'],
                 'user' => $user
             ];
-            $this->view('report/user', $data, 'user');
+            View::render('report/user', $data, 'user');
             die();
         } else {
             Redirect::autolink(URLROOT."/profile?id=$user", Lang::T("MISSING_INFO"));
@@ -84,7 +84,7 @@ class Report extends Controller
                 'name' => $arr['name'],
                 'torrent' => $torrent
             ];
-            $this->view('report/torrent', $data, 'user');
+            View::render('report/torrent', $data, 'user');
             die();
         } else {
             Redirect::autolink(URLROOT."/torrent?id=$torrent", Lang::T("MISSING_INFO"));
@@ -130,7 +130,7 @@ class Report extends Controller
                 'text' => $arr['text'],
                 'comment' => $comment
             ];
-            $this->view('report/comment', $data, 'user');
+            View::render('report/comment', $data, 'user');
             die();
         } else {
             Redirect::autolink(URLROOT, Lang::T("MISSING_INFO"));
@@ -172,7 +172,7 @@ class Report extends Controller
                 'forumpost' => $forumpost,
                 'forumid' => $forumid,
             ];
-            $this->view('report/forum', $data, 'user');
+            View::render('report/forum', $data, 'user');
             die();
         }
         

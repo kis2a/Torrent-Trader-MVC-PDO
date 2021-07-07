@@ -8,7 +8,7 @@ class Auth
         $this->db = new Database();
     }
 
-    public function user($class = 0, $force = 0, $autoclean = false)
+    public static function user($class = 0, $force = 0, $autoclean = false)
     {
         self::ipBanned();
 
@@ -20,13 +20,13 @@ class Auth
 
         if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["key_token"] != self::loginString()) {
             self::isClosed();
-            $this->isLoggedIn($force);
+            self::isLoggedIn($force);
             return;
 
         } else {
 
             try {
-                $res = $this->db->run("SELECT * FROM `users` LEFT OUTER JOIN `groups` ON users.class=groups.group_id WHERE id = $_COOKIE[id] AND users.enabled='yes' AND users.status ='confirmed'");
+                $res = DB::run("SELECT * FROM `users` LEFT OUTER JOIN `groups` ON users.class=groups.group_id WHERE id = $_COOKIE[id] AND users.enabled='yes' AND users.status ='confirmed'");
             } catch (Exception $e) {
                 Cookie::destroyAll();
                 Redirect::autolink(URLROOT . "/logout", 'Issue With User Auth');
@@ -43,8 +43,8 @@ class Auth
                 Redirect::autolink(URLROOT . "/index", Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
             }
             if ($row) {
-                $where = Helper::where($_SERVER['REQUEST_URI'], $row["id"], 0);
-                $this->db->run("UPDATE users SET last_access=?,ip=?,page=? WHERE id=?", [Helper::get_date_time(), Helper::getIP(), $where, $row["id"]]);
+                $where = User::where($_SERVER['REQUEST_URI'], $row["id"], 0);
+                DB::run("UPDATE users SET last_access=?,ip=?,page=? WHERE id=?", [TimeDate::get_date_time(), Ip::getIP(), $where, $row["id"]]);
                 $user = $row;
                 $_SESSION = $row;
                 $_SESSION["loggedin"] = true;
@@ -58,21 +58,21 @@ class Auth
 
     private static function loginString()
     {
-        $ip = Helper::getIP();
-        $browser = Helper::browser();
+        $ip = Ip::getIP();
+        $browser = Ip::agent();
         return md5($browser . $browser);
     }
 
     public static function ipBanned()
     {
-        $ip = Helper::getIP();
+        $ip = Ip::getIP();
         if ($ip == '') {
             return;
         }
         Ip::checkipban($ip);
     }
 
-    public function isLoggedIn($force = 0)
+    public static function isLoggedIn($force = 0)
     {
         // If force 0 guest view, force 1 use config membersonly, force 2 always hidden from guest
         if ($force == 1 && MEMBERSONLY) {
@@ -89,7 +89,7 @@ class Auth
     public static function isStaff()
     {
         if (!$_SESSION['class'] > 5 || $_SESSION["control_panel"] != "yes") {
-            Session::flash('info', Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"), URLROOT);
+                Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
     }
 

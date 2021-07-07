@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    Block::begin("Server Load");
+    Style::block_begin("Server Load");
             if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
     
                 // Get total physical memory (this is in bytes)
@@ -28,8 +28,8 @@ if ($_SESSION['loggedin'] == true) {
                        }
                    }
                 }
-                $memtotal = Helper::makeSize($memoryFree);
-                $memused = Helper::makeSize($memoryTotal);
+                $memtotal = mksize($memoryFree);
+                $memused = mksize($memoryTotal);
     
                 $users = ["none"];
                 $loadnow = "";
@@ -115,8 +115,8 @@ if ($_SESSION['loggedin'] == true) {
                 preg_match("!^Cached:\s*(.*) kB!m", $meminfo, $cached);
                 $cached = $cached[1] * 1024;
     
-                $memused = Helper::makeSize($memtotal - $memfree - $buffers - $cached);
-                $memtotal = Helper::makeSize($memtotal);
+                $memused = mksize($memtotal - $memfree - $buffers - $cached);
+                $memtotal = mksize($memtotal);
             }
     
             ?>
@@ -135,5 +135,5 @@ if ($_SESSION['loggedin'] == true) {
     
         <!-- end content -->
         <?php
-        block::end();
+        Style::block_end();
 }

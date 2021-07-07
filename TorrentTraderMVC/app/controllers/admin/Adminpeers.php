@@ -4,10 +4,10 @@ class Adminpeers extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -25,6 +25,6 @@ class Adminpeers extends Controller
             'pagerbottom' => $pagerbottom,
             'result' => $result
         ];
-        $this->view('peers/admin/index', $data, 'admin');
+        View::render('peers/admin/index', $data, 'admin');
    }
 }

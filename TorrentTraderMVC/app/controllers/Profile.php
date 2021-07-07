@@ -3,20 +3,20 @@ class Profile extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->userModel = $this->model('User');
         $this->countriesModel = $this->model('Countries');
         $this->friendModel = $this->model('Friend');
         $this->styleModel = $this->model('Stylesheet');
         $this->teamModel = $this->model('Team');
-        $this->valid = new Validation();
+        
         $this->log = $this->model('Logs');
     }
 
     public function index()
     {
         $id = (int) Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "Bad ID.");
         }
         // can view own but not others
@@ -65,7 +65,7 @@ class Profile extends Controller
         $friend = $arr['friend'];
         $block = $arr['enemy'];
 
-        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
+        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
         $user1 = $this->userModel->getAll($id);
         $data = [
             'title' => $cardheader,
@@ -82,7 +82,7 @@ class Profile extends Controller
             'usersignature' => $usersignature,
             'selectuser' => $user1,
         ];
-        $this->view('user/profile', $data, 'user');
+        View::render('user/profile', $data, 'user');
     }
 
     public function edit()
@@ -107,7 +107,7 @@ class Profile extends Controller
                 . "<option value='Female'" . ($user['gender'] == "Female" ? " selected='selected'" : "") . ">" . Lang::T("FEMALE") . "</option>\n";
         
         $user1 = $this->userModel->getAll($id);
-        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
+        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
         $data = [
             'title' => $cardheader,
             'stylesheets' => $stylesheets,
@@ -118,7 +118,7 @@ class Profile extends Controller
             'id' => $id,
             'selectuser' => $user1,
         ];
-        $this->view('user/edit', $data, 'user');
+        View::render('user/edit', $data, 'user');
     }
 
     public function submit()
@@ -171,13 +171,13 @@ class Profile extends Controller
         }
         $user1 = User::getUserById($id);
         $user = $this->userModel->getAll($id);
-        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user1["username"]));
+        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user1["username"]));
         $data = [
             'id' => $id,
             'title' => $cardheader,
             'selectuser' => $user,
         ];
-        $this->view('user/admin', $data, 'user');
+        View::render('user/admin', $data, 'user');
     }
 
     public function submited()
@@ -203,8 +203,7 @@ class Profile extends Controller
             $email = Input::get("email");
             $bonus = Input::get("bonus");
 
-            $valid = new Validation();
-            if (!$valid->validEmail($email)) {
+            if (!Validate::Email($email)) {
                 Redirect::autolink(URLROOT."/profile?id=$id", Lang::T("EMAIL_ADDRESS_NOT_VALID"));
             }
 
@@ -212,15 +211,15 @@ class Profile extends Controller
             $arr = DB::run("SELECT class FROM users WHERE id=?", [$id])->fetch();
             $uc = $arr['class'];
             // skip if class is same as current
-            if ($uc != $class && $uc > $class) {
+            if ($uc != $class && $uc > $_SESSION['class']) {
                 Redirect::autolink(URLROOT."/admin?id=$id", Lang::T("YOU_CANT_DEMOTE_YOURSELF"));
-            } elseif ($uc <= get_others_class($id)) {
+            } elseif ($uc == $_SESSION['class']) {
                 Redirect::autolink(URLROOT."/admin?id=$id", Lang::T("YOU_CANT_DEMOTE_SOMEONE_SAME_LVL"));
             } else {
                 DB::run("UPDATE users SET class=? WHERE id=?", [$class, $id]);
                 // Notify user
                 $prodemoted = ($class > $uc ? "promoted" : "demoted");
-                $msg = "You have been $prodemoted to " . get_user_class_name($class) . " by " . $_SESSION["username"] . "";
+                $msg = "You have been $prodemoted to " . Groups::get_user_class_name($class) . " by " . $_SESSION["username"] . "";
                 $added = TimeDate::get_date_time();
                 DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(?,?,?,?)", [0, $_SESSION['id'], $msg, $added]);
             }
@@ -260,7 +259,7 @@ class Profile extends Controller
         if ($this->session["delete_users"] != "yes" ) {
             Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
-        if (!$this->valid->validId($userid)) {
+        if (!Validate::Id($userid)) {
             Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("INVALID_USERID"));
         }
         if ($this->session["id"] == $userid) {

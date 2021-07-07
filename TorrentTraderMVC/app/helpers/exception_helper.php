@@ -108,6 +108,6 @@ function handleException($e)
     // Add trace and debug output
     $error .= "\n" . $e->getTrace();
     // Log details of error in a file
-    DB::run("INSERT INTO `sqlerr` (`txt`, `time`) VALUES (?,?)", [$error, Helper::get_date_time()]);
+    DB::run("INSERT INTO `sqlerr` (`txt`, `time`) VALUES (?,?)", [$error, TimeDate::get_date_time()]);
     Redirect::to(URLROOT . '/exceptions');
 }

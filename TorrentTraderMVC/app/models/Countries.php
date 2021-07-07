@@ -48,4 +48,16 @@ class Countries
         return $countries;
     }
 
+    public static function showflag($country)
+    {
+        $db = new Database;
+        $cres = $db->run("
+    SELECT name,flagpic FROM countries WHERE id=?", [$country]);
+        if ($carr = $cres->fetch(PDO::FETCH_ASSOC)) {
+            return $country = "<img src='" . URLROOT . "/assets/images/languages/$carr[flagpic]' title='" . htmlspecialchars($carr['name']) . "' alt='" . htmlspecialchars($carr['name']) . "' />";
+        } else {
+            return $country = "<img src='" . URLROOT . "/assets/images/languages/unknown.gif' alt='Unknown' />";
+        }
+    }
+
 }

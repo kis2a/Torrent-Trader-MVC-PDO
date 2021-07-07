@@ -1,7 +1,7 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
 	$db = Database::instance();
-    Block::begin(Lang::T("NEWEST_MEMBERS"));
+    Style::block_begin(Lang::T("NEWEST_MEMBERS"));
     $TTCache = new Cache();
     $expire = 600; // time in seconds
     if (($rows = $TTCache->Get("newestmember_block", $expire)) === false) {
@@ -20,12 +20,12 @@ if ($_SESSION['loggedin'] == true) {
     <?php } else {?>
 		<div class="list-group">
 	<?php foreach ($rows as $row) {?>
-			<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>' class="list-group-item"><?php echo Users::coloredname($row["username"]); ?></a>
+			<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>' class="list-group-item"><?php echo User::coloredname($row["username"]); ?></a>
 	<?php }?>
 		</div>
     <?php } ?>
 
 <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

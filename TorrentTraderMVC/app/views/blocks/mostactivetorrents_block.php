@@ -1,7 +1,7 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
     $db = Database::instance();
-    Block::begin(Lang::T("MOST_ACTIVE"));
+    Style::block_begin(Lang::T("MOST_ACTIVE"));
     $where = "WHERE banned = 'no' AND visible = 'yes'";
     $TTCache = new Cache();
     $expires = 600; // Cache time in seconds
@@ -36,5 +36,5 @@ if ($_SESSION['loggedin'] == true) {
 <?php } ?>
 	<!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

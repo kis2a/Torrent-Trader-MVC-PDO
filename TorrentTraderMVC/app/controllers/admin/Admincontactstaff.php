@@ -3,9 +3,9 @@ class Admincontactstaff extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
-        $this->valid = new Validation();
+        
     }
 
     public function staffbox()
@@ -15,7 +15,7 @@ class Admincontactstaff extends Controller
             'title' => 'Staff PMs',
             'res' => $res,
         ];
-        $this->view('contactstaff/admin/staff', $data, 'admin');
+        View::render('contactstaff/admin/staff', $data, 'admin');
     }
 
     public function viewpm()
@@ -27,7 +27,7 @@ class Admincontactstaff extends Controller
         $rast = DB::run("SELECT username FROM users WHERE id=$answeredby");
         $arr5 = $rast->fetch(PDO::FETCH_ASSOC);
         $senderr = "" . $arr4["sender"] . "";
-        if ($this->valid->validId($arr4["sender"])) {
+        if (Validate::Id($arr4["sender"])) {
             $res2 = DB::run("SELECT username FROM users WHERE id=" . $arr4["sender"]);
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
             $sender = "<a href='" . URLROOT . "/profile/read?id=$senderr'>" . ($arr2["username"] ? $arr2["username"] : "[Deleted]") . "</a>";
@@ -38,7 +38,7 @@ class Admincontactstaff extends Controller
         if ($arr4["answered"] == '0') {
             $answered = "<font color=red><b>No</b></font>";
         } else {
-            $answered = "<font color=blue><b>Yes</b></font> by <a href='" . URLROOT . "/profile/read?id=$answeredby>" . Users::coloredname($arr5['username']) . "</a> (<a href=" . URLROOT . "/admincontactstaff/viewanswer?pmid=$pmid>Show Answer</a>)";
+            $answered = "<font color=blue><b>Yes</b></font> by <a href='" . URLROOT . "/profile/read?id=$answeredby>" . User::coloredname($arr5['username']) . "</a> (<a href=" . URLROOT . "/admincontactstaff/viewanswer?pmid=$pmid>Show Answer</a>)";
         }
         if ($arr4["answered"] == '0') {
             $setanswered = "[<a href=" . URLROOT . "/admincontactstaff/setanswered?id=$arr4[id]>Mark Answered</a>]";
@@ -61,15 +61,15 @@ class Admincontactstaff extends Controller
             'iidee' => $iidee,
             'id' => $arr4["id"],
         ];
-        $this->view('contactstaff/admin/viewpm', $data, 'admin');
+        View::render('contactstaff/admin/viewpm', $data, 'admin');
     }
 
     public function answermessage()
     {
         $answeringto = $_GET["answeringto"];
         $receiver = (int) $_GET["receiver"];
-        if (!$this->valid->validId($receiver)) {
-            Session::flash('warning', "Invalid id.", URLROOT."/admincontactstaff");
+        if (!Validate::Id($receiver)) {
+                Redirect::autolink(URLROOT . '/admincontactstaff', "Invalid id.");
         }
         $res = DB::run("SELECT * FROM users WHERE id=$receiver");
         $res2 = DB::run("SELECT * FROM staffmessages WHERE id=$answeringto");
@@ -80,7 +80,7 @@ class Admincontactstaff extends Controller
             'answeringto' => $answeringto,
             'receiver' => $receiver,
         ];
-        $this->view('contactstaff/admin/answermessage', $data, 'admin');
+        View::render('contactstaff/admin/answermessage', $data, 'admin');
     }
 
     public function viewanswer()
@@ -91,7 +91,7 @@ class Admincontactstaff extends Controller
         $answeredby = $arr4["answeredby"];
         $rast = DB::run("SELECT username FROM users WHERE id=$answeredby");
         $arr5 = $rast->fetch(PDO::FETCH_ASSOC);
-        if ($this->valid->validId($arr4["sender"])) {
+        if (Validate::Id($arr4["sender"])) {
             $res2 = DB::run("SELECT username FROM users WHERE id=" . $arr4["sender"]);
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
             $sender = "<a href=" . URLROOT . "/profile?id=" . $arr4["sender"] . ">" . ($arr2["username"] ? $arr2["username"] : "[Deleted]") . "</a>";
@@ -118,22 +118,22 @@ class Admincontactstaff extends Controller
             'sender' => $sender,
             'answeredby' => $answeredby,
         ];
-        $this->view('contactstaff/admin/viewanswer', $data, 'admin');
+        View::render('contactstaff/admin/viewanswer', $data, 'admin');
     }
 
     public function takeanswer()
     {
         $receiver = (int) $_POST["receiver"];
         $answeringto = $_POST["answeringto"];
-        if (!$this->valid->validId($receiver)) {
-            show_error_msg("Error", "Invalid ID", 1);
+        if (!Validate::Id($receiver)) {
+            Redirect::autolink(URLROOT . '/admincontactstaff', "Invalid ID");
         }
         $userid = $_SESSION["id"];
         $msg = trim($_POST["msg"]);
         $message = $msg;
         $added = TimeDate::get_date_time();
         if (!$msg) {
-            show_error_msg("Error", "Please enter something!", 1);
+            Redirect::autolink(URLROOT . '/admincontactstaff', "Please enter something!");
         }
         DB::run("UPDATE staffmessages SET answer=? WHERE id=?", [$message, $answeringto]);
         DB::run("UPDATE staffmessages SET answered=?, answeredby=? WHERE id=?", [1, $userid, $answeringto]);

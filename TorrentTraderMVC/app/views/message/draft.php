@@ -11,7 +11,7 @@
 foreach ($data['res'] as $arr) {
     $res2 = DB::run("SELECT username FROM users WHERE id=?", [$arr["receiver"]]);
     if ($arr2 = $res2->fetch()) {
-        $receiver = "<a href='" . URLROOT . "/profile?id=" . $arr["receiver"] . "'><b>" . Users::coloredname($arr2["username"]) . "</b></a>";
+        $receiver = "<a href='" . URLROOT . "/profile?id=" . $arr["receiver"] . "'><b>" . User::coloredname($arr2["username"]) . "</b></a>";
     } else {
         $receiver = "<i>Deleted</i>";
     }

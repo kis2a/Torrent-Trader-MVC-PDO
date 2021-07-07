@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    Block::begin("Powered By");
+    Style::block_begin("Powered By");
     ?>
 
     <center>
@@ -18,5 +18,5 @@ if ($_SESSION['loggedin'] == true) {
     </center>
     <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

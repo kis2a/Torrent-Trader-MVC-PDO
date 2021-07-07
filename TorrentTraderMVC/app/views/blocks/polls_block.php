@@ -2,7 +2,7 @@
 
 if ($_SESSION['loggedin'] == true) {
 	$db = Database::instance();
-    Block::begin(Users::coloredname(Lang::T("POLL")));
+    Style::block_begin(User::coloredname(Lang::T("POLL")));
     if (!function_exists("srt")) {
         function srt($a, $b)
         {
@@ -20,7 +20,7 @@ if ($_SESSION['loggedin'] == true) {
         $choice = $_POST["choice"];
         if ($choice != "" && $choice < 256 && $choice == floor($choice)) {
 			$res = $db->run("SELECT * FROM polls ORDER BY added DESC LIMIT 1");
-			$arr = $res->fetch(PDO::FETCH_ASSOC) or show_error_msg(Lang::T("ERROR"), "No Poll", 1);
+			$arr = $res->fetch(PDO::FETCH_ASSOC) or print("No Poll");
 
             $pollid = $arr["id"];
             $userid = $_SESSION["id"];
@@ -29,15 +29,15 @@ if ($_SESSION['loggedin'] == true) {
 			$arr = $res->fetch(PDO::FETCH_ASSOC);
 	
 			if ($arr){
-				show_error_msg(Lang::T("ERROR"), "You have already voted!", 0);
+				print("You have already voted!");
 			}else{
 	
 				$ins = $db->run("INSERT INTO pollanswers VALUES(?, ?, ?, ?)", [0, $pollid, $userid, $choice]);
 				if (!$ins)
-						show_error_msg(Lang::T("ERROR"), "An error occured. Your vote has not been counted.", 0);
+						print("An error occured. Your vote has not been counted.");
 			}
 		}else{
-			show_error_msg(Lang::T("ERROR"), "Please select an option.", 0);
+			print("Please select an option.");
 		}
 	}
 
@@ -184,5 +184,5 @@ if ($_SESSION['loggedin'] == true) {
     ?>
     <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

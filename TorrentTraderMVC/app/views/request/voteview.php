@@ -18,8 +18,8 @@ while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     } else {
         $ratio = "---";
     }
-    $uploaded = Helper::makeSize($arr["uploaded"]);
-    $downloaded = Helper::makeSize($arr["downloaded"]);
+    $uploaded = mksize($arr["uploaded"]);
+    $downloaded = mksize($arr["downloaded"]);
    
     if ($arr["enabled"] == 'no') {
         $enabled = "<font color = red>No</font>";

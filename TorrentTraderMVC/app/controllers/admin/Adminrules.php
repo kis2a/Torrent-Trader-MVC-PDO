@@ -4,10 +4,10 @@ class Adminrules extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -17,7 +17,7 @@ class Adminrules extends Controller
             'title' => Lang::T("SITE_RULES_EDITOR"),
             'res' => $res,
         ];
-        $this->view('rules/admin/rulesview', $data, 'admin');
+        View::render('rules/admin/rulesview', $data, 'admin');
     }
 
     public function edit()
@@ -30,7 +30,7 @@ class Adminrules extends Controller
             $class = $_POST["class"];
             DB::run("update rules set title=?, text=?, public=?, class=? where id=?", [$title, $text, $public, $class, $id]);
             Logs::write("Rules have been changed by ($_SESSION[username])");
-            show_error_msg(Lang::T("COMPLETE"), "Rules edited ok<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>", 1);
+            Redirect::autolink(URLROOT."/adminrules/edit", "Rules edited ok<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>");
             die;
         }
         $id = (int) $_POST["id"];
@@ -40,7 +40,7 @@ class Adminrules extends Controller
             'id' => $id,
             'res' => $res,
         ];
-        $this->view('rules/admin/rulesedit', $data, 'admin');
+        View::render('rules/admin/rulesedit', $data, 'admin');
     }
 
     public function addsect()
@@ -51,13 +51,13 @@ class Adminrules extends Controller
             $public = $_POST["public"];
             $class = $_POST["class"];
             DB::run("insert into rules (title, text, public, class) values(?,?,?,?)", [$title, $text, $public, $class]);
-            show_error_msg(Lang::T("COMPLETE"), "New Section Added<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>", 1);
+            Redirect::autolink(URLROOT."/adminrules/edit", "New Section Added<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>");
             die();
         }
         $data = [
             'title' => Lang::T("SITE_RULES_EDITOR"),
         ];
-        $this->view('rules/admin/rulesaddsect', $data, 'admin');
+        View::render('rules/admin/rulesaddsect', $data, 'admin');
     }
 
 }

@@ -4,7 +4,7 @@ class Teams extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->teamModel = $this->model('Team');
         $this->log = $this->model('Logs');
     }
@@ -19,7 +19,7 @@ class Teams extends Controller
             'title' => Lang::T("Teams"),
             'res' => $res
         ];
-        $this->view('teams/index', $data, 'user');
+        View::render('teams/index', $data, 'user');
     }
 
 }

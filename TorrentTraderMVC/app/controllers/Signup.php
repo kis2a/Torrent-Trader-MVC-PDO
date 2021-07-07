@@ -3,29 +3,29 @@ class Signup extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 0);
+        $this->session = Auth::user(0, 0);
         $this->userModel = $this->model('User');
         $this->shoutModel = $this->model('Shoutboxs');
         $this->messageModel = $this->model('Message');
         $this->pdo = new Database();
-        $this->valid = new Validation();
+        
         $this->countriesModel = $this->model('Countries');
     }
 
     public function index()
     {
-/*//check if IP is already a peer
+//check if IP is already a peer
 if (IPCHECK) {
 $ip = $_SERVER['REMOTE_ADDR'];
 $ipq = get_row_count("users", "WHERE ip = '$ip'");
 if ($ipq >= ACCOUNTMAX) {
-Session::flash('info', "This IP is already in use !", URLROOT."/login");
+    Redirect::autolink(URLROOT . '/login', "This IP is already in use !");
 }
-}*/
+}
         // Check if we're signing up with an invite
         $invite = Input::get("invite");
         $secret = Input::get("secret");
-        if (!$this->valid->validId($invite) || strlen($secret) != 20) {
+        if (!Validate::Id($invite) || strlen($secret) != 20) {
             if (INVITEONLY) {
                 Redirect::autolink(URLROOT . '/home', "<center>".Lang::T("INVITE_ONLY_MSG")."<br></center>");
             }
@@ -41,7 +41,7 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
             'title' => $title,
             'invite' => $invite_row,
         ];
-        $this->view('user/signup', $data, 'user');
+        View::render('user/signup', $data, 'user');
     }
 
     public function submit()
@@ -95,7 +95,7 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
                     $message = sprintf(Lang::T("USERNAME_INUSE_S"), $wantusername);
                 }
                 
-                $secret = mksecret(); //generate secret field
+                $secret = Helper::mksecret(); //generate secret field
                 $wantpassword = password_hash($wantpassword, PASSWORD_BCRYPT); // hash the password
             }
             // Checks Returns Message
@@ -148,7 +148,7 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
                     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [$wantusername, $wantpassword, $secret, $email, $status, TimeDate::get_date_time(),
                     TimeDate::get_date_time(), TimeDate::get_date_time(), $age, $country, $gender,
-                    $client, DEFAULTTHEME, DEFAULTLANG, $signupclass, Helper::getIP()]);
+                    $client, DEFAULTTHEME, DEFAULTLANG, $signupclass, Ip::getIP()]);
                 $id = DB::lastInsertId();
                 
                 //send pm to new user
@@ -179,16 +179,16 @@ Session::flash('info', "This IP is already in use !", URLROOT."/login");
 
     public function validSign($wantusername, $email, $wantpassword, $passagain)
     {
-        if ($this->valid->isEmpty($wantusername)) {
+        if (Validate::isEmpty($wantusername)) {
             $message = "Please enter the account.";
         }
-        if ($this->valid->isEmpty($email)) {
+        if (Validate::isEmpty($email)) {
             //$message = "Please enter an email.";
         }
-        if ($this->valid->isEmpty($wantpassword)) {
+        if (Validate::isEmpty($wantpassword)) {
             $message = "Please enter a password.";
         }
-        if ($this->valid->isEmpty($passagain)) {
+        if (Validate::isEmpty($passagain)) {
             $message = "Please enter the second password.";
         }
         if ($wantpassword != $passagain) {

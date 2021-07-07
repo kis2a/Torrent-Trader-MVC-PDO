@@ -1,7 +1,7 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
     $db = Database::instance();
-    Block::begin(Lang::T("SEEDERS_WANTED"));
+    Style::block_begin(Lang::T("SEEDERS_WANTED"));
     $external = "external = 'no'";
     // Uncomment below to include external torrents
     $external = 1;
@@ -29,5 +29,5 @@ if ($_SESSION['loggedin'] == true) {
 			<div class="pull-right"><span class="label label-waring"><?php echo Lang::T("LEECHERS"); ?>: <?php echo number_format($row["leechers"]); ?></span></div>
 		<?php }
     }
-    block::end();
+    Style::block_end();
 }

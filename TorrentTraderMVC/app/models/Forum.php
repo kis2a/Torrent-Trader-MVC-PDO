@@ -73,7 +73,7 @@ class Forum
                 if ($extension != 'zip') {
                     $dathumb = "uploads/thumbnail/$row7[file_hash].jpg";
                     if (!unlink($dathumb)) {
-                        Session::flash('info', "Could not remove thumbnail = $row7[file_hash].jpg", URLROOT . "/forums/viewtopic&topicid=$topicid");
+                            Redirect::autolink(URLROOT . "/forums/viewtopic&topicid=$topicid", "Could not remove thumbnail = $row7[file_hash].jpg");
                     }
                 }
             }

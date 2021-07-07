@@ -4,10 +4,10 @@ class Adminmessages extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
 
@@ -22,7 +22,7 @@ class Adminmessages extends Controller
             'title' => Lang::T("Message Spy"),
             'res' => $res,
         ];
-        $this->view('message/admin/spypm', $data, 'admin');
+        View::render('message/admin/spypm', $data, 'admin');
     }
 
     public function delete()
@@ -31,13 +31,13 @@ class Adminmessages extends Controller
             DB::run("DELETE FROM `messages`");
         } else {
             if (!@count($_POST["del"])) {
-                show_error_msg(Lang::T("ERROR"), Lang::T("NOTHING_SELECTED"), 1);
+                Redirect::autolink(URLROOT . '/adminmessages', Lang::T("NOTHING_SELECTED"));
             }
             $ids = array_map("intval", $_POST["del"]);
             $ids = implode(", ", $ids);
             DB::run("DELETE FROM `messages` WHERE `id` IN ($ids)");
         }
-        Session::flash('info', Lang::T("CP_DELETED_ENTRIES"), URLROOT . "/adminmessages");
+            Redirect::autolink(URLROOT . '/adminmessages', Lang::T("CP_DELETED_ENTRIES"));
     }
 
     public function mass()
@@ -48,7 +48,7 @@ class Adminmessages extends Controller
             $msg = $_POST['msg'];
             $subject = $_POST["subject"];
             if (!$msg) {
-                show_error_msg(Lang::T("ERROR"), "Please Enter Something!", 1);
+                Redirect::autolink(URLROOT . '/adminmessages/mass', "Please Enter Something!");
             }
             $updateset = array_map("intval", $_POST['clases']);
             $query = DB::run("SELECT id FROM users WHERE class IN (" . implode(",", $updateset) . ") AND enabled = 'yes' AND status = 'confirmed'");
@@ -64,6 +64,6 @@ class Adminmessages extends Controller
             'title' => Lang::T("Mass Private Message"),
             'res' => $res,
         ];
-        $this->view('message/admin/masspm', $data, 'admin');
+        View::render('message/admin/masspm', $data, 'admin');
     }
 }

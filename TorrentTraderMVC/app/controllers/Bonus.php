@@ -4,16 +4,16 @@ class Bonus extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->bonusModel = $this->model('Bonusmodel');
         $this->userModel = $this->model('User');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
     {
         $id = (int) Input::get("id");
-        if ($this->valid->validId($id)) {
+        if (Validate::Id($id)) {
             $row = $this->bonusModel->getBonusByPost($id);
             if (!$row || $this->session['seedbonus'] < $row->cost) {
                 Redirect::autolink(URLROOT."/bonus", "Demand not valid.");
@@ -33,7 +33,7 @@ class Bonus extends Controller
             'configautoclean_interval' => floor(ADDBONUS / 60),
 			'usersid' => $this->session['id'],
         ];
-        $this->view('bonus/index', $data, 'user');
+        View::render('bonus/index', $data, 'user');
     }
 
     private function bonusswitch($row)
@@ -61,7 +61,7 @@ class Bonus extends Controller
                     $row2 = DB::run("SELECT `name` FROM `torrents` WHERE `id` = '$tid'")->fetchColumn();
                     $username = htmlspecialchars($row1["username"]);
                     $torname = htmlspecialchars($row2["name"]);
-                    Logs::write("The HnR of <a href='profile?id=" . $uid . "'>" . Users::coloredname($username) . "</a> on the torrent <a href='torrent?id=" . $tid . "'>" . $torname . "</a> has been cleared by <a href='profile?id=" . $_SESSION['id'] . "'>" . Users::coloredname($_SESSION['username']) . "</a>");
+                    Logs::write("The HnR of <a href='profile?id=" . $uid . "'>" . User::coloredname($username) . "</a> on the torrent <a href='torrent?id=" . $tid . "'>" . $torname . "</a> has been cleared by <a href='profile?id=" . $_SESSION['id'] . "'>" . User::coloredname($_SESSION['username']) . "</a>");
                     $new_modcomment = gmdate("d-m-Y \à H:i") . " - ";
                     if ($uid == $_SESSION["id"]) {
                         $new_modcomment .= "H&R on the torrent " . $torname . " cleared against " . $row->cost . " points \n";

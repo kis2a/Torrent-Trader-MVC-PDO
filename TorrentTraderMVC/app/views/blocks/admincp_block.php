@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin'] === true && $_SESSION["control_panel"] == "yes") {
-    Block::begin(Lang::T("AdminCP"));
+    Style::block_begin(Lang::T("AdminCP"));
     ?>
         <!-- content -->
        <select name="admin" style="width: 95%" onchange="if(this.options[this.selectedIndex].value != -1){ window.location = this.options[this.selectedIndex].value; }">
@@ -37,5 +37,5 @@ if ($_SESSION['loggedin'] === true && $_SESSION["control_panel"] == "yes") {
        </select>
     <!-- end content -->
 
-<?php block::end();
+<?php Style::block_end();
 }

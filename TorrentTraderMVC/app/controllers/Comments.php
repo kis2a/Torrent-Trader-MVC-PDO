@@ -3,7 +3,7 @@ class Comments extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->newsModel = $this->model('News');
         $this->commentModel = $this->model('Comment');
         $this->torrentModel = $this->model('Torrents');
@@ -57,7 +57,7 @@ class Comments extends Controller
             'type' => $type,
             'id' => $id
         ];
-        $this->view('comments/index', $data, 'user');
+        View::render('comments/index', $data, 'user');
     }
 
     public function commentPager($id, $type)
@@ -90,7 +90,7 @@ class Comments extends Controller
             'id' => $id,
             'type' => $type,
         ];
-        $this->view('comments/add', $data, 'user');
+        View::render('comments/add', $data, 'user');
     }
 
     public function edit()
@@ -108,7 +108,7 @@ class Comments extends Controller
         if ($save) {
             $text = $_POST['text'];
             $result = DB::run("UPDATE comments SET text=? WHERE id=?", [$text, $id]);
-            Logs::write(Users::coloredname($_SESSION['username']) . " has edited comment: ID:$id");
+            Logs::write(User::coloredname($_SESSION['username']) . " has edited comment: ID:$id");
             Redirect::autolink(URLROOT, "Comment Edited OK");
         }
         $arr = $this->commentModel->selectAll($id);
@@ -119,7 +119,7 @@ class Comments extends Controller
             'id' => $id,
             'type' => $type,
         ];
-        $this->view('comments/edit', $data, 'user');
+        View::render('comments/edit', $data, 'user');
         die();
     }
 
@@ -138,7 +138,7 @@ class Comments extends Controller
             }
         }
         $this->commentModel->delete($id);
-        Logs::write(Users::coloredname($_SESSION['username']) . " has deleted comment: ID: $id");
+        Logs::write(User::coloredname($_SESSION['username']) . " has deleted comment: ID: $id");
         Redirect::autolink(URLROOT, "Comment deleted OK");
     }
 

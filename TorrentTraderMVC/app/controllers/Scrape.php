@@ -3,9 +3,9 @@ class Scrape extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 0);
+        $this->session = Auth::user(0, 0);
         $this->torrentModel = $this->model('Torrents');
-        $this->valid = new Validation();
+        
         $this->logsModel = $this->model('Logs');
     }
     public function index()

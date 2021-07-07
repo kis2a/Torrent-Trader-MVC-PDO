@@ -4,10 +4,10 @@ class Adminusers extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -20,7 +20,7 @@ class Adminusers extends Controller
         $data = [
             'title' => 'Add User',
         ];
-        $this->view('user/admin/adduser', $data, 'admin');
+        View::render('user/admin/adduser', $data, 'admin');
     }
 
     public function addeduserok()
@@ -35,7 +35,7 @@ class Adminusers extends Controller
             $username = $_POST["username"];
             $password = $_POST["password"];
             $email = $_POST["email"];
-            $secret = mksecret();
+            $secret = Helper::mksecret();
             $passhash = md5($password);
             $secret = $secret;
             /*
@@ -61,7 +61,7 @@ class Adminusers extends Controller
             'title' => 'Where are members',
             'res' => $res,
         ];
-        $this->view('user/admin/whoswhere', $data, 'admin');
+        View::render('user/admin/whoswhere', $data, 'admin');
     }
 
     public function privacy()
@@ -93,7 +93,7 @@ class Adminusers extends Controller
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('user/admin/privacylevel', $data, 'admin');
+        View::render('user/admin/privacylevel', $data, 'admin');
     }
 
     public function duplicateip()
@@ -107,7 +107,7 @@ class Adminusers extends Controller
             'num' => $num,
             'res' => $res,
         ];
-        $this->view('user/admin/duplicuteip', $data, 'admin');
+        View::render('user/admin/duplicuteip', $data, 'admin');
     }
 
     public function confirm()
@@ -118,7 +118,7 @@ class Adminusers extends Controller
                 DB::run("UPDATE `users` SET `status` = 'confirmed' WHERE `status` = 'pending' AND `invited_by` = '0'");
             } else {
                 if (!@count($_POST["users"])) {
-                    show_error_msg(Lang::T("ERROR"), Lang::T("NOTHING_SELECTED"), 1);
+                    Redirect::autolink(URLROOT."/adminusers/duplicateip", Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["users"]);
                 $ids = implode(", ", $ids);
@@ -136,7 +136,7 @@ class Adminusers extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('user/admin/confirmreg', $data, 'admin');
+        View::render('user/admin/confirmreg', $data, 'admin');
     }
 
     public function cheats()
@@ -157,9 +157,9 @@ class Adminusers extends Controller
                     'zerofix' => $zerofix,
                     'message' => $message
                     ];
-                    $this->view('user/admin/cheatresult', $data, 'admin');
+                    View::render('user/admin/cheatresult', $data, 'admin');
             } else {
-                Session::flash('info', $message, URLROOT . "/adminusers/cheats");
+                    Redirect::autolink(URLROOT . '/adminusers/cheats', $message);
                 die;
             } 
 
@@ -167,7 +167,7 @@ class Adminusers extends Controller
             $data = [
             'title' => Lang::T("Possible Cheater Detection"),
             ];
-            $this->view('user/admin/cheatform', $data, 'admin');
+            View::render('user/admin/cheatform', $data, 'admin');
         }
     }
 
@@ -178,7 +178,7 @@ class Adminusers extends Controller
         }
         if ($_POST['do'] == "del") {
             if (!@count($_POST["users"])) {
-                show_error_msg(Lang::T("ERROR"), "Nothing Selected.", 1);
+                Redirect::autolink(URLROOT."/adminusers/simplesearch", "Nothing Selected.");
             }
             $ids = array_map("intval", $_POST["users"]);
             $ids = implode(", ", $ids);
@@ -212,7 +212,7 @@ class Adminusers extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('user/admin/simpleusersearch', $data, 'admin');
+        View::render('user/admin/simpleusersearch', $data, 'admin');
     }
 
     public function advancedsearch()
@@ -220,7 +220,7 @@ class Adminusers extends Controller
         $do = $_GET['do']; // todo
         if ($do == "warndisable") {
             if (empty($_POST["warndisable"])) {
-                show_error_msg(Lang::T("ERROR"), "You must select a user to edit.", 1);
+                Redirect::autolink(URLROOT."/adminusers/advancedsearh", "You must select a user to edit.", 1);
             }
             if (!empty($_POST["warndisable"])) {
                 $enable = $_POST["enable"];
@@ -259,7 +259,7 @@ class Adminusers extends Controller
                 }
                 if ($warn != '') {
                     if (empty($_POST["warnpm"])) {
-                        show_error_msg(Lang::T("ERROR"), "You must type a reason/mod comment.", 1);
+                        Redirect::autolink(URLROOT."/adminusers/advancedsearh", "You must type a reason/mod comment.", 1);
                     }
 
                     $msg = "You have received a warning, Reason: $warnpm";

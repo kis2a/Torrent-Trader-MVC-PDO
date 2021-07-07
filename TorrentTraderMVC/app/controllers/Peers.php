@@ -3,10 +3,10 @@ class Peers extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         // $this->userModel = $this->model('User');
         $this->peerModel = $this->model('Peer');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -18,7 +18,7 @@ class Peers extends Controller
     public function seeding()
     {
         $id = (int) Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "Bad ID.");
         }
         $user = DB::run("SELECT * FROM users WHERE id=?", [$id])->fetch();
@@ -41,7 +41,7 @@ class Peers extends Controller
             $leeching = peerstable($res);
         }
 
-        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
         // Template
         $data = [
             'id' => $id,
@@ -52,14 +52,14 @@ class Peers extends Controller
             'username' => $user["username"],
             'privacy' => $user["privacy"],
         ];
-        $this->view('peers/seeding', $data, 'user');
+        View::render('peers/seeding', $data, 'user');
     }
 
     // sharing on account details
     public function uploaded()
     {
         $id = (int) Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "Bad ID.");
         }
         $user = DB::run("SELECT * FROM users WHERE id=?", [$id])->fetch();
@@ -89,7 +89,7 @@ class Peers extends Controller
         } else {
             unset($res);
         }
-        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
         $data = [
             'id' => $id,
             'title' => $title,
@@ -100,14 +100,14 @@ class Peers extends Controller
             'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('peers/uploaded', $data, 'user');
+        View::render('peers/uploaded', $data, 'user');
     }
 
     // sharing on torrent details
     public function peerlist()
     {
         $id = (int) Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
         if ($this->session["view_torrents"] == "no") {
@@ -129,7 +129,7 @@ class Peers extends Controller
                     'title' => $title,
                     'query' => $query,
                 ];
-                $this->view('peers/peerlist', $data, 'user');
+                View::render('peers/peerlist', $data, 'user');
             }
         } else {
             Redirect::autolink(URLROOT, 'Sorry External Torrent');
@@ -177,7 +177,7 @@ class Peers extends Controller
     public function dead()
     {
         if ($this->session["control_panel"] != "yes") {
-            Session::flash('info', Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"), URLROOT."/home");
+                Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         $page = (int) $_GET["page"];
         $perpage = 50;
@@ -210,6 +210,6 @@ class Peers extends Controller
              'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('peers/dead', $data, 'user');
+        View::render('peers/dead', $data, 'user');
     }
 }

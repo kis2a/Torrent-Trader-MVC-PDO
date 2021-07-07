@@ -49,7 +49,7 @@ function autoinvites($interval, $minlimit, $maxlimit, $minratio, $invites, $maxi
             }
 
             $pdo->run("UPDATE users SET invites = invites+$invites, invitedate = NOW() WHERE id=$arr[id]");
-            Logs::write("Gave $invites invites to '$arr[username]' - Class: " . get_user_class_name($arr['class']) . "");
+            Logs::write("Gave $invites invites to '$arr[username]' - Class: " . Groups::get_user_class_name($arr['class']) . "");
         }
     }
 }
@@ -181,7 +181,7 @@ function do_cleanup()
                 $pdo->run("INSERT INTO warnings (userid, reason, added, expiry, warnedby, type) VALUES ('" . $arr["id"] . "','" . $reason . "','" . $timenow . "','" . $expiretime . "','0','Poor Ratio')");
                 $pdo->run("UPDATE users SET warned='yes' WHERE id='" . $arr["id"] . "'");
                 $pdo->run("INSERT INTO messages (sender, receiver, added, msg, poster) VALUES ('0', '" . $arr["id"] . "', '" . $timenow . "', '" . $reason . "', '0')");
-                Logs::write("Auto Leech warning has been <b>added</b> for: <a href='".URLROOT."/profile?id=" . $arr["id"] . "'>" . Users::coloredname($arr["username"]) . "</a>");
+                Logs::write("Auto Leech warning has been <b>added</b> for: <a href='".URLROOT."/profile?id=" . $arr["id"] . "'>" . User::coloredname($arr["username"]) . "</a>");
             }
         }
 
@@ -192,7 +192,7 @@ function do_cleanup()
             $reason = "Your warning of low ratio has been removed. We highly recommend you to keep a your ratio up to not be warned again.\n";
 
             while ($arr1 = $res1->fetch(PDO::FETCH_ASSOC)) {
-                Logs::write("Auto Leech warning has been removed for: <a href='".URLROOT."/profile?id=" . $arr1["id"] . "'>" . Users::coloredname($arr1["username"]) . "</a>");
+                Logs::write("Auto Leech warning has been removed for: <a href='".URLROOT."/profile?id=" . $arr1["id"] . "'>" . User::coloredname($arr1["username"]) . "</a>");
 
                 $pdo->run("UPDATE users SET warned = 'no' WHERE id = '" . $arr1["id"] . "'");
                 $pdo->run("UPDATE warnings SET expiry = '$timenow', active = 'no' WHERE userid = $arr1[id]");
@@ -209,7 +209,7 @@ function do_cleanup()
             while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
                 if (TimeDate::gmtime() - $arr["expiry"] >= 0) {
                     $pdo->run("UPDATE users SET enabled='no', warned='no' WHERE id='" . $arr["id"] . "'");
-                    Logs::write("User <a href='".URLROOT."/profile?id=" . $arr["id"] . "'>" . Users::coloredname($arr["username"]) . "</a> has been banned (Auto Leech warning).");
+                    Logs::write("User <a href='".URLROOT."/profile?id=" . $arr["id"] . "'>" . User::coloredname($arr["username"]) . "</a> has been banned (Auto Leech warning).");
                 }
             }
         }

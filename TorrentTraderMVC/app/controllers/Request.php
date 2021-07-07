@@ -3,10 +3,10 @@ class Request extends Controller
 {
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -63,7 +63,7 @@ class Request extends Controller
                 'num' => $num,
                 'res' => $res,
             ];
-            $this->view('request/index', $data, 'user');
+            View::render('request/index', $data, 'user');
         } else {
             Redirect::autolink(URLROOT, "Request are not available");
         }
@@ -76,7 +76,7 @@ class Request extends Controller
             Redirect::autolink(URLROOT . "/request", "Access denied.");
         }
         $id = (int) Input::get("id");
-        if (!$this->valid->validId($id)) {
+        if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT . "/request", "You must select a category to put the request in!");
         }
         $descr = Input::get("desc");
@@ -97,7 +97,7 @@ class Request extends Controller
             'title' => Lang::T('REQUESTS'),
             'res' => $res,
         ];
-        $this->view('request/edit', $data, 'user');
+        View::render('request/edit', $data, 'user');
     }
 
     public function delete()
@@ -135,7 +135,7 @@ class Request extends Controller
             $data = [
                 'title' => Lang::T('REQUESTS'),
             ];
-            $this->view('request/makereq', $data, 'user');
+            View::render('request/makereq', $data, 'user');
         } else {
             Redirect::autolink(URLROOT . "/request", "Request are not available");
         }
@@ -206,7 +206,7 @@ class Request extends Controller
             'commcount' => $commcount,
             'commres' => $commres,
         ];
-        $this->view('request/details', $data, 'user');
+        View::render('request/details', $data, 'user');
     }
 
     public function reqfilled()
@@ -234,7 +234,7 @@ class Request extends Controller
                 'requestid' => $requestid,
                 'res' => $res
             ];
-            $this->view('request/voteview', $data, 'user');
+            View::render('request/voteview', $data, 'user');
         } else {
             Redirect::autolink(URLROOT . "/request", Lang::T('No Votes Yet'));
         }

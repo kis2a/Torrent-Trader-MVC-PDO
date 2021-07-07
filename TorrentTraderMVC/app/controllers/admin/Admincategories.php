@@ -4,10 +4,10 @@ class Admincategories extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -18,28 +18,28 @@ class Admincategories extends Controller
             'title' => Lang::T("TORRENT_CATEGORIES"),
             'sql' => $sql,
         ];
-        $this->view('cats/index', $data, 'admin');
+        View::render('cats/index', $data, 'admin');
     }
 
     public function edit()
     {
         $id = (int) $_GET["id"];
-        if (!$this->valid->validId($id)) {
-            show_error_msg(Lang::T("ERROR"), Lang::T("INVALID_ID"), 1);
+        if (!Validate::Id($id)) {
+            Redirect::autolink(URLROOT . "/admincategories", Lang::T("INVALID_ID"));
         }
         $res = DB::run("SELECT * FROM categories WHERE id=?", [$id]);
         if ($res->rowCount() != 1) {
-            show_error_msg(Lang::T("ERROR"), "No category with ID $id.", 1);
+            Redirect::autolink(URLROOT . "/admincategories", "No category with ID $id.");
         }
 
         if ($_GET["save"] == '1') {
             $parent_cat = $_POST['parent_cat'];
             if ($parent_cat == "") {
-                show_error_msg(Lang::T("ERROR"), "Parent Cat cannot be empty!", 1);
+                Redirect::autolink(URLROOT . "/admincategories/edit", "Parent Cat cannot be empty!");
             }
             $name = $_POST['name'];
             if ($name == "") {
-                show_error_msg(Lang::T("ERROR"), "Sub cat cannot be empty!", 1);
+                Redirect::autolink(URLROOT . "/admincategories/edit", "Sub cat cannot be empty!");
             }
             $sort_index = $_POST['sort_index'];
             $image = $_POST['image'];
@@ -55,7 +55,7 @@ class Admincategories extends Controller
                 'res' => $res,
                 'id' => $id,
             ];
-            $this->view('cats/edit', $data, 'admin');
+            View::render('cats/edit', $data, 'admin');
         }
     }
 
@@ -63,7 +63,7 @@ class Admincategories extends Controller
     {
         $id = (int) $_GET["id"];
         if ($_GET["sure"] == '1') {
-            if (!$this->valid->validId($id)) {
+            if (!Validate::Id($id)) {
                 Redirect::autolink(URLROOT . "/admincategories", Lang::T("CP_NEWS_INVAILD_ITEM_ID = $newsid"));
             }
             $newcatid = (int) $_POST["newcat"];
@@ -75,7 +75,7 @@ class Admincategories extends Controller
                 'title' => Lang::T("TORRENT_CATEGORIES"),
                 'id' => $id,
             ];
-            $this->view('cats/delete', $data, 'admin');
+            View::render('cats/delete', $data, 'admin');
         }
     }
 
@@ -83,11 +83,11 @@ class Admincategories extends Controller
     {
         $name = $_POST['name'];
         if ($name == "") {
-            show_error_msg(Lang::T("ERROR"), "Sub Cat cannot be empty!", 1);
+            Redirect::autolink(URLROOT . "/admincategories/add", "Sub Cat cannot be empty!");
         }
         $parent_cat = $_POST['parent_cat'];
         if ($parent_cat == "") {
-            show_error_msg(Lang::T("ERROR"), "Parent Cat cannot be empty!", 1);
+            Redirect::autolink(URLROOT . "/admincategories/add", "Parent Cat cannot be empty!");
         }
         $sort_index = $_POST['sort_index'];
         $image = $_POST['image'];
@@ -95,7 +95,7 @@ class Admincategories extends Controller
         if ($ins) {
             Redirect::autolink(URLROOT . "/admincategories", Lang::T("Category was added successfully."));
         } else {
-            show_error_msg(Lang::T("ERROR"), "Unable to add category", 1);
+            Redirect::autolink(URLROOT . "/admincategories/add", "Unable to add category");
         }
 
     }
@@ -105,7 +105,7 @@ class Admincategories extends Controller
         $data = [
             'title' => Lang::T("TORRENT_CATEGORIES"),
         ];
-        $this->view('cats/add', $data, 'admin');
+        View::render('cats/add', $data, 'admin');
     }
 
 }

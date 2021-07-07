@@ -4,10 +4,10 @@ class Admintorrents extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         // $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -35,7 +35,7 @@ class Admintorrents extends Controller
             'res' => $res,
             'search' => $search,
         ];
-        $this->view('torrent/admin/torrentmanage', $data, 'admin');
+        View::render('torrent/admin/torrentmanage', $data, 'admin');
     }
 
     public function free()
@@ -58,6 +58,6 @@ class Admintorrents extends Controller
             'resqq' => $resqq,
             'pagerbottom' => $pagerbottom,
         ];
-        $this->view('torrent/admin/freetorrent', $data, 'admin');
+        View::render('torrent/admin/freetorrent', $data, 'admin');
     }
 }

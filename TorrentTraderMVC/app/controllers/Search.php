@@ -5,9 +5,9 @@ class Search extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 2);
+        $this->session = Auth::user(0, 2);
         $this->torrentModel = $this->model('Torrents');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -15,7 +15,7 @@ class Search extends Controller
         //check permissions
         if (MEMBERSONLY) {
             if ($_SESSION["view_torrents"] == "no") {
-                show_error_msg(Lang::T("ERROR"), Lang::T("NO_TORRENT_VIEW"), 1);
+                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
             }
         }
 
@@ -162,7 +162,7 @@ class Search extends Controller
         $orderby = "ORDER BY torrents." . $column . " " . $ascdesc;
         $pagerlink = "sort=" . $_GET['sort'] . "&amp;order=" . $_GET['order'] . "&amp;";
 
-        if ($this->valid->validId($_GET["page"] ?? '')) {
+        if (Validate::Id($_GET["page"] ?? '')) {
             $thisurl .= "page=$_GET[page]&amp;";
         }
 
@@ -196,7 +196,8 @@ class Search extends Controller
 
                 $ssa = array();
                 foreach (array("torrents.name") as $sss) {
-                    $ssa[] = "$sss LIKE '%" . sqlwildcardesc($searchss) . "%'";
+                    //$ssa[] = "$sss LIKE '%" . sqlwildcardesc($searchss) . "%'";
+                    $ssa[] = "$sss LIKE '%" . $searchss . "%'";
                 }
 
                 $wherea[] = "(" . implode(" OR ", $ssa) . ")";
@@ -402,7 +403,7 @@ class Search extends Controller
         //check permissions
         if (MEMBERSONLY) {
             if ($_SESSION["view_torrents"] == "no") {
-                show_error_msg(Lang::T("ERROR"), Lang::T("NO_TORRENT_VIEW"), 1);
+                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
             }
         }
 
@@ -433,7 +434,7 @@ class Search extends Controller
         //check permissions
         if (MEMBERSONLY) {
             if ($_SESSION["view_torrents"] == "no") {
-                show_error_msg(Lang::T("ERROR"), Lang::T("NO_TORRENT_VIEW"), 1);
+                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
             }
         }
         //get http vars
@@ -567,7 +568,7 @@ class Search extends Controller
             }
         }
 
-        if ($this->valid->validId($_GET["page"])) {
+        if (Validate::Id($_GET["page"])) {
             $thisurl .= "page=$_GET[page]&amp;";
         }
 
@@ -611,18 +612,18 @@ class Search extends Controller
     public function needseed()
     {
         if ($_SESSION["view_torrents"] == "no") {
-            Session::flash('info', Lang::T("NO_TORRENT_VIEW"), URLROOT."/home");
+                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         $res = DB::run("SELECT torrents.id, torrents.name, torrents.owner, torrents.external, torrents.size, torrents.seeders, torrents.leechers, torrents.times_completed, torrents.added, users.username FROM torrents LEFT JOIN users ON torrents.owner = users.id WHERE torrents.banned = 'no' AND torrents.leechers > 0 AND torrents.seeders <= 1 ORDER BY torrents.seeders");
         if ($res->rowCount() == 0) {
-            Session::flash('info', Lang::T("NO_TORRENT_NEED_SEED"), URLROOT."/home");
+                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_NEED_SEED"));
         }
         $title = Lang::T("TORRENT_NEED_SEED");
         $data = [
             'title' => $title,
             'res' => $res
         ];
-        $this->view('torrent/needseed', $data, 'user');
+        View::render('torrent/needseed', $data, 'user');
     }
 
 }

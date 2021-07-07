@@ -21,7 +21,7 @@ if ($_SESSION['loggedin']) {
         $userratio = '<span class="label label-info pull-right">---</span>';
     }
 
-    Block::begin(Users::coloredname($_SESSION["username"]));
+    Style::block_begin(User::coloredname($_SESSION["username"]));
     ?>
 
         <img class="embed-responsive" src="<?php echo $avatar; ?>" alt="Avatar"  />
@@ -44,9 +44,9 @@ if ($_SESSION['loggedin']) {
 	<br />
         <!-- end content -->
 
-    <?php block::end();
+    <?php Style::block_end();
 }/* else {
-    Block::begin('Login');
+    Style::block_begin('Login');
     ?>
 <form method="post" action="<?php echo URLROOT ?>/login/submit">
 <input type="hidden" name="csrf_token" value="<?php echo Cookie::csrf_token(); ?>" />
@@ -72,5 +72,5 @@ if ($_SESSION['loggedin']) {
 <td align="center">[<a href="<?php echo URLROOT ?>/signup"><?php echo Lang::T("SIGNUP");?></a>]<br />[<a href="<?php echo URLROOT ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT");?></a>]</td> </tr>
 	</table>
     </form> 
-    <?php block::end();
+    <?php Style::block_end();
 }*/

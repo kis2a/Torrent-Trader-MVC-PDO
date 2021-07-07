@@ -4,7 +4,7 @@ class Home extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(0, 1);
+        $this->session = Auth::user(0, 1);
     }
 
     public function index()
@@ -12,7 +12,9 @@ class Home extends Controller
         Style::header(Lang::T("HOME"));
         // Check
         if (file_exists("check.php") && $_SESSION["class"] == 7) {
-            show_error_msg("WARNING", "check still exists, please delete or rename the file as it could pose a security risk<br /><br /><a href='check.php'>View /check</a> - Use to check your config!<br />", 0);
+            Style::begin("<font class='error'>" . htmlspecialchars('WARNING') . "</font>");
+            echo '<div class="alert alert-info">check still exists, please delete or rename the file as it could pose a security risk<br /><br /><a href="check.php">View /check</a> - Use to check your config!<br /></div>';
+            Style::end();
         }
         // Start Hit And Run Warning
         if (HNR_ON) {
@@ -25,13 +27,13 @@ class Home extends Controller
                     'hnr1' => $hnr,
                     'hnr2' => $hnr2,
                 ];
-                $this->view('home/hitnrun', $data);
+                View::render('home/hitnrun', $data);
             }
         }
         // Site Notice
         if (SITENOTICEON) {
             $data = [];
-            $this->view('home/notice', $data);
+            View::render('home/notice', $data);
         }
         // Site News
         if (NEWSON && $_SESSION['view_news'] == "yes") {
@@ -54,7 +56,7 @@ class Home extends Controller
                         $pic = "plus";
                     }
                     print("<br /><a href=\"javascript: klappe_news('a" . $array['id'] . "')\"><img border=\"0\" src=\"".URLROOT."/assets/images/$pic.gif\" id=\"pica" . $array['id'] . "\" alt=\"Show/Hide\" />");
-                    print("&nbsp;<b>" . $array['title'] . "</b></a> - <b>" . Lang::T("POSTED") . ":</b> " . date("d-M-y", TimeDate::utc_to_tz_time($array['added'])) . " <b>" . Lang::T("BY") . ":</b><a href='".URLROOT."/profile?id=$array[id]'>  " . Helper::userColour($array['username']) . "</a>");
+                    print("&nbsp;<b>" . $array['title'] . "</b></a> - <b>" . Lang::T("POSTED") . ":</b> " . date("d-M-y", TimeDate::utc_to_tz_time($array['added'])) . " <b>" . Lang::T("BY") . ":</b><a href='".URLROOT."/profile?id=$array[id]'>  " . User::coloredname($array['username']) . "</a>");
                     print("<div id=\"ka" . $array['id'] . "\" style=\"display: $disp;\"> " . format_comment($array["body"]) . " <br /><br />" . Lang::T("COMMENTS") . " (<a href='".URLROOT."/comments?type=news&amp;id=" . $array['id'] . "'>" . number_format($numcomm) . "</a>)</div>");
 
                     $news_flag++;
@@ -69,12 +71,12 @@ class Home extends Controller
                 // Shoutbox
                 if (SHOUTBOX && !($_SESSION['hideshoutbox'] == 'yes')) {
                     $data = [];
-                    $this->view('home/shoutbox', $data);
+                    View::render('home/shoutbox', $data);
                 }
         // Last Forum Post On Index
         if (FORUMONINDEX) {
             $data = [];
-            $this->view('home/lastforumpost', $data);
+            View::render('home/lastforumpost', $data);
         }
         
         // Latest Torrents
@@ -83,7 +85,7 @@ class Home extends Controller
             $data = [
                 'message' => $msg
             ];
-            $this->view('home/ok', $data);
+            View::render('home/ok', $data);
         } else {
             $query = "SELECT torrents.id, torrents.anon, torrents.announce, torrents.category, torrents.sticky,  torrents.vip,  torrents.tube,  torrents.imdb, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, 
             categories.name AS cat_name, categories.image AS cat_pic, categories.parent_cat AS cat_parent, 
@@ -99,10 +101,10 @@ class Home extends Controller
                 $data = [
                     'torrtable' => $query
                 ];
-                $this->view('home/torrent', $data);
+                View::render('home/torrent', $data);
             } else {
                 $data = [];
-                $this->view('home/nothingfound', $data);
+                View::render('home/nothingfound', $data);
             }
             if ($_SESSION['loggedin'] == true) {
                 DB::run("UPDATE users SET last_browse=" . TimeDate::gmtime() . " WHERE id=?", [$_SESSION['id']]);
@@ -111,7 +113,7 @@ class Home extends Controller
         // Disclaimer
         if (DISCLAIMERON) {
             $data = [];
-            $this->view('home/disclaimer', $data);
+            View::render('home/disclaimer', $data);
         }
         Style::footer();
     }

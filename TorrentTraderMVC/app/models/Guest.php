@@ -10,7 +10,7 @@ class Guest
 
     public function guestadd()
     {
-        $ip = Helper::getIP();
+        $ip = Ip::getIP();
         $time = TimeDate::gmtime();
         $this->db->run("INSERT INTO `guests` (`ip`, `time`) VALUES ('$ip', '$time') ON DUPLICATE KEY UPDATE `time` = '$time'");
     }

@@ -4,10 +4,10 @@ class Admininvites extends Controller
 
     public function __construct()
     {
-        $this->session = (new Auth)->user(_MODERATOR, 2);
+        $this->session = Auth::user(_MODERATOR, 2);
         $this->userModel = $this->model('User');
         $this->logsModel = $this->model('Logs');
-        $this->valid = new Validation();
+        
     }
 
     public function index()
@@ -15,7 +15,7 @@ class Admininvites extends Controller
         $do = $_GET['do']; // todo
         if ($do == "del") {
             if (!@count($_POST["users"])) {
-                show_error_msg(Lang::T("ERROR"), "Nothing Selected.", 1);
+                Redirect::autolink(URLROOT . '/admininvites', "Nothing Selected.");
             }
             $ids = array_map("intval", $_POST["users"]);
             $ids = implode(", ", $ids);
@@ -38,7 +38,7 @@ class Admininvites extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('invite/admin/invited', $data, 'admin');
+        View::render('invite/admin/invited', $data, 'admin');
     }
     
     public function pending()
@@ -46,7 +46,7 @@ class Admininvites extends Controller
         $do = $_GET['do']; // todo
         if ($do == "del") {
             if (!@count($_POST["users"])) {
-                show_error_msg(Lang::T("ERROR"), "Nothing Selected.", 1);
+                Redirect::autolink(URLROOT . '/admininvites/pending', "Nothing Selected.");
             }
             $ids = array_map("intval", $_POST["users"]);
             $ids = implode(", ", $ids);
@@ -69,7 +69,7 @@ class Admininvites extends Controller
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        $this->view('invite/admin/pendinginvite', $data, 'admin');
+        View::render('invite/admin/pendinginvite', $data, 'admin');
     }
 
 }
