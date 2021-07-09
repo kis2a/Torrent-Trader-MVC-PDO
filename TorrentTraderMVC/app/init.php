@@ -27,19 +27,17 @@ require "helpers/torrent_helper.php";
 require "helpers/smileys.php";
 require "helpers/bbcode_helper.php";
 // Autoload Classes
-spl_autoload_register(function ($class){
-    $filename = APPROOT."/libraries/$class.php";
-        if(!file_exists($filename))
+spl_autoload_register(function ($model){
+    $filename2 = APPROOT."/models/$model.php";
+        if(file_exists($filename2))
         {
-            return "file : $filename is not Exist on the Given Path";
+            require_once APPROOT."/models/$model.php";
         }
-    require_once APPROOT."/libraries/$class.php";
 });
 spl_autoload_register(function ($class){
-    $filename = APPROOT."/models/$class.php";
-        if(!file_exists($filename))
+    $filename = APPROOT."/libraries/$class.php";
+        if(file_exists($filename))
         {
-            return "file : $filename is not Exist on the Given Path";
+            require_once APPROOT."/libraries/$class.php";
         }
-    require_once APPROOT."/models/$class.php";
 });

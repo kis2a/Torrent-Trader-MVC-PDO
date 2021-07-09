@@ -202,22 +202,7 @@ class Forums extends Controller
     {
         $this->validForumUser();
         $postid = Input::get("postid");
-        if (Input::exist()) {
-            $body = Input::get('body');
-            if ($body == "") {
-                Redirect::autolink(URLROOT . "/forums", "Body cannot be empty!");
-            }
-            $body = htmlspecialchars_decode($body);
-            $editedat = TimeDate::get_date_time();
-            DB::run("UPDATE forum_posts SET body=?, editedat=?, editedby=? WHERE id=?", [$body, $editedat, $_SESSION['id'], $postid]);
-            $returnto = Input::get("returnto");
-            if ($returnto != "") {
-                Redirect::to($returnto);
-            } else {
-                Redirect::autolink(URLROOT . "/forums", "Post was edited successfully.");
-            }
-        }
-
+ 
         if (!Validate::Id($postid)) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
@@ -236,6 +221,35 @@ class Forums extends Controller
         ];
         View::render('forum/edit', $data, 'user');
         die;
+    }
+
+    public function editsubmit()
+    {
+        $this->validForumUser();
+        $postid = Input::get("postid");
+        if (Input::exist()) {
+            $body = $_POST['body'];
+            if ($body == "") {
+                Redirect::autolink(URLROOT . "/forums", "Body cannot be empty!");
+            }
+			$res = DB::run("SELECT * FROM forum_posts WHERE id=?", [$postid]);
+            if ($res->rowCount() != 1) {
+                Redirect::autolink(URLROOT . "/forums", "Where is this id $postid");
+            }
+            $arr = $res->fetch(PDO::FETCH_ASSOC);
+            if ($_SESSION["id"] != $arr["userid"] && $this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes") {
+                Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
+            }
+            $body = htmlspecialchars_decode($body);
+            $editedat = TimeDate::get_date_time();
+            DB::run("UPDATE forum_posts SET body=?, editedat=?, editedby=? WHERE id=?", [$body, $editedat, $_SESSION['id'], $postid]);
+            $returnto = Input::get("returnto");
+            if ($returnto != "") {
+                Redirect::to($returnto);
+            } else {
+                Redirect::autolink(URLROOT . "/forums", "Post was edited successfully.");
+            }
+        }
     }
 
     /**
