@@ -12,7 +12,7 @@ if ($data['friend']->rowCount() == 0) { ?>&nbsp;&nbsp;
         ?>
         <div class="row border-warning"> 
         <div class="col-md-4 mt-3">
-        <img width=80px src="<?php echo $avatar ?>">&nbsp;<a href='<?php echo URLROOT ?>/profile?id=<?php echo $friend['id'] ?>'><b><?php echo  User::coloredname($friend['name']) ?></b></a> &nbsp;
+        <img width=80px src="<?php echo $avatar ?>">&nbsp;<a href='<?php echo URLROOT ?>/profile?id=<?php echo $friend['id'] ?>'><b><?php echo  Users::coloredname($friend['name']) ?></b></a> &nbsp;
         <a href='<?php echo  URLROOT ?>/messages/create?id=<?php echo $friend['id'] ?>'><img src='<?php echo  URLROOT ?>/assets/images/button_pm.gif' title=Send&nbsp;PM border=0></a>&nbsp;
         <a href='<?php echo  URLROOT ?>/friends/delete?id=<?php echo $data['userid'] ?>&type=friend&targetid=<?php echo  $friend['id'] ?>'><img src='<?php echo URLROOT ?>/assets/images/delete.png' title=Remove border=0></a>
         <div style='margin-top:10px; margin-bottom:2px'>Last seen: <?php echo  date("<\\b>d.M.Y<\\/\\b> H:i", TimeDate::utc_to_tz_time($friend['last_access'])) ?></div>
@@ -39,7 +39,7 @@ if ($data['enemy']->rowCount() == 0) { ?>&nbsp;&nbsp;
         ?>
         <div class="row border-warning"> 
         <div class="col-md-4">
-        <img width=80px src="<?php echo $avatar ?>">&nbsp;<a href='<?php echo  URLROOT ?>/profile?id=<?php echo  $enemy['id'] ?>'><b><?php echo  User::coloredname($enemy['name']) ?></b></a> &nbsp;
+        <img width=80px src="<?php echo $avatar ?>">&nbsp;<a href='<?php echo  URLROOT ?>/profile?id=<?php echo  $enemy['id'] ?>'><b><?php echo  Users::coloredname($enemy['name']) ?></b></a> &nbsp;
         <a href='<?php echo URLROOT ?>/messages/create?id=<?php echo $enemy['id'] ?>'><img src='<?php echo  URLROOT ?>/assets/images/button_pm.gif' title=Send&nbsp;PM border=0></a>&nbsp;
         <a href='<?php echo URLROOT ?>/friends/delete?id=<?php echo $data['userid']?>&type=friend&targetid=<?php echo  $enemy['id'] ?>'><img src='<?php echo  URLROOT ?>/assets/images/delete.png' title=Remove border=0></a>
         <div style='margin-top:10px; margin-bottom:2px'>Last seen: <?php echo  date("<\\b>d.M.Y<\\/\\b> H:i", TimeDate::utc_to_tz_time($enemy['last_access'])) ?></div>

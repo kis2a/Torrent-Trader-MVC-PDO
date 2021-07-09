@@ -5,9 +5,6 @@ class Adminforum extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        // $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
     public function index()

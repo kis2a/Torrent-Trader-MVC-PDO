@@ -4,8 +4,6 @@ class Admincontactstaff extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        // $this->userModel = $this->model('User');
-        
     }
 
     public function staffbox()
@@ -38,7 +36,7 @@ class Admincontactstaff extends Controller
         if ($arr4["answered"] == '0') {
             $answered = "<font color=red><b>No</b></font>";
         } else {
-            $answered = "<font color=blue><b>Yes</b></font> by <a href='" . URLROOT . "/profile/read?id=$answeredby>" . User::coloredname($arr5['username']) . "</a> (<a href=" . URLROOT . "/admincontactstaff/viewanswer?pmid=$pmid>Show Answer</a>)";
+            $answered = "<font color=blue><b>Yes</b></font> by <a href='" . URLROOT . "/profile/read?id=$answeredby>" . Users::coloredname($arr5['username']) . "</a> (<a href=" . URLROOT . "/admincontactstaff/viewanswer?pmid=$pmid>Show Answer</a>)";
         }
         if ($arr4["answered"] == '0') {
             $setanswered = "[<a href=" . URLROOT . "/admincontactstaff/setanswered?id=$arr4[id]>Mark Answered</a>]";

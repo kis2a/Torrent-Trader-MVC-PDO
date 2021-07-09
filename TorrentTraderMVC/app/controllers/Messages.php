@@ -5,13 +5,11 @@ class Messages extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->messageModel = $this->model('Message');
-        
     }
 
     public function index()
     {
-        $arr = $this->messageModel->countmsg();
+        $arr = Message::countmsg();
         $data = [
             'title' => 'Messages',
             'inbox' => $arr['inbox'],
@@ -56,18 +54,18 @@ class Messages extends Controller
         switch ($type) {
             case 'create':
                 if (isset($_POST['save'])) {
-                    $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'both');
+                   Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'both');
                 } else {
-                    $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'in');
+                    Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'in');
                 }
                 Redirect::autolink(URLROOT."/messages/outbox", "Message Sent!");
                 break;
             case 'draft':
-                $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'draft');
+                Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'draft');
                 Redirect::autolink(URLROOT."/messages/draft", "Saved Message as Draft !");
                 break;
             case 'template':
-                $this->messageModel->insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'template');
+                Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'template');
                 Redirect::autolink(URLROOT."/messages/templates", "Template Created !");
                 break;
         }

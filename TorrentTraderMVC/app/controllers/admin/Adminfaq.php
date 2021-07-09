@@ -4,8 +4,6 @@ class Adminfaq extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        $this->faqModel = $this->model('Faqs');
-        
     }
 
     public function index()

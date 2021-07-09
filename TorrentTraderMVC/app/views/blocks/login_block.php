@@ -21,7 +21,7 @@ if ($_SESSION['loggedin']) {
         $userratio = '<span class="label label-info pull-right">---</span>';
     }
 
-    Style::block_begin(User::coloredname($_SESSION["username"]));
+    Style::block_begin(Users::coloredname($_SESSION["username"]));
     ?>
 
         <img class="embed-responsive" src="<?php echo $avatar; ?>" alt="Avatar"  />

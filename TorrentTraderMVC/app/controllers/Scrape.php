@@ -4,10 +4,8 @@ class Scrape extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 0);
-        $this->torrentModel = $this->model('Torrents');
-        
-        $this->logsModel = $this->model('Logs');
     }
+    
     public function index()
     {
         // check if client can handle gzip

@@ -5,9 +5,6 @@ class Admininvites extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
     public function index()
@@ -24,7 +21,7 @@ class Admininvites extends Controller
                 # We remove the invitee from the inviter and give them back there invite.
                 $invitees = str_replace("$row[id] ", "", $row["invitees"]);
                 DB::run("UPDATE `users` SET `invites` = `invites` + 1, `invitees` = '$invitees' WHERE `id` = '$row[invited_by]'");
-                $this->userModel->deleteuser($row['id']);
+                Users::deleteuser($row['id']);
             }
             Redirect::autolink(URLROOT . "/Admininvites", "Entries Deleted");
         }

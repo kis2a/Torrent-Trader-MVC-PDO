@@ -4,7 +4,6 @@ class Account extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->userModel = $this->model('User');
     }
 
     public function index()
@@ -36,7 +35,7 @@ class Account extends Controller
                 $message = "You must enter something!";
             }
             
-            $this->userModel->updateUserPasswordSecret($chpassword, $secret, $id);
+            Users::updateUserPasswordSecret($chpassword, $secret, $id);
 
             if (!$message) {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("PASSWORD_CHANGED_OK"));
@@ -77,11 +76,11 @@ class Account extends Controller
 
             $TTMail = new TTMail();
             $TTMail->Send($email, "$sitename profile update confirmation", $body, "From: " . SITEEMAIL . "", "-f" . SITEEMAIL . "");
-            $this->userModel->updateUserEditSecret($sec, $this->session['id']);
+            Users::updateUserEditSecret($sec, $this->session['id']);
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("Email Edited"));
         }
 
-        $user = $this->userModel->selectUserEmail($id);
+        $user = Users::selectUserEmail($id);
         $data = [
             'id' => $id,
             'email' => $user['email'],
@@ -106,7 +105,7 @@ class Account extends Controller
                 Redirect::autolink(URLROOT . "/profile/edit?id=$id", "Upload error: " . $upload->get_error() . " image should be 90px x 90px or lower");
             } else {
                 $avatar = URLROOT . "/uploads/avatars/" . $upload->get_name();
-                $this->userModel->updateUserAvatar($avatar, $id);
+                Users::updateUserAvatar($avatar, $id);
                 Redirect::autolink(URLROOT . "/profile/edit?id=$id", "Avatar Upload OK");
                 
             }

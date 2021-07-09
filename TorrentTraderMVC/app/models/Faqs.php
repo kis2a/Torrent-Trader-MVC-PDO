@@ -1,36 +1,30 @@
 <?php
 class Faqs
 {
-    private $db;
 
-    public function __construct()
+    public static function getFaqByCat()
     {
-        $this->db = new Database;
-    }
-
-    public function getFaqByCat()
-    {
-        $stmt = $this->db->run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ']);
+        $stmt = DB::run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ']);
         return $stmt;
 // $this->db->run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ'])->fetch(PDO::FETCH_BOTH);
 
     }
 
-    public function getFaqByType()
+    public static function getFaqByType()
     {
-        $stmt = $this->db->run("SELECT `id`, `question`, `answer`, `flag`, `categ` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['item']);
+        $stmt = DB::run("SELECT `id`, `question`, `answer`, `flag`, `categ` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['item']);
         return $stmt;
 
     }
 
-    public function bigone()
+    public static function bigone()
     {
-        $res = $this->db->run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ']);
+        $res = DB::run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ']);
         while ($arr = $res->fetch(PDO::FETCH_BOTH)) {
             $faq_categ[$arr['id']]['title'] = $arr['question'];
             $faq_categ[$arr['id']]['flag'] = $arr['flag'];
         }
-        $res = $this->db->run("SELECT `id`, `question`, `answer`, `flag`, `categ` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['item']);
+        $res = DB::run("SELECT `id`, `question`, `answer`, `flag`, `categ` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['item']);
         while ($arr = $res->fetch(PDO::FETCH_BOTH)) {
             $faq_categ[$arr['categ']]['items'][$arr['id']]['question'] = $arr['question'];
             $faq_categ[$arr['categ']]['items'][$arr['id']]['answer'] = $arr['answer'];

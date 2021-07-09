@@ -642,7 +642,7 @@ $options = array("(any)", "Yes", "No");
                     $auxres = DB::run("SELECT COUNT(id) FROM comments WHERE user = " . $user['id']);
                     $n = $auxres->fetch();
                     $n_comments = $n[0];
-                    echo "<tr><td class='table_col1' align='center'><b><a href='" . URLROOT . "/users/profile?id=$user[id]'>" . User::coloredname($user['username']) . "</a></b></td>" .
+                    echo "<tr><td class='table_col1' align='center'><b><a href='" . URLROOT . "/users/profile?id=$user[id]'>" . Users::coloredname($user['username']) . "</a></b></td>" .
                     "<td class='table_col2' align='center'>" . $ipstr . "</td><td class='table_col1' align='center'>" . $user['email'] . "</td>" .
                     "<td class='table_col2' align='center'>" . TimeDate::utc_to_tz($user['added']) . "</td>" .
                     "<td class='table_col1' align='center'>" . $user['last_access'] . "</td>" .

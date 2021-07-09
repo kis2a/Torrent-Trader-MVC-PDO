@@ -2,7 +2,7 @@
 
 if ($_SESSION['loggedin'] == true) {
 	$db = Database::instance();
-    Style::block_begin(User::coloredname(Lang::T("POLL")));
+    Style::block_begin(Users::coloredname(Lang::T("POLL")));
     if (!function_exists("srt")) {
         function srt($a, $b)
         {

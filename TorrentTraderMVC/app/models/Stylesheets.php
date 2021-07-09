@@ -1,14 +1,8 @@
 <?php
-class Stylesheet
+class Stylesheets
 {
-    private $db;
 
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
-
-    public function getStyleDropDown($stylesheet)
+    public static function getStyleDropDown($stylesheet)
     {
         $stylesheets = '';
         $ss_r = DB::run("SELECT * from stylesheets");

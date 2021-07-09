@@ -4,10 +4,6 @@ class Comments extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->newsModel = $this->model('News');
-        $this->commentModel = $this->model('Comment');
-        $this->torrentModel = $this->model('Torrents');
-        $this->logsModel = $this->model('Logs');
     }
 
     public function index()
@@ -19,7 +15,7 @@ class Comments extends Controller
         }
         
         if ($type == "news") {
-            $row = $this->newsModel->selectAll($id);
+            $row = News::selectAll($id);
             if (!$row) {
                 Redirect::autolink(URLROOT."/comments?type=news&id=$id", "News id invalid");
             }
@@ -27,7 +23,7 @@ class Comments extends Controller
         }
 
         if ($type == "torrent") {
-            $row = $this->torrentModel->getIdName($id);
+            $row = Torrents::getIdName($id);
             if (!$row) {
                 Redirect::autolink(URLROOT, "Invalid Torrent");
             }
@@ -35,7 +31,7 @@ class Comments extends Controller
         }
 
         if ($type == "req") {
-            $row = $this->commentModel->selectByRequest($id);
+            $row = Comment::selectByRequest($id);
             if (!$row) {
                 Redirect::autolink(URLROOT, "Request id invalid");
             }
@@ -108,10 +104,10 @@ class Comments extends Controller
         if ($save) {
             $text = $_POST['text'];
             $result = DB::run("UPDATE comments SET text=? WHERE id=?", [$text, $id]);
-            Logs::write(User::coloredname($_SESSION['username']) . " has edited comment: ID:$id");
+            Logs::write(Users::coloredname($_SESSION['username']) . " has edited comment: ID:$id");
             Redirect::autolink(URLROOT, "Comment Edited OK");
         }
-        $arr = $this->commentModel->selectAll($id);
+        $arr = Comment::selectAll($id);
 
         $data = [
             'title' => 'Edit Comment',
@@ -137,8 +133,8 @@ class Comments extends Controller
                 DB::run("UPDATE torrents SET comments = comments - 1 WHERE id = $row[torrent]");
             }
         }
-        $this->commentModel->delete($id);
-        Logs::write(User::coloredname($_SESSION['username']) . " has deleted comment: ID: $id");
+        Comment::delete($id);
+        Logs::write(Users::coloredname($_SESSION['username']) . " has deleted comment: ID: $id");
         Redirect::autolink(URLROOT, "Comment deleted OK");
     }
 
@@ -153,7 +149,7 @@ class Comments extends Controller
         if ($type == "torrent") {
             DB::run("UPDATE torrents SET comments = comments + 1 WHERE id = $id");
         }
-        $ins =$this->commentModel->insert($type, $_SESSION["id"], $id, TimeDate::get_date_time(), $body);
+        $ins =Comment::insert($type, $_SESSION["id"], $id, TimeDate::get_date_time(), $body);
         if ($ins) {
             Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", "Your Comment was added successfully.");
         } else {

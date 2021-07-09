@@ -16,7 +16,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
     </div>
     <div class="col">
         <b><?php echo Lang::T("PROFILE"); ?></b><br>
-        <?php echo Lang::T("USERNAME"); ?>: <?php echo User::coloredname($selectedid["username"]) ?><br />
+        <?php echo Lang::T("USERNAME"); ?>: <?php echo Users::coloredname($selectedid["username"]) ?><br />
 	    <?php if ($_SESSION['class']  > _MODERATOR) { ?>
 	    <?php echo Lang::T("EMAIL"); ?>: <?php echo $selectedid["email"]; ?><br />
 		<?php echo Lang::T("PASSKEY"); ?>: <?php echo $selectedid["passkey"]; ?><br />
@@ -54,7 +54,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         if ($user["invited_by"]) {
             $invited = $selectedid['invited_by'];
             $row = DB::run("SELECT username FROM users WHERE id=?", [$invited])->fetch();
-            echo "<b>" . Lang::T("INVITED_BY") . ":</b> <a href=\"" . URLROOT . "/profile?id=$selectedid[invited_by]\">" . User::coloredname($row['username']) . "</a><br />";
+            echo "<b>" . Lang::T("INVITED_BY") . ":</b> <a href=\"" . URLROOT . "/profile?id=$selectedid[invited_by]\">" . Users::coloredname($row['username']) . "</a><br />";
         }
         echo "<b>" . Lang::T("INVITES") . ":</b> " . number_format($selectedid["invites"]) . "<br />";
         $invitees = array_reverse(explode(" ", $selectedid["invitees"]));
@@ -62,7 +62,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         foreach ($invitees as $invitee) {
             $res = DB::run("SELECT id, username FROM users WHERE id=? and status=?", [$invitee, 'confirmed']);
             if ($row = $res->fetch()) {
-                $rows[] = "<a href=\"" . URLROOT . "/profile?id=$row[id]\">" . User::coloredname($row['username']) . "</a>";
+                $rows[] = "<a href=\"" . URLROOT . "/profile?id=$row[id]\">" . Users::coloredname($row['username']) . "</a>";
             }
         }
         if ($rows) {

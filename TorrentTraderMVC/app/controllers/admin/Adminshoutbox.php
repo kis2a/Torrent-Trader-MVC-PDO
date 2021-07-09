@@ -5,9 +5,6 @@ class Adminshoutbox extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        // $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
     public function history()
@@ -52,7 +49,7 @@ class Adminshoutbox extends Controller
                     <a class="pull-left d-none d-sm-block" href="#">
                     <?php echo $av ?>
                     <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
-                    <b><?php echo User::coloredname($row['user']) ?>:</b></a>
+                    <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
                     </a>
                     <?php
                     if ($_SESSION['class'] > _UPLOADER) {

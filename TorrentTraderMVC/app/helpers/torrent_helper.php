@@ -298,7 +298,7 @@ function torrenttable($res)
                     if (($row["anon"] == "yes" || $row["privacy"] == "strong") && $_SESSION["id"] != $row["owner"] && $_SESSION["edit_torrents"] != "yes") {
                         echo "Anonymous";
                     } elseif ($row["username"]) {
-                        echo "<a href='" . URLROOT . "/profile?id=$row[owner]'>" . User::coloredname($row['username']) . "</a>";
+                        echo "<a href='" . URLROOT . "/profile?id=$row[owner]'>" . Users::coloredname($row['username']) . "</a>";
                     } else {
                         echo "Unknown";
                     }
@@ -707,7 +707,7 @@ function torrenttable1($query)
                     if (($row["anon"] == "yes" || $row["privacy"] == "strong") && $_SESSION["id"] != $row["owner"] && $_SESSION["edit_torrents"] != "yes") {
                         echo "Anonymous";
                     } elseif ($row["username"]) {
-                        echo "<a href='" . URLROOT . "/profile?id=$row[owner]'>" . User::coloredname($row['username']) . "</a>";
+                        echo "<a href='" . URLROOT . "/profile?id=$row[owner]'>" . Users::coloredname($row['username']) . "</a>";
                     } else {
                         echo "Unknown";
                     }

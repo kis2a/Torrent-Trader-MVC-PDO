@@ -5,9 +5,6 @@ class Friends extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->userModel = $this->model('User');
-        $this->friendModel = $this->model('Friend');
-        
     }
 
     public function index()

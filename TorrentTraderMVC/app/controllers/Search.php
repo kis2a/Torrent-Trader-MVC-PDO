@@ -6,8 +6,6 @@ class Search extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->torrentModel = $this->model('Torrents');
-        
     }
 
     public function index()
@@ -34,7 +32,7 @@ class Search extends Controller
 
         $wherecatina = array();
         $wherecatin = "";
-        $res = $this->torrentModel->getCatById();
+        $res = Torrents::getCatById();
         while ($row = $res->fetch(PDO::FETCH_LAZY)) {
             if (isset($_GET["c$row[id]"])) {
                 $wherecatina[] = $row['id'];
@@ -178,7 +176,7 @@ class Search extends Controller
         }
 
         //GET NUMBER FOUND FOR PAGER
-        $count = $this->torrentModel->getTorrentWhere($where, $parent_check);
+        $count = Torrents::getTorrentWhere($where, $parent_check);
 
         if (!$count && isset($cleansearchstr)) {
             $wherea = $wherebase;
@@ -230,7 +228,7 @@ class Search extends Controller
 
             //SEARCH QUERIES!
             list($pagertop, $pagerbottom, $limit) = pager(20, $count, "search?" . $addparam);
-            $res = $this->torrentModel->getTorrentByCat($where, $parent_check, $orderby, $limit);
+            $res = Torrents::getTorrentByCat($where, $parent_check, $orderby, $limit);
 
         } else {
             unset($res);
@@ -246,7 +244,7 @@ class Search extends Controller
 
         // get all parent cats
         echo "<center><b>" . Lang::T("CATEGORIES") . ":</b> ";
-        $catsquery = $this->torrentModel->getCatByParent();
+        $catsquery = Torrents::getCatByParent();
         echo " - <a href='".URLROOT."/search/browse'>" . Lang::T("SHOWALL") . "</a>";
         while ($catsrow = $catsquery->fetch(PDO::FETCH_ASSOC)) {
             echo " - <a href='".URLROOT."/search/browse?parent_cat=" . urlencode($catsrow['parent_cat']) . "'>$catsrow[parent_cat]</a>";
@@ -262,7 +260,7 @@ class Search extends Controller
             <tr align='right'>
             <?php
         $i = 0;
-        $cats = $this->torrentModel->getCatByParentName();
+        $cats = Torrents::getCatByParentName();
         while ($cat = $cats->fetch(PDO::FETCH_ASSOC)) {
             $catsperrow = 5;
             print(($i && $i % $catsperrow == 0) ? "</tr><tr align='right'>" : "");
@@ -274,7 +272,7 @@ class Search extends Controller
         //if we are browsing, display all subcats that are in same cat
         if ($parent_cat) {
             echo "<br /><br /><b>" . Lang::T("YOU_ARE_IN") . ":</b> <a href=".URLROOT."/search/browse?parent_cat=$parent_cat'>$parent_cat</a><br /><b>" . Lang::T("SUB_CATS") . ":</b> ";
-            $subcatsquery = $this->torrentModel->getSubCatByParentName($parent_cat);
+            $subcatsquery = Torrents::getSubCatByParentName($parent_cat);
             while ($subcatsrow = $subcatsquery->fetch(PDO::FETCH_ASSOC)) {
                 $name = $subcatsrow['name'];
                 echo " - <a href=".URLROOT."/search/browse?cat=$subcatsrow[id]'>$name</a>";
@@ -408,7 +406,7 @@ class Search extends Controller
         }
 
         $date_time = TimeDate::get_date_time(TimeDate::gmtime() - (3600 * 24)); // the 24 is the hours you want listed
-        $catresult = $this->torrentModel->getCatSort();
+        $catresult = Torrents::getCatSort();
         
         Style::header(Lang::T("TODAYS_TORRENTS"));
         Style::begin(Lang::T("TODAYS_TORRENTS"));
@@ -417,7 +415,7 @@ class Search extends Controller
             $where = "WHERE banned = 'no' AND category='$cat[id]' AND visible='yes'";
             $limit = "LIMIT 10"; //Limit
 
-            $res = $this->torrentModel->getCatSortAll($where, $date_time, $orderby, $limit);
+            $res = Torrents::getCatSortAll($where, $date_time, $orderby, $limit);
             $numtor = $res->rowCount();
             if ($numtor != 0) {
                 echo "<b><a href=".URLROOT."/torrent/browse?cat=" . $cat["id"] . "'>$cat[name]</a></b>";
@@ -461,7 +459,7 @@ class Search extends Controller
         $where = implode(" AND ", $wherea);
         $wherecatina = array();
         $wherecatin = "";
-        $res = $this->torrentModel->getCatById();
+        $res = Torrents::getCatById();
         while ($row = $res->fetch(PDO::FETCH_LAZY)) {
             if ($_GET["c$row[id]"]) {
                 $wherecatina[] = $row["id"];
@@ -519,7 +517,7 @@ class Search extends Controller
         }
 
         //Get Total For Pager
-        $count = $this->torrentModel->getCatwhere($where);
+        $count = Torrents::getCatwhere($where);
 
         //get sql info
         if ($count) {
@@ -535,7 +533,7 @@ class Search extends Controller
 
         // get all parent cats
         echo "<center><b>" . Lang::T("CATEGORIES") . ":</b> ";
-        $catsquery = $this->torrentModel->getCatByParent();
+        $catsquery = Torrents::getCatByParent();
         echo " - <a href=".URLROOT."/search/browse'>" . Lang::T("SHOW_ALL") . "</a>";
         while ($catsrow = $catsquery->fetch(PDO::FETCH_ASSOC)) {
             echo " - <a href=".URLROOT."/search/browse/?parent_cat=" . urlencode($catsrow['parent_cat']) . "'>$catsrow[parent_cat]</a>";
@@ -547,7 +545,7 @@ class Search extends Controller
                 <tr align='right'>
                 <?php
         $i = 0;
-        $cats = $this->torrentModel->getCatByParentName();
+        $cats = Torrents::getCatByParentName();
         while ($cat = $cats->fetch(PDO::FETCH_ASSOC)) {
             $catsperrow = 5;
             print(($i && $i % $catsperrow == 0) ? "</tr><tr align='right'>" : "");

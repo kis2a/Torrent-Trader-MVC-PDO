@@ -4,7 +4,7 @@
     <label for="reciever">Reciever:</label>&nbsp;
     <select name="receiver">
     <?php
-    User::echouser($data['id']);
+    Users::echouser($data['id']);
     ?>
     </select><br>
     

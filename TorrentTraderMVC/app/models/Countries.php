@@ -1,15 +1,10 @@
 <?php
 class Countries
 {
-    private $db;
 
-    public function __construct()
+    public static function getCountry($row)
     {
-        $this->db = new Database;
-    }
-    public function getCountry($row)
-    {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
    SELECT name,flagpic FROM countries WHERE id=?", [$row['country']]);
 
         return $stmt;
@@ -25,7 +20,7 @@ class Countries
         echo $countries;
     }
 
-    public function getCountryName($id)
+    public static function getCountryName($id)
     {
         $res = DB::run("SELECT name FROM countries WHERE id=? LIMIT 1", [$id]);
         if ($res->rowCount() == 1) {
@@ -38,7 +33,7 @@ class Countries
         return $country;
     }
 
-    public function pickCountry($country)
+    public static function pickCountry($country)
     {
         $countries = "<option value='0'>----</option>\n";
         $ct_r = DB::run("SELECT id,name from countries ORDER BY name");
@@ -50,8 +45,7 @@ class Countries
 
     public static function showflag($country)
     {
-        $db = new Database;
-        $cres = $db->run("
+        $cres = DB::run("
     SELECT name,flagpic FROM countries WHERE id=?", [$country]);
         if ($carr = $cres->fetch(PDO::FETCH_ASSOC)) {
             return $country = "<img src='" . URLROOT . "/assets/images/languages/$carr[flagpic]' title='" . htmlspecialchars($carr['name']) . "' alt='" . htmlspecialchars($carr['name']) . "' />";

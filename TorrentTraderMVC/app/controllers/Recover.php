@@ -5,9 +5,6 @@ class Recover extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 0);
-        $this->userModel = $this->model('User');
-        $this->pdo = new Database();
-        
     }
 
     public function index()
@@ -27,7 +24,7 @@ class Recover extends Controller
             if (!Validate::Email($email)) {
                 Redirect::autolink(URLROOT . "/home", Lang::T("EMAIL_ADDRESS_NOT_VAILD"));
             } else {
-                $arr = $this->userModel->getIdEmailByEmail($email);
+                $arr = Users::getIdEmailByEmail($email);
                 if (!$arr) {
                     Redirect::autolink(URLROOT . "/home", Lang::T("EMAIL_ADDRESS_NOT_FOUND"));
                 }
@@ -40,7 +37,7 @@ class Recover extends Controller
                     $body = Lang::T("SOMEONE_FROM") . " " . $_SERVER["REMOTE_ADDR"] . " " . Lang::T("MAILED_BACK") . " ($email) " . Lang::T("BE_MAILED_BACK") . " \r\n\r\n " . Lang::T("ACCOUNT_INFO") . " \r\n\r\n " . Lang::T("USERNAME") . ": " . $username . " \r\n " . Lang::T("CHANGE_PSW") . "\n\n$url/recover/confirm?id=$id&secret=$sec\n\n\n" . $url . "\r\n";
                     $TTMail = new TTMail();
                     $TTMail->Send($email, Lang::T("ACCOUNT_DETAILS"), $body, "", "-f$emailmain");
-                    $res2 = $this->userModel->setSecret($sec, $email);
+                    $res2 = Users::setSecret($sec, $email);
                     Redirect::autolink(URLROOT . "/home", sprintf(Lang::T('MAIL_RECOVER'), htmlspecialchars($email)));
                 }
             }
@@ -72,7 +69,7 @@ class Recover extends Controller
                 }
                 $newsec = Helper::mksecret();
                 $wantpassword = password_hash($password, PASSWORD_BCRYPT);
-                $stmt = $this->userModel->recoverUpdate($wantpassword, $newsec, $id, $secret);
+                $stmt = Users::recoverUpdate($wantpassword, $newsec, $id, $secret);
                 Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_CHANGED_OK"));;
             }
         } else {

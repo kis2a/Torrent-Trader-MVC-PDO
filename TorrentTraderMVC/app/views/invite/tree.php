@@ -38,7 +38,7 @@ for ($i = 1; $i <= $data['num']; $i++) {
     $uploaded = mksize($arr["uploaded"]);
     ?>
     <tbody><tr>
-    <td><a href='<?php echo URLROOT; ?>/profile?id=$arr[id]'><b><?php echo User::coloredname($arr['username']); ?></b></a></td>
+    <td><a href='<?php echo URLROOT; ?>/profile?id=$arr[id]'><b><?php echo Users::coloredname($arr['username']); ?></b></a></td>
 	<td><?php echo $class; ?></td>
 	<td><?php echo $added; ?></td>
 	<td><?php echo $last_access; ?></td>

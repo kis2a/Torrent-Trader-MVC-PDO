@@ -1,14 +1,8 @@
 <?php
 class Friend
 {
-    private $db;
 
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
-
-    public function countFriendAndEnemy($userid, $id)
+    public static function countFriendAndEnemy($userid, $id)
     {
         $r = DB::run("SELECT id FROM friends WHERE userid=? AND friend=? AND friendid=?", [$userid, 'friend', $id]);
         $friend = $r->rowCount();
@@ -22,9 +16,9 @@ class Friend
         return $arr;
     }
 
-    public function getall($userid, $type)
+    public static function getall($userid, $type)
     {
-        $arr = $this->db->run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access 
+        $arr = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access 
                                FROM friends AS f 
                                LEFT JOIN users as u ON f.friendid = u.id 
                                WHERE userid=? AND friend=? ORDER BY name", [$userid, $type]);

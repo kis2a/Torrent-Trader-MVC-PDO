@@ -6,9 +6,6 @@ class Import extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->torrentModel = $this->model('Torrents');
-        
-        $this->logsModel = $this->model('Logs');
     }
 
     public function index()

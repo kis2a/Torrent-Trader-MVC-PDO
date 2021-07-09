@@ -5,8 +5,6 @@ class Group extends Controller {
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->countriesModel = $this->model('Countries');
-        $this->groupsModel = $this->model('Groups');
     }
 
     public function index()
@@ -51,7 +49,7 @@ class Group extends Controller {
             $q .= ($q ? "&amp;" : "") . "class=$class";
         }
 
-        $res = $this->groupsModel->getGroups();
+        $res = Groups::getGroups();
         $data = [
             'title' => 'Members',
             'getgroups' => $res,
@@ -64,13 +62,13 @@ class Group extends Controller {
     public function staff()
     {
         $dt = TimeDate::get_date_time(TimeDate::gmtime() - 180);
-        $res = $this->groupsModel->getStaff();
+        $res = Groups::getStaff();
         $col = []; //undefined var
         $table = []; //undefined var
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $table[$row['class']] = ($table[$row['class']] ?? '') .
             "<td><img src='" . URLROOT . "/assets/images/button_o" . ($row["last_access"] > $dt ? "n" : "ff") . "line.png' alt='' /> " .
-            "<a href='" . URLROOT . "/profile?id=" . $row["id"] . "'>" . User::coloredname($row["username"]) . "</a> " .
+            "<a href='" . URLROOT . "/profile?id=" . $row["id"] . "'>" . Users::coloredname($row["username"]) . "</a> " .
                 "<a href='" . URLROOT . "/messages/create?id=" . $row["id"] . "'><img src='" . URLROOT . "/assets/images/button_pm.gif' border='0' alt='' /></a></td>";
             $col[$row['class']] = ($col[$row['class']] ?? 0) + 1;
             if ($col[$row["class"]] <= 4) {
@@ -86,7 +84,7 @@ class Group extends Controller {
             $where = "AND `staff_public` = 'yes'";
         }
 
-        $res = $this->groupsModel->getStaffLevel($where);
+        $res = Groups::getStaffLevel($where);
         if ($res->rowCount() == 0) {
             Redirect::autolink(URLROOT, Lang::T("NO_STAFF_HERE"));
         }

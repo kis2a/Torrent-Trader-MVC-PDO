@@ -1,16 +1,10 @@
 <?php
 class Groups
 {
-    private $db;
 
-    public function __construct()
+    public static function getStaff()
     {
-        $this->db = new Database;
-    }
-
-    public function getStaff()
-    {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
     SELECT
     `users`.`id`, `users`.`username`, `users`.`class`, `users`.`last_access`
     FROM `users`
@@ -23,9 +17,9 @@ class Groups
         return $stmt;
     }
 
-    public function getStaffLevel($where)
+    public static function getStaffLevel($where)
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT
     `group_id`, `level`, `staff_public`
     FROM `groups`
@@ -36,9 +30,9 @@ class Groups
         return $row;
     }
 
-    public function getGroups()
+    public static function getGroups()
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT group_id, level FROM `groups`");
         return $row;
     }
@@ -66,9 +60,8 @@ public static function get_user_class_name($i)
 // Function To List Groups Of Members Of The Database
 public static function classlist()
 {
-    $pdo = new Database();
     $ret = array();
-    $res = $pdo->run("SELECT * FROM `groups` ORDER BY group_id ASC");
+    $res = DB::run("SELECT * FROM `groups` ORDER BY group_id ASC");
     while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
         $ret[] = $row;
     }

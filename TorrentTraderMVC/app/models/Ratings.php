@@ -1,13 +1,7 @@
 <?php
 class Ratings
 {
-    private $db;
 
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
-    
     public static function ratingtor($id)
     {
         $xres = DB::run("SELECT rating, added FROM ratings WHERE torrent = $id AND user = " . $_SESSION["id"]);

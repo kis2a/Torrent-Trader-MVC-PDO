@@ -1,16 +1,10 @@
 <?php
 class Forum
 {
-    private $db;
 
-    public function __construct()
+    public static function getIndex()
     {
-        $this->db = new Database;
-    }
-
-    public function getIndex()
-    {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
               SELECT forumcats.id
               AS fcid, forumcats.name AS fcname, forum_forums.*
               FROM forum_forums
@@ -20,44 +14,44 @@ class Forum
         return $stmt;
     }
 
-    public function viewunread()
+    public static function viewunread()
     {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
               SELECT id, forumid, subject, lastpost
               FROM forum_topics
               ORDER BY lastpost");
         return $stmt;
     }
 
-    public function sticky($topicid, $opt = 'yes')
+    public static function sticky($topicid, $opt = 'yes')
     {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
               UPDATE forum_topics
               SET sticky=?
               WHERE id=?", [$opt, $topicid]);
     }
 
-    public function lock($topicid, $opt = 'yes')
+    public static function lock($topicid, $opt = 'yes')
     {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
               UPDATE forum_topics
               SET locked=?
               WHERE id=?", [$opt, $topicid]);
     }
 
-    public function rename($subject, $topicid)
+    public static function rename($subject, $topicid)
     {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
               UPDATE forum_topics
               SET subject=?
               WHERE id=?", [$subject, $topicid]);
     }
 
-    public function deltopic($topicid)
+    public static function deltopic($topicid)
     {
-        $this->db->run("DELETE FROM forum_topics WHERE id=?", [$topicid]);
-        $this->db->run("DELETE FROM forum_posts WHERE topicid=?", [$topicid]);
-        $this->db->run("DELETE FROM forum_readposts WHERE topicid=?", [$topicid]);
+        DB::run("DELETE FROM forum_topics WHERE id=?", [$topicid]);
+        DB::run("DELETE FROM forum_posts WHERE topicid=?", [$topicid]);
+        DB::run("DELETE FROM forum_readposts WHERE topicid=?", [$topicid]);
         // delete attachment
         $sql = DB::run("SELECT * FROM attachments WHERE topicid =?", [$topicid]);
         if ($sql->rowCount() != 0) {

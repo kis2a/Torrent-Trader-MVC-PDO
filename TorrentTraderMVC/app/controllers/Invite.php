@@ -5,8 +5,6 @@ class Invite extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        //$this->userModel = $this->model('User');
-
     }
 
     public function index()
@@ -102,7 +100,7 @@ EOD;
         if ($id != $this->session["id"]) {
             $title = "Invite Tree for [<a href=" . URLROOT . "/profile?id=$id>" . $id . "</a>]";
         } else {
-            $title = "You have $invitees invitees " . User::coloredname($_SESSION["username"]) . "";
+            $title = "You have $invitees invitees " . Users::coloredname($_SESSION["username"]) . "";
         }
         $data = [
             'title' => $title,

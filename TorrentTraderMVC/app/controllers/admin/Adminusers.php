@@ -5,9 +5,6 @@ class Adminusers extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
     public function index()
@@ -185,7 +182,7 @@ class Adminusers extends Controller
             $res = DB::run("SELECT `id`, `username` FROM `users` WHERE `id` IN ($ids)");
             while ($row = $res->fetch(PDO::FETCH_LAZY)) {
                 Logs::write("Account '$row[1]' (ID: $row[0]) was deleted by $_SESSION[username]");
-                $this->userModel->deleteuser($row[0]);
+                Users::deleteuser($row[0]);
             }
             if ($_POST['inc']) {
                 $res = DB::run("SELECT `id`, `name` FROM `torrents` WHERE `owner` IN ($ids)");

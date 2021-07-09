@@ -4,13 +4,12 @@ class Rules extends Controller
 
     public function __construct()
     {
-        $this->user = $this->session = Auth::user(0, 1);
-        $this->rulesModel = $this->model('Rule');
+        $this->session = Auth::user(0, 1);
     }
 
     public function index()
     {
-        $res = $this->rulesModel->getRules();
+        $res = Rule::getRules();
         $data = [
             'title' => 'Rules',
             'res' => $res

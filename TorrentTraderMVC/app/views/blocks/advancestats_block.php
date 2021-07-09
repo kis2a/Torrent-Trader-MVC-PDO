@@ -8,7 +8,7 @@ $ntor = number_format(get_row_count("torrents"));
 $totaltoday = number_format(get_row_count("users", "WHERE users.last_access>='$date_time'"));
 $regtoday = number_format(get_row_count("users", "WHERE users.added>='$date_time'"));
 $todaytor = number_format(get_row_count("torrents", "WHERE torrents.added>='$date_time'"));
-$guests = number_format(Helper::getGuests());
+$guests = number_format(Guest::getGuests());
 $seeders = get_row_count("peers", "WHERE seeder='yes'");
 $leechers = get_row_count("peers", "WHERE seeder='no'");
 $members = number_format(get_row_count("users", "WHERE UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(users.last_access) < 900"));

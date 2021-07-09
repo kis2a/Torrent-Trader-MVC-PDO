@@ -1,14 +1,8 @@
 <?php
 class Message
 {
-    private $db;
 
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
-
-    public function countmsg()
+    public static function countmsg()
     {
         $res = DB::run("SELECT COUNT(*), COUNT(`unread` = 'yes') FROM messages WHERE `receiver` = $_SESSION[id] AND `location` IN ('in','both')");
         $res = DB::run("SELECT COUNT(*) FROM messages WHERE receiver=" . $_SESSION["id"] . " AND `location` IN ('in','both')");
@@ -32,7 +26,7 @@ class Message
         return $arr;
     }
 
-    public function insertmessage($sender, $receiver, $added, $subject, $msg, $unread, $location, $poster = 0)
+    public static function insertmessage($sender, $receiver, $added, $subject, $msg, $unread, $location, $poster = 0)
     {
         DB::run("INSERT INTO `messages`
         (`sender`, `receiver`, `added`, `subject`, `msg`, `poster`, `unread`, `location`)

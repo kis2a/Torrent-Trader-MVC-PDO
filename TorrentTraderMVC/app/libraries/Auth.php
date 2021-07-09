@@ -43,7 +43,7 @@ class Auth
                 Redirect::autolink(URLROOT . "/index", Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
             }
             if ($row) {
-                $where = User::where($_SERVER['REQUEST_URI'], $row["id"], 0);
+                $where = Users::where($_SERVER['REQUEST_URI'], $row["id"], 0);
                 DB::run("UPDATE users SET last_access=?,ip=?,page=? WHERE id=?", [TimeDate::get_date_time(), Ip::getIP(), $where, $row["id"]]);
                 $user = $row;
                 $_SESSION = $row;

@@ -1,16 +1,10 @@
 <?php
 class Rule
 {
-    private $db;
 
-    public function __construct()
+    public static function getRules()
     {
-        $this->db = new Database;
-    }
-
-    public function getRules()
-    {
-        $stmt = $this->db->run("SELECT * FROM `rules` ORDER BY `id`");
+        $stmt = DB::run("SELECT * FROM `rules` ORDER BY `id`");
         return $stmt;
 
     }

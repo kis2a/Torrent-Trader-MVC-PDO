@@ -5,26 +5,23 @@ class Bonus extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->bonusModel = $this->model('Bonusmodel');
-        $this->userModel = $this->model('User');
-        
     }
 
     public function index()
     {
         $id = (int) Input::get("id");
         if (Validate::Id($id)) {
-            $row = $this->bonusModel->getBonusByPost($id);
-            if (!$row || $this->session['seedbonus'] < $row->cost) {
+            $row = Bonuses::getBonusByPost($id);
+            if (!$row || $this->session['seedbonus'] < $row['cost']) {
                 Redirect::autolink(URLROOT."/bonus", "Demand not valid.");
             }
-            $cost = $row->cost;
-            $this->bonusModel->setBonus($cost, $this->session['id']);
+            $cost = $row['cost'];
+            Bonuses::setBonus($cost, $this->session['id']);
             $this->bonusswitch($row);
             Redirect::autolink(URLROOT."/bonus", "Your account has been credited.");
         }
 
-        $row1 = $this->bonusModel->getAll();
+        $row1 = Bonuses::getAll();
         $data = [
             'title' => 'Seed Bonus',
             'bonus' => $row1,
@@ -38,12 +35,12 @@ class Bonus extends Controller
 
     private function bonusswitch($row)
     {
-        switch ($row->type) {
+        switch ($row['type']) {
             case 'invite':
-                DB::run("UPDATE `users` SET `invites` = `invites` + '$row->value' WHERE `id` = '$_SESSION[id]'");
+                DB::run("UPDATE `users` SET `invites` = `invites` + '$row[value]' WHERE `id` = '$_SESSION[id]'");
                 break;
             case 'traffic':
-                DB::run("UPDATE `users` SET `uploaded` = `uploaded` + '$row->value' WHERE `id` = '$_SESSION[id]'");
+                DB::run("UPDATE `users` SET `uploaded` = `uploaded` + '$row[value]' WHERE `id` = '$_SESSION[id]'");
                 break;
             case 'HnR':
                 $uid = $_SESSION["class"] == "1" ? (int) $_POST["userid"] : (int) $_SESSION["id"];
@@ -61,10 +58,10 @@ class Bonus extends Controller
                     $row2 = DB::run("SELECT `name` FROM `torrents` WHERE `id` = '$tid'")->fetchColumn();
                     $username = htmlspecialchars($row1["username"]);
                     $torname = htmlspecialchars($row2["name"]);
-                    Logs::write("The HnR of <a href='profile?id=" . $uid . "'>" . User::coloredname($username) . "</a> on the torrent <a href='torrent?id=" . $tid . "'>" . $torname . "</a> has been cleared by <a href='profile?id=" . $_SESSION['id'] . "'>" . User::coloredname($_SESSION['username']) . "</a>");
+                    Logs::write("The HnR of <a href='profile?id=" . $uid . "'>" . Users::coloredname($username) . "</a> on the torrent <a href='torrent?id=" . $tid . "'>" . $torname . "</a> has been cleared by <a href='profile?id=" . $_SESSION['id'] . "'>" . Users::coloredname($_SESSION['username']) . "</a>");
                     $new_modcomment = gmdate("d-m-Y \à H:i") . " - ";
                     if ($uid == $_SESSION["id"]) {
-                        $new_modcomment .= "H&R on the torrent " . $torname . " cleared against " . $row->cost . " points \n";
+                        $new_modcomment .= "H&R on the torrent " . $torname . " cleared against " . $row['cost'] . " points \n";
                     } else {
                         $new_modcomment .= "H&R on the torrent " . $torname . " cleared by " . $_SESSION['username'] . " \n";
                     }
@@ -76,7 +73,7 @@ class Bonus extends Controller
             case 'other':
                 break;
             case 'VIP':
-                $days = $row->value;
+                $days = $row['value'];
                 $vipuntil = ($_SESSION["vipuntil"] > "0000-00-00 00:00:00") ? $vipuntil = TimeDate::get_date_time(strtotime($_SESSION["vipuntil"]) + (60 * 86400)) : $vipuntil = TimeDate::get_date_time(TimeDate::gmtime() + (60 * 86400));
                 $oldclass = ($_SESSION["vipuntil"] > "0000-00-00 00:00:00") ? $oldclass = $_SESSION["oldclass"] : $oldclass = $_SESSION["class"];
                 DB::run("UPDATE `users` SET `class` = '3', `oldclass`='$oldclass', `vipuntil` = '$vipuntil' WHERE `id` = '$_SESSION[id]'");

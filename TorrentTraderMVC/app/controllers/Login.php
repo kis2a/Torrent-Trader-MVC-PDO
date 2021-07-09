@@ -5,7 +5,6 @@ class Login extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 0);
-		$this->userModel = $this->model('User');
     }
 
     public function index()
@@ -25,7 +24,7 @@ class Login extends Controller
         if (Input::exist() && Cookie::csrf_check()) {
             $username = Input::get("username");
             $password = Input::get("password");
-            $sql = $this->userModel->getUserByUsername($username);
+            $sql = Users::getUserByUsername($username);
             if (!$sql || !password_verify($password, $sql->password)) {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("LOGIN_INCORRECT"));
             } elseif ($sql->status == "pending") {
@@ -37,7 +36,7 @@ class Login extends Controller
             Cookie::set('id', $sql->id, 5485858, "/");
             Cookie::set('password', $sql->password, 5485858, "/");
             Cookie::set("key_token", $this->loginString(), 5485858, "/");
-            $this->userModel->updatelogin($this->loginString(), $sql->id);
+            Users::updatelogin($this->loginString(), $sql->id);
             Redirect::to(URLROOT."/home");
         } else {
             Redirect::to(URLROOT."/logout");

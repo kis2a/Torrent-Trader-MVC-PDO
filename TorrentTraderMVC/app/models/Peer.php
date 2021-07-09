@@ -1,16 +1,10 @@
 <?php
 class Peer
 {
-    private $db;
 
-    public function __construct()
+    public static function seedingTorrent($id, $seeder)
     {
-        $this->db = new Database;
-    }
-
-    public function seedingTorrent($id, $seeder)
-    {
-        $sql = $this->db->run("SELECT `torrent`, `uploaded`, `downloaded` 
+        $sql = DB::run("SELECT `torrent`, `uploaded`, `downloaded` 
                                FROM `peers` 
                                LEFT JOIN torrents 
                                ON torrent = torrents.id 

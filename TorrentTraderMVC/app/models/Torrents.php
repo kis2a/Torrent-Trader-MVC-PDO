@@ -1,15 +1,9 @@
 <?php
 class Torrents
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database;
-    }
 
     // Get All User Array
-    public function getAll($id)
+    public static function getAll($id)
     {
         $row = DB::run(" SELECT torrents.anon, torrents.seeders, torrents.tube, torrents.banned,
             torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.torrentlang, torrents.category,
@@ -34,9 +28,9 @@ class Torrents
         return $user1;
     }
 
-    public function getTorrentWhere($where, $parent_check)
+    public static function getTorrentWhere($where, $parent_check)
     {
-        $stmt = $this->db->run("
+        $stmt = DB::run("
     SELECT COUNT(*)
     FROM torrents
     $where $parent_check
@@ -45,31 +39,31 @@ class Torrents
         return $stmt;
     }
 
-    public function getTorrentNameNfo($id)
+    public static function getTorrentNameNfo($id)
     {
-        $stmt = $this->db->run("SELECT name, nfo FROM torrents WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
+        $stmt = DB::run("SELECT name, nfo FROM torrents WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
 
         return $stmt;
     }
 
-    public function getCatById()
+    public static function getCatById()
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT id
     FROM categories");
 
         return $row;
     }
 
-    public function getIdName($id)
+    public static function getIdName($id)
     {
-        $row = $this->db->run("SELECT id, name FROM torrents WHERE id =?", [$id])->fetch(PDO::FETCH_LAZY);
+        $row = DB::run("SELECT id, name FROM torrents WHERE id =?", [$id])->fetch(PDO::FETCH_LAZY);
         return $row;
     }
 
-    public function getTorrentByCat($where, $parent_check, $orderby, $limit)
+    public static function getTorrentByCat($where, $parent_check, $orderby, $limit)
     {
-        $row = $this->db->run("
+        $row = DB::run("
 	SELECT
 	torrents.id, torrents.anon, torrents.announce, torrents.tube,  torrents.imdb, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed,
 	torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name
@@ -84,25 +78,25 @@ class Torrents
         return $row;
     }
 
-    public function getCatByParent()
+    public static function getCatByParent()
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT distinct parent_cat
     FROM categories
     ORDER BY parent_cat");
         return $row;
     }
 
-    public function getCatByParentName()
+    public static function getCatByParentName()
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT * FROM categories ORDER BY parent_cat, name");
         return $row;
     }
 
-    public function getSubCatByParentName($parent_cat)
+    public static function getSubCatByParentName($parent_cat)
     {
-        $row = $this->db->run("
+        $row = DB::run("
 	SELECT id, name, parent_cat
 	FROM categories
 	WHERE parent_cat='$parent_cat'
@@ -110,16 +104,16 @@ class Torrents
         return $row;
     }
 
-    public function getCatSort()
+    public static function getCatSort()
     {
-        $row = $this->db->run("SELECT id, name FROM categories ORDER BY sort_index");
+        $row = DB::run("SELECT id, name FROM categories ORDER BY sort_index");
 
         return $row;
     }
 
-    public function getCatSortAll($where, $date_time, $orderby, $limit)
+    public static function getCatSortAll($where, $date_time, $orderby, $limit)
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT
     torrents.id, torrents.anon, torrents.category, torrents.sticky, torrents.imdb, torrents.tube, torrents.tube, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size,
     torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name
@@ -136,9 +130,9 @@ class Torrents
         return $row;
     }
 
-    public function getCatwhere($where)
+    public static function getCatwhere($where)
     {
-        $row = $this->db->run("
+        $row = DB::run("
     SELECT COUNT(*)
     FROM torrents
     LEFT JOIN categories

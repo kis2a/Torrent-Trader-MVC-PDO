@@ -5,7 +5,6 @@ class Stylesheet extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->userModel = $this->model('User');
     }
 
     public function index()
@@ -16,7 +15,7 @@ class Stylesheet extends Controller
         $updateset[] = "stylesheet = '$stylesheet'";
         $updateset[] = "language = '$language'";
         if (count($updateset)) {
-            $this->userModel->updateset($updateset, $this->session['id']);
+            Users::updateset($updateset, $this->session['id']);
         }
         if (empty($_SERVER["HTTP_REFERER"])) {
             Redirect::to(URLROOT."/home");

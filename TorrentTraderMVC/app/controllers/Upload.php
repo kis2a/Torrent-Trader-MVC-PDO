@@ -5,13 +5,6 @@ class Upload extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->userModel = $this->model('User');
-        $this->pdo = new Database();
-        
-        $this->countriesModel = $this->model('Countries');
-        $this->shoutboxModel = $this->model('Shoutboxs');
-        $this->filesModel = $this->model('Files');
-        $this->logsModel = $this->model('Logs');
     }
 
     public static function checks()
@@ -227,10 +220,10 @@ class Upload extends Controller
                         }
 
                     }
-                    $this->filesModel->insertFiles($id, $fname, $size);
+                    Files::insertFiles($id, $fname, $size);
                 }
             } else {
-                $this->filesModel->insertFiles($id, $internalname, $torrentsize);
+                Files::insertFiles($id, $internalname, $torrentsize);
             }
 
             if ($nfo == 'yes') {
@@ -240,7 +233,7 @@ class Upload extends Controller
             Logs::write(sprintf(Lang::T("TORRENT_UPLOADED"), htmlspecialchars($name), $_SESSION["username"]));
             // Shout new torrent
             $msg_shout = "New Torrent: [url=" . URLROOT . "/torrent?id=" . $id . "]" . $torrent . "[/url] has been uploaded " . ($anon == 'no' ? "by [url=" . URLROOT . "/account-details.php?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]" : "") . "";
-            $this->shoutboxModel->insertShout(0, TimeDate::get_date_time(), 'System', $msg_shout);
+            Shoutboxs::insertShout(0, TimeDate::get_date_time(), 'System', $msg_shout);
             //Uploaded ok message
             if ($external == 'no') {
                 $message = sprintf(Lang::T("TORRENT_UPLOAD_LOCAL"), $name, $id, $id);

@@ -5,9 +5,6 @@ class Adminstylesheet extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_ADMINISTRATOR, 2);
-        // $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
 

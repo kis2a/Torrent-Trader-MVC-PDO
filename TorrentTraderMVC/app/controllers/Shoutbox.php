@@ -4,9 +4,6 @@ class Shoutbox extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 0);
-        $this->shoutModel = $this->model('Shoutboxs');
-        $this->logModel = $this->model('Logs');
-        $this->userModel = $this->model('User');
     }
 
     public function index()
@@ -16,13 +13,13 @@ class Shoutbox extends Controller
 
     public function chat()
     {
-        $result = $this->shoutModel->getAllShouts();
+        $result = Shoutboxs::getAllShouts();
         ?>
         <div class="shoutbox_contain">
         <div class="msg-wrap">
         <?php
         while ($row = $result->fetch(PDO::FETCH_LAZY)) {
-            $ol3 = $this->userModel->selectAvatar($row["userid"]);
+            $ol3 = Users::selectAvatar($row["userid"]);
             //$ol3 = DB::run("SELECT avatar FROM users WHERE id=" . $row["userid"])->fetch(PDO::FETCH_ASSOC);
             $av = $ol3['avatar'];
             if (!empty($av)) {
@@ -38,7 +35,7 @@ class Shoutbox extends Controller
                 <a class="pull-left d-none d-sm-block" href="#">
                 <?php echo $av ?>
                 <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
-                <b><?php echo User::coloredname($row['user']) ?>:</b></a>
+                <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
                 </a>
                 <?php
                 if ($this->session['class'] > _UPLOADER) {
@@ -81,9 +78,9 @@ class Shoutbox extends Controller
             //INSERT MESSAGE
             if (!empty(Input::get('message')) && $_SESSION['loggedin'] == true) {
                 $message = Input::get('message');
-                $row = $this->shoutModel->checkFlood($message, $this->session['username']);
+                $row = Shoutboxs::checkFlood($message, $this->session['username']);
                 if ($row[0] == '0') {
-                    $this->shoutModel->insertShout($this->session['id'], TimeDate::get_date_time(), $this->session['username'], $message);
+                    Shoutboxs::insertShout($this->session['id'], TimeDate::get_date_time(), $this->session['username'], $message);
                 }
             }
         }
@@ -95,14 +92,14 @@ class Shoutbox extends Controller
         $delete = Input::get('id');
         if ($delete) {
             if (is_numeric($delete)) {
-                $row = $this->shoutModel->getByShoutId($delete);
+                $row = Shoutboxs::getByShoutId($delete);
             } else {
                 echo "Failed to delete, invalid msg id";
                 exit;
             }
             if ($row && ($this->session["edit_users"] == "yes" || $this->session['username'] == $row[1])) {
                 Logs::write("<b><font color='orange'>Shout Deleted:</font> Deleted by   " . $this->session['username'] . "</b>");
-                $this->shoutModel->deleteByShoutId($delete);
+                Shoutboxs::deleteByShoutId($delete);
             }
         }
         Redirect::to(URLROOT);
@@ -114,7 +111,7 @@ class Shoutbox extends Controller
             $id = Input::get('id');
             $message = $_POST['message'];
             if ($message) {
-                $this->shoutModel->updateShout($message, $id);
+                Shoutboxs::updateShout($message, $id);
                 Redirect::autolink(URLROOT, Lang::T("Message edited"));
             }
         } else {
@@ -125,7 +122,7 @@ class Shoutbox extends Controller
 
     public function history()
     {
-        $result = $this->shoutModel->getAllShouts(80);
+        $result = Shoutboxs::getAllShouts(80);
         $data = [
             'title' => 'History',
             'sql' => $result,

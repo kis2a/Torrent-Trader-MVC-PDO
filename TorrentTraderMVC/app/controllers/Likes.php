@@ -5,7 +5,6 @@ class Likes extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        
     }
 
     // Thanks on index

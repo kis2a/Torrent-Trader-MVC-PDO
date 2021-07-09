@@ -4,10 +4,7 @@ class Adminavatar extends Controller
 
     public function __construct()
     {
-        $this->session = Auth::user(_MODERATOR, 2); // should check admin here
-        // $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
+        $this->session = Auth::user(_MODERATOR, 2);
     }
 
     public function index()

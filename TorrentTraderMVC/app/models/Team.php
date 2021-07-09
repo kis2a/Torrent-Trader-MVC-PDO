@@ -1,21 +1,15 @@
 <?php
 class Team
 {
-    private $db;
 
-    public function __construct()
+    public static function getTeams()
     {
-        $this->db = new Database;
-    }
-
-    public function getTeams()
-    {
-        $sql = $this->db->run("SELECT teams.id, teams.name, teams.image, teams.info, teams.owner, teams.added, users.username, (SELECT GROUP_CONCAT(id, ' ', username) FROM users WHERE FIND_IN_SET(users.team, teams.id) AND users.enabled = 'yes' AND users.status = 'confirmed') AS members FROM teams LEFT JOIN users ON teams.owner = users.id WHERE users.enabled = 'yes' AND users.status = 'confirmed'");
+        $sql = DB::run("SELECT teams.id, teams.name, teams.image, teams.info, teams.owner, teams.added, users.username, (SELECT GROUP_CONCAT(id, ' ', username) FROM users WHERE FIND_IN_SET(users.team, teams.id) AND users.enabled = 'yes' AND users.status = 'confirmed') AS members FROM teams LEFT JOIN users ON teams.owner = users.id WHERE users.enabled = 'yes' AND users.status = 'confirmed'");
         return $sql;
     }
 
     
-    public function dropDownTeams($team)
+    public static function dropDownTeams($team)
     {
         $teams = "<option value='0'>--- " . Lang::T("NONE_SELECTED") . " ----</option>\n";
         $sashok = DB::run("SELECT id,name FROM teams ORDER BY name");

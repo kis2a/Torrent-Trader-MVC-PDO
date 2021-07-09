@@ -4,7 +4,6 @@ class Rating extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        
     }
 
     public function index()

@@ -4,9 +4,6 @@ class Torrent extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->torrentModel = $this->model('Torrents');
-        
-        $this->logs = $this->model('Logs');
     }
 
     public function index()
@@ -77,7 +74,7 @@ class Torrent extends Controller
         } else {
             $totalspeed = Lang::T("NO_ACTIVITY");
         }
-        $torrent1 = $this->torrentModel->getAll($id);
+        $torrent1 = Torrents::getAll($id);
         $title = Lang::T("DETAILS_FOR_TORRENT") . " \"" . $row["name"] . "\"";
 
         $data = [
@@ -135,7 +132,7 @@ class Torrent extends Controller
         if ($_GET["edited"]) { // todo
             Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_EDITED_OK"));
         }
-        $torrent1 = $this->torrentModel->getAll($id);
+        $torrent1 = Torrents::getAll($id);
         $title = Lang::T("EDIT_TORRENT") . " \"$shortname\"";
         $data = [
             'title' => $title,

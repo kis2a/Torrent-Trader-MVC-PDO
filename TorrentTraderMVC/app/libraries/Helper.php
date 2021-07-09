@@ -48,21 +48,6 @@ class Helper
         return "<input type=\"radio\" name=\"privacy\" value=\"$name\" /> $descr";
     }
 
-    public static function getGuests()
-    {
-        $db = new Database();
-        $past = (TimeDate::gmtime() - 2400);
-        $db->run("DELETE FROM `guests` WHERE `time` < $past");
-        return $db->get_row_count("guests");
-    }
-
-    public static function guestadd()
-    {
-        $ip = Ip::getIP();
-        $time = TimeDate::gmtime();
-        DB::run("INSERT INTO `guests` (`ip`, `time`) VALUES ('$ip', '$time') ON DUPLICATE KEY UPDATE `time` = '$time'");
-    }
-
     //DISPLAY NFO BLOCK
     public static function my_nfo_translate($nfo)
     {
@@ -106,7 +91,7 @@ class Helper
         } elseif (Validate::Id($arr["sender"])) {
             $res2 = DB::run("SELECT username FROM users WHERE `id` = $arr[sender]");
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $sender = "<a href=\"/profile?id=$arr[sender]\">" . ($arr2["username"] ? User::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
+            $sender = "<a href=\"/profile?id=$arr[sender]\">" . ($arr2["username"] ? Users::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
         } else {
             $sender = Lang::T("SYSTEM");
         }
@@ -115,7 +100,7 @@ class Helper
         } elseif (Validate::Id($arr["receiver"])) {
             $res2 = DB::run("SELECT username FROM users WHERE `id` = $arr[receiver]");
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $receiver = "<a href=\"" . URLROOT . "/profile?id=$arr[receiver]\">" . ($arr2["username"] ? User::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
+            $receiver = "<a href=\"" . URLROOT . "/profile?id=$arr[receiver]\">" . ($arr2["username"] ? Users::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
         } else {
             $receiver = Lang::T("SYSTEM");
         }
@@ -138,7 +123,7 @@ class Helper
         } elseif (Validate::Id($arr["sender"])) {
             $res2 = DB::run("SELECT username FROM users WHERE `id` = $arr[sender]");
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $sender = "<a href=\"" . URLROOT . "/profile?id=$arr[sender]\">" . ($arr2["username"] ? User::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
+            $sender = "<a href=\"" . URLROOT . "/profile?id=$arr[sender]\">" . ($arr2["username"] ? Users::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
         } else {
             $sender = Lang::T("SYSTEM");
         }
@@ -147,7 +132,7 @@ class Helper
         } elseif (Validate::Id($arr["receiver"])) {
             $res2 = DB::run("SELECT username FROM users WHERE `id` = $arr[receiver]");
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $receiver = "<a href=\"" . URLROOT . "/profile?id=$arr[receiver]\">" . ($arr2["username"] ? User::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
+            $receiver = "<a href=\"" . URLROOT . "/profile?id=$arr[receiver]\">" . ($arr2["username"] ? Users::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
         } else {
             $receiver = Lang::T("SYSTEM");
         }

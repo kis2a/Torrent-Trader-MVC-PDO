@@ -4,9 +4,6 @@ class Peers extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        // $this->userModel = $this->model('User');
-        $this->peerModel = $this->model('Peer');
-        
     }
 
     public function index()
@@ -41,7 +38,7 @@ class Peers extends Controller
             $leeching = peerstable($res);
         }
 
-        $title = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
         // Template
         $data = [
             'id' => $id,
@@ -89,7 +86,7 @@ class Peers extends Controller
         } else {
             unset($res);
         }
-        $title = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
+        $title = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
         $data = [
             'id' => $id,
             'title' => $title,
@@ -142,7 +139,7 @@ class Peers extends Controller
         if ($id != $this->session["id"]) {
             echo "Not allowed to view others activity here.";
         }
-        $res = $this->peerModel->seedingTorrent($id, 'yes');
+        $res = Peer::seedingTorrent($id, 'yes');
         if ($res->rowCount() > 0) {
             $seeding = peerstable($res);
         }
@@ -161,7 +158,7 @@ class Peers extends Controller
         if ($id != $this->session["id"]) {
             echo "Not allowed to view others activity here.";
         }
-        $res = $this->peerModel->seedingTorrent($id, 'no');
+        $res = Peer::seedingTorrent($id, 'no');
         if ($res->rowCount() > 0) {
             $leeching = peerstable($res);
         }

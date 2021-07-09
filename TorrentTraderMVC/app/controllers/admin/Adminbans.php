@@ -5,9 +5,6 @@ class Adminbans extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
-        // $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
     public function index()
@@ -48,7 +45,7 @@ class Adminbans extends Controller
                     Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("MISSING_FORM_DATA"));
             }
             $comment = $comment;
-            $added = Helper::get_date_time();
+            $added = TimeDate::get_date_time();
             $bins = DB::run("INSERT INTO bans (added, addedby, first, last, comment) VALUES(?,?,?,?,?)", [$added, $_SESSION['id'], $first, $last, $comment]);
             $err = $bins->errorCode();
             switch ($err) {

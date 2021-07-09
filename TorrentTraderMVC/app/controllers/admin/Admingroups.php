@@ -5,9 +5,6 @@ class Admingroups extends Controller
     public function __construct()
     {
         $this->session = Auth::user(_SUPERMODERATOR, 2);
-        // $this->userModel = $this->model('User');
-        $this->logsModel = $this->model('Logs');
-        
     }
 
     public function index()

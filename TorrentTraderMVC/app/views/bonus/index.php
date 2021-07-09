@@ -11,10 +11,10 @@
   </tr></thead>
   <?php foreach ($data['bonus'] as $row): ?>
   <form method="post" action="<?php echo URLROOT; ?>/bonus">
-  <input type="hidden" name="id" value="<?php echo $row->id; ?>" />
+  <input type="hidden" name="id" value="<?php echo $row['id']; ?>" />
   <tbody><tr>
-      <td><?php echo htmlspecialchars($row->title); ?></td>
-      <td><?php echo htmlspecialchars($row->descr); ?></td>
+      <td><?php echo htmlspecialchars($row['title']); ?></td>
+      <td><?php echo htmlspecialchars($row['descr']); ?></td>
       <td><?php echo $row->cost; ?></td>
       <td><input type="submit"  class='btn btn-sm btn-warning' value="Exchange"></td>
   </tr></tbody>

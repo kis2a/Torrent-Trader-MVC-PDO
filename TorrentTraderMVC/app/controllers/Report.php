@@ -5,7 +5,6 @@ class Report extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->reportModel = $this->model('Reports');
     }
 
     public function index()
@@ -23,9 +22,9 @@ class Report extends Controller
             if (empty($takereason)) {
                 Redirect::autolink(URLROOT."/report/user?user=$user", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = $this->reportModel->selectReport($_SESSION['id'], $takeuser, 'user');
+            $res = Reports::selectReport($_SESSION['id'], $takeuser, 'user');
             if ($res->rowCount() == 0) {
-                $this->reportModel->insertReport($_SESSION['id'], $takeuser, 'user', $takereason);
+                Reports::insertReport($_SESSION['id'], $takeuser, 'user', $takereason);
                 Redirect::autolink(URLROOT."/profile?id=$user", "User: $takeuser, Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
                 Redirect::autolink(URLROOT."/profile?id=$user", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " user $takeuser");
@@ -62,9 +61,9 @@ class Report extends Controller
             if (!$takereason) {
                 Redirect::autolink(URLROOT."/report/torrent?torrent=$torrent", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = $this->reportModel->selectReport($_SESSION['id'], $taketorrent, 'torrent');
+            $res = Reports::selectReport($_SESSION['id'], $taketorrent, 'torrent');
             if ($res->rowCount() == 0) {
-                $this->reportModel->insertReport($_SESSION['id'], $taketorrent, 'torrent', $takereason);
+                Reports::insertReport($_SESSION['id'], $taketorrent, 'torrent', $takereason);
                 Redirect::autolink(URLROOT."/torrent?id=$torrent", "Torrent with id: $taketorrent, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
                 Redirect::autolink(URLROOT."/torrent?id=$torrent", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $taketorrent");
@@ -106,9 +105,9 @@ class Report extends Controller
             if (!$takereason) {
                 Redirect::autolink(URLROOT."/report/comment?comment=$comment", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = $this->reportModel->selectReport($_SESSION['id'], $takecomment, $whattype);
+            $res = Reports::selectReport($_SESSION['id'], $takecomment, $whattype);
             if ($res->rowCount() == 0) {
-                $this->reportModel->insertReport($_SESSION['id'], $takecomment, $whattype, $takereason);
+                Reports::insertReport($_SESSION['id'], $takecomment, $whattype, $takereason);
                 Redirect::autolink(URLROOT, "Comment with id: $takecomment, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
                 Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $takecomment");
@@ -149,9 +148,9 @@ class Report extends Controller
             if (!$takereason) {
                 Redirect::autolink(URLROOT, Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
-            $res = $this->reportModel->selectForumReport($_SESSION['id'], $takeforumid, $takeforumpost, 'forum');
+            $res = Reports::selectForumReport($_SESSION['id'], $takeforumid, $takeforumpost, 'forum');
             if ($res->rowCount() == 0) {
-                $this->reportModel->insertReport($_SESSION['id'], $takeforumid, 'forum', $takereason, $takeforumpost);
+                Reports::insertReport($_SESSION['id'], $takeforumid, 'forum', $takereason, $takeforumpost);
                 Redirect::autolink(URLROOT, "User: $_SESSION[username], Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
                 Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_ALREADY_REPORTED") . " post $takeforumid");

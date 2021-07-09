@@ -4,12 +4,6 @@ class Signup extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 0);
-        $this->userModel = $this->model('User');
-        $this->shoutModel = $this->model('Shoutboxs');
-        $this->messageModel = $this->model('Message');
-        $this->pdo = new Database();
-        
-        $this->countriesModel = $this->model('Countries');
     }
 
     public function index()
@@ -30,7 +24,7 @@ if ($ipq >= ACCOUNTMAX) {
                 Redirect::autolink(URLROOT . '/home', "<center>".Lang::T("INVITE_ONLY_MSG")."<br></center>");
             }
         } else {
-            $invite_row = $this->userModel->selectInviteIdBySecret($invite, $secret);
+            $invite_row = Users::selectInviteIdBySecret($invite, $secret);
             if (!$invite_row) {
                 Redirect::autolink(URLROOT . '/home', Lang::T("INVITE_ONLY_NOT_FOUND")."".(SIGNUPTIMEOUT / 86400)."days.");
             }
@@ -59,7 +53,7 @@ if ($ipq >= ACCOUNTMAX) {
             $secret = Input::get("secret");
             $invite = Input::get("invite");
             if (strlen($secret) == 20 || !is_numeric($invite)) {
-                $invite_row = $this->userModel->selectInviteIdBySecret($invite, $secret);
+                $invite_row = Users::selectInviteIdBySecret($invite, $secret);
             }
 
             $message = $this->validSign($wantusername, $email, $wantpassword, $passagain);
@@ -106,7 +100,7 @@ if ($ipq >= ACCOUNTMAX) {
             if ($message == "") {
                 // Invited User
                 if ($invite_row) {
-                    $this->userModel->updateUserBits($wantusername, $wantpassword, $secret, 'confirmed', TimeDate::get_date_time(), $invite_row['id']);
+                    Users::updateUserBits($wantusername, $wantpassword, $secret, 'confirmed', TimeDate::get_date_time(), $invite_row['id']);
                     /*
                     $this->pdo->run("
 			            UPDATE users
@@ -119,7 +113,7 @@ if ($ipq >= ACCOUNTMAX) {
                         $dt = TimeDate::get_date_time();
                         $msg = WELCOMEPM_MSG;
                         //$this->pdo->run("INSERT INTO messages (sender, receiver, added, msg, poster) VALUES(0, $invite_row[id], $dt, $msg, 0)");
-                        $this->messageModel->insertmessage(0, $invite_row['id'], $dt, 'Welcome', $msg, 'yes', 'in');
+                        Message::insertmessage(0, $invite_row['id'], $dt, 'Welcome', $msg, 'yes', 'in');
                     }
                     Redirect::autolink(URLROOT . '/login', Lang::T("ACCOUNT_ACTIVATED"));
                     die;
@@ -137,7 +131,7 @@ if ($ipq >= ACCOUNTMAX) {
                     $signupclass = '1';
                     // Shout new user
                     $msg_shout = "New User: " . $wantusername . " has joined.";
-                    $this->shoutModel->insertShout(0, TimeDate::get_date_time(), 'System', $msg_shout);
+                    Shoutboxs::insertShout(0, TimeDate::get_date_time(), 'System', $msg_shout);
                 }
 
                 DB::run("
@@ -155,7 +149,7 @@ if ($ipq >= ACCOUNTMAX) {
                 if (WELCOMEPM_ON) {
                     $dt = TimeDate::get_date_time();
                     $mess = WELCOMEPM_MSG;
-                    $this->messageModel->insertmessage(0, $id, $dt, 'Welcome', $mess, 'yes', 'in');
+                    Message::insertmessage(0, $id, $dt, 'Welcome', $mess, 'yes', 'in');
                 }
 
                 if (ACONFIRM) {

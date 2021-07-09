@@ -1,7 +1,7 @@
 <?php
         while ($row = $data['res']->fetch(PDO::FETCH_LAZY)) {
 
-            $postername = User::coloredname($row["username"]);
+            $postername = Users::coloredname($row["username"]);
             if ($postername == "") {
                 $postername = Lang::T("DELUSER");
                 $title = Lang::T("DELETED_ACCOUNT");

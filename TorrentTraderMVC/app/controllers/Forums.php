@@ -5,8 +5,6 @@ class Forums extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 1);
-        
-        $this->forumModel = $this->model('Forum');
     }
 
     /**
@@ -37,7 +35,7 @@ class Forums extends Controller
             }
 
             // Action: SHOW MAIN FORUM INDEX
-            $forums_res = $this->forumModel->getIndex();
+            $forums_res = Forum::getIndex();
             if ($forums_res->rowCount() == 0) {
                 Redirect::autolink(URLROOT, 'There is no Forums available');
             }
@@ -134,7 +132,7 @@ class Forums extends Controller
     public function viewunread()
     {
         $this->validForumUser();
-        $res = $this->forumModel->viewunread();
+        $res = Forum::viewunread();
         $data = [
             'res' => $res,
             'n' => 0,
@@ -482,7 +480,7 @@ class Forums extends Controller
 
             $res2 = DB::run("SELECT * FROM users WHERE id=?", [$posterid]);
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $postername = User::coloredname($arr2["username"]);
+            $postername = Users::coloredname($arr2["username"]);
 			$quotename = $arr2["username"];
 
             if ($postername == "") {
@@ -839,7 +837,7 @@ echo '<center>Add attachment<center><br>';
         if ($sure == "0") {
             Redirect::autolink(URLROOT . "/forums", "Sanity check: You are about to delete a topic. Click <a href='" . URLROOT . "/forums/deletetopic&amp;topicid=$topicid?sure=1'>here</a> if you are sure.");
         }
-        $this->forumModel->deltopic($topicid);
+        Forum::deltopic($topicid);
         Redirect::autolink(URLROOT . "/forums", "Deleted topic");
         die;
     }
@@ -862,7 +860,7 @@ echo '<center>Add attachment<center><br>';
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_YOU_MUST_ENTER_NEW_TITLE"));
         }
         $subject = $subject;
-        $this->forumModel->rename($subject, $topicid);
+        Forum::rename($subject, $topicid);
         $returnto = Input::get('returnto');
         if ($returnto) {
             Redirect::to($returnto);
@@ -914,7 +912,7 @@ echo '<center>Add attachment<center><br>';
         if (!Validate::Id($topicid) || $this->session["delete_forum"] != "yes" || $this->session["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
-        $this->forumModel->lock($topicid, 'yes');
+        Forum::lock($topicid, 'yes');
         Redirect::to(URLROOT . "/forums/viewforum&forumid=$forumid&page=$page");
         die;
     }
@@ -932,7 +930,7 @@ echo '<center>Add attachment<center><br>';
         if (!Validate::Id($topicid) || $this->session["delete_forum"] != "yes" || $this->session["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
-        $this->forumModel->lock($topicid, 'no');
+        Forum::lock($topicid, 'no');
         Redirect::to(URLROOT . "/forums/viewforum&forumid=$forumid&page=$page");
         die;
     }
@@ -949,7 +947,7 @@ echo '<center>Add attachment<center><br>';
         if (!Validate::Id($topicid) || ($this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes")) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
-        $this->forumModel->sticky($topicid, 'yes');
+        Forum::sticky($topicid, 'yes');
         Redirect::to(URLROOT . "/forums/viewforum&forumid=$forumid&page=$page");
         die;
     }
@@ -966,7 +964,7 @@ echo '<center>Add attachment<center><br>';
         if (!Validate::Id($topicid) || ($this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes")) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
-        $this->forumModel->sticky($topicid, 'no');
+        Forum::sticky($topicid, 'no');
         Redirect::to(URLROOT . "/forums/viewforum&forumid=$forumid&page=$page");
         die;
     }

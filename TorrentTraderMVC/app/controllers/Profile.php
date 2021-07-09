@@ -4,13 +4,6 @@ class Profile extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 2);
-        $this->userModel = $this->model('User');
-        $this->countriesModel = $this->model('Countries');
-        $this->friendModel = $this->model('Friend');
-        $this->styleModel = $this->model('Stylesheet');
-        $this->teamModel = $this->model('Team');
-        
-        $this->log = $this->model('Logs');
     }
 
     public function index()
@@ -23,7 +16,7 @@ class Profile extends Controller
         if ($this->session["view_users"] == "no" && $this->session["id"] != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
-        $user = User::getUserById($id);
+        $user = Users::getUserById($id);
         if (!$user) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
@@ -38,7 +31,7 @@ class Profile extends Controller
             Redirect::autolink(URLROOT, "You're blocked by this member and you can not see his profile!");
         }
         // country
-        $country = $this->countriesModel->getCountryName($user['country']);
+        $country = Countries::getCountryName($user['country']);
 
         // ratio
         if ($user["downloaded"] > 0) {
@@ -61,12 +54,12 @@ class Profile extends Controller
 
         $usersignature = stripslashes($user["signature"]); // todo
 
-        $arr = $this->friendModel->countFriendAndEnemy($this->session['id'], $id);
+        $arr = Friend::countFriendAndEnemy($this->session['id'], $id);
         $friend = $arr['friend'];
         $block = $arr['enemy'];
 
-        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
-        $user1 = $this->userModel->getAll($id);
+        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
+        $user1 = Users::getAll($id);
         $data = [
             'title' => $cardheader,
             'id' => $id,
@@ -93,21 +86,21 @@ class Profile extends Controller
         if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
             Redirect::autolink(URLROOT, Lang::T("You dont have permission"));
         }
-        $user = User::getUserById($id);
+        $user = Users::getUserById($id);
 
         // Stylesheet
-        $stylesheets = $this->styleModel->getStyleDropDown($user['stylesheet']);
+        $stylesheets = Stylesheets::getStyleDropDown($user['stylesheet']);
         // Country
-        $countries = $this->countriesModel->pickCountry($user['country']);
+        $countries = Countries::pickCountry($user['country']);
         // Timezone
         $tz = TimeDate::timeZoneDropDown($user['tzoffset']);
         //Teams
-        $teams = $this->teamModel->dropDownTeams($user['team']);
+        $teams = Team::dropDownTeams($user['team']);
         $gender = "<option value='Male'" . ($user['gender'] == "Male" ? " selected='selected'" : "") . ">" . Lang::T("MALE") . "</option>\n"
                 . "<option value='Female'" . ($user['gender'] == "Female" ? " selected='selected'" : "") . ">" . Lang::T("FEMALE") . "</option>\n";
         
-        $user1 = $this->userModel->getAll($id);
-        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user["username"]));
+        $user1 = Users::getAll($id);
+        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
         $data = [
             'title' => $cardheader,
             'stylesheets' => $stylesheets,
@@ -169,9 +162,9 @@ class Profile extends Controller
         if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
             Redirect::autolink(URLROOT."/profile?id=$id", Lang::T("You dont have permission"));
         }
-        $user1 = User::getUserById($id);
-        $user = $this->userModel->getAll($id);
-        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), User::coloredname($user1["username"]));
+        $user1 = Users::getUserById($id);
+        $user = Users::getAll($id);
+        $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user1["username"]));
         $data = [
             'id' => $id,
             'title' => $cardheader,
@@ -268,7 +261,7 @@ class Profile extends Controller
         if (!$delreason) {
             Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("MISSING_FORM_DATA"));
         }
-        $this->userModel->deleteuser($userid);
+        Users::deleteuser($userid);
         Logs::write($this->session['username'] . " has deleted account: $username");
         Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("USER_DELETE"));
         die;

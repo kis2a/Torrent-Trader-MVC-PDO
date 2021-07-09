@@ -20,7 +20,7 @@ if ($_SESSION['loggedin'] == true) {
     <?php } else {?>
 		<div class="list-group">
 	<?php foreach ($rows as $row) {?>
-			<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>' class="list-group-item"><?php echo User::coloredname($row["username"]); ?></a>
+			<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>' class="list-group-item"><?php echo Users::coloredname($row["username"]); ?></a>
 	<?php }?>
 		</div>
     <?php } ?>

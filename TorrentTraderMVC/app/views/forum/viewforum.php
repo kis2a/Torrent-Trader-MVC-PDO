@@ -65,7 +65,7 @@ if ($data['topicsres'] > 0) {
             $res = DB::run("SELECT * FROM users WHERE id=$lpuserid");
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
-                $lpusername = "<a href='" . URLROOT . "/profile?id=$lpuserid'>" . User::coloredname($arr['username']) . "</a>";
+                $lpusername = "<a href='" . URLROOT . "/profile?id=$lpuserid'>" . Users::coloredname($arr['username']) . "</a>";
             } else {
                 $lpusername = "Deluser";
             }
@@ -77,7 +77,7 @@ if ($data['topicsres'] > 0) {
             $res = DB::run("SELECT username FROM users WHERE id=$topic_userid");
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
-                $lpauthor = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . User::coloredname($arr['username']) . "</a>";
+                $lpauthor = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . Users::coloredname($arr['username']) . "</a>";
             } else {
                 $lpauthor = "Deluser";
             }

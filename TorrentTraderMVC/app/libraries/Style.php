@@ -17,7 +17,7 @@ class Style
             }
         }
         if (!$_SESSION['loggedin'] == true) {
-            Helper::guestadd();
+            Guest::guestadd();
         }
         if ($title == "") {
             $title = SITENAME;
@@ -66,7 +66,7 @@ class Style
             }
         }
         if (!$_SESSION['loggedin'] == true) {
-            Helper::guestadd();
+            Guest::guestadd();
         }
         if ($title == "") {
             $title = SITENAME;

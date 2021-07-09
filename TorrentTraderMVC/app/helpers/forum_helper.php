@@ -231,7 +231,7 @@ function latestforumposts()
             $res = $db->run("SELECT id, username FROM users WHERE id=$userid");
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
-                $username = "<a href='" . URLROOT . "/profile?id=$userid'>" . User::coloredname($arr['username']) . "</a>";
+                $username = "<a href='" . URLROOT . "/profile?id=$userid'>" . Users::coloredname($arr['username']) . "</a>";
             } else {
                 $username = "Unknown[$topic_userid]";
             }
@@ -239,7 +239,7 @@ function latestforumposts()
             $res = $db->run("SELECT username FROM users WHERE id=?", [$topic_userid]);
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
-                $author = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . User::coloredname($arr['username']) . "</a>";
+                $author = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . Users::coloredname($arr['username']) . "</a>";
             } else {
                 $author = "Unknown[$topic_userid]";
             }
@@ -283,7 +283,7 @@ function lastpostdetails($lastpostid) {
         $lasttopicid = $post_arr["topicid"];
         $user_res = DB::run("SELECT username FROM users WHERE id=$lastposterid");
         $user_arr = $user_res->fetch(PDO::FETCH_ASSOC);
-        $lastposter = User::coloredname($user_arr["username"]);
+        $lastposter = Users::coloredname($user_arr["username"]);
         $topic_res = DB::run("SELECT subject FROM forum_topics WHERE id=$lasttopicid");
         $topic_arr = $topic_res->fetch(PDO::FETCH_ASSOC);
         $lasttopic = stripslashes(htmlspecialchars($topic_arr['subject']));

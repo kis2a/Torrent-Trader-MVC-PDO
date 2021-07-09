@@ -5,9 +5,6 @@ class Confirmemail extends Controller
     public function __construct()
     {
         $this->session = Auth::user(0, 0);
-        $this->userModel = $this->model('User');
-        $this->pdo = new Database();
-        
     }
 
     // Confirm by email (siteconfig - first contact)
