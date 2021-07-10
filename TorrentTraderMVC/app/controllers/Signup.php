@@ -68,11 +68,11 @@ if ($ipq >= ACCOUNTMAX) {
                     }
                     // check email isnt banned
                     $maildomain = (substr($email, strpos($email, "@") + 1));
-                    $a = $this->pdo->run("SELECT count(*) FROM email_bans where mail_domain=?", [$email])->fetchColumn();
+                    $a = DB::run("SELECT count(*) FROM email_bans where mail_domain=?", [$email])->fetchColumn();
                     if ($a != 0) {
                         $message = sprintf(Lang::T("EMAIL_ADDRESS_BANNED_S"), $email);
                     }
-                    $a = $this->pdo->run("SELECT count(*) FROM email_bans where mail_domain LIKE '%$maildomain%'")->fetchColumn();
+                    $a = DB::run("SELECT count(*) FROM email_bans where mail_domain LIKE '%$maildomain%'")->fetchColumn();
                     if ($a != 0) {
                         $message = sprintf(Lang::T("EMAIL_ADDRESS_BANNED_S"), $email);
                     }

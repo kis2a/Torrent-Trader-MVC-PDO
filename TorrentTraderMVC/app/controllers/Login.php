@@ -24,19 +24,20 @@ class Login extends Controller
         if (Input::exist() && Cookie::csrf_check()) {
             $username = Input::get("username");
             $password = Input::get("password");
-            $sql = Users::getUserByUsername($username);
-            if (!$sql || !password_verify($password, $sql->password)) {
+            $sql = DB::run("SELECT id, password, secret, status, enabled FROM users WHERE username =? ", [$username])->fetch();
+            //var_dump($password); var_dump($sql['password']); die();
+            if (!$sql || !password_verify($password, $sql['password'])) {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("LOGIN_INCORRECT"));
-            } elseif ($sql->status == "pending") {
+            } elseif ($sql['status'] == "pending") {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("ACCOUNT_PENDING"));
-            } elseif ($sql->enabled == "no") {
+            } elseif ($sql['enabled'] == "no") {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("ACCOUNT_DISABLED"));
             }
 
-            Cookie::set('id', $sql->id, 5485858, "/");
-            Cookie::set('password', $sql->password, 5485858, "/");
+            Cookie::set('id', $sql['id'], 5485858, "/");
+            Cookie::set('password', $sql['password'], 5485858, "/");
             Cookie::set("key_token", $this->loginString(), 5485858, "/");
-            Users::updatelogin($this->loginString(), $sql->id);
+            Users::updatelogin($this->loginString(), $sql['id']);
             Redirect::to(URLROOT."/home");
         } else {
             Redirect::to(URLROOT."/logout");
