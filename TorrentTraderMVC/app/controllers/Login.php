@@ -11,8 +11,8 @@ class Login extends Controller
     {
         $token = Cookie::csrf_token();
         $data = [
-            'token' =>$token,
-            'title' => Lang::T("LOGIN")
+            'token' => $token,
+            'title' => Lang::T("LOGIN"),
         ];
         View::render('user/login', $data, 'user');
     }
@@ -38,9 +38,9 @@ class Login extends Controller
             Cookie::set('password', $sql['password'], 5485858, "/");
             Cookie::set("key_token", $this->loginString(), 5485858, "/");
             Users::updatelogin($this->loginString(), $sql['id']);
-            Redirect::to(URLROOT."/home");
+            Redirect::to(URLROOT . "/home");
         } else {
-            Redirect::to(URLROOT."/logout");
+            Redirect::to(URLROOT . "/logout");
         }
     }
 
@@ -48,6 +48,7 @@ class Login extends Controller
     {
         $ip = Ip::getIP();
         $browser = Ip::agent();
-        return md5($browser.$browser);
+        return md5($browser . $browser);
     }
+    
 }

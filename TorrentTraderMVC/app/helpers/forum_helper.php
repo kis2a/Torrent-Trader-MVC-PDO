@@ -1,15 +1,15 @@
 <?php
-//setup the forum head
+// setup the forum head
 function forumheader($location)
 {
     echo "<div>
-    <img src='".URLROOT."/assets/images/forum/help.png'  alt='' />&nbsp;<a href='".URLROOT."/faq'>" . Lang::T("FORUM_FAQ") . "</a>&nbsp; &nbsp;&nbsp;
-    <img src='".URLROOT."/assets/images/forum/search.png' alt='' />&nbsp;<a href='".URLROOT."/forums/search'>" . Lang::T("SEARCH") . "</a>&nbsp; &nbsp;
+    <img src='" . URLROOT . "/assets/images/forum/help.png'  alt='' />&nbsp;<a href='" . URLROOT . "/faq'>" . Lang::T("FORUM_FAQ") . "</a>&nbsp; &nbsp;&nbsp;
+    <img src='" . URLROOT . "/assets/images/forum/search.png' alt='' />&nbsp;<a href='" . URLROOT . "/forums/search'>" . Lang::T("SEARCH") . "</a>&nbsp; &nbsp;
     <b>" . Lang::T("FORUM_CONTROL") . "</b>
-    &middot; <a href='".URLROOT."/forums/viewunread'>" . Lang::T("FORUM_NEW_POSTS") . "</a>
-    &middot; <a href='".URLROOT."/forums?do=catchup'>" . Lang::T("FORUM_MARK_READ") . "</a>
+    &middot; <a href='" . URLROOT . "/forums/viewunread'>" . Lang::T("FORUM_NEW_POSTS") . "</a>
+    &middot; <a href='" . URLROOT . "/forums?do=catchup'>" . Lang::T("FORUM_MARK_READ") . "</a>
     </div><br />";
-    print("<div>" . Lang::T("YOU_ARE_IN") . ": &nbsp;<a href='".URLROOT."/forums'>" . Lang::T("FORUMS") . "</a> <b style='vertical-align:middle'>/ $location</b></div>");
+    print("<div>" . Lang::T("YOU_ARE_IN") . ": &nbsp;<a href='" . URLROOT . "/forums'>" . Lang::T("FORUMS") . "</a> <b style='vertical-align:middle'>/ $location</b></div>");
 }
 
 // Mark all forums as read
@@ -88,10 +88,10 @@ function forumpostertable($res)
 {
     print("<br /><div>");
     ?>
-      <font><?php echo Lang::T("FORUM_RANK"); ?></font>
-      <font><?php echo Lang::T("FORUM_USER"); ?></font>
-      <font><?php echo Lang::T("FORUM_POST"); ?></font>
-      <br>
+    <font><?php echo Lang::T("FORUM_RANK"); ?></font>
+    <font><?php echo Lang::T("FORUM_USER"); ?></font>
+    <font><?php echo Lang::T("FORUM_POST"); ?></font>
+    <br>
     <?php
     $num = 0;
     while ($a = $res->fetch(PDO::FETCH_ASSOC)) {
@@ -148,24 +148,15 @@ function insert_compose_frame($id, $newtopic = true)
     print("<div class=table>");
     print("<center><b>Compose Message</b></center>");
     // attachments todo
-    print("<form name='Form' method='post' action='".URLROOT."/forums/submittopic' enctype='multipart/form-data'>\n");
+    print("<form name='Form' method='post' action='" . URLROOT . "/forums/submittopic' enctype='multipart/form-data'>\n");
     if ($newtopic) {
         print("<div><center><strong>Subject:</strong>&nbsp;<input type='text' size='30%' maxlength='$maxsubjectlength' name='subject' /></center>");
         print("<input type='hidden' name='forumid' value='$id' />\n");
     } else {
         print("<div><input type='hidden' name='topicid' value='$id' />\n"); // added div here
     }
-    /*
-    print("
-    <div class='row justify-content-md-center'>
-<div class='col-md-8'>
-    <textarea id='example' style='height:300px;width:100%;' name='body' rows='13'></textarea>
-    </div>
-    </div>
-    ");
-    */
     textbbcode("Form", "body");
-    
+
     echo '<br><center><input type="file" name="upfile[]" multiple></center><br>';
     print("<center><button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("SUBMIT") . "</button></center></div>");
     print("</form>\n");
@@ -199,7 +190,7 @@ function latestforumposts()
     Last Post
     </div>
     </div>
-<?php
+    <?php
     // HERE GOES THE QUERY TO RETRIEVE DATA FROM THE DATABASE AND WE START LOOPING ///
     $for = $db->run("SELECT * FROM forum_topics ORDER BY lastpost DESC LIMIT 5");
     if ($for->rowCount() == 0) {
@@ -249,32 +240,33 @@ function latestforumposts()
             $new = !$a || $postid > $a[0];
             $subject = "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=last#last'>" . stripslashes(encodehtml($topicarr["subject"])) . "</a>";
             ?>
-        <div class="row border  border-primary rounded-bottom">
-        <div class="col-md-5 d-none d-sm-block">
-        <b><?php echo $subject; ?></b>
-        </div>
-        <div class="col-md-1 d-none d-sm-block">
-        <?php echo$replies; ?>
-        </div>
-        <div class="col-md-1 d-none d-sm-block">
-        <?php echo $views; ?>
-        </div>
-        <div class="col-md-2 d-none d-sm-block">
-        <b><center><?php echo $author; ?></center></b>
-        </div>
-        <div class="col-md-3">
-        <small><b><?php echo $subject; ?></b>&nbsp;
-        by&nbsp;<b><?php echo $username; ?></b></small><br><small style='white-space: nowrap'><b>
-        <?php echo $added; ?></b></small>
-        </div>
-        </div>
-        <?php
-        } // while
+            <div class="row border  border-primary rounded-bottom">
+            <div class="col-md-5 d-none d-sm-block">
+            <b><?php echo $subject; ?></b>
+            </div>
+            <div class="col-md-1 d-none d-sm-block">
+            <?php echo $replies; ?>
+            </div>
+            <div class="col-md-1 d-none d-sm-block">
+            <?php echo $views; ?>
+            </div>
+            <div class="col-md-2 d-none d-sm-block">
+            <b><center><?php echo $author; ?></center></b>
+            </div>
+            <div class="col-md-3">
+            <small><b><?php echo $subject; ?></b>&nbsp;
+            by&nbsp;<b><?php echo $username; ?></b></small><br><small style='white-space: nowrap'><b>
+            <?php echo $added; ?></b></small>
+            </div>
+            </div>
+            <?php
+        }
     }
     print("</div></div></div><br>");
 }
 
-function lastpostdetails($lastpostid) {
+function lastpostdetails($lastpostid)
+{
     $post_res = DB::run("SELECT added,topicid,userid FROM forum_posts WHERE id=$lastpostid");
     if ($post_res->rowCount() == 1) {
         $post_arr = $post_res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', "Bad forum last_post");
@@ -289,7 +281,7 @@ function lastpostdetails($lastpostid) {
         $lasttopic = stripslashes(htmlspecialchars($topic_arr['subject']));
         //cut last topic
         $latestleng = 10;
-        $lastpost = "<small><a href='".URLROOT."/forums/viewtopic&amp;topicid=$lasttopicid&amp;page=last#last'><b>" . CutName($lasttopic, $latestleng) . "</b></a> by <a href='".URLROOT."/profile?id=$lastposterid'><b>$lastposter</b></a><br />$lastpostdate</small>";
+        $lastpost = "<small><a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$lasttopicid&amp;page=last#last'><b>" . CutName($lasttopic, $latestleng) . "</b></a> by <a href='" . URLROOT . "/profile?id=$lastposterid'><b>$lastposter</b></a><br />$lastpostdate</small>";
         if ($_SESSION['loggedin'] == true) {
             $a = DB::run("SELECT lastpostread FROM forum_readposts WHERE userid=$_SESSION[id] AND topicid=$lasttopicid")->fetch();
         }

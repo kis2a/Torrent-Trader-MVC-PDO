@@ -51,7 +51,7 @@ class Announce
         if (!$user["passkey"] == $passkey) {
             die(Announce::track("Can NOT find user passkey."));
         }
-        
+
         return $user;
     }
 
@@ -84,13 +84,13 @@ class Announce
         $valid = $sql->rowCount();
         /*
         if ($valid >= 1 && $seeder == 'no') {
-            die(Announce::track("Connection limit exceeded! You may only leech from one location at a time."));
+        die(Announce::track("Connection limit exceeded! You may only leech from one location at a time."));
         }
         if ($valid[0] >= 3 && $seeder == 'yes') {
-            die(Announce::track("Connection limit exceeded!"));
+        die(Announce::track("Connection limit exceeded!"));
         }
-        */
-        $countslot = DB::run("SELECT DISTINCT torrent 
+         */
+        $countslot = DB::run("SELECT DISTINCT torrent
                               FROM peers WHERE userid =? AND seeder=?", [$id, 'no']);
         $slot = $countslot->rowCount();
         if ($slot >= $maxslots) {
@@ -105,7 +105,7 @@ class Announce
         $stmt = DB::run("INSERT INTO peers (connectable, torrent, peer_id, ip, passkey, port, uploaded, downloaded, to_go, started, last_action, seeder, userid, client)
                          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [$connectable, $torrentid, $peer_id, $ip, $passkey, $port, $uploaded, $downloaded, $left, self::datetime(), self::datetime(), $seeder, $userid, $agent]);
     }
-    
+
     public static function UpdateUserAndSnatched($upthis, $downthis, $elapsed, $userid, $torrentid, $freeleech = 0)
     {
         if ($freeleech == 1) {
@@ -116,35 +116,35 @@ class Announce
             DB::run("UPDATE LOW_PRIORITY `snatched` SET `uload` = `uload` + '$upthis', `dload` = `dload` + '$downthis', `utime` = '" . Announce::datetime() . "', `ltime` = `ltime` + '$elapsed' WHERE `tid` = '$torrentid' AND `uid` = '$userid'");
         }
     }
-    
+
     public static function UpdatePeer($ip, $passkey, $port, $uploaded, $downloaded, $left, $agent, $seeder, $torrentid, $peer_id)
     {
         // Count the peers from to_go for seeders/leechers
         $count_peers = DB::run("UPDATE peers SET ip = ?, passkey = ?, port = ?, uploaded = ?, downloaded = ?, to_go = ?, last_action = ?, client = ?, seeder = ? WHERE torrent = ? AND peer_id = ?",
-                               [$ip, $passkey, $port, $uploaded, $downloaded, $left, self::datetime(), $agent, $seeder, $torrentid, $peer_id]);
+            [$ip, $passkey, $port, $uploaded, $downloaded, $left, self::datetime(), $agent, $seeder, $torrentid, $peer_id]);
     }
 
     public static function Event($event, $torrentid, $peerid, $userid, $seeder, $freeleech)
     {
         switch ($event) {
-            
+
             case 'stopped': // If stopped Correctly by user
                 DB::run("DELETE FROM peers WHERE torrent = ? AND peer_id = ?", [$torrentid, $peerid]);
                 break;
-                
+
             case 'completed':
                 DB::run("INSERT INTO completed (userid, torrentid, date) VALUES (?,?,?)", [$userid, $torrentid, self::datetime()]);
                 DB::run("UPDATE LOW_PRIORITY `snatched` SET `completed` = '1' WHERE `tid` = '$torrentid' AND `uid` = '$userid' AND `utime` = '" . self::datetime() . "'");
                 $completed = 1;
                 return $completed;
                 break;
-                
+
             case 'started':
                 if (($seeder == 'no' && $freeleech == 0)) {
                     DB::run("INSERT INTO `snatched` (`uid`, `tid`, `stime`, `utime`) VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE `utime` = ?", [$userid, $torrentid, self::datetime(), self::datetime(), self::datetime()]);
                 }
                 break;
-                
+
             default:
                 // no event so update ???
                 break;
@@ -155,13 +155,12 @@ class Announce
     {
         // Count the peers from to_go for seeders/leechers
         $count_peers = DB::run('SELECT IFNULL(SUM(peers.to_go > 0), 0) AS leech, IFNULL(SUM(peers.to_go = 0), 0) AS seed '
-                             . 'FROM peers '
-                             . "WHERE peers.torrent = ? "
-                             . 'AND peers.last_action >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . (50 + 50) . ' SECOND) '
-                             . 'GROUP BY `peers`.`torrent`', [$id]);
+            . 'FROM peers '
+            . "WHERE peers.torrent = ? "
+            . 'AND peers.last_action >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . (50 + 50) . ' SECOND) '
+            . 'GROUP BY `peers`.`torrent`', [$id]);
         return $count_peers;
     }
-
 
     public static function UpdateTorrent($leechers, $seeders, $completed, $banned, $torrentid)
     {

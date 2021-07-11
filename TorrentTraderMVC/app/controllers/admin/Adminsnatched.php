@@ -7,12 +7,11 @@ class Adminsnatched extends Controller
         $this->session = Auth::user(_MODERATOR, 2);
     }
 
-
     public function index()
     {
         if ($_POST['do'] == 'delete') {
             if (!@count($_POST['ids'])) {
-                Redirect::autolink(URLROOT."/adminsnatched", "Nothing Selected.");
+                Redirect::autolink(URLROOT . "/adminsnatched", "Nothing Selected.");
             }
             $ids = array_map('intval', $_POST['ids']);
             $ids = implode(',', $ids);

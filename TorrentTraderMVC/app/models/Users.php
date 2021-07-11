@@ -28,11 +28,7 @@ class Users
 
     public static function updateUserBits($wantusername, $wantpassword, $secret, $status, $added, $id)
     {
-        $row = DB::run("
-        UPDATE users
-        SET username=?, password=?, secret=?, status=?, added=?
-        WHERE id=?",
-        [$wantusername, $wantpassword, $secret, $status, $added, $id]);
+        $row = DB::run("UPDATE users SET username=?, password=?, secret=?, status=?, added=? WHERE id=?", [$wantusername, $wantpassword, $secret, $status, $added, $id]);
     }
 
     public static function updateUserEditSecret($sec, $id)
@@ -79,8 +75,6 @@ class Users
     public static function updatelogin($token, $id)
     {
         DB::run("UPDATE users SET last_login=?, token=? WHERE id=?", [TimeDate::get_date_time(), $token, $id]);
-            
-       //$this->db->run("UPDATE users SET last_login = ? WHERE id = ? ", [Helper::get_date_time(), $id]);
     }
 
     // Get Email&Id by Email

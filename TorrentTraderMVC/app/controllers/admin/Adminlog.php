@@ -45,4 +45,5 @@ class Adminlog extends Controller
             die;
         }
     }
+
 }

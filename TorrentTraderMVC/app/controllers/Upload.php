@@ -11,20 +11,18 @@ class Upload extends Controller
     {
         // Checks
         if ($_SESSION["can_upload"] == "no") {
-                Redirect::autolink(URLROOT, Lang::T("UPLOAD_NO_PERMISSION"));
+            Redirect::autolink(URLROOT, Lang::T("UPLOAD_NO_PERMISSION"));
         }
         if (UPLOADERSONLY && $_SESSION["class"] < 4) {
-                Redirect::autolink(URLROOT, Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"));
+            Redirect::autolink(URLROOT, Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"));
         }
     }
 
     public function index()
     {
-        // Checks
         self::checks();
         // Announcelist
         $announce_urls = explode(",", strtolower(ANNOUNCELIST));
-        // Template
         $data = [
             'title' => Lang::T("UPLOAD"),
             'announce_urls' => $announce_urls,
@@ -34,7 +32,6 @@ class Upload extends Controller
 
     public function submit()
     {
-        // Checks
         self::checks();
         if (Input::get("takeupload") == "yes") {
             // Check form data.
@@ -191,10 +188,9 @@ class Upload extends Controller
             $filecounts = (int) $filecount;
             // Insert Torrent
             try {
-                DB::run("
-                    INSERT INTO torrents (filename, owner, name, vip, descr, image1, image2, category, tube, added, info_hash, size, numfiles, save_as, announce, external, nfo, torrentlang, anon, last_action, freeleech, imdb)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                    [$fname, $_SESSION['id'], $name, $vip, $descr, $inames[0], $inames[1], $catid, $tube, TimeDate::get_date_time(), $infohash, $torrentsize, $filecounts, $fname, $announce, $external, $nfo, $langid, $anon, TimeDate::get_date_time(), $free, $imdb]);
+                DB::run("INSERT INTO torrents (filename, owner, name, vip, descr, image1, image2, category, tube, added, info_hash, size, numfiles, save_as, announce, external, nfo, torrentlang, anon, last_action, freeleech, imdb)
+                         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        [$fname, $_SESSION['id'], $name, $vip, $descr, $inames[0], $inames[1], $catid, $tube, TimeDate::get_date_time(), $infohash, $torrentsize, $filecounts, $fname, $announce, $external, $nfo, $langid, $anon, TimeDate::get_date_time(), $free, $imdb]);
             } catch (PDOException $e) {
                 rename("$torrent_dir/$fname", "$torrent_dir/duplicate.torrent"); // todo
                 Redirect::to(URLROOT . '/exceptions');

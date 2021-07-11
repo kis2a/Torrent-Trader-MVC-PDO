@@ -1,18 +1,37 @@
-<?php if (MIDDLENAV) {?>
-  <?php Blocks::middle();?>
-  <?php }?>
+<!-- Start response --> 
+<div id='main'>
+<table class="table">
+  <tr>
+  <?php
+  if (LEFTNAV){?>
+    <td class="myBlock-show"  style="width: 50%">
+		<?php Blocks::left();?>
+    </td> <?php
+  }
+  if (RIGHTNAV){ ?>
+    <td class="myBlock-show"  style="width: 50%">
+		<?php Blocks::right(); ?>
+    </td> <?php
+  } ?>
+  </tr>
+  </table>
 </div>
-<!-- END MIDDLE COLUMN -->
-<!-- START RIGHT COLUMN -->
-<?php if (RIGHTNAV) {?>
-  <div class="col-sm-2">
-        <?php Blocks::right();?>
-    </div>
-    <?php }?>
-    <!-- END RIGHT COLUMN -->
+<?php
+
+if (MIDDLENAV) {?>
+  <?php Blocks::middle();
+}?>
+</td>
+
+<?php
+if (RIGHTNAV) {?>
+  <td class="myBlock-hide"  style="width: 15%">
+    <?php Blocks::right();?>
+</td> <?php
+} ?>
+</tr>
+</table>
 </div>
-</div>
-<!-- END MAIN -->
 <!-- Footer -->
 <footer>
 <hr />
@@ -39,7 +58,7 @@
             $('#shoutbox').load('shoutbox/chat');
         }
         setInterval( "updateShouts()", 15000 );
-        updateShouts();
+		updateShouts();
     </script>
 <script>
 function myFunction() {

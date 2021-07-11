@@ -20,7 +20,7 @@ class Friends extends Controller
         $user = $res->fetch(PDO::FETCH_ASSOC);
         $enemy = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$user[id] AND friend='enemy' ORDER BY name");
         $friend = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=$user[id] AND friend='friend' ORDER BY name");
-        
+
         // Template
         $data = [
             'title' => 'Friend Lists',
@@ -38,12 +38,12 @@ class Friends extends Controller
         $targetid = (int) $_GET['targetid'];
         $type = $_GET['type'];
         if (!Validate::Id($targetid)) {
-                Redirect::autolink(URLROOT, "Invalid ID $$targetid.");
+            Redirect::autolink(URLROOT, "Invalid ID $$targetid.");
         }
         if ($type == 'friend') {
             $r = DB::run("SELECT id FROM friends WHERE userid=$_SESSION[id] AND userid=$targetid");
             if ($r->rowCount() == 1) {
-                    Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "User ID $targetid is already in your friends list.");
+                Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "User ID $targetid is already in your friends list.");
             }
             DB::run("INSERT INTO friends (id, userid, friendid, friend) VALUES (0,$_SESSION[id], $targetid, 'friend')");
             Redirect::to(URLROOT . "/friends?id=$_SESSION[id]");
@@ -51,13 +51,13 @@ class Friends extends Controller
         } elseif ($type == 'block') {
             $r = DB::run("SELECT id FROM friends WHERE userid=$_SESSION[id] AND userid=$targetid");
             if ($r->rowCount() == 1) {
-                    Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "User ID $targetid is already in your friends list.");
+                Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "User ID $targetid is already in your friends list.");
             }
             DB::run("INSERT INTO friends (id, userid, friendid, friend) VALUES (0,$_SESSION[id], $targetid, 'enemy')");
-                Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Success");
+            Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Success");
             die();
         } else {
-                Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Unknown type $type");
+            Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Unknown type $type");
         }
     }
 
@@ -68,28 +68,29 @@ class Friends extends Controller
         $type = htmlentities($_GET['type']);
         if ($type != "block") {$typ = "friend from list";} else { $typ = "blocked user from list";}
         if (!Validate::Id($targetid)) {
-                Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Invalid ID $_SESSION[id].");
+            Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Invalid ID $_SESSION[id].");
         }
         if (!$sure) {
             $msg = "<div style='margin-top:10px; margin-bottom:10px' align='center'>Do you really want to delete this $typ? &nbsp; \n" . "<a href=?id=$_SESSION[id]/delete&type=$type&targetid=$targetid&sure=1>Yes</a> | <a href=friends.php>No</a></div>";
-                Redirect::autolink(URLROOT."/profile?id=$targetid", $msg);
+            Redirect::autolink(URLROOT . "/profile?id=$targetid", $msg);
         }
         if ($type == 'friend') {
             $stmt = DB::run("DELETE FROM friends WHERE userid=$_SESSION[id] AND friendid=$targetid AND friend=friend");
             if ($stmt->rowCount() == 0) {
-                    Redirect::autolink(URLROOT."/profile?id=$targetid", "No friend found with ID $targetid");
+                Redirect::autolink(URLROOT . "/profile?id=$targetid", "No friend found with ID $targetid");
             }
             $frag = "friends";
         } elseif ($type == 'block') {
             $stmt = DB::run("DELETE FROM friends WHERE userid=$_SESSION[id] AND friendid=$targetid AND friend=?", ['enemy']);
             if ($stmt->rowCount() == 0) {
-                    Redirect::autolink(URLROOT."/profile?id=$targetid", "No block found with ID $targetid");
+                Redirect::autolink(URLROOT . "/profile?id=$targetid", "No block found with ID $targetid");
             }
             $frag = "blocked";
         } else {
-                Redirect::autolink(URLROOT."/profile?id=$targetid", "Unknown type $type");
+            Redirect::autolink(URLROOT . "/profile?id=$targetid", "Unknown type $type");
         }
-            Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]#$frag", "Success");
+        Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]#$frag", "Success");
         die;
     }
+
 }

@@ -81,7 +81,7 @@ class Peers extends Controller
         $orderby = "ORDER BY id DESC";
         //get sql info
         if ($count) {
-            list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT."/profile?id=$id&amp;");
+            list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT . "/profile?id=$id&amp;");
             $res = DB::run("SELECT torrents.id, torrents.category, torrents.leechers, torrents.imdb, torrents.tube, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name AS cat_name, categories.parent_cat AS cat_parent, categories.image AS cat_pic, users.username, users.privacy, torrents.anon, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.announce FROM torrents LEFT JOIN categories ON category = categories.id LEFT JOIN users ON torrents.owner = users.id WHERE owner = $id $orderby $limit");
         } else {
             unset($res);
@@ -174,25 +174,25 @@ class Peers extends Controller
     public function dead()
     {
         if ($this->session["control_panel"] != "yes") {
-                Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
+            Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         $page = (int) $_GET["page"];
         $perpage = 50;
         $res2 = DB::run("SELECT COUNT(*) FROM torrents WHERE banned = 'no' AND seeders < 1");
         $row2 = $res2->fetch(PDO::FETCH_LAZY);
         $count = $row2[0];
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT."/peers/dead&amp;");
+        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT . "/peers/dead&amp;");
         $res = DB::run("SELECT torrents.id, torrents.name, torrents.owner, torrents.external, torrents.size, torrents.seeders, torrents.leechers, torrents.times_completed, torrents.added, torrents.last_action, users.username FROM torrents LEFT JOIN users ON torrents.owner = users.id WHERE torrents.banned = 'no' AND torrents.seeders < 1 ORDER BY torrents.added DESC $limit");
-    
+
         if ($_POST["do"] == "delete") {
             if (!@count($_POST["torrentids"])) {
-                Redirect::autolink(URLROOT."/peers/dead", "You must select at least one torrent.");
+                Redirect::autolink(URLROOT . "/peers/dead", "You must select at least one torrent.");
             }
             foreach ($_POST["torrentids"] as $id) {
                 deletetorrent(intval($id));
-                Logs::write("<a href=".URLROOT."/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a>deleted the torrent ID : [<b>$id</b>]of the page: <i><b>Dead Torrents </b></i>");
+                Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a>deleted the torrent ID : [<b>$id</b>]of the page: <i><b>Dead Torrents </b></i>");
             }
-            Redirect::autolink(URLROOT."/peers/dead", "The selected torrent has been successfully deleted.");
+            Redirect::autolink(URLROOT . "/peers/dead", "The selected torrent has been successfully deleted.");
         }
 
         if ($count < 1) {
@@ -202,11 +202,12 @@ class Peers extends Controller
         $data = [
             'res' => $res,
             'title' => $title,
-             'count' => $count,
-             'perpage' => $perpage,
-             'pagertop' => $pagertop,
+            'count' => $count,
+            'perpage' => $perpage,
+            'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
         ];
         View::render('peers/dead', $data, 'user');
     }
+
 }

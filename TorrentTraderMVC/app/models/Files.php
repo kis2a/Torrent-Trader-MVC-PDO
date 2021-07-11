@@ -6,4 +6,5 @@ class Files
     {
         DB::run("INSERT INTO `files` (`torrent`, `path`, `filesize`) VALUES (?, ?, ?)", [$id, $name, $size]);
     }
+
 }

@@ -18,19 +18,23 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
     <link href="<?php echo URLROOT; ?>/assets/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- TT Custom CSS, any edits must go here-->
     <link href="<?php echo URLROOT; ?>/assets/themes/default/customstyle.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css">
   </head>
 <body>
+  
+  <div class="container-fluid" style="padding-top: 10px;">
+
+  <div class="col-sm-12">
   <?php require APPROOT . '/views/inc/default/navbar.php'; ?>
-<!-- START MAIN COLUMN -->
-<div class="container-fluid" style="padding-top: 10px;">
-  <div class="row">
-  <!-- START LEFT COLUMN -->
-  <?php if (LEFTNAV) {?>
-    <div class="col-sm-2 d-none d-sm-block sidenav">
+  </div>
+
+<table class="table">
+<tr>
+<?php
+if (LEFTNAV) { ?>
+<th class="myBlock-hide" style="width: 15%">
   <?php Blocks::left();?>
-     </div>
-  <?php }?>
-  <!-- END LEFT COLUMN -->
-  <!-- START MIDDLE COLUMN -->
-  <div class="col-sm-<?php echo Style::size() ?>">
+</th> <?php
+} ?>
+
+<th style="width: 70%">

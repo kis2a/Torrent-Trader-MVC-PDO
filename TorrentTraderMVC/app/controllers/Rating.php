@@ -7,7 +7,7 @@ class Rating extends Controller
     }
 
     public function index()
-    { 
+    {
         $id = (int) Input::get("id");
         if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT . "//torrent?id=$id", Lang::T("THATS_NOT_A_VALID_ID"));
@@ -26,7 +26,8 @@ class Rating extends Controller
                 }
             }
             DB::run("UPDATE torrents SET numratings = numratings + 1, ratingsum = ratingsum + $rating WHERE id = $id");
-            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("RATING_THANK") . "<br /><br /><a href='".URLROOT."/torrent?id=$id'>" . Lang::T("BACK_TO_TORRENT") . "</a>");
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("RATING_THANK") . "<br /><br /><a href='" . URLROOT . "/torrent?id=$id'>" . Lang::T("BACK_TO_TORRENT") . "</a>");
         }
     }
+
 }

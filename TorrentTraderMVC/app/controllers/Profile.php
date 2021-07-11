@@ -82,7 +82,7 @@ class Profile extends Controller
     {
         global $tzs;
         $id = (int) Input::get("id");
-        
+
         if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
             Redirect::autolink(URLROOT, Lang::T("You dont have permission"));
         }
@@ -97,8 +97,8 @@ class Profile extends Controller
         //Teams
         $teams = Team::dropDownTeams($user['team']);
         $gender = "<option value='Male'" . ($user['gender'] == "Male" ? " selected='selected'" : "") . ">" . Lang::T("MALE") . "</option>\n"
-                . "<option value='Female'" . ($user['gender'] == "Female" ? " selected='selected'" : "") . ">" . Lang::T("FEMALE") . "</option>\n";
-        
+        . "<option value='Female'" . ($user['gender'] == "Female" ? " selected='selected'" : "") . ">" . Lang::T("FEMALE") . "</option>\n";
+
         $user1 = Users::getAll($id);
         $cardheader = sprintf(Lang::T("USER_DETAILS_FOR"), Users::coloredname($user["username"]));
         $data = [
@@ -152,7 +152,7 @@ class Profile extends Controller
             $db->run("UPDATE users
                        SET avatar=?, title=?, signature=?, stylesheet=?, client=?, age=?, gender=?, country=?, team=?, hideshoutbox=?, acceptpms=?, privacy=?, notifs=?, tzoffset=?
                        WHERE id =?", [$avatar, $title, $signature, $stylesheet, $client, $age, $gender, $country, $teams, $hideshoutbox, $acceptpms, $privacy, $notifs, $timezone, $id]);
-            Redirect::autolink(URLROOT."/profile/edit?id=$id", Lang::T("User Edited"));
+            Redirect::autolink(URLROOT . "/profile/edit?id=$id", Lang::T("User Edited"));
         }
     }
 
@@ -160,7 +160,7 @@ class Profile extends Controller
     {
         $id = (int) Input::get("id");
         if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
-            Redirect::autolink(URLROOT."/profile?id=$id", Lang::T("You dont have permission"));
+            Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("You dont have permission"));
         }
         $user1 = Users::getUserById($id);
         $user = Users::getAll($id);
@@ -177,7 +177,7 @@ class Profile extends Controller
     {
         $id = (int) $_GET["id"];
         if ($this->session['class'] < 5 && $id != $this->session['id']) {
-            Redirect::autolink(URLROOT."/profile?id=$id", Lang::T("You dont have permission"));
+            Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("You dont have permission"));
         }
         if (Input::exist()) {
             $downloaded = strtobytes(Input::get("downloaded"));
@@ -197,7 +197,7 @@ class Profile extends Controller
             $bonus = Input::get("bonus");
 
             if (!Validate::Email($email)) {
-                Redirect::autolink(URLROOT."/profile?id=$id", Lang::T("EMAIL_ADDRESS_NOT_VALID"));
+                Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("EMAIL_ADDRESS_NOT_VALID"));
             }
 
             //change user class
@@ -205,9 +205,9 @@ class Profile extends Controller
             $uc = $arr['class'];
             // skip if class is same as current
             if ($uc != $class && $uc > $_SESSION['class']) {
-                Redirect::autolink(URLROOT."/admin?id=$id", Lang::T("YOU_CANT_DEMOTE_YOURSELF"));
+                Redirect::autolink(URLROOT . "/admin?id=$id", Lang::T("YOU_CANT_DEMOTE_YOURSELF"));
             } elseif ($uc == $_SESSION['class']) {
-                Redirect::autolink(URLROOT."/admin?id=$id", Lang::T("YOU_CANT_DEMOTE_SOMEONE_SAME_LVL"));
+                Redirect::autolink(URLROOT . "/admin?id=$id", Lang::T("YOU_CANT_DEMOTE_SOMEONE_SAME_LVL"));
             } else {
                 DB::run("UPDATE users SET class=? WHERE id=?", [$class, $id]);
                 // Notify user
@@ -239,7 +239,7 @@ class Profile extends Controller
                     Logs::write($this->session['username'] . " has changed password for user: $id");
                 }
             }
-            Redirect::autolink(URLROOT."/profile?id=$id", Lang::T("User Edited"));
+            Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("User Edited"));
             die;
         }
     }
@@ -249,21 +249,21 @@ class Profile extends Controller
         $userid = (int) Input::get("userid");
         $username = Input::get("username");
         $delreason = Input::get("delreason");
-        if ($this->session["delete_users"] != "yes" ) {
-            Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("TASK_ADMIN"));
+        if ($this->session["delete_users"] != "yes") {
+            Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
         if (!Validate::Id($userid)) {
-            Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("INVALID_USERID"));
+            Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("INVALID_USERID"));
         }
         if ($this->session["id"] == $userid) {
-            Redirect::autolink(URLROOT."/profile?id=$userid", "You cannot delete yourself.");
+            Redirect::autolink(URLROOT . "/profile?id=$userid", "You cannot delete yourself.");
         }
         if (!$delreason) {
-            Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("MISSING_FORM_DATA"));
+            Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("MISSING_FORM_DATA"));
         }
         Users::deleteuser($userid);
         Logs::write($this->session['username'] . " has deleted account: $username");
-        Redirect::autolink(URLROOT."/profile?id=$userid", Lang::T("USER_DELETE"));
+        Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("USER_DELETE"));
         die;
     }
 

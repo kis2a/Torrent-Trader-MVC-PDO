@@ -68,7 +68,7 @@ class Adminbackup extends Controller
         $title = "Back up";
         require APPROOT . '/views/admin/header.php';
         Redirect::autolink(URLROOT . '/adminbackup', "Selected Backup Files deleted");
-        
+
         if ($delete_error) {
             echo ("<br><center><b>Has encountered a problem during the deletion</b></center><br><br><br>");
         } else {
@@ -209,4 +209,5 @@ class Adminbackup extends Controller
             fclose($handle);
         }
     }
+
 }

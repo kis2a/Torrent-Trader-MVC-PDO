@@ -97,8 +97,6 @@ class Adminforum extends Controller
         Redirect::autolink(URLROOT . "/adminforum", "<center><b>" . Lang::T("CP_UPDATE_COMPLETED") . "</b></center>");
     }
 
-    /////////////// FORUM BITS /////////////////////////
-
     public function addforum()
     {
         $error_ac = "";

@@ -119,8 +119,6 @@ class TimeDate
             $date = new DateTime($timestamp, new DateTimeZone("UTC"));
             $ZONE = $tzs[$_SESSION["tzoffset"]][1] ?? "Europe/London";
             $date->setTimezone(new DateTimeZone($ZONE));
-            //$date->setTimezone(new DateTimeZone($_SESSION ? $tzs[$_SESSION["tzoffset"]][1] : "Europe/London"));
-            //$date->setTimezone(new DateTimeZone($tzs[$_SESSION["tzoffset"]][1] ?? "Europe/London"));
             return self::sql_timestamp_to_unix_timestamp($date->format('Y-m-d H:i:s'));
         }
         if (!is_numeric($timestamp)) {

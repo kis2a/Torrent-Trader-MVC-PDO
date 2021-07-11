@@ -57,4 +57,5 @@ class Likes extends Controller
         DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'forum']);
         Redirect::autolink(URLROOT."/forums/viewtopic&topicid=$id", "Thanks you for you appreciation.");
     }
+
 }

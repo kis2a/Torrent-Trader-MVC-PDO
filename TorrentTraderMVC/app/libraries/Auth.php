@@ -89,7 +89,7 @@ class Auth
     public static function isStaff()
     {
         if (!$_SESSION['class'] > 5 || $_SESSION["control_panel"] != "yes") {
-                Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
+            Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
     }
 

@@ -115,4 +115,5 @@ class Adminshoutbox extends Controller
         ];
         View::render('shoutbox/admin/clear', $data, 'admin');
     }
+
 }

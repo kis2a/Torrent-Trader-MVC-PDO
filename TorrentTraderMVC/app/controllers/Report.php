@@ -20,14 +20,14 @@ class Report extends Controller
 
         if ($takeuser) {
             if (empty($takereason)) {
-                Redirect::autolink(URLROOT."/report/user?user=$user", Lang::T("YOU_MUST_ENTER_A_REASON"));
+                Redirect::autolink(URLROOT . "/report/user?user=$user", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
             $res = Reports::selectReport($_SESSION['id'], $takeuser, 'user');
             if ($res->rowCount() == 0) {
                 Reports::insertReport($_SESSION['id'], $takeuser, 'user', $takereason);
-                Redirect::autolink(URLROOT."/profile?id=$user", "User: $takeuser, Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
+                Redirect::autolink(URLROOT . "/profile?id=$user", "User: $takeuser, Reason: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
-                Redirect::autolink(URLROOT."/profile?id=$user", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " user $takeuser");
+                Redirect::autolink(URLROOT . "/profile?id=$user", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " user $takeuser");
             }
         }
 
@@ -42,12 +42,12 @@ class Report extends Controller
             $data = [
                 'title' => $title,
                 'username' => $arr['username'],
-                'user' => $user
+                'user' => $user,
             ];
             View::render('report/user', $data, 'user');
             die();
         } else {
-            Redirect::autolink(URLROOT."/profile?id=$user", Lang::T("MISSING_INFO"));
+            Redirect::autolink(URLROOT . "/profile?id=$user", Lang::T("MISSING_INFO"));
         }
     }
 
@@ -59,21 +59,21 @@ class Report extends Controller
 
         if (($taketorrent != "") && ($takereason != "")) {
             if (!$takereason) {
-                Redirect::autolink(URLROOT."/report/torrent?torrent=$torrent", Lang::T("YOU_MUST_ENTER_A_REASON"));
+                Redirect::autolink(URLROOT . "/report/torrent?torrent=$torrent", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
             $res = Reports::selectReport($_SESSION['id'], $taketorrent, 'torrent');
             if ($res->rowCount() == 0) {
                 Reports::insertReport($_SESSION['id'], $taketorrent, 'torrent', $takereason);
-                Redirect::autolink(URLROOT."/torrent?id=$torrent", "Torrent with id: $taketorrent, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
+                Redirect::autolink(URLROOT . "/torrent?id=$torrent", "Torrent with id: $taketorrent, Reason for report: " . htmlspecialchars($takereason) . "<p>Successfully Reported</p>");
             } else {
-                Redirect::autolink(URLROOT."/torrent?id=$torrent", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $taketorrent");
+                Redirect::autolink(URLROOT . "/torrent?id=$torrent", Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $taketorrent");
             }
         }
 
         if ($torrent != "") {
             $res = DB::run("SELECT name FROM torrents WHERE id=?", [$torrent]);
             if ($res->rowCount() == 0) {
-                Redirect::autolink(URLROOT."/torrent?id=$torrent", 'Invalid TorrentID');
+                Redirect::autolink(URLROOT . "/torrent?id=$torrent", 'Invalid TorrentID');
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
             $title = 'Report';
@@ -81,12 +81,12 @@ class Report extends Controller
             $data = [
                 'title' => $title,
                 'name' => $arr['name'],
-                'torrent' => $torrent
+                'torrent' => $torrent,
             ];
             View::render('report/torrent', $data, 'user');
             die();
         } else {
-            Redirect::autolink(URLROOT."/torrent?id=$torrent", Lang::T("MISSING_INFO"));
+            Redirect::autolink(URLROOT . "/torrent?id=$torrent", Lang::T("MISSING_INFO"));
         }
     }
 
@@ -94,7 +94,7 @@ class Report extends Controller
     {
         $takecomment = (int) Input::get("comment");
         $takereason = Input::get("reason");
-        $comment = (int) Input::get("comment"); 
+        $comment = (int) Input::get("comment");
         $type = Input::get("type");
         if ($type == "req") {
             $whattype = 'req';
@@ -103,7 +103,7 @@ class Report extends Controller
         }
         if (($takecomment != "") && ($takereason != "")) {
             if (!$takereason) {
-                Redirect::autolink(URLROOT."/report/comment?comment=$comment", Lang::T("YOU_MUST_ENTER_A_REASON"));
+                Redirect::autolink(URLROOT . "/report/comment?comment=$comment", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
             $res = Reports::selectReport($_SESSION['id'], $takecomment, $whattype);
             if ($res->rowCount() == 0) {
@@ -127,7 +127,7 @@ class Report extends Controller
                 'type' => $type,
                 'title' => $title,
                 'text' => $arr['text'],
-                'comment' => $comment
+                'comment' => $comment,
             ];
             View::render('report/comment', $data, 'user');
             die();
@@ -174,7 +174,7 @@ class Report extends Controller
             View::render('report/forum', $data, 'user');
             die();
         }
-        
+
         Redirect::autolink(URLROOT, Lang::T("MISSING_INFO"));
     }
 

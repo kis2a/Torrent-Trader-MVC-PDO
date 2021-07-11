@@ -105,7 +105,7 @@ class Import extends Controller
 
                     copy("$dir/$files[$i]", "$torrent_dir/$id.torrent");
 
-                     //EXTERNAL SCRAPE
+                    //EXTERNAL SCRAPE
                     if ($external == 'yes' && UPLOADSCRAPE) {
                         Tscraper::ScrapeId($id);
                     }

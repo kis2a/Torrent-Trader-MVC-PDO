@@ -66,7 +66,6 @@ class Request extends Controller
         }
     }
 
-
     public function edit()
     {
         if ($this->session["class"] < _MODERATOR) {
@@ -117,14 +116,13 @@ class Request extends Controller
                 if ($num > 0) {
                     $res2 = DB::run("DELETE FROM requests WHERE id IN ($del_req)");
                     $res = DB::run("DELETE FROM addedrequests WHERE requestid IN ($del_req)");
-                    Redirect::autolink(URLROOT . "/request", "Request ID $del_req Deleted", URLROOT."/request");
+                    Redirect::autolink(URLROOT . "/request", "Request ID $del_req Deleted", URLROOT . "/request");
                 } else {
                     Redirect::autolink(URLROOT . "/request", "No Permission to delete Request ID $del_req");
                 }
             }
         }
     }
-
 
     public function makereq()
     {
@@ -218,7 +216,7 @@ class Request extends Controller
         $msg2 = "Your Request Filled";
         DB::run("UPDATE requests SET filled = '$filledurl', filledby = $_SESSION[id] WHERE id = $requestid");
         DB::run("INSERT INTO messages (poster, sender, receiver, added, subject, msg) VALUES (?,?,?,?,?,?)", [0, 0, $arr['userid'], TimeDate::get_date_time(), $msg2, $msg]);
-        Redirect::autolink(URLROOT . "/request", "Request $requestid was successfully filled with <a href=$filledurl>$filledurl</a>.  User <a href=".URLROOT."/profile?id=$arr[userid]><b>$arr[username]</b></a> automatically PMd.  <br>Filled that accidently? No worries, <a href=".URLROOT."/request/reqreset?requestid=$requestid>CLICK HERE</a> to mark the request as unfilled.  Do <b>NOT</b> follow this link unless you are sure there is a problem.");
+        Redirect::autolink(URLROOT . "/request", "Request $requestid was successfully filled with <a href=$filledurl>$filledurl</a>.  User <a href=" . URLROOT . "/profile?id=$arr[userid]><b>$arr[username]</b></a> automatically PMd.  <br>Filled that accidently? No worries, <a href=" . URLROOT . "/request/reqreset?requestid=$requestid>CLICK HERE</a> to mark the request as unfilled.  Do <b>NOT</b> follow this link unless you are sure there is a problem.");
     }
 
     public function votesview()
@@ -229,7 +227,7 @@ class Request extends Controller
             $data = [
                 'title' => Lang::T('REQUESTS'),
                 'requestid' => $requestid,
-                'res' => $res
+                'res' => $res,
             ];
             View::render('request/voteview', $data, 'user');
         } else {
@@ -249,7 +247,7 @@ class Request extends Controller
         } else {
             DB::run("UPDATE requests SET hits = hits + 1 WHERE id=$requestid");
             DB::run("INSERT INTO addedrequests VALUES(0, $requestid, $userid)");
-            Redirect::autolink(URLROOT . "/request", "<p>Successfully voted for request $requestid</p><p>Back to <a href=".URLROOT."/request><b>requests</b></a></p>");
+            Redirect::autolink(URLROOT . "/request", "<p>Successfully voted for request $requestid</p><p>Back to <a href=" . URLROOT . "/request><b>requests</b></a></p>");
         }
     }
 

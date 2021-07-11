@@ -93,21 +93,21 @@ class Blocks
 
     public static function getblock($enabled)
     {
-        $isenabled = DB::run("SELECT named, name, description, position, sort 
+        $isenabled = DB::run("SELECT named, name, description, position, sort
                  FROM blocks WHERE enabled=$enabled ORDER BY position, sort");
         return $isenabled;
     }
 
     public static function getposition($position)
     {
-        $getposition = DB::run("SELECT position FROM blocks 
+        $getposition = DB::run("SELECT position FROM blocks
                                 WHERE position='left' AND enabled=1")->rowCount() + 1;
         return $getposition;
     }
 
     public static function delete($delthis)
     {
-        DB::run("DELETE FROM blocks WHERE id=?" [$delthis]);
+        DB::run("DELETE FROM blocks WHERE id=?"[$delthis]);
     }
 
     public static function update($position, $sort, $id)
@@ -117,7 +117,7 @@ class Blocks
 
     public static function move($id)
     {
-        $move = DB::run("SELECT position, sort, id FROM blocks WHERE id = ?" [$id]);
+        $move = DB::run("SELECT position, sort, id FROM blocks WHERE id = ?"[$id]);
         return $move;
     }
 

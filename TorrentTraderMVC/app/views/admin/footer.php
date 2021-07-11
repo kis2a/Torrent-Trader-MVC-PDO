@@ -1,17 +1,29 @@
-</div>
-<!-- END MIDDLE COLUMN -->
-<!-- START RIGHT COLUMN -->
-    <?php if (RIGHTNAV) {?>
-<div class="col-sm-2">
-<?php include APPROOT.'/views/admin/right.php';?>
-</div>
-    <?php }?>
-<!-- END RIGHT COLUMN -->
-</div>
-</div>
-<!-- END MAIN -->
+<!-- Start response --> 
+<div id='main'>
+<table class="table">
+  <tr>
 
-<!-- Footer -->
+    <td class="myBlock-show"  style="width: 15%">
+		<?php require APPROOT . '/views/admin/left.php'; ?>
+    </td>
+    
+    <td class="myBlock-show"  style="width: 15%">
+		<?php require APPROOT . '/views/admin/right.php'; ?>
+    </td>
+  </tr>
+  </table>
+</div>
+
+</td>
+
+  <td class="myBlock-hide"  style="width: 15%">
+  <?php require APPROOT . '/views/admin/right.php'; ?>
+</td>
+
+</tr>
+</table>
+</div>
+
 <footer>
 <hr />
   <ul class="list-unstyled text-center">

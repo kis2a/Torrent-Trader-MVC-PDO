@@ -27,9 +27,9 @@ class Tscraper
         if ($seeders !== null) {
             // Update the Torrent
             DB::run(" UPDATE torrents
-                              SET leechers = ?, seeders = ?, times_completed = ?, last_action = ?, visible = ?
-                              WHERE id = ?",
-                              [$leechers, $seeders, $completed, TimeDate::get_date_time(), 'yes', $id]
+                    SET leechers = ?, seeders = ?, times_completed = ?, last_action = ?, visible = ?
+                    WHERE id = ?",
+                    [$leechers, $seeders, $completed, TimeDate::get_date_time(), 'yes', $id]
             );
         } else {
             // Its Dead :(

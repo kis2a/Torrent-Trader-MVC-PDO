@@ -12,7 +12,6 @@ class Warnings
     {
         DB::run("INSERT INTO warnings (userid, reason, added, expiry, warnedby, type) 
         VALUES (?,?,?,?,?,?)", [$userid, $reason, $timenow, $expiretime, $warnedby, $type]);
-        //return $user;
     }
 
 }

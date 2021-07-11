@@ -62,4 +62,5 @@ class Adminbonus extends Controller
         ];
         View::render('bonus/admin/seedbonuschange', $data, 'admin');
     }
+
 }

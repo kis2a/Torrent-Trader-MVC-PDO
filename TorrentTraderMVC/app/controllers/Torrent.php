@@ -10,18 +10,18 @@ class Torrent extends Controller
     {
         //check permissions
         if ($_SESSION["view_torrents"] != "yes") {
-                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         $id = (int) $_GET["id"];
         if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
+            Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
         $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.tube, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.imdb, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, torrents.vip, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
         $row = $res->fetch(PDO::FETCH_ASSOC);
         //DECIDE IF TORRENT EXISTS
         if (!$row || ($row["banned"] == "yes" && $_SESSION["edit_torrents"] == "no")) {
-                Redirect::autolink(URLROOT, Lang::T("TORRENT_NOT_FOUND"));
+            Redirect::autolink(URLROOT, Lang::T("TORRENT_NOT_FOUND"));
         }
         // vip
         $vip = $row["vip"];
@@ -43,22 +43,22 @@ class Torrent extends Controller
             Redirect::to(URLROOT . "/torrent?id=$id");
             die;
         }
-		
-		// scraper
+
+        // scraper
         $now = TimeDate::gmtime();
         $ts = $row['last_action'];
         if ($ts + 172800 > $now) {
             $scraper = "
             <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
-            <form action='".URLROOT."/scrape/external?id=".$id."' method='post'>
-            <button type='submit' class='btn btn-warning center-block' value=''>". Lang::T("Update Stats")."</button>
+            <form action='" . URLROOT . "/scrape/external?id=" . $id . "' method='post'>
+            <button type='submit' class='btn btn-warning center-block' value=''>" . Lang::T("Update Stats") . "</button>
             </form>";
         } else {
             $scraper = "<br>
             <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
             <font  size='4' color=#ff9900><b>Stats Recently Updated</b></font>";
         }
-		
+
         if ($_SESSION["id"] == $row["owner"] || $_SESSION["edit_torrents"] == "yes") {
             $owned = 1;
         } else {
@@ -85,7 +85,7 @@ class Torrent extends Controller
             'speed' => $totalspeed,
             'id' => $id,
             'selecttor' => $torrent1,
-			'scraper' => $scraper,
+            'scraper' => $scraper,
         ];
         View::render('torrent/read', $data, 'user');
     }
@@ -94,16 +94,16 @@ class Torrent extends Controller
     {
         $id = (int) $_REQUEST["id"];
         if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
+            Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
         }
         $row = DB::run("SELECT `owner` FROM `torrents` WHERE id=?", [$id])->fetch();
         if ($_SESSION["edit_torrents"] == "no" && $_SESSION['id'] != $row['owner']) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("NO_TORRENT_EDIT_PERMISSION"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("NO_TORRENT_EDIT_PERMISSION"));
         }
         //GET DATA FROM DB
         $row = DB::run("SELECT * FROM torrents WHERE id =?", [$id])->fetch();
         if (!$row) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
         }
         //UPDATE CATEGORY DROPDOWN
         $catdropdown = "<select name=\"type\">\n";
@@ -150,16 +150,16 @@ class Torrent extends Controller
     {
         $id = (int) $_GET["id"];
         if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
+            Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
         }
         $row = DB::run("SELECT `owner` FROM `torrents` WHERE id=?", [$id])->fetch();
         if ($_SESSION["edit_torrents"] == "no" && $_SESSION['id'] != $row['owner']) {
-                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_EDIT_PERMISSION"));
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_EDIT_PERMISSION"));
         }
         //GET DATA FROM DB
         $row = DB::run("SELECT * FROM torrents WHERE id =?", [$id])->fetch();
         if (!$row) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
         }
         $torrent_dir = TORRENTDIR;
         $nfo_dir = NFODIR;
@@ -173,7 +173,7 @@ class Torrent extends Controller
                     die("No data " . var_dump($_FILES));
                 }
                 if ($nfofile['size'] > 65535) {
-                        Redirect::autolink(URLROOT . "/torrent?id=$id", "NFO is too big! Max 65,535 bytes.");
+                    Redirect::autolink(URLROOT . "/torrent?id=$id", "NFO is too big! Max 65,535 bytes.");
                 }
                 $nfofilename = $nfofile['tmp_name'];
                 if (@is_uploaded_file($nfofilename) && @filesize($nfofilename) > 0) {
@@ -255,24 +255,24 @@ class Torrent extends Controller
             Logs::write("Torrent $id (" . htmlspecialchars($_POST["name"]) . ") was edited by $_SESSION[username]");
             Redirect::to(URLROOT . "/torrent?id=$id");
             die();
-        } //END SAVE TO DB
+        }
     }
 
     public function delete()
     {
         $id = (int) $_GET["id"];
         if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("INVALID_ID"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("INVALID_ID"));
         }
         $row = DB::run("SELECT `owner` FROM `torrents` WHERE id=?", [$id])->fetch();
         if ($_SESSION["delete_torrents"] == "no" && $_SESSION['id'] != $row['owner']) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("NO_TORRENT_DELETE_PERMISSION"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("NO_TORRENT_DELETE_PERMISSION"));
         }
         $owner = $row['owner'];
         //GET DATA FROM DB
         $row = DB::run("SELECT * FROM torrents WHERE id =?", [$id])->fetch();
         if (!$row) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
         }
         $torrname = $row['owner'];
         $char1 = 55;
@@ -294,10 +294,10 @@ class Torrent extends Controller
             $delreason = $_POST["delreason"];
             $torrentname = $_POST["torrentname"];
             if (!Validate::Id($torrentid)) {
-                    Redirect::autolink(URLROOT . "/torrent/delete?id=$torrentid", Lang::T("INVALID_TORRENT_ID"));
+                Redirect::autolink(URLROOT . "/torrent/delete?id=$torrentid", Lang::T("INVALID_TORRENT_ID"));
             }
             if (!$delreason) {
-                    Redirect::autolink(URLROOT . "/torrent/delete?id=$torrentid", Lang::T("MISSING_FORM_DATA"));
+                Redirect::autolink(URLROOT . "/torrent/delete?id=$torrentid", Lang::T("MISSING_FORM_DATA"));
             }
             deletetorrent($torrentid);
             DB::run("SELECT `owner` FROM `torrents` WHERE id=?", [$torrentid])->fetch();
@@ -308,7 +308,7 @@ class Torrent extends Controller
                          VALUES(?,?,?,?,?,?,?)",
                     [0, $torrentid, TimeDate::get_date_time(), 'Your torrent ' . $torrentname . ' has been deleted by ' . $_SESSION['username'], $torrentname . ' was deleted by ' . $_SESSION['username'] . ' Reason: $delreason', 'yes', 'in']);
             }
-                Redirect::autolink(URLROOT . "/torrent?id=$torrentid",  htmlspecialchars($torrentname) . " " . Lang::T("HAS_BEEN_DEL_DB"));
+            Redirect::autolink(URLROOT . "/torrent?id=$torrentid", htmlspecialchars($torrentname) . " " . Lang::T("HAS_BEEN_DEL_DB"));
             die;
         }
     }
@@ -317,11 +317,11 @@ class Torrent extends Controller
     {
         $id = (int) $_GET["id"];
         if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
+            Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
         //check permissions
         if ($_SESSION["view_torrents"] == "no") {
-                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
         $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
@@ -337,7 +337,7 @@ class Torrent extends Controller
             'id' => $id,
             'name' => $row["name"],
             'size' => $row["size"],
-            'fres' => $fres
+            'fres' => $fres,
         ];
         View::render('torrent/filelist', $data, 'user');
     }
@@ -346,10 +346,10 @@ class Torrent extends Controller
     {
         $id = (int) $_GET["id"];
         if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("THATS_NOT_A_VALID_ID"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("THATS_NOT_A_VALID_ID"));
         }
         if ($_SESSION["view_torrents"] == "no") {
-                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
         $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
@@ -365,16 +365,16 @@ class Torrent extends Controller
     public function reseed()
     {
         if ($_SESSION["view_torrents"] == "no") {
-                Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         $id = (int) $_GET["id"];
         if (isset($_COOKIE["reseed$id"])) {
-                Redirect::autolink(URLROOT, Lang::T("RESEED_ALREADY_ASK"));
+            Redirect::autolink(URLROOT, Lang::T("RESEED_ALREADY_ASK"));
         }
         $res = DB::run("SELECT `owner`, `banned`, `external` FROM `torrents` WHERE `id` = $id");
         $row = $res->fetch(PDO::FETCH_ASSOC);
         if (!$row || $row["banned"] == "yes" || $row["external"] == "yes") {
-                Redirect::autolink(URLROOT, Lang::T("TORRENT_NOT_FOUND"));
+            Redirect::autolink(URLROOT, Lang::T("TORRENT_NOT_FOUND"));
         }
         $res2 = DB::run("SELECT users.id FROM completed LEFT JOIN users ON completed.userid = users.id WHERE users.enabled = 'yes' AND users.status = 'confirmed' AND completed.torrentid = $id");
         $message = sprintf(Lang::T('RESEED_MESSAGE'), $_SESSION['username'], URLROOT, $id);
@@ -385,7 +385,7 @@ class Torrent extends Controller
             DB::run("INSERT INTO `messages` (`subject`, `sender`, `receiver`, `added`, `msg`) VALUES ('Torrent Reseed Request', '" . $_SESSION['id'] . "', '" . $row['owner'] . "', '" . TimeDate::get_date_time() . "', " . sqlesc($message) . ")");
         }
         setcookie("reseed$id", $id, time() + 86400, '/');
-            Redirect::autolink(URLROOT, Lang::T("RESEED_SENT"));
+        Redirect::autolink(URLROOT, Lang::T("RESEED_SENT"));
     }
 
 }

@@ -357,15 +357,12 @@ class Forums extends Controller
     public function viewtopic()
     {
         $this->validForumUser();
-        $postsperpage = 20;
-        $maxsubjectlength = 50;
         $topicid = $_GET["topicid"];
         $page = $_GET["page"];
+
         if (!Validate::Id($topicid)) {
                 Redirect::autolink(URLROOT . '/forums', "Topic Not Valid");
         }
-
-        $userid = $_SESSION["id"];
 
         // Get topic info
         $res = DB::run("SELECT * FROM forum_topics WHERE id=?", [$topicid]);
@@ -374,91 +371,42 @@ class Forums extends Controller
         $subject = stripslashes($arr["subject"]);
         $sticky = $arr["sticky"] == "yes";
         $forumid = $arr["forumid"];
+        // Update Topic Views
+        $views = $arr['views'];
+        $new_views = $views + 1;
+        DB::run("UPDATE forum_topics SET views = $new_views WHERE id=$topicid");
 
         // Check if user has access to this forum
-        $res2 = DB::run("SELECT minclassread, guest_read FROM forum_forums WHERE id=?", [$forumid]);
-        $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
+        $arr2 = Forum::canRead($forumid);
         if (!$arr2 || $_SESSION["class"] < $arr2["minclassread"] && $arr2["guest_read"] == "no") {
                 Redirect::autolink(URLROOT . '/forums', "You do not have access to the forum this topic is in.");
         }
-
-        // Update Topic Views
-        $viewsq = DB::run("SELECT views FROM forum_topics WHERE id=$topicid");
-        $viewsa = $viewsq->fetch(PDO::FETCH_LAZY);
-        $views = $viewsa[0];
-        $new_views = $views + 1;
-        $uviews = DB::run("UPDATE forum_topics SET views = $new_views WHERE id=$topicid");
-        // End
-
-        // Get forum
-        $res = DB::run("SELECT * FROM forum_forums WHERE id=?", [$forumid]);
-        $arr = $res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', "Forum is empty.");
-        $forum = stripslashes($arr["name"]);
-
-        // Get post count
-        $res = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
-        $arr = $res->fetch(PDO::FETCH_LAZY);
-        $postcount = $arr[0];
-
-        // Make page menu
-        $pagemenu = "<br /><small>\n";
-        $perpage = $postsperpage;
-        $pages = floor($postcount / $perpage);
-        if ($pages * $perpage < $postcount) {
-            ++$pages;
-        }
-
-        if ($page == "last") {
-            $page = $pages;
-        } else {
-            if ($page < 1) {
-                $page = 1;
-            } elseif ($page > $pages) {
-                $page = $pages;
-            }
-
-        }
-        $offset = max(0, ($page * $perpage) - $perpage);
-
-        if ($page == 1) {
-            $pagemenu .= "<b>&lt;&lt; Prev</b>";
-        } else {
-            $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=" . ($page - 1) . "'><b>&lt;&lt; Prev</b></a>";
-        }
-
-        $pagemenu .= "&nbsp;&nbsp;";
-        for ($i = 1; $i <= $pages; ++$i) {
-            if ($i == $page) {
-                $pagemenu .= "<b>$i</b>\n";
-            } else {
-                $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=$i'><b>$i</b></a>\n";
-            }
-
-        }
-        $pagemenu .= "&nbsp;&nbsp;";
-        if ($page == $pages) {
-            $pagemenu .= "<b>Next &gt;&gt;</b><br /><br />\n";
-        } else {
-            $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=" . ($page + 1) . "'><b>Next &gt;&gt;</b></a><br /><br />\n";
-        }
-
-        $pagemenu .= "</small>";
-
-        //Get topic posts
-        $res = DB::run("SELECT * FROM forum_posts WHERE topicid=$topicid ORDER BY id LIMIT $offset,$perpage");
-
-        Style::header("View Topic: $subject");
-        Style::begin("$forum &gt; $subject");
-        forumheader("<a href='" . URLROOT . "/forums/viewforum&amp;forumid=$forumid'>$forum</a> <b style='font-size:16px; vertical-align:middle'>/</b> $subject");
-
-        print("<div style='padding: 6px'>");
+        $forum = stripslashes($arr2["name"]);
         $levels = get_forum_access_levels($forumid) or die;
         if ($_SESSION["class"] >= $levels["write"]) {
             $maypost = true;
         } else {
             $maypost = false;
         }
+        // Update Last Read
+        if ($_SESSION['loggedin'] == true) {
+            $r = DB::run("SELECT lastpostread FROM forum_readposts WHERE userid=? AND topicid=?", [$_SESSION['id'], $topicid]);
+            $a = $r->fetch(PDO::FETCH_LAZY);
+            $lpr = $a[0];
+            if (!$lpr) {
+                DB::run("INSERT INTO forum_readposts (userid, topicid) VALUES($_SESSION[id], $topicid)");
+            }
+        }
+        // Paginatation
+        $count = get_row_count("forum_posts", "WHERE topicid=$topicid");
+        list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT . "/forums/viewtopic&amp;topicid=$topicid&");
+        //Get topic posts
+        $res = DB::run("SELECT * FROM forum_posts WHERE topicid=$topicid ORDER BY id $limit");
 
+        Style::header("View Topic: $subject");
+        Style::begin("$forum &gt; $subject");
+        forumheader("<a href='" . URLROOT . "/forums/viewforum&amp;forumid=$forumid'>$forum</a> <b style='font-size:16px; vertical-align:middle'>/</b> $subject");
+        print("<div style='padding: 6px'>");
         if (!$locked && $maypost) {
             print("<div align='right'>
             <a href='#bottom'><button type='button' class='btn btn-sm btn-warning'><b>Reply</b></button></a>
@@ -471,32 +419,19 @@ class Forums extends Controller
         // Print table of posts
         $pc = $res->rowCount();
         $pn = 0;
-        if ($_SESSION['loggedin'] == true) {
-            $r = DB::run("SELECT lastpostread FROM forum_readposts WHERE userid=? AND topicid=?", [$_SESSION['id'], $topicid]);
-            $a = $r->fetch(PDO::FETCH_LAZY);
-            $lpr = $a[0];
-            if (!$lpr) {
-                DB::run("INSERT INTO forum_readposts (userid, topicid) VALUES($userid, $topicid)");
-            }
-
-        }
-
         while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
             ++$pn;
             $postid = $arr["id"];
             $posterid = $arr["userid"];
             $added = TimeDate::utc_to_tz($arr["added"]) . "(" . (TimeDate::get_elapsed_time(TimeDate::sql_timestamp_to_unix_timestamp($arr["added"]))) . " ago)";
-
             //---- Get poster details
             $res4 = DB::run("SELECT COUNT(*) FROM forum_posts WHERE userid=?", [$posterid]);
             $arr33 = $res4->fetch(PDO::FETCH_LAZY);
             $forumposts = $arr33[0];
-
             $res2 = DB::run("SELECT * FROM users WHERE id=?", [$posterid]);
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
             $postername = Users::coloredname($arr2["username"]);
 			$quotename = $arr2["username"];
-
             if ($postername == "") {
                 $by = "Deluser";
                 $title = "Deleted Account";
@@ -521,7 +456,6 @@ class Forums extends Controller
                 } else {
                     $userratio = "---";
                 }
-
                 if (!$arr2["country"]) {
                     $usercountry = "unknown";
                 } else {
@@ -529,12 +463,10 @@ class Forums extends Controller
                     $arr4 = $res4->fetch(PDO::FETCH_ASSOC);
                     $usercountry = $arr4["name"];
                 }
-
                 $title = format_comment($arr2["title"]);
                 $donated = $arr2['donated'];
                 $by = "<a href='" . URLROOT . "/profile?id=$posterid'>$postername</a>" . ($donated > 0 ? "<img src='" . URLROOT . "/assets/images/star.png' alt='Donated' />" : "") . "";
             }
-
             if (!$avatar) {
                 $avatar = URLROOT . "/assets/images/default_avatar.png";
             }
@@ -544,10 +476,10 @@ class Forums extends Controller
             if ($pn == $pc) {
                 print("<a name='last'></a>\n");
                 if ($postid > $lpr && $_SESSION['loggedin'] == true) {
-                    DB::run("UPDATE forum_readposts SET lastpostread=$postid WHERE userid=? AND topicid=?", [$userid, $topicid]);
+                    DB::run("UPDATE forum_readposts SET lastpostread=$postid WHERE userid=? AND topicid=?", [$_SESSION['id'], $topicid]);
                 }
-
             }
+
             //Post Top
             ?>
             <div class="row card-header">
@@ -638,9 +570,9 @@ class Forums extends Controller
                 }
 
                 if (!$usersignature) {
-                    print("<br /></td></tr>\n");
+                    print("<br />\n");
                 } else {
-                    print("<br /><hr /><br /><div class='f-sig' align='center'>$usersignature</div></td></tr>\n");
+                    print("<br /><hr /><br /><div class='f-sig' align='center'>$usersignature</div>\n");
                 }
             }
             ?>
@@ -683,7 +615,7 @@ if ($_SESSION['loggedin']) { ?>
         //Post Bottom
         }
         //-------- end posts table ---------//
-        print($pagemenu);
+        print($pagerbottom);
 
         //quick reply
         if (!$locked && $_SESSION['loggedin'] == true) {
@@ -700,7 +632,7 @@ if ($_SESSION['loggedin']) { ?>
 
             print("<table cellspacing='0' cellpadding='0' align='center'>");
             if ($newtopic) {
-                print("<tr><td class='alt2'>" . Lang::T("FORUMS_SUBJECT") . "</td><td class='alt1' align='left' style='padding: 0px'><input type='text' size='100' maxlength='$maxsubjectlength' name='subject' style='border: 0px; height: 19px' /></td></tr>\n");
+                print("<tr><td class='alt2'>" . Lang::T("FORUMS_SUBJECT") . "</td><td class='alt1' align='left' style='padding: 0px'><input type='text' size='100' maxlength='100' name='subject' style='border: 0px; height: 19px' /></td></tr>\n");
             }
 
             print("</table>");
@@ -747,7 +679,7 @@ echo '<center>Add attachment<center><br>';
             print("<div align='center'  style='padding:3px'>Rename topic:
             <div class='row justify-content-md-center'>
             <div class='col col-lg-4'>
-            <input class='form-control' type='text' name='subject' size='30' maxlength='$maxsubjectlength' value='" . stripslashes(htmlspecialchars($subject)) . "' />
+            <input class='form-control' type='text' name='subject' size='30' maxlength='100' value='" . stripslashes(htmlspecialchars($subject)) . "' />
             </div>
             </div>
             \n");

@@ -44,4 +44,5 @@ class Ratings
 
         return $srating; // rating
     }
+    
 }

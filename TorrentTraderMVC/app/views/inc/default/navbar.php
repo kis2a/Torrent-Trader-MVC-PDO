@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg">
   <a class="navbar-brand" href="<?php echo URLROOT; ?>"><font color='#fff'><b><?php echo SITENAME; ?></b><br><small><?php echo _SITEDESC; ?></small></font></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+    <i class="fa fa-bars" style="color:#fff; font-size:28px;"></i>
   </button>
   
   <div class="collapse navbar-collapse" id="navbarsExampleDefault">

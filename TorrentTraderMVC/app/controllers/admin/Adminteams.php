@@ -46,7 +46,7 @@ class Adminteams extends Controller
             $tid = DB::lastInsertId();
             DB::run("UPDATE users SET team = $tid WHERE id= $team_owner");
         }
-            Redirect::autolink(URLROOT . '/adminteams', Lang::T("Team Added"));
+        Redirect::autolink(URLROOT . '/adminteams', Lang::T("Team Added"));
     }
 
     public function delete()
@@ -58,11 +58,11 @@ class Adminteams extends Controller
             $sql = DB::run("UPDATE users SET team=? WHERE team=?", ['0', $del]);
             $sql = DB::run("DELETE FROM teams WHERE id=? LIMIT 1", [$del]);
             Logs::write($_SESSION['username'] . " has deleted team id:$del");
-                Redirect::autolink(URLROOT . '/adminteams', Lang::T("Team Successfully Deleted!"));
+            Redirect::autolink(URLROOT . '/adminteams', Lang::T("Team Successfully Deleted!"));
             die();
         }
         if ($del > 0) {
-                Redirect::autolink(URLROOT . '/adminteams', Lang::T("You and in the truth wish to delete team? ($team) ( <b><a href='".URLROOT."/adminteams/delete?del=$del&amp;team=$team&amp;sure=yes'>Yes!</a></b> / <b><a href='".URLROOT."/adminteams'>No!</a></b> )"));
+            Redirect::autolink(URLROOT . '/adminteams', Lang::T("You and in the truth wish to delete team? ($team) ( <b><a href='".URLROOT."/adminteams/delete?del=$del&amp;team=$team&amp;sure=yes'>Yes!</a></b> / <b><a href='".URLROOT."/adminteams'>No!</a></b> )"));
             die();
         }
     }
@@ -127,4 +127,5 @@ class Adminteams extends Controller
         ];
         View::render('teams/admin/members', $data, 'admin');
 	}
+
 }

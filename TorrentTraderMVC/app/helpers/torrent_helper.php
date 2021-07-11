@@ -29,7 +29,6 @@ function health($leechers, $seeders)
     } else {
         return 10;
     }
-
 }
 
 // Function To Delete A Torrent
@@ -67,7 +66,6 @@ function genrelist()
     while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
         $ret[] = $row;
     }
-
     return $ret;
 }
 // Function To Edit The List Of Possible Languages For Torrents
@@ -84,7 +82,6 @@ function langlist()
 
 function peerstable($res)
 {
-    global $config, $pdo;
     $ret = "<table align='center' cellpadding=\"3\" cellspacing=\"0\" class=\"table_table\" width=\"100%\" border=\"1\"><tr><th class='table_head'>" . Lang::T("NAME") . "</th><th class='table_head'>" . Lang::T("SIZE") . "</th><th class='table_head'>" . Lang::T("UPLOADED") . "</th>\n<th class='table_head'>" . Lang::T("DOWNLOADED") . "</th><th class='table_head'>" . Lang::T("RATIO") . "</th></tr>\n";
 
     while ($arr = $res->fetch(PDO::FETCH_LAZY)) {
@@ -95,7 +92,7 @@ function peerstable($res)
         } else {
             $ratio = "---";
         }
-        $ret .= "<tr><td class='table_col1'><a href=".URLROOT."torrent?id=$arr[torrent]&amp;hit=1'><b>" . htmlspecialchars($arr2["name"]) . "</b></a></td><td align='center' class='table_col2'>" . mksize($arr2["size"]) . "</td><td align='center' class='table_col1'>" . mksize($arr["uploaded"]) . "</td><td align='center' class='table_col2'>" . mksize($arr["downloaded"]) . "</td><td align='center' class='table_col1'>$ratio</td></tr>\n";
+        $ret .= "<tr><td class='table_col1'><a href=" . URLROOT . "torrent?id=$arr[torrent]&amp;hit=1'><b>" . htmlspecialchars($arr2["name"]) . "</b></a></td><td align='center' class='table_col2'>" . mksize($arr2["size"]) . "</td><td align='center' class='table_col1'>" . mksize($arr["uploaded"]) . "</td><td align='center' class='table_col2'>" . mksize($arr["downloaded"]) . "</td><td align='center' class='table_col1'>$ratio</td></tr>\n";
     }
     $ret .= "</table>\n";
     return $ret;
@@ -228,9 +225,9 @@ function torrenttable($res)
                 case 'category':
                     print("<td class='ttable_col$x' align='center' valign='middle'>");
                     if (!empty($row["cat_name"])) {
-                        print("<a href=\"".URLROOT."/search/browse?cat=" . $row["category"] . "\">");
+                        print("<a href=\"" . URLROOT . "/search/browse?cat=" . $row["category"] . "\">");
                         if (!empty($row["cat_pic"]) && $row["cat_pic"] != "") {
-                            print("<img border=\"0\"src=\"".URLROOT."/assets/images/categories/" . $row["cat_pic"] . "\" alt=\"" . $row["cat_name"] . "\" />");
+                            print("<img border=\"0\"src=\"" . URLROOT . "/assets/images/categories/" . $row["cat_pic"] . "\" alt=\"" . $row["cat_name"] . "\" />");
                         } else {
                             print($row["cat_parent"] . ": " . $row["cat_name"]);
                         }
@@ -258,19 +255,19 @@ function torrenttable($res)
                     }
 
                     if ($row["freeleech"] == 1) {
-                        $dispname .= " <img src='".URLROOT."/assets/images/free.gif' border='0' alt='' />";
+                        $dispname .= " <img src='" . URLROOT . "/assets/images/free.gif' border='0' alt='' />";
                     }
                     if ($row["vip"] == "yes") {
-                        $dispname .= " <img src='".URLROOT."/assets/images/vip.gif' border='0' alt='' />";
+                        $dispname .= " <img src='" . URLROOT . "/assets/images/vip.gif' border='0' alt='' />";
                     }
                     if ($row["sticky"] == "yes") {
-                        $dispname .= " <img src='".URLROOT."/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
+                        $dispname .= " <img src='" . URLROOT . "/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
                     }
                     print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
 
                     break;
                 case 'dl':
-                    print("<td class='ttable_col$x' align='center'><a href=\"".URLROOT."/download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><img src='" . URLROOT . "/assets/images/icon_download.gif' border='0' alt=\"Download .torrent\" /></a></td>");
+                    print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "/download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><img src='" . URLROOT . "/assets/images/icon_download.gif' border='0' alt=\"Download .torrent\" /></a></td>");
                     break;
                 case 'magnet':
                     $magnet = DB::run("SELECT info_hash FROM torrents WHERE id=?", [$id])->fetch();
@@ -282,14 +279,14 @@ function torrenttable($res)
                         $like = $data->fetch(PDO::FETCH_ASSOC);
                         if ($like) {
                             if ($_SESSION["can_download"] != "no") {
-                            print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
+                                print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
                             } else {
-                            print("<td class='ttable_col$x' align='center'></td>");
+                                print("<td class='ttable_col$x' align='center'></td>");
                             }
-						} elseif ($_SESSION["id"] == $row["owner"]) {
+                        } elseif ($_SESSION["id"] == $row["owner"]) {
                             print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
                         } else {
-                            print("<td class='ttable_col$x' align='center'><a href=".URLROOT."likes/index?id=$id' ><button  class='btn btn-sm btn-danger'>Thanks</button></td>");
+                            print("<td class='ttable_col$x' align='center'><a href=" . URLROOT . "likes/index?id=$id' ><button  class='btn btn-sm btn-danger'>Thanks</button></td>");
                         }
                     }
                     break;
@@ -322,11 +319,11 @@ function torrenttable($res)
 
                     break;
                 case 'comments':
-                    print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href=".URLROOT."comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
+                    print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href=" . URLROOT . "comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
                     break;
                 case 'nfo':
                     if ($row["nfo"] == "yes") {
-                        print("<td class='ttable_col$x' align='center'><a href=".URLROOT."nfo?id=$row[id]'><img src='" . URLROOT . "/assets/images/icon_nfo.gif' border='0' alt='View NFO' /></a></td>");
+                        print("<td class='ttable_col$x' align='center'><a href=" . URLROOT . "nfo?id=$row[id]'><img src='" . URLROOT . "/assets/images/icon_nfo.gif' border='0' alt='View NFO' /></a></td>");
                     } else {
                         print("<td class='ttable_col$x' align='center'>-</td>");
                     }
@@ -642,9 +639,9 @@ function torrenttable1($query)
                 case 'category':
                     print("<td class='ttable_col$x' align='center' valign='middle'>");
                     if (!empty($row["cat_name"])) {
-                        print("<a href=\"".URLROOT."/search/browse?cat=" . $row["category"] . "\">");
+                        print("<a href=\"" . URLROOT . "/search/browse?cat=" . $row["category"] . "\">");
                         if (!empty($row["cat_pic"]) && $row["cat_pic"] != "") {
-                            print("<img border=\"0\"src=\"".URLROOT."/assets/images/categories/" . $row["cat_pic"] . "\" alt=\"" . $row["cat_name"] . "\" />");
+                            print("<img border=\"0\"src=\"" . URLROOT . "/assets/images/categories/" . $row["cat_pic"] . "\" alt=\"" . $row["cat_name"] . "\" />");
                         } else {
                             print($row["cat_parent"] . ": " . $row["cat_name"]);
                         }
@@ -667,19 +664,19 @@ function torrenttable1($query)
                         $dispname .= "<b><font color='#ff0000'> - (" . Lang::T("NEW") . "!)</font></b>";
                     }
                     if ($row["freeleech"] == 1) {
-                        $dispname .= " <img src='".URLROOT."/assets/images/free.gif' border='0' alt='' />";
+                        $dispname .= " <img src='" . URLROOT . "/assets/images/free.gif' border='0' alt='' />";
                     }
                     if ($row["vip"] == "yes") {
-                        $dispname .= " <img src='".URLROOT."/assets/images/vip.gif' border='0' alt='' />";
+                        $dispname .= " <img src='" . URLROOT . "/assets/images/vip.gif' border='0' alt='' />";
                     }
                     if ($row["sticky"] == "yes") {
-                        $dispname .= " <img src='".URLROOT."/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
+                        $dispname .= " <img src='" . URLROOT . "/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
                     }
                     print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
 
                     break;
                 case 'dl':
-                    print("<td class='ttable_col$x' align='center'><a href=\"".URLROOT."//download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><img src='" . URLROOT . "/assets/images/icon_download.gif' border='0' alt=\"Download .torrent\" /></a></td>");
+                    print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "//download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><img src='" . URLROOT . "/assets/images/icon_download.gif' border='0' alt=\"Download .torrent\" /></a></td>");
                     break;
                 case 'magnet':
                     $magnet = DB::run("SELECT info_hash FROM torrents WHERE id=?", [$id])->fetch();
@@ -690,15 +687,15 @@ function torrenttable1($query)
                         $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', $_SESSION['id']]);
                         $like = $data->fetch(PDO::FETCH_ASSOC);
                         if ($like) {
-                        if ($_SESSION["can_download"] != "no") {
-                            print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
+                            if ($_SESSION["can_download"] != "no") {
+                                print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
                             } else {
-                            print("<td class='ttable_col$x' align='center'></td>");
+                                print("<td class='ttable_col$x' align='center'></td>");
                             }
-						} elseif ($_SESSION["id"] == $row["owner"]) {
+                        } elseif ($_SESSION["id"] == $row["owner"]) {
                             print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
                         } else {
-                            print("<td class='ttable_col$x' align='center'><a href='".URLROOT."/likes/index?id=$id' ><button  class='btn btn-sm btn-danger'>Thanks</button></td>");
+                            print("<td class='ttable_col$x' align='center'><a href='" . URLROOT . "/likes/index?id=$id' ><button  class='btn btn-sm btn-danger'>Thanks</button></td>");
                         }
                     }
                     break;
@@ -731,11 +728,11 @@ function torrenttable1($query)
 
                     break;
                 case 'comments':
-                    print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href='".URLROOT."/comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
+                    print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href='" . URLROOT . "/comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
                     break;
                 case 'nfo':
                     if ($row["nfo"] == "yes") {
-                        print("<td class='ttable_col$x' align='center'><a href='".URLROOT."/nfo?id=$row[id]'><img src='" . URLROOT . "/assets/images/icon_nfo.gif' border='0' alt='View NFO' /></a></td>");
+                        print("<td class='ttable_col$x' align='center'><a href='" . URLROOT . "/nfo?id=$row[id]'><img src='" . URLROOT . "/assets/images/icon_nfo.gif' border='0' alt='View NFO' /></a></td>");
                     } else {
                         print("<td class='ttable_col$x' align='center'>-</td>");
                     }
@@ -812,7 +809,7 @@ function torrenttable1($query)
             $elapsed = floor((TimeDate::gmtime() - strtotime($row["added"])) / 3600);
             if ($elapsed < $wait && $row["external"] != "yes") {
                 $color = dechex(floor(127 * ($wait - $elapsed) / 48 + 128) * 65536);
-                print("<td class='ttable_col$x' align='center'><a href=\"".URLROOT."/faq\"><font color=\"$color\">" . number_format($wait - $elapsed) . " h</font></a></td>\n");
+                print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "/faq\"><font color=\"$color\">" . number_format($wait - $elapsed) . " h</font></a></td>\n");
             } else {
                 print("<td class='ttable_col$x' align='center'>--</td>\n");
             }

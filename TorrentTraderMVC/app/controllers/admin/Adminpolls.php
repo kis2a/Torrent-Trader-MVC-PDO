@@ -102,4 +102,5 @@ class Adminpolls extends Controller
         }
         Redirect::autolink(URLROOT . "/adminpolls", Lang::T("COMPLETE"));
     }
+
 }

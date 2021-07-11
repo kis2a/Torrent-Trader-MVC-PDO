@@ -10,7 +10,6 @@ function pager($rpp, $count, $href, $opts = array())
         if ($pagedefault < 0) {
             $pagedefault = 0;
         }
-
     }
 
     if (isset($_GET["page"])) {
@@ -18,13 +17,11 @@ function pager($rpp, $count, $href, $opts = array())
         if ($page < 0) {
             $page = $pagedefault;
         }
-
     } else {
         $page = $pagedefault;
     }
 
     $pager = "";
-
     $mp = $pages - 1;
     $as = "<b>&lt;&lt;&nbsp;" . Lang::T("PREVIOUS") . "</b>";
     if ($page >= 1) {
@@ -91,7 +88,7 @@ function pager($rpp, $count, $href, $opts = array())
 
 function pagination($query, $per_page = 10, $page = 1, $url = '?')
 {
-    $db = new Database();;
+    $db = new Database();
     $query = "SELECT COUNT(*) as `num` FROM {$query}";
     $row = $db->run($query)->fetch();
     $total = $row->num;
@@ -100,15 +97,12 @@ function pagination($query, $per_page = 10, $page = 1, $url = '?')
     $prevlabel = "Prev";
     $nextlabel = "Next";
     $lastlabel = "Last";
-
     $page = ($page == 0 ? 1 : $page);
     $start = ($page - 1) * $per_page;
-
     $prev = $page - 1;
     $next = $page + 1;
 
     $lastpage = ceil($total / $per_page);
-
     $lpm1 = $lastpage - 1; // //last page minus 1
 
     $pagination = "";

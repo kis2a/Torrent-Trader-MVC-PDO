@@ -38,8 +38,8 @@ class Shoutbox extends Controller
                 <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
                 </a>
                 <?php
-                if ($this->session['class'] > _UPLOADER) {
-                    echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
+            if ($this->session['class'] > _UPLOADER) {
+                echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
                 ?>
                 <!-- Trigger/Open The Model -->
                 <a data-toggle="modal" data-target="#editshout-<?=$row['msgid'];?>">
@@ -60,14 +60,15 @@ class Shoutbox extends Controller
                   </div>
                  </div>
                  <?php
-                }?>
-                    <div class="media-body">
-                        <small class="pull-right time d-none d-sm-block"><i class="fa fa-clock-o"></i>&nbsp;<?php echo date('jS M,  g:ia', TimeDate::utc_to_tz_time($row['date'])); ?></small>
-                        <small class="col-lg-10"><?php echo nl2br(format_comment($row['message'])); ?></small>
-                    </div>
-                </div>
-            <?php }?>
+            }?>
+            <div class="media-body">
+                <small class="pull-right time d-none d-sm-block"><i class="fa fa-clock-o"></i>&nbsp;<?php echo date('jS M,  g:ia', TimeDate::utc_to_tz_time($row['date'])); ?></small>
+                <small class="col-lg-10"><?php echo nl2br(format_comment($row['message'])); ?></small>
             </div>
+            </div>
+            <?php 
+        }?>
+        </div>
         </div>
         <?php
     }
@@ -117,7 +118,6 @@ class Shoutbox extends Controller
         } else {
             Redirect::autolink(URLROOT . '/logout', Lang::T("You do not have permission"));
         }
-
     }
 
     public function history()

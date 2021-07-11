@@ -111,4 +111,5 @@ EOD;
         ];
         View::render('invite/tree', $data, 'user');
     }
+    
 }

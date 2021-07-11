@@ -57,4 +57,5 @@ class Admintorrents extends Controller
         ];
         View::render('torrent/admin/freetorrent', $data, 'admin');
     }
+    
 }

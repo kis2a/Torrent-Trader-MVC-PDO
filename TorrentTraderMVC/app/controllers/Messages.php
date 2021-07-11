@@ -37,13 +37,13 @@ class Messages extends Controller
         $subject = Input::get('subject');
         $body = Input::get('body');
         if ($body == "") {
-            Redirect::autolink(URLROOT."/messages", "Body cannot be empty!");
+            Redirect::autolink(URLROOT . "/messages", "Body cannot be empty!");
         }
         if ($receiver == "") {
-            Redirect::autolink(URLROOT."/messages", "Receiver cannot be empty!");
+            Redirect::autolink(URLROOT . "/messages", "Receiver cannot be empty!");
         }
         if ($subject == "") {
-            Redirect::autolink(URLROOT."/messages", "Subject cannot be empty!");
+            Redirect::autolink(URLROOT . "/messages", "Subject cannot be empty!");
         }
         // Button Switch
         $this->insertbytype($_REQUEST['Update'], $receiver, $subject, $body);
@@ -54,19 +54,19 @@ class Messages extends Controller
         switch ($type) {
             case 'create':
                 if (isset($_POST['save'])) {
-                   Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'both');
+                    Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'both');
                 } else {
                     Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'yes', 'in');
                 }
-                Redirect::autolink(URLROOT."/messages/outbox", "Message Sent!");
+                Redirect::autolink(URLROOT . "/messages/outbox", "Message Sent!");
                 break;
             case 'draft':
                 Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'draft');
-                Redirect::autolink(URLROOT."/messages/draft", "Saved Message as Draft !");
+                Redirect::autolink(URLROOT . "/messages/draft", "Saved Message as Draft !");
                 break;
             case 'template':
                 Message::insertmessage($_SESSION['id'], $receiver, TimeDate::get_date_time(), $subject, $body, 'no', 'template');
-                Redirect::autolink(URLROOT."/messages/templates", "Template Created !");
+                Redirect::autolink(URLROOT . "/messages/templates", "Template Created !");
                 break;
         }
     }
@@ -105,7 +105,7 @@ class Messages extends Controller
         $arr = $res->fetch(PDO::FETCH_ASSOC);
 
         if ($arr["sender"] != $_SESSION['id'] && $arr["receiver"] != $_SESSION['id']) {
-                Redirect::autolink(URLROOT . '/home', "Not your Message!");
+            Redirect::autolink(URLROOT . '/home', "Not your Message!");
         }
 
         // mark read
@@ -160,14 +160,14 @@ class Messages extends Controller
                 $msg = isset($_POST['msg']) ? $_POST['msg'] : '';
                 // Update the record
                 $stmt = DB::run('UPDATE messages SET subject = ?, msg = ? WHERE id = ?', [$subject, $msg, $id]);
-                    Redirect::autolink(URLROOT . '/messages/inbox', "Edited Successfully !");
+                Redirect::autolink(URLROOT . '/messages/inbox', "Edited Successfully !");
             }
 
             $stmt = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $msg = $row['msg'];
             if (!$row) {
-                    Redirect::autolink(URLROOT . '/messages/inbox', "Message does not exist with that ID!");
+                Redirect::autolink(URLROOT . '/messages/inbox', "Message does not exist with that ID!");
             }
             // get the username
             $stmt7 = DB::run('SELECT * FROM messages WHERE id = ?', [$_GET['id']]);
@@ -194,14 +194,14 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST["read"]) {
                 if (!@count($_POST["del"])) {
-                        Redirect::autolink(URLROOT . '/messages/inbox', Lang::T("NOTHING_SELECTED"));
+                    Redirect::autolink(URLROOT . '/messages/inbox', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("UPDATE messages SET `unread` = 'no' WHERE `id` IN ($ids)");
             } else {
                 if (!@count($_POST["del"])) {
-                        Redirect::autolink(URLROOT . '/messages/inbox', Lang::T("NOTHING_SELECTED"));
+                    Redirect::autolink(URLROOT . '/messages/inbox', Lang::T("NOTHING_SELECTED"));
                 }
 
                 $ids = array_map("intval", $_POST["del"]);
@@ -209,7 +209,7 @@ class Messages extends Controller
                 DB::run("DELETE FROM messages WHERE `location` = 'in' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
                 DB::run("UPDATE messages SET `location` = 'out' WHERE `location` = 'both' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
             }
-                Redirect::autolink(URLROOT . '/messages/inbox', "Action Completed");
+            Redirect::autolink(URLROOT . '/messages/inbox', "Action Completed");
             die;
         }
 
@@ -240,14 +240,14 @@ class Messages extends Controller
         if ($do == "del") {
             if (!empty($_POST)) {
                 if (!@count($_POST["del"])) {
-                        Redirect::autolink(URLROOT . '/messages/outbox', Lang::T("NOTHING_SELECTED"));
+                    Redirect::autolink(URLROOT . '/messages/outbox', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("UPDATE messages SET `location` = 'in' WHERE `location` = 'both' AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
                 DB::run("DELETE FROM messages WHERE `location` IN ('out', 'draft', 'template') AND `sender` = $_SESSION[id] AND `id` IN ($ids)");
             }
-                Redirect::autolink(URLROOT . '/messages/outbox', "Action Completed");
+            Redirect::autolink(URLROOT . '/messages/outbox', "Action Completed");
             die;
         }
 
@@ -275,13 +275,13 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST) {
                 if (!@count($_POST["del"])) {
-                        Redirect::autolink(URLROOT . '/messages/templates', Lang::T("NOTHING_SELECTED"));
+                    Redirect::autolink(URLROOT . '/messages/templates', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("DELETE FROM messages WHERE `sender` = $_SESSION[id] AND `location` = 'template' AND `id` IN ($ids)");
             }
-                Redirect::autolink(URLROOT . '/messages/templates', "Action Completed");
+            Redirect::autolink(URLROOT . '/messages/templates', "Action Completed");
             die;
         }
 
@@ -309,13 +309,13 @@ class Messages extends Controller
         if ($do == "del") {
             if ($_POST) {
                 if (!@count($_POST["del"])) {
-                        Redirect::autolink(URLROOT . '/messages/draft', Lang::T("NOTHING_SELECTED"));
+                    Redirect::autolink(URLROOT . '/messages/draft', Lang::T("NOTHING_SELECTED"));
                 }
                 $ids = array_map("intval", $_POST["del"]);
                 $ids = implode(", ", $ids);
                 DB::run("DELETE FROM messages WHERE `sender` = $_SESSION[id] AND `location` = 'draft' AND `id` IN ($ids)");
             }
-                Redirect::autolink(URLROOT . '/messages/draft', "Action Completed");
+            Redirect::autolink(URLROOT . '/messages/draft', "Action Completed");
             die;
         }
 

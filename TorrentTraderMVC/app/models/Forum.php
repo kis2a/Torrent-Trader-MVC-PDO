@@ -74,4 +74,10 @@ class Forum
         }
     }
 
+    public static function canRead($forumid) {
+        $res2 = DB::run("SELECT * FROM forum_forums WHERE id=?", [$forumid]);
+        $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
+        return $arr2;
+    }
+
 }

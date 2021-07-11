@@ -13,11 +13,11 @@ class Comments extends Controller
         if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
             Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
-        
+
         if ($type == "news") {
             $row = News::selectAll($id);
             if (!$row) {
-                Redirect::autolink(URLROOT."/comments?type=news&id=$id", "News id invalid");
+                Redirect::autolink(URLROOT . "/comments?type=news&id=$id", "News id invalid");
             }
             $title = Lang::T("NEWS");
         }
@@ -35,9 +35,9 @@ class Comments extends Controller
             if (!$row) {
                 Redirect::autolink(URLROOT, "Request id invalid");
             }
-            $title = Lang::T("COMMENTSFOR") . "<a href='".URLROOT."/request'>" . htmlspecialchars($row['name']) . "</a>";
+            $title = Lang::T("COMMENTSFOR") . "<a href='" . URLROOT . "/request'>" . htmlspecialchars($row['name']) . "</a>";
         }
-        
+
         $pager = $this->commentPager($id, $type);
         // Template
         $data = [
@@ -51,7 +51,7 @@ class Comments extends Controller
             'newsbody' => $row['body'],
             'newstitle' => $row['title'],
             'type' => $type,
-            'id' => $id
+            'id' => $id,
         ];
         View::render('comments/index', $data, 'user');
     }
@@ -149,7 +149,7 @@ class Comments extends Controller
         if ($type == "torrent") {
             DB::run("UPDATE torrents SET comments = comments + 1 WHERE id = $id");
         }
-        $ins =Comment::insert($type, $_SESSION["id"], $id, TimeDate::get_date_time(), $body);
+        $ins = Comment::insert($type, $_SESSION["id"], $id, TimeDate::get_date_time(), $body);
         if ($ins) {
             Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", "Your Comment was added successfully.");
         } else {
@@ -164,12 +164,12 @@ class Comments extends Controller
             Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
 
-        $res = DB::run("SELECT 
-            comments.id, text, user, comments.added, avatar, 
-            signature, username, title, class, uploaded, downloaded, privacy, donated 
+        $res = DB::run("SELECT
+            comments.id, text, user, comments.added, avatar,
+            signature, username, title, class, uploaded, downloaded, privacy, donated
             FROM comments
-            LEFT JOIN users 
-            ON comments.user = users.id 
+            LEFT JOIN users
+            ON comments.user = users.id
             WHERE user = $id ORDER BY comments.id "); //$limit
         $row = $res->fetch(PDO::FETCH_LAZY);
         if (!$row) {

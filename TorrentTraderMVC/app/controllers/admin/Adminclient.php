@@ -35,4 +35,5 @@ class Adminclient extends Controller
         ];
         View::render('client/banned', $data, 'admin');
     }
+
 }

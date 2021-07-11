@@ -181,7 +181,7 @@ function do_cleanup()
                 $pdo->run("INSERT INTO warnings (userid, reason, added, expiry, warnedby, type) VALUES ('" . $arr["id"] . "','" . $reason . "','" . $timenow . "','" . $expiretime . "','0','Poor Ratio')");
                 $pdo->run("UPDATE users SET warned='yes' WHERE id='" . $arr["id"] . "'");
                 $pdo->run("INSERT INTO messages (sender, receiver, added, msg, poster) VALUES ('0', '" . $arr["id"] . "', '" . $timenow . "', '" . $reason . "', '0')");
-                Logs::write("Auto Leech warning has been <b>added</b> for: <a href='".URLROOT."/profile?id=" . $arr["id"] . "'>" . Users::coloredname($arr["username"]) . "</a>");
+                Logs::write("Auto Leech warning has been <b>added</b> for: <a href='" . URLROOT . "/profile?id=" . $arr["id"] . "'>" . Users::coloredname($arr["username"]) . "</a>");
             }
         }
 
@@ -192,7 +192,7 @@ function do_cleanup()
             $reason = "Your warning of low ratio has been removed. We highly recommend you to keep a your ratio up to not be warned again.\n";
 
             while ($arr1 = $res1->fetch(PDO::FETCH_ASSOC)) {
-                Logs::write("Auto Leech warning has been removed for: <a href='".URLROOT."/profile?id=" . $arr1["id"] . "'>" . Users::coloredname($arr1["username"]) . "</a>");
+                Logs::write("Auto Leech warning has been removed for: <a href='" . URLROOT . "/profile?id=" . $arr1["id"] . "'>" . Users::coloredname($arr1["username"]) . "</a>");
 
                 $pdo->run("UPDATE users SET warned = 'no' WHERE id = '" . $arr1["id"] . "'");
                 $pdo->run("UPDATE warnings SET expiry = '$timenow', active = 'no' WHERE userid = $arr1[id]");
@@ -209,7 +209,7 @@ function do_cleanup()
             while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
                 if (TimeDate::gmtime() - $arr["expiry"] >= 0) {
                     $pdo->run("UPDATE users SET enabled='no', warned='no' WHERE id='" . $arr["id"] . "'");
-                    Logs::write("User <a href='".URLROOT."/profile?id=" . $arr["id"] . "'>" . Users::coloredname($arr["username"]) . "</a> has been banned (Auto Leech warning).");
+                    Logs::write("User <a href='" . URLROOT . "/profile?id=" . $arr["id"] . "'>" . Users::coloredname($arr["username"]) . "</a> has been banned (Auto Leech warning).");
                 }
             }
         }
@@ -288,7 +288,7 @@ function do_cleanup()
                     $msg = "" . Lang::T("CLEANUP_YOU_HAVE_BEEN_WARNEWD_ACCUMULATED") . " " . HNR_WARN . " " . Lang::T("CLEANUP_H&R_INVITE_CHECK_RULE") . "\n[color=red]" . Lang::T("CLEANUP_MSG_WARNING_7_DAYS_BANNED") . "[/color]";
 
                     $rev = DB::run("SELECT enabled FROM users WHERE id = $user");
-                    $rov = mysqli_fetch_assoc($rev);
+                    $rov = $rev->fetch(PDO::FETCH_ASSOC);
                     if ($rov["enabled"] == "yes"):
                         DB::run("UPDATE users SET warned = 'yes' WHERE id = $user");
                         DB::run("INSERT INTO warnings (userid, reason, added, expiry, warnedby, type) VALUES ($user," . sqlesc($reason) . ",'" . TimeDate::get_date_time() . "','" . $expiretime . "','0','HnR')");
@@ -306,22 +306,22 @@ function do_cleanup()
                 //Ban
                 if ($count >= HNR_BAN):
                     $g = DB::run("SELECT username, email, modcomment FROM users WHERE id = $user");
-                    $h = mysqli_fetch_row($g);
+                    $h = $g->fetch(PDO::FETCH_ASSOC);;
                     $modcomment = $h[2];
                     $modcomment = gmdate("d/m/Y") . " - " . Lang::T("CLEANUP_BANNED_FOR") . " " . $count . " H&R.\n " . $modcomment;
                     DB::run("UPDATE users SET enabled = 'no', warned = 'no', modcomment = '$modcomment' WHERE id = $user");
                     DB::run("DELETE FROM warnings WHERE userid = $user AND type = 'HnR'");
                     Logs::write(Lang::T("CLEANUP_THE_MEMBER") . " <a href='account-details.php?id=" . $user . "'>" . $h[0] . "</a> " . Lang::T("CLEANUP_HAS_BEEN_BANNED_REASON") . " " . $count . " H&R.");
-                    $subject = "" . Lang::T("CLEANUP_YOUR_ACCOUNT") . " ".SITENAME." " . Lang::T("CLEANUP_HAS_BEEN_DISABLED") . "";
+                    $subject = "" . Lang::T("CLEANUP_YOUR_ACCOUNT") . " " . SITENAME . " " . Lang::T("CLEANUP_HAS_BEEN_DISABLED") . "";
                     $body = "" . Lang::T("CLEANUP_YOU_WERE_BANNED_FOLLOWING") . "\n
-									------------------------------
-									\n/" . Lang::T("CLEANUP_YOU_HAVE_ACCUMULATED") . " $count H&R.\n
-									------------------------------
-									\n" . Lang::T("CLEANUP_YOU_CAN_CONTACT_BY_LINK") . " :
-									" . URLROOT . "/contact.php
-									\n\n\n" . SITENAME . " " . Lang::T("ADMIN");
+												------------------------------
+												\n/" . Lang::T("CLEANUP_YOU_HAVE_ACCUMULATED") . " $count H&R.\n
+												------------------------------
+												\n" . Lang::T("CLEANUP_YOU_CAN_CONTACT_BY_LINK") . " :
+												" . URLROOT . "/contact.php
+												\n\n\n" . SITENAME . " " . Lang::T("ADMIN");
                     $TTMail = new TTMail();
-                    $TTMail->Send($h[1], "$subject", "$body", "" . Lang::T("OF") . ": ".SITEEMAIL."", "-f".SITEEMAIL."");
+                    $TTMail->Send($h[1], "$subject", "$body", "" . Lang::T("OF") . ": " . SITEEMAIL . "", "-f" . SITEEMAIL . "");
                 endif;
             endwhile;
         endif;

@@ -36,4 +36,5 @@ class Admintask extends Controller
         $TTCache->Delete("request_block");
         Redirect::autolink(URLROOT . "/admincp", 'Purge Cache Successful');
     }
+
 }

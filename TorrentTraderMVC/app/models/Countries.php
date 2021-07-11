@@ -4,9 +4,7 @@ class Countries
 
     public static function getCountry($row)
     {
-        $stmt = DB::run("
-   SELECT name,flagpic FROM countries WHERE id=?", [$row['country']]);
-
+        $stmt = DB::run("SELECT name,flagpic FROM countries WHERE id=?", [$row['country']]);
         return $stmt;
     }
 

@@ -10,7 +10,7 @@ class Recover extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Recover Account'
+            'title' => 'Recover Account',
         ];
         View::render('user/recover', $data, 'user');
     }
@@ -63,17 +63,18 @@ class Recover extends Controller
             } elseif ($password != $password1) {
                 Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_NO_MATCH"));
             } else {
-                $count = $this->pdo->run("SELECT COUNT(*) FROM users WHERE id=? AND secret=?", [$id, $secret])->fetchColumn();
+                $count = DB::run("SELECT COUNT(*) FROM users WHERE id=? AND secret=?", [$id, $secret])->fetchColumn();
                 if ($count != 1) {
                     Redirect::autolink(URLROOT . "/home", Lang::T("NO_SUCH_USER"));
                 }
                 $newsec = Helper::mksecret();
                 $wantpassword = password_hash($password, PASSWORD_BCRYPT);
                 $stmt = Users::recoverUpdate($wantpassword, $newsec, $id, $secret);
-                Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_CHANGED_OK"));;
+                Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_CHANGED_OK"));
             }
         } else {
             Redirect::autolink(URLROOT . "/home", Lang::T("Wrong Imput"));
         }
     }
+    
 }

@@ -1,3 +1,144 @@
+body {
+    width: fit-content !important;
+}
+
+.navbar {
+	background-image: -webkit-linear-gradient(top, #a9111f, #ffc107);
+	background-image: linear-gradient(to bottom, #a9111f, #ffc107);
+	background-repeat: repeat-x;
+}
+
+.frame-header {
+    color: #fff;
+    background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
+    background-image: linear-gradient(to bottom, #a9111f, #ff9900);
+    background-repeat: repeat-x;
+    border-bottom: 0px;
+    height: 35px;
+}
+
+.frame-body {
+	border: 10px solid;
+	padding: 0.95rem;
+	background: linear-gradient(90deg, #202e3c 0%, #2e3235 100%) !important;
+	border-image-source: linear-gradient(to bottom, #ff9900, #ffc107) !important;
+}
+
+.block-header {
+    color: #fff;
+    background-image: -webkit-linear-gradient(top, #ff9900, #a9111f) !important;
+    background-image: linear-gradient(to bottom, #ff9900, #a9111f) !important;
+    background-repeat: repeat-x;
+    border-bottom: 0px;
+    height: 35px;
+}
+
+
+.block-body {
+	border: 10px solid;
+	padding: 0.25rem;
+	background: linear-gradient(90deg, #202e3c 0%, #2e3235 100%) !important;
+	border-image-source: linear-gradient(to bottom, #a9111f, #ffff00) !important;
+}
+
+
+@media only screen and (min-width: 430px) {
+	.myBlock-show {
+		 display: none; 
+		 width: 50%;
+		 vertical-align: top;
+	}
+  }
+  
+  @media only screen and (max-width: 430px) {
+	.myBlock-hide {
+		display: none;
+		vertical-align: top;
+		width: 170px;
+	}
+  }
+  
+  @media only screen and (min-width: 430px) {
+	td.myBlock-show {
+		 display: none; 
+		 width: 50%;
+		 vertical-align: top;
+	}
+  }
+  
+  @media only screen and (max-width: 430px) {
+	td.myBlock-hide {
+		display: none;
+		vertical-align: top;
+		width: 170px;
+	}
+  }
+  
+  @media only screen and (min-width: 430px) {
+	.myBlock-show.td {
+		 display: none; 
+		 width: 50%;
+		 vertical-align: top;
+	}
+  }
+  
+  @media only screen and (max-width: 430px) {
+	.myBlock-hide.td {
+		display: none;
+		vertical-align: top;
+		width: 170px;
+	}
+  }
+  
+  
+  @media only screen and (min-width: 430px) {
+	.myBlock-show {
+		 display: none; 
+		 width: 50%;
+		 vertical-align: top;
+	}
+  }
+  
+  @media only screen and (max-width: 430px) {
+	.myBlock-hide {
+		display: none;
+		vertical-align: top;
+		width: 170px;
+	}
+  }
+  
+  @media only screen and (min-width: 430px) {
+	td myBlock-show {
+		 display: none; 
+		 width: 50%;
+		 vertical-align: top;
+	}
+  }
+  
+  @media only screen and (max-width: 430px) {
+	td myBlock-hide {
+		display: none;
+		vertical-align: top;
+		width: 170px;
+	}
+  }
+  
+  @media only screen and (min-width: 430px) {
+	.myBlock-show td {
+		 display: none; 
+		 width: 50%;
+		 vertical-align: top;
+	}
+  }
+  
+  @media only screen and (max-width: 430px) {
+	.myBlock-hide td {
+		display: none;
+		vertical-align: top;
+		width: 170px;
+	}
+  }
+
 .custom-toggler .navbar-toggler-icon {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
   }
@@ -137,14 +278,15 @@ border: 2px solid #ff9900 !IMPORTANT;
 	  background-color: #EEEEEE;
   }
   
+  
   .card-header {
-	  color: #fff;
-	  background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
-	  background-image: linear-gradient(to bottom, #a9111f, #ff9900);
-	  background-repeat: repeat-x;
-	  border-bottom: 0px;
-	  height: 35px;
-  }
+	color: #fff;
+	background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
+	background-image: linear-gradient(to bottom, #a9111f, #ff9900);
+	background-repeat: repeat-x;
+	border-bottom: 0px;
+	height: 35px;
+}
 
   .card-header1 {
 	color: #fff;
@@ -165,13 +307,7 @@ border: 2px solid #ff9900 !IMPORTANT;
   .navbar-nav .nav-link {
 	  color: #fff;
   }
-  
-  .navbar {
-	  background-image: -webkit-linear-gradient(top, #a9111f, #ffc107);
-	  background-image: linear-gradient(to bottom, #a9111f, #ffc107);
-	  background-repeat: repeat-x;
-  }
-  
+
   .navbarone {
 	  background-image: -webkit-linear-gradient(top, #a9111f, #ffc107);
 	  background-image: linear-gradient(to bottom, #a9111f, #ffc107);

@@ -8,25 +8,25 @@ class Signup extends Controller
 
     public function index()
     {
-//check if IP is already a peer
-if (IPCHECK) {
-$ip = $_SERVER['REMOTE_ADDR'];
-$ipq = get_row_count("users", "WHERE ip = '$ip'");
-if ($ipq >= ACCOUNTMAX) {
-    Redirect::autolink(URLROOT . '/login', "This IP is already in use !");
-}
-}
+        //check if IP is already a peer
+        if (IPCHECK) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $ipq = get_row_count("users", "WHERE ip = '$ip'");
+            if ($ipq >= ACCOUNTMAX) {
+                Redirect::autolink(URLROOT . '/login', "This IP is already in use !");
+            }
+        }
         // Check if we're signing up with an invite
         $invite = Input::get("invite");
         $secret = Input::get("secret");
         if (!Validate::Id($invite) || strlen($secret) != 20) {
             if (INVITEONLY) {
-                Redirect::autolink(URLROOT . '/home', "<center>".Lang::T("INVITE_ONLY_MSG")."<br></center>");
+                Redirect::autolink(URLROOT . '/home', "<center>" . Lang::T("INVITE_ONLY_MSG") . "<br></center>");
             }
         } else {
             $invite_row = Users::selectInviteIdBySecret($invite, $secret);
             if (!$invite_row) {
-                Redirect::autolink(URLROOT . '/home', Lang::T("INVITE_ONLY_NOT_FOUND")."".(SIGNUPTIMEOUT / 86400)."days.");
+                Redirect::autolink(URLROOT . '/home', Lang::T("INVITE_ONLY_NOT_FOUND") . "" . (SIGNUPTIMEOUT / 86400) . "days.");
             }
         }
         $title = Lang::T("SIGNUP");
@@ -77,18 +77,18 @@ if ($ipq >= ACCOUNTMAX) {
                         $message = sprintf(Lang::T("EMAIL_ADDRESS_BANNED_S"), $email);
                     }
                     // check if email addy is already in use
-                    $a = $this->pdo->run("SELECT count(*) FROM users where email=?", [$email])->fetchColumn();
+                    $a = DB::run("SELECT count(*) FROM users where email=?", [$email])->fetchColumn();
                     if ($a != 0) {
                         $message = sprintf(Lang::T("EMAIL_ADDRESS_INUSE_S"), $email);
                     }
                 }
-                
+
                 //check username isnt in use
                 $count = DB::run("SELECT count(*) FROM users WHERE  username=?", [$wantusername])->fetchColumn();
-	            if ($count != 0) {
+                if ($count != 0) {
                     $message = sprintf(Lang::T("USERNAME_INUSE_S"), $wantusername);
                 }
-                
+
                 $secret = Helper::mksecret(); //generate secret field
                 $wantpassword = password_hash($wantpassword, PASSWORD_BCRYPT); // hash the password
             }
@@ -101,18 +101,11 @@ if ($ipq >= ACCOUNTMAX) {
                 // Invited User
                 if ($invite_row) {
                     Users::updateUserBits($wantusername, $wantpassword, $secret, 'confirmed', TimeDate::get_date_time(), $invite_row['id']);
-                    /*
-                    $this->pdo->run("
-			            UPDATE users
-			            SET username=?, password=?, secret=?, status=?, added=?
-                        WHERE id=?",
-                        [$wantusername, $wantpassword, $secret, 'confirmed', TimeDate::get_date_time(), $invite_row['id']]);
-                    */
+
                     //send pm to new user
                     if (WELCOMEPM_ON) {
                         $dt = TimeDate::get_date_time();
                         $msg = WELCOMEPM_MSG;
-                        //$this->pdo->run("INSERT INTO messages (sender, receiver, added, msg, poster) VALUES(0, $invite_row[id], $dt, $msg, 0)");
                         Message::insertmessage(0, $invite_row['id'], $dt, 'Welcome', $msg, 'yes', 'in');
                     }
                     Redirect::autolink(URLROOT . '/login', Lang::T("ACCOUNT_ACTIVATED"));
@@ -141,10 +134,10 @@ if ($ipq >= ACCOUNTMAX) {
                     VALUES
                     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [$wantusername, $wantpassword, $secret, $email, $status, TimeDate::get_date_time(),
-                    TimeDate::get_date_time(), TimeDate::get_date_time(), $age, $country, $gender,
-                    $client, DEFAULTTHEME, DEFAULTLANG, $signupclass, Ip::getIP()]);
+                        TimeDate::get_date_time(), TimeDate::get_date_time(), $age, $country, $gender,
+                        $client, DEFAULTTHEME, DEFAULTLANG, $signupclass, Ip::getIP()]);
                 $id = DB::lastInsertId();
-                
+
                 //send pm to new user
                 if (WELCOMEPM_ON) {
                     $dt = TimeDate::get_date_time();

@@ -84,4 +84,5 @@ class Tupload
     {
         return move_uploaded_file($this->tmp_name, $path);
     }
+    
 }

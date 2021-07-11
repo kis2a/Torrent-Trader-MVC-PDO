@@ -16,4 +16,5 @@ class Rules extends Controller
         ];
         View::render('rules/index', $data, 'user');
     }
+    
 }

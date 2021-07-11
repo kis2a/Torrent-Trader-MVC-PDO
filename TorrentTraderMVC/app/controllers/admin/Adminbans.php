@@ -9,7 +9,7 @@ class Adminbans extends Controller
 
     public function index()
     {
-        Redirect::to(URLROOT."/admincp");
+        Redirect::to(URLROOT . "/admincp");
     }
 
     public function ip()
@@ -34,7 +34,7 @@ class Adminbans extends Controller
                 }
                 Logs::write("IP Ban ($first - $last) was removed by $_SESSION[id] ($_SESSION[username])");
             }
-                Redirect::autolink(URLROOT . '/adminbans/ip', "Ban(s) deleted.");
+            Redirect::autolink(URLROOT . '/adminbans/ip', "Ban(s) deleted.");
         }
 
         if ($do == "add") {
@@ -42,7 +42,7 @@ class Adminbans extends Controller
             $last = trim($_POST["last"]);
             $comment = trim($_POST["comment"]);
             if ($first == "" || $last == "" || $comment == "") {
-                    Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("MISSING_FORM_DATA"));
+                Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("MISSING_FORM_DATA"));
             }
             $comment = $comment;
             $added = TimeDate::get_date_time();
@@ -50,13 +50,13 @@ class Adminbans extends Controller
             $err = $bins->errorCode();
             switch ($err) {
                 case 1062:
-                        Redirect::autolink(URLROOT . '/adminbans/ip', "Duplicate ban.");
+                    Redirect::autolink(URLROOT . '/adminbans/ip', "Duplicate ban.");
                     break;
                 case 0:
-                        Redirect::autolink(URLROOT . '/adminbans/ip', "Ban added.");
+                    Redirect::autolink(URLROOT . '/adminbans/ip', "Ban added.");
                     break;
                 default:
-                        Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("THEME_DATEBASE_ERROR") . " " . htmlspecialchars($bins->errorInfo()));
+                    Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("THEME_DATEBASE_ERROR") . " " . htmlspecialchars($bins->errorInfo()));
             }
         }
 
@@ -104,7 +104,7 @@ class Adminbans extends Controller
         list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT . "/admin/emailbans?");
         $title = Lang::T("EMAIL_BANS");
         $res = DB::run("SELECT * FROM email_bans ORDER BY added DESC $data[limit]");
-        
+
         $data = [
             'title' => $title,
             'count' => $count,
@@ -135,4 +135,5 @@ class Adminbans extends Controller
         ];
         View::render('bans/admin/torrents', $data, 'admin');
     }
+
 }

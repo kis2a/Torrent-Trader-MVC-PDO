@@ -37,11 +37,11 @@ class Style
         $blockId = 'f-' . sha1($caption);
         ?>
         <div class="card">
-            <div class="card-header">
+            <div class="card-header frame-header">
                 <?php echo $caption ?>
                 <a data-toggle="collapse" href="#" class="showHide" id="<?php echo $blockId; ?>" style="float: right;"></a>
             </div>
-            <div class="card-body slidingDiv<?php echo $blockId; ?>">
+            <div class="card-body frame-body slidingDiv<?php echo $blockId; ?>">
         <?php
     }
     
@@ -137,11 +137,11 @@ class Style
         $blockId = 'b-' . sha1($caption);
         ?>
         <div class="card">
-            <div class="card-header">
+            <div class="card-header block-header">
                 <?php echo $caption ?>
                 <a data-toggle="collapse" href="#" class="showHide" id="<?php echo $blockId; ?>" style="float: right;"></a>
             </div>
-            <div class="card-body slidingDiv<?php echo $blockId; ?>">
+            <div class="card-body block-body slidingDiv<?php echo $blockId; ?>">
             <?php
     }
 

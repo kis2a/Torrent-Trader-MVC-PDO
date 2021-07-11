@@ -67,7 +67,7 @@ class Admincontactstaff extends Controller
         $answeringto = $_GET["answeringto"];
         $receiver = (int) $_GET["receiver"];
         if (!Validate::Id($receiver)) {
-                Redirect::autolink(URLROOT . '/admincontactstaff', "Invalid id.");
+            Redirect::autolink(URLROOT . '/admincontactstaff', "Invalid id.");
         }
         $res = DB::run("SELECT * FROM users WHERE id=$receiver");
         $res2 = DB::run("SELECT * FROM staffmessages WHERE id=$answeringto");

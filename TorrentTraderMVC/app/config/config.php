@@ -163,4 +163,4 @@ define('HNR_SEEDTIME', 172800); // target is to seed for 48 hours
 define('HNR_WARN', 5); // 5 hit & runs then warned
 define('HNR_STOP_DL', 5); // After 5 H & R stop downloading
 define('HNR_BAN', 50); // After 50 H&R they are banned
-define('HNR_DISABLED', TRUE);
+define('HNR_DISABLED', true);

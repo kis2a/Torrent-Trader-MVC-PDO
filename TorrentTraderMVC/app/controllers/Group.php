@@ -1,6 +1,6 @@
 <?php
-class Group extends Controller {
-
+class Group extends Controller
+{
 
     public function __construct()
     {
@@ -54,7 +54,7 @@ class Group extends Controller {
             'title' => 'Members',
             'getgroups' => $res,
             'query1' => $query,
-            'query2' => $q
+            'query2' => $q,
         ];
         View::render('groups/index', $data, 'user');
     }

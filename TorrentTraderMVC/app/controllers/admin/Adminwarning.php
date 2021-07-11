@@ -41,4 +41,5 @@ class Adminwarning extends Controller
         }
         Redirect::autolink(URLROOT . "/adminwarning", "Entries Confirmed");
     }
+    
 }
