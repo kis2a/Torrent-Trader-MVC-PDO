@@ -38,7 +38,7 @@ class Shoutbox extends Controller
                 <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
                 </a>
                 <?php
-            if ($this->session['class'] > _UPLOADER) {
+            if ($_SESSION['class'] > _UPLOADER) {
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
                 ?>
                 <!-- Trigger/Open The Model -->
@@ -75,15 +75,17 @@ class Shoutbox extends Controller
 
     public function add()
     {
-        if ($this->session["shoutboxpos"] == 'no') {
+        if ($this->session["shoutboxpos"] != 'yes') {
             //INSERT MESSAGE
             if (!empty(Input::get('message')) && $_SESSION['loggedin'] == true) {
                 $message = Input::get('message');
                 $row = Shoutboxs::checkFlood($message, $this->session['username']);
                 if ($row[0] == '0') {
-                    Shoutboxs::insertShout($this->session['id'], TimeDate::get_date_time(), $this->session['username'], $message);
+                    Shoutboxs::insertShout($_SESSION['id'], TimeDate::get_date_time(), $_SESSION['username'], $message);
                 }
             }
+        } else {
+            die();
         }
         Redirect::to(URLROOT);
     }
@@ -98,7 +100,7 @@ class Shoutbox extends Controller
                 echo "Failed to delete, invalid msg id";
                 exit;
             }
-            if ($row && ($this->session["edit_users"] == "yes" || $this->session['username'] == $row[1])) {
+            if ($row && ($_SESSION["edit_users"] == "yes" || $_SESSION['username'] == $row[1])) {
                 Logs::write("<b><font color='orange'>Shout Deleted:</font> Deleted by   " . $this->session['username'] . "</b>");
                 Shoutboxs::deleteByShoutId($delete);
             }
