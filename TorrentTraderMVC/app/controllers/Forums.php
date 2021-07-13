@@ -21,14 +21,6 @@ class Forums extends Controller
         if ($_SESSION["forumbanned"] == "yes" || $_SESSION["view_forum"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("FORUM_BANNED"));
         }
-        if ($extra = true) {
-            if ($_SESSION["edit_forum"] == "no") {
-                Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
-            }
-            if ($_SESSION["delete_forum"] == "no") {
-                Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
-            }
-        }
     }
 
     /**

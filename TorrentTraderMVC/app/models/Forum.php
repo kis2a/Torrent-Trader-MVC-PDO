@@ -115,9 +115,9 @@ class Forum
     }
 
     public static function countForumPost($topicid) {
-        $stmt = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
-        $count = $stmt->rowCount();
-        return $count;
+        $stmt = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid])->fetch(PDO::FETCH_LAZY);
+        //$count = $stmt->rowCount();
+        return $stmt;
     }
     
     public static function deleteForumPost($postid) {
