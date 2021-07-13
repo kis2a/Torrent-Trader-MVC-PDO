@@ -1,5 +1,30 @@
-body {
-    width: 100% !important;
+
+.ttsidebar {
+    -ms-flex: 0 0 210px;
+    flex: 0 0 210px;
+} 
+
+@media only screen and (max-width: 1143px) {
+	.ttsidebar {
+		display: none !important;
+	}
+}
+
+.ttbottombar {
+    width: 50% !important;
+}
+
+@media only screen and (min-width: 1143px) {
+	.ttbottombar {
+		display: none !important;
+	}
+}
+
+
+@media only screen and (max-width: 1567px) {
+	.ttmobile {
+		max-width: 600px !important;
+	}
 }
 
 .navbar {
@@ -47,9 +72,7 @@ body {
 }
 
 .ttborder {
-	border: 3px solid #3895D3 !IMPORTANT;
-    background-image: -webkit-linear-gradient(top, #c4c132, #f7b451) !IMPORTANT;
-    background-image: linear-gradient(to bottom, #c4c132, #f7b451) !IMPORTANT;
+	border: 3px solid #ff9900 !IMPORTANT;
 }
 
 .ttblend {
@@ -66,102 +89,11 @@ body {
 	background-repeat: repeat-x;
 }
 
-@media only screen and (min-width: 430px) {
-	.myBlock-show {
-		 display: none; 
-		 width: 50%;
-		 vertical-align: top;
-	}
-  }
-  
-  @media only screen and (max-width: 430px) {
-	.myBlock-hide {
-		display: none;
-		vertical-align: top;
-		width: 170px;
-	}
-  }
-  
-  @media only screen and (min-width: 430px) {
-	td.myBlock-show {
-		 display: none; 
-		 width: 50%;
-		 vertical-align: top;
-	}
-  }
-  
-  @media only screen and (max-width: 430px) {
-	td.myBlock-hide {
-		display: none;
-		vertical-align: top;
-		width: 170px;
-	}
-  }
-  
-  @media only screen and (min-width: 430px) {
-	.myBlock-show.td {
-		 display: none; 
-		 width: 50%;
-		 vertical-align: top;
-	}
-  }
-  
-  @media only screen and (max-width: 430px) {
-	.myBlock-hide.td {
-		display: none;
-		vertical-align: top;
-		width: 170px;
-	}
-  }
-  
-  
-  @media only screen and (min-width: 430px) {
-	.myBlock-show {
-		 display: none; 
-		 width: 50%;
-		 vertical-align: top;
-	}
-  }
-  
-  @media only screen and (max-width: 430px) {
-	.myBlock-hide {
-		display: none;
-		vertical-align: top;
-		width: 170px;
-	}
-  }
-  
-  @media only screen and (min-width: 430px) {
-	td myBlock-show {
-		 display: none; 
-		 width: 50%;
-		 vertical-align: top;
-	}
-  }
-  
-  @media only screen and (max-width: 430px) {
-	td myBlock-hide {
-		display: none;
-		vertical-align: top;
-		width: 170px;
-	}
-  }
-  
-  @media only screen and (min-width: 430px) {
-	.myBlock-show td {
-		 display: none; 
-		 width: 50%;
-		 vertical-align: top;
-	}
-  }
-  
-  @media only screen and (max-width: 430px) {
-	.myBlock-hide td {
-		display: none;
-		vertical-align: top;
-		width: 170px;
-	}
-  }
+
+  #country-list{list-style:none;width:190px;}
+  #country-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+  #country-list li:hover{background:#ece3d2;cursor: pointer;}
+  #search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
 
 .custom-toggler .navbar-toggler-icon {
 	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");

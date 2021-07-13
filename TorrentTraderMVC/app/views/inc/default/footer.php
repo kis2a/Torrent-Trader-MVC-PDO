@@ -1,36 +1,35 @@
-<!-- Start response --> 
-<div id='main'>
-<table class="table">
-  <tr>
-  <?php
-  if (LEFTNAV){?>
-    <td class="myBlock-show"  style="width: 15%">
-		<?php Blocks::left();?>
-    </td> <?php
-  }
-  if (RIGHTNAV){ ?>
-    <td class="myBlock-show"  style="width: 15%">
-		<?php Blocks::right(); ?>
-    </td> <?php
-  } ?>
-  </tr>
-  </table>
-</div>
 <?php
-
 if (MIDDLENAV) {?>
   <?php Blocks::middle();
 }?>
-</td>
+
+<div class='row'>
+<?php
+if (LEFTNAV) { ?>
+<div class="ttbottombar" >
+  <?php Blocks::left();?>
+</div> <?php
+} ?>
+<?php
+if (RIGHTNAV) {?>
+<div class="ttbottombar">
+    <?php Blocks::right();?>
+</div>
+<?php
+} ?>
+</div>
+
+</div>
 
 <?php
 if (RIGHTNAV) {?>
-  <td class="myBlock-hide"  style="width: 15%">
+<div class="ttsidebar">
     <?php Blocks::right();?>
-</td> <?php
+</div>
+<?php
 } ?>
-</tr>
-</table>
+
+</div>
 </div>
 <!-- Footer -->
 <footer>
@@ -70,7 +69,30 @@ function myFunction() {
   }
 }
 </script>
+<script>
+$(document).ready(function(){
+	$("#search-box").keyup(function(){
+		$.ajax({
+		type: "POST",
+		url: "<?php echo URLROOT; ?>/ajax",
+		data:'keyword='+$(this).val(),
+		beforeSend: function(){
+			$("#search-box").css("background","#FFF url(<?php echo URLROOT; ?>/LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
+			$("#suggesstion-box").show();
+			$("#suggesstion-box").html(data);
+			$("#search-box").css("background","#FFF");
+		}
+		});
+	});
+});
 
+function userCountry(val) {
+$("#search-box").val(val);
+$("#suggesstion-box").hide();
+}
+</script>
   </body>
 </html>
 <?php ob_end_flush();?>

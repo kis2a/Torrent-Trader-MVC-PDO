@@ -21,20 +21,19 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css">
   </head>
 <body>
+
+<?php require APPROOT . '/views/inc/default/navbar.php'; ?><br>
+
+<div class="container-fluid">
+<div class="row">
   
-  <div class="container-fluid" style="padding-top: 10px;">
-
-  <div class="col-sm-12">
-  <?php require APPROOT . '/views/inc/default/navbar.php'; ?>
-  </div>
-
-<table class="table">
-<tr>
 <?php
 if (LEFTNAV) { ?>
-<th class="myBlock-hide" style="width: 15%">
+<div class="ttsidebar">
   <?php Blocks::left();?>
-</th> <?php
+</div> <?php
 } ?>
+
+<div class="col">
 
 <th style="width: 70%">

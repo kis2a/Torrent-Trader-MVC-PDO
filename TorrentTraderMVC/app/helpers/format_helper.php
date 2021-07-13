@@ -53,7 +53,9 @@ function format_comment($text)
     }
 
     // Extract the Code
-    $s = preg_replace("#\[code\](.+)\[/code\]#isU", "<b> Code : </b><div style='border: 1px #3895D3 solid'><pre><code><div rows='10' style='max-height:400px;white-space: nowrap'  readonly='readonly'>$1</div></code></pre></div><br />", $s);
+    $s = preg_replace("#\[code\](.+)\[/code\]#isU", "<b> Code : </b>
+    <pre><code><div class='ttmobile' style='max-height:400px;white-space: nowrap'  readonly='readonly'>$1
+    </div> </code></pre><br />", $s);
     // Links
     // [url=http://www.example.com]Text[/url]
     $s = preg_replace("#\[url=((?:ftp|https?)://.*?)\](.*?)\[/url\]#i", "<a href='$1'>$2</a>", $s);
@@ -61,7 +63,7 @@ function format_comment($text)
     $s = preg_replace("#\[url\]((?:ftp|https?)://.*?)\[/url\]#i", "<a href='$1'>$1</a>", $s);
     // Image
     // [img]http://image.gif[/img]
-    $s = preg_replace("#\[img\]((?:ftp|https?)://[a-z0-9._/-]+(\.gif|\.jpg|\.png|\.bmp|\.jpeg))\[/img\]#isU", "<div class='table-responsive'><img src='$1' /></div>", $s);
+    $s = preg_replace("#\[img\]((?:ftp|https?)://[a-z0-9._/-]+(\.gif|\.jpg|\.png|\.bmp|\.jpeg))\[/img\]#isU", "<div class='table-responsive ttmobile'><img src='$1' /></div>", $s);
     // [img=http://www/image.gif]
     $s = preg_replace("#\[img=((?:ftp|https?)://[a-z0-9._/-]+(\.gif|\.jpg|\.png|\.bmp|\.jpeg))\]\[/img\]#isU", "<img src='$1' />", $s);
     // [video]http://youtube.com/[/video]
