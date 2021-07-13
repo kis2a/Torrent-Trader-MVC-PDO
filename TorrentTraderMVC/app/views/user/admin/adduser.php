@@ -21,7 +21,7 @@
 </div>
 <div class="form-group">
 <div class="form-group no-margin">
-	<button type="submit" class="btn btn-warning  btn-sm">Okay</button>
+	<button type="submit" class="btn ttbtn  btn-sm">Okay</button>
 </div>
 </form>
 </div>

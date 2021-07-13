@@ -33,7 +33,6 @@ body {
     height: 35px;
 }
 
-
 .block-body {
 	border: 10px solid;
 	padding: 0.25rem;
@@ -41,6 +40,31 @@ body {
 	border-image-source: linear-gradient(to bottom, #a9111f, #ffff00) !important;
 }
 
+.ttbtn {
+	color: #fff !IMPORTANT;
+	background-image: -webkit-linear-gradient(top, #a9111f, #ffff00) !IMPORTANT;
+	background-image: linear-gradient(to bottom, #a9111f, #ffff00) !IMPORTANT;
+}
+
+.ttborder {
+	border: 3px solid #3895D3 !IMPORTANT;
+    background-image: -webkit-linear-gradient(top, #c4c132, #f7b451) !IMPORTANT;
+    background-image: linear-gradient(to bottom, #c4c132, #f7b451) !IMPORTANT;
+}
+
+.ttblend {
+	color: #fff;
+    background-image: -webkit-linear-gradient(top, #a9111f, #ff9900) !IMPORTANT;
+    background-image: linear-gradient(to bottom, #a9111f, #ff9900) !IMPORTANT;
+	background-repeat: repeat-x;
+}
+  
+.ttalert {
+	color: #fff;
+	background-image: -webkit-linear-gradient(top, #ac3c47, #fcbc32) !IMPORTANT;
+	background-image: linear-gradient(to bottom, #ac3c47, #fcbc32) !IMPORTANT;
+	background-repeat: repeat-x;
+}
 
 @media only screen and (min-width: 430px) {
 	.myBlock-show {

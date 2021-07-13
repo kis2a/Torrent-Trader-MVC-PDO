@@ -1,7 +1,7 @@
 <center><a href='<?php echo URLROOT; ?>/adminpolls/add'>Add New Poll</a>&nbsp;/&nbsp;
 <a href='<?php echo URLROOT; ?>/adminpolls/results'>View Poll Results</a></center>
 <b>Polls</b> (Top poll is current)<br />
-<div class='border border-warning'><br>
+<div class='border ttborder'><br>
 <?php
 while ($row = $data['query']->fetch(PDO::FETCH_ASSOC)) { ?>
    <a href='<?php echo URLROOT; ?>/adminpolls/add?subact=edit&amp;pollid=<?php echo $row['id']; ?>'>

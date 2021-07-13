@@ -67,7 +67,7 @@ class Adminshoutbox extends Controller
                         <form method="POST" action="<?php echo URLROOT; ?>/shoutbox/edit?id=<?php echo $row['msgid']; ?>">
                         <input class="form-control" type="text" name="message" value="<?php echo $row['message'] ?>" size="60" /><br>
                         <!-- The submit button -->
-                        <center><input class="btn btn-sm btn-warning"  type="submit" value='<?php echo Lang::T("SUBMIT"); ?>'></center>
+                        <center><input class="btn btn-sm ttbtn"  type="submit" value='<?php echo Lang::T("SUBMIT"); ?>'></center>
                         </form>
                     </div>
                     </div>

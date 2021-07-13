@@ -166,7 +166,7 @@ if ($_SESSION['loggedin'] == true) {
         </label>
       </div>
 
-    	<button type='submit' class="btn btn-warning center-block" /><?php echo Lang::T("VOTE"); ?></button>
+    	<button type='submit' class="btn ttbtn center-block" /><?php echo Lang::T("VOTE"); ?></button>
       </form>
 
   	<?php }

@@ -51,7 +51,7 @@ class Torrent extends Controller
             $scraper = "
             <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
             <form action='" . URLROOT . "/scrape/external?id=" . $id . "' method='post'>
-            <button type='submit' class='btn btn-warning center-block' value=''>" . Lang::T("Update Stats") . "</button>
+            <button type='submit' class='btn ttbtn center-block' value=''>" . Lang::T("Update Stats") . "</button>
             </form>";
         } else {
             $scraper = "<br>

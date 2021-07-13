@@ -353,7 +353,7 @@ class Search extends Controller
         ?>
                 <?php echo $langdropdown ?>
                 </select>
-                <button type='submit' class='btn btn-sm btn-warning'><?php print Lang::T("SEARCH");?></button>
+                <button type='submit' class='btn btn-sm ttbtn'><?php print Lang::T("SEARCH");?></button>
                 <br />
                 </form>
                 <?php print Lang::T("SEARCH_RULES");?><br />

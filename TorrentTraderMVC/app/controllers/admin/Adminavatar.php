@@ -9,16 +9,12 @@ class Adminavatar extends Controller
 
     public function index()
     {
-        $query = DB::run("SELECT count(*) FROM users WHERE enabled=? AND avatar !=?", ['yes', '']);
-        $count = $query->fetch(PDO::FETCH_LAZY);
-        $count = $count[0];
-        list($pagertop, $pagerbottom, $limit) = pager(50, $count, '/adminavatar?');
-        $query = "SELECT username, id, avatar FROM users WHERE enabled='yes' AND avatar !='' $limit";
-        $res = DB::run($query);
+        $count = DB::run("SELECT count(*) FROM users WHERE enabled=? AND avatar !=?", ['yes', ''])->fetchColumn();
+        list($pagertop, $pagerbottom, $limit) = pager(50, $count, URLROOT.'/adminavatar?');
+        $res = DB::run("SELECT username, id, avatar FROM users WHERE enabled='yes' AND avatar !='' $limit");
 
-        $title = "Avatar Log";
         $data = [
-            'title' => $title,
+            'title' => "Avatar Log",
             'pagertop' => $pagertop,
             'res' => $res,
             'pagerbottom' => $pagerbottom,

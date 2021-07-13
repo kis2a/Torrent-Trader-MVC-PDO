@@ -7,55 +7,65 @@ class Likes extends Controller
         $this->session = Auth::user(0, 2);
     }
 
-    // Thanks on index
+    // Likes
     public function index()
     {
         $id = (int) Input::get('id');
+        $type = Input::get('type');
         if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT, "No ID");
+            Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
         }
-        DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent']);
-        Redirect::autolink(URLROOT, "Thanks you for you appreciation.");
-    }
-    // Thanks on details
-    public function details()
-    {
-        $id = (int) Input::get('id');
-        if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT, "No ID");
+        if (!$type) {
+            Redirect::autolink(URLROOT, "No Type");
         }
-        DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent']);
-        Redirect::autolink(URLROOT."/torrent?id=$id", "Thanks you for you appreciation.");
+        $this->likeswitch($id, $type);
     }
 
-    public function liketorrent()
+    public function likeswitch($id, $type)
     {
-        $id = (int) Input::get('id');
-        if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT, "No ID");
+        switch ($type) {
+            case 'liketorrent':
+                DB::run("INSERT INTO likes (user, liked, added, type, reaction) VALUES (?, ?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent', 'like']);
+                Redirect::autolink(URLROOT."/torrent?id=$id", "Thanks you for you appreciation.");
+                break;
+            case 'unliketorrent':
+                DB::run("DELETE FROM likes WHERE user=? AND liked=? AND type=?", [$_SESSION['id'], $id, 'torrent']);
+                Redirect::autolink(URLROOT."/torrent?id=$id", "Unliked.");
+                break;
+            default:
+                Redirect::autolink(URLROOT, "Thanks you for you appreciation.");
+                break;
         }
-        DB::run("INSERT INTO likes (user, liked, added, type, reaction) VALUES (?, ?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent', 'like']);
-        Redirect::autolink(URLROOT."/torrent?id=$id", "Thanks you for you appreciation.");
     }
 
-    public function unliketorrent()
+    public function thanks()
     {
         $id = (int) Input::get('id');
+        $type = Input::get('type');
         if (!Validate::Id($id)) {
+            Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
+        }
+        if (!$type) {
             Redirect::autolink(URLROOT, "No ID");
         }
-        DB::run("DELETE FROM likes WHERE user=? AND liked=? AND type=?", [$_SESSION['id'], $id, 'torrent']);
-        Redirect::autolink(URLROOT."/torrent?id=$id", "Unliked.");
+        $this->thankswitch($id, $type);
     }
 
-    public function likeforum()
+    public function thankswitch($id, $type)
     {
-        $id = (int) Input::get('id');
-        if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT, "No ID");
+        switch ($type) {
+            case 'torrent':
+                DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'torrent']);
+                Redirect::autolink(URLROOT."/torrent?id=$id", "Thanks you for you appreciation.");
+                break;
+            case 'thanksforum':
+                DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'forum']);
+                Redirect::autolink(URLROOT."/forums/viewtopic&topicid=$id", "Thanks you for you appreciation.");
+                break;
+            default:
+                Redirect::autolink(URLROOT, "Thanks you for you appreciation.");
+                break;
         }
-        DB::run("INSERT INTO thanks (user, thanked, added, type) VALUES (?, ?, ?, ?)", [$_SESSION['id'], $id, TimeDate::get_date_time(), 'forum']);
-        Redirect::autolink(URLROOT."/forums/viewtopic&topicid=$id", "Thanks you for you appreciation.");
     }
 
 }

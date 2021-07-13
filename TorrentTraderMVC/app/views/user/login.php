@@ -15,7 +15,7 @@
 	    </div>
         <div class="form-group">
             <?php (new Captcha)->html(); ?>
-            <button type="submit" class="btn btn-warning btn-block"><?php echo Lang::T("LOGIN"); ?></button>
+            <button type="submit" class="btn ttbtn btn-block"><?php echo Lang::T("LOGIN"); ?></button>
             <center><i><?php echo Lang::T("COOKIES"); ?></i></center>
 		</div>
         <div class="margin-top20 text-center">

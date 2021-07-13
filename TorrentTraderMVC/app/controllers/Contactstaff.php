@@ -20,22 +20,19 @@ class Contactstaff extends Controller
             $msg = Input::get("msg");
             $sub = Input::get("sub");
             $error_msg = "";
-            if (!$msg) {
-                $error_msg = $error_msg . "You did not put message.</br>";
-            }
-            if (!$sub) {
-                $error_msg = $error_msg . "You did not put subject.</br>";
+            if (!$msg || !$sub) {
+                $error_msg = Lang::T("NO_EMPTY_FIELDS");
             }
             if ($error_msg != "") {
-                Redirect::autolink(URLROOT, "Your message can not be sent:$error_msg</br>");
+                Redirect::autolink(URLROOT, $error_msg);
             } else {
                 $added = TimeDate::get_date_time();
                 $userid = $_SESSION['id'];
-                $req = DB::run("INSERT INTO staffmessages (sender, added, msg, subject) VALUES(?,?,?,?)", [$userid, $added, $msg, $sub]);
-                if ($req) {
-                    Redirect::autolink(URLROOT, 'Your message has been sent. We will reply as soon as possible.');
+                $req = Staffmessage::insertStaffMessage($userid, $added, $msg, $sub);
+                if ($req == 1) {
+                    Redirect::autolink(URLROOT, Lang::T("CONTACT_SENT"));
                 } else {
-                    Redirect::autolink(URLROOT, 'We are busy. try again later');
+                    Redirect::autolink(URLROOT, Lang::T("TRYLATER"));
                 }
             }
         }

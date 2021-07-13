@@ -35,9 +35,9 @@ torrentmenu($data['id'], $torr['external']);
             $data1 = DB::run("SELECT user FROM likes WHERE liked=? AND type=? AND user=? AND reaction=?", [$torr['id'], 'torrent', $_SESSION['id'], 'like']);
             $likes = $data1->fetch(PDO::FETCH_ASSOC);
             if ($likes) { ?>
-                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes/unliketorrent?id=<?php echo $torr['id']; ?>'><img src='<?php echo URLROOT; ?>/assets/images/unlike.png' width='80' height='40' border='0'></a><br><?php
+                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=unliketorrent'><img src='<?php echo URLROOT; ?>/assets/images/unlike.png' width='80' height='40' border='0'></a><br><?php
             } else {?>
-                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes/liketorrent?id=<?php echo $torr['id']; ?>'><img src='<?php echo URLROOT; ?>/assets/images/like.png' width='80' height='40' border='0'></a><br><?php
+                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=liketorrent'><img src='<?php echo URLROOT; ?>/assets/images/like.png' width='80' height='40' border='0'></a><br><?php
             }
         }
         if (ALLOWLIKES) {
@@ -78,7 +78,7 @@ torrentmenu($data['id'], $torr['external']);
         print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm btn-success'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
         $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$torr['id'], 'torrent', $_SESSION['id']]);
         $like = $data->fetch(PDO::FETCH_ASSOC);
-        if ($like || $_SESSION["id"] != $torr["owner"]) {
+        if ($like) {
             // magnet
             if ($torr["external"] == 'yes') {
                 if ($_SESSION["can_download"] == "yes") {
@@ -97,7 +97,7 @@ torrentmenu($data['id'], $torr['external']);
             }
         } else {
             if($_SESSION["id"] != $torr["owner"]) {
-                print("<a href='" . URLROOT . "/likes/details?id=$torr[id]'><button  class='btn btn-sm btn-danger'>Thanks</button></a><br>");
+                print("<a href='" . URLROOT . "/likes/thanks?id=$torr[id]&type=torrent'><button  class='btn btn-sm btn-danger'>Thanks</button></a><br>");
             } else {
                 if ($torr["external"] == 'yes') {
                     // magnet
@@ -109,28 +109,6 @@ torrentmenu($data['id'], $torr['external']);
         }
     }                   
 
-                    /*
-        if ($_SESSION["id"] != $torr["owner"]) {
-            $data1 = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$torr['id'], 'torrent', $_SESSION['id']]);
-            $like = $data->fetch(PDO::FETCH_ASSOC);
-           if ($like) {
-                // Magnet
-                if ($torr["external"] == 'yes') {
-                print("<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a>");
-               } else {
-                print("<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a>");
-               }
-            } else {
-               print("<a href='" . URLROOT . "/likes/details?id=$data[id]'><button  class='btn btn-sm btn-danger'>Thanks</button></a>&nbsp;");
-            }
-        } else {
-            if ($torr["external"] == 'yes') {
-                print("<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a>");
-            } else {
-                print("<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a>");
-            }
-        }
-            */
     ?>
     <b><?php echo Lang::T("HEALTH"); ?>: </b>
     <img src='<?php echo URLROOT; ?>/assets/images/health/health_<?php echo health($torr['leechers'], $torr['seeders']); ?>.gif' alt='' /><br>
@@ -155,10 +133,10 @@ torrentmenu($data['id'], $torr['external']);
         echo "<a href='" . URLROOT . "/torrent/edit?id=$torr[id]&amp;returnto=" . urlencode($_SERVER["REQUEST_URI"]) . "'><button type='button' class='btn btn-sm btn-success'><b>" . Lang::T("EDIT_TORRENT") . "</b></button></a>&nbsp;";
     }
     if ($_SESSION["edit_users"] == "yes") { ?>
-        <a href="<?php echo URLROOT; ?>/snatched?tid=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("SNATCHLIST") ?></button></a><?php
+        <a href="<?php echo URLROOT; ?>/snatched?tid=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a><?php
     }
     if ($_SESSION["delete_torrents"] == "yes") {?>
-        <a href="<?php echo URLROOT; ?>/torrent/delete?id=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("Delete") ?></button></a><?php 
+        <a href="<?php echo URLROOT; ?>/torrent/delete?id=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("Delete") ?></button></a><?php 
     } ?>
 
 </div>

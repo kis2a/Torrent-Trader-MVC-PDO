@@ -1,6 +1,6 @@
 <?php
 if ($data['friend']->rowCount() == 0) { ?>&nbsp;&nbsp;
-    <div class="row border-warning"> <center><b>Friend list is empty!</b></center></div>
+    <div class="row ttborder"> <center><b>Friend list is empty!</b></center></div>
     <?php
 } else { ?>
     <center><b>Friend list</b></center> <?php
@@ -10,7 +10,7 @@ if ($data['friend']->rowCount() == 0) { ?>&nbsp;&nbsp;
             $avatar = "".URLROOT."/assets/images/default_avatar.png";
         }
         ?>
-        <div class="row border-warning"> 
+        <div class="row ttborder"> 
         <div class="col-md-4 mt-3">
         <img width=80px src="<?php echo $avatar ?>">&nbsp;<a href='<?php echo URLROOT ?>/profile?id=<?php echo $friend['id'] ?>'><b><?php echo  Users::coloredname($friend['name']) ?></b></a> &nbsp;
         <a href='<?php echo  URLROOT ?>/messages/create?id=<?php echo $friend['id'] ?>'><img src='<?php echo  URLROOT ?>/assets/images/button_pm.gif' title=Send&nbsp;PM border=0></a>&nbsp;
@@ -27,7 +27,7 @@ if ($data['friend']->rowCount() == 0) { ?>&nbsp;&nbsp;
  
 <?php
 if ($data['enemy']->rowCount() == 0) { ?>&nbsp;&nbsp;
-    <div class="row border-warning"> <center><b>Unfriended list is empty!</b></center></div>
+    <div class="row ttborder"> <center><b>Unfriended list is empty!</b></center></div>
     <?php
 } else { ?>
     <center><b>Unfriended list</b></center> <?php
@@ -37,7 +37,7 @@ if ($data['enemy']->rowCount() == 0) { ?>&nbsp;&nbsp;
             $avatar = "".URLROOT."/assets/images/default_avatar.png";
         }
         ?>
-        <div class="row border-warning"> 
+        <div class="row ttborder"> 
         <div class="col-md-4">
         <img width=80px src="<?php echo $avatar ?>">&nbsp;<a href='<?php echo  URLROOT ?>/profile?id=<?php echo  $enemy['id'] ?>'><b><?php echo  Users::coloredname($enemy['name']) ?></b></a> &nbsp;
         <a href='<?php echo URLROOT ?>/messages/create?id=<?php echo $enemy['id'] ?>'><img src='<?php echo  URLROOT ?>/assets/images/button_pm.gif' title=Send&nbsp;PM border=0></a>&nbsp;

@@ -15,10 +15,10 @@ class Stylesheet extends Controller
         $updateset[] = "stylesheet = '$stylesheet'";
         $updateset[] = "language = '$language'";
         if (count($updateset)) {
-            Users::updateset($updateset, $this->session['id']);
+            Users::updateset($updateset, $_SESSION['id']);
         }
         if (empty($_SERVER["HTTP_REFERER"])) {
-            Redirect::to(URLROOT."/home");
+            Redirect::to(URLROOT);
             return;
         }
         Redirect::to($_SERVER["HTTP_REFERER"]);

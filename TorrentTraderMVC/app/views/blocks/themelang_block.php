@@ -59,7 +59,7 @@ if ($_SESSION['loggedin'] == true) {
 		<label><?php echo Lang::T("LANGUAGE"); ?></label>
 		<select name="language" style="width: 95%" ><?php echo $languages; ?></select>
   	</div>
-	<button type="submit" class="btn btn-warning center-block" value="" /><?php echo Lang::T("APPLY"); ?></button>
+	<button type="submit" class="btn ttbtn center-block" value="" /><?php echo Lang::T("APPLY"); ?></button>
   </form>
 
 <?php

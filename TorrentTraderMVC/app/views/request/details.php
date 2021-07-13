@@ -1,5 +1,5 @@
-<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-warning'>All Request</button></a>&nbsp;
-<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-warning'>View my requests</button></a>
+<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm ttbtn'>All Request</button></a>&nbsp;
+<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm ttbtn'>View my requests</button></a>
 <center><table width=600 border=0 cellspacing=0 cellpadding=3>
 <tr><td align=left><B><?php echo Lang::T('REQUEST') ?>: </B></td><td width=70% align=left><?php echo $data['request'] ?></td></tr>
 <tr><td align=left><B>Category: </B></td><td width=70% align=left><?php echo $data['ncat'] ?></td></tr>
@@ -18,8 +18,8 @@ if ($num["filled"] == null) {
             print("</table>");
             print("<input type=text size=80 name=filledurl value=TYPE-DIRECT-URL-HERE>\n");
             print("<input type=hidden value=$data[id] name=requestid>");
-            print("<button  class='btn btn-sm btn-warning'>Fill Request</button></form>");
-            print("<p><hr></p><form method=get action=".URLROOT."/request/makereq#add>Or <button  class='btn btn-sm btn-warning'>Add A New Request</button></form></center>");
+            print("<button  class='btn btn-sm ttbtn'>Fill Request</button></form>");
+            print("<p><hr></p><form method=get action=".URLROOT."/request/makereq#add>Or <button  class='btn btn-sm ttbtn'>Add A New Request</button></form></center>");
 } else {
     print("<tr><td align=left><B>URL: </B></td><td width=50% align=left><a href=$data[filled] target=_new>$data[filled]</a></td></tr>");
     print("</table>");

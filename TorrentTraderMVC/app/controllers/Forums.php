@@ -12,14 +12,22 @@ class Forums extends Controller
      */
     private function validForumUser($extra = false)
     {
-        if (!FORUMS_GUESTREAD) {
-
+        if (!FORUMS) {
+            Redirect::autolink(URLROOT, Lang::T("FORUM_AVAILABLE"));
         }
-        if ($this->session["forumbanned"] == "yes" || $this->session["view_forum"] == "no") {
+        if (!FORUMS_GUESTREAD && !$_SESSION['loggedin']) {
+            Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
+        }
+        if ($_SESSION["forumbanned"] == "yes" || $_SESSION["view_forum"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("FORUM_BANNED"));
         }
         if ($extra = true) {
-            // maybe add some topic/forum id checks on some
+            if ($_SESSION["edit_forum"] == "no") {
+                Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
+            }
+            if ($_SESSION["delete_forum"] == "no") {
+                Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
+            }
         }
     }
 
@@ -29,31 +37,27 @@ class Forums extends Controller
     public function index()
     {
         $this->validForumUser();
-        if (FORUMS) {
-            if ($_GET["do"] == 'catchup') {
-                catch_up();
-            }
-
-            // Action: SHOW MAIN FORUM INDEX
-            $forums_res = Forum::getIndex();
-            if ($forums_res->rowCount() == 0) {
-                Redirect::autolink(URLROOT, 'There is no Forums available');
-            }
-
-            //topic count and post counts
-            $postcount = number_format(get_row_count("forum_posts"));
-            $topiccount = number_format(get_row_count("forum_topics"));
-
-            $data = [
-                'title' => 'Forums',
-                'mainquery' => $forums_res,
-                'postcount' => $postcount,
-                'topiccount' => $topiccount,
-            ];
-            View::render('forum/index', $data, 'user');
-        } else {
-            Redirect::autolink(URLROOT, Lang::T("Unfortunatley the forums are not currently available."));
+        if ($_GET["do"] == 'catchup') {
+            catch_up();
         }
+
+        // Action: SHOW MAIN FORUM INDEX
+        $forums_res = Forum::getIndex();
+        if ($forums_res->rowCount() == 0) {
+            Redirect::autolink(URLROOT, Lang::T("FORUM_AVAILABLE"));
+        }
+
+        //topic count and post counts
+        $postcount = number_format(get_row_count("forum_posts"));
+        $topiccount = number_format(get_row_count("forum_topics"));
+
+        $data = [
+            'title' => 'Forums',
+            'mainquery' => $forums_res,
+            'postcount' => $postcount,
+            'topiccount' => $topiccount,
+        ];
+        View::render('forum/index', $data, 'user');
     }
 
     /**
@@ -62,20 +66,16 @@ class Forums extends Controller
     public function newtopic()
     {
         $this->validForumUser();
-        if (FORUMS) {
-            $forumid = $_GET["forumid"];
-            if (!Validate::Id($forumid)) {
-                Redirect::autolink(URLROOT . "/forums", "No Forum ID $forumid");
-            }
-            $data = [
-                'id' => $forumid,
-                'title' => 'New Post',
-            ];
-            View::render('forum/newtopic', $data, 'user');
-            die;
-        } else {
-            Redirect::autolink(URLROOT, Lang::T("Unfortunatley the forums are not currently available."));
+        $forumid = $_GET["forumid"];
+        if (!Validate::Id($forumid)) {
+            Redirect::autolink(URLROOT . "/forums", "No Forum ID $forumid");
         }
+        $data = [
+            'id' => $forumid,
+            'title' => 'New Post',
+        ];
+        View::render('forum/newtopic', $data, 'user');
+        die;
     }
 
     /**
@@ -84,9 +84,8 @@ class Forums extends Controller
     public function search()
     {
         $this->validForumUser();
-
         $data = [
-            'title' => Lang::T("Search Forums")
+            'title' => Lang::T("Search Forums"),
         ];
         View::render('forum/search', $data, 'user');
     }
@@ -100,19 +99,14 @@ class Forums extends Controller
         $keywords = Input::get("keywords");
         if ($keywords != "") {
             $maxresults = 50;
-            $res = DB::run("SELECT forum_posts.topicid, forum_posts.userid, forum_posts.id, forum_posts.added,
-                MATCH ( forum_posts.body ) AGAINST ( ? ) AS relevancy
-                FROM forum_posts
-                WHERE MATCH ( forum_posts.body ) AGAINST ( ? IN BOOLEAN MODE )
-                ORDER BY added DESC", ['%' . $keywords . '%', '%' . $keywords . '%']);
-            // search and display results...
+            $res = Forum::searchForum($keywords);
             $num = $res->rowCount();
             if ($num > $maxresults) {
                 $num = $maxresults;
                 $max = "<p>Found more than $maxresults posts; displaying first $num.</p>";
             }
             if ($num == 0) {
-                Redirect::autolink(URLROOT, Lang::T("Sorry nothing found."));
+                Redirect::autolink(URLROOT, Lang::T("NOTHING_FOUND"));
             } else {
                 $data = [
                     'res' => $res,
@@ -123,6 +117,8 @@ class Forums extends Controller
                 ];
                 View::render('forum/result', $data, 'user');
             }
+        } else {
+            Redirect::autolink(URLROOT, Lang::T("YOU_DID_NOT_ENTER_ANYTHING"));
         }
     }
 
@@ -153,19 +149,17 @@ class Forums extends Controller
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         // Get forum name
-        $res = DB::run("SELECT name, minclassread, guest_read FROM forum_forums WHERE id=?", [$forumid]);
+        $res = Forum::getMinRead($forumid);
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         $forumname = $arr["name"];
         if (!$forumname || $_SESSION['class'] < $arr["minclassread"] && $arr["guest_read"] == "no") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_NOT_PERMIT"));
         }
-        // Master pagination examplehttp://localhost/TorrentTraderMVC/forums/viewforum&forumid=28
+        // Pagination
         $count = get_row_count("forum_topics", "WHERE forumid=$forumid");
         list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT . "/forums/viewforum&forumid=$forumid&");
-        //$res = DB::run("SELECT * FROM `something` ORDER BY `?` DESC $limit");
-
         // Get topics data and display category
-        $topicsres = DB::run("SELECT * FROM forum_topics WHERE forumid=$forumid ORDER BY sticky, lastpost  DESC $limit")->fetchAll();
+        $topicsres = Forum::getForumTopic($forumid, $limit);
         $data = [
             'title' => 'Forums',
             'topicsres' => $topicsres,
@@ -202,16 +196,16 @@ class Forums extends Controller
     {
         $this->validForumUser();
         $postid = Input::get("postid");
- 
+
         if (!Validate::Id($postid)) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
-        $res = DB::run("SELECT * FROM forum_posts WHERE id=?", [$postid]);
+        $res = Forum::getForumPost($postid);
         if ($res->rowCount() != 1) {
             Redirect::autolink(URLROOT . "/forums", "Where is id $postid");
         }
         $arr = $res->fetch(PDO::FETCH_ASSOC);
-        if ($_SESSION["id"] != $arr["userid"] && $this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes") {
+        if ($_SESSION["id"] != $arr["userid"] && $_SESSION["delete_forum"] != "yes" && $_SESSION["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         $data = [
@@ -223,6 +217,9 @@ class Forums extends Controller
         die;
     }
 
+    /**
+     * Edit Submit.
+     */
     public function editsubmit()
     {
         $this->validForumUser();
@@ -232,28 +229,30 @@ class Forums extends Controller
             if ($body == "") {
                 Redirect::autolink(URLROOT . "/forums", "Body cannot be empty!");
             }
-			$res = DB::run("SELECT * FROM forum_posts WHERE id=?", [$postid]);
+            $res = Forum::getForumPost($postid);
             if ($res->rowCount() != 1) {
                 Redirect::autolink(URLROOT . "/forums", "Where is this id $postid");
             }
             $arr = $res->fetch(PDO::FETCH_ASSOC);
-            if ($_SESSION["id"] != $arr["userid"] && $this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes") {
+            if ($_SESSION["id"] != $arr["userid"] && $_SESSION["delete_forum"] != "yes" && $_SESSION["edit_forum"] != "yes") {
                 Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
             }
             $body = htmlspecialchars_decode($body);
             $editedat = TimeDate::get_date_time();
-            DB::run("UPDATE forum_posts SET body=?, editedat=?, editedby=? WHERE id=?", [$body, $editedat, $_SESSION['id'], $postid]);
+            Forum::updateForumPost($body, $editedat, $_SESSION['id'], $postid);
             $returnto = Input::get("returnto");
             if ($returnto != "") {
                 Redirect::to($returnto);
             } else {
                 Redirect::autolink(URLROOT . "/forums", "Post was edited successfully.");
             }
+        } else {
+            Redirect::autolink(URLROOT, Lang::T("YOU_DID_NOT_ENTER_ANYTHING"));
         }
     }
 
     /**
-     * Confirm Post/Reply. from function insert_compose_frame
+     * Confirm Post/Reply. (function insert_compose_frame)
      */
     public function submittopic()
     {
@@ -261,13 +260,13 @@ class Forums extends Controller
         $forumid = Input::get("forumid");
         $topicid = Input::get("topicid");
         if (!Validate::Id($forumid) && !Validate::Id($topicid)) {
-                Redirect::autolink(URLROOT . '/forums', Lang::T("FORUM_ERROR"));
+            Redirect::autolink(URLROOT . '/forums', Lang::T("FORUM_ERROR"));
         }
         $newtopic = $forumid > 0;
         $subject = $_POST["subject"];
         if ($newtopic) {
             if (!$subject) {
-                    Redirect::autolink(URLROOT . '/forums', "You must enter a subject.");
+                Redirect::autolink(URLROOT . '/forums', "You must enter a subject.");
             }
             $subject = trim($subject);
         } else {
@@ -276,11 +275,11 @@ class Forums extends Controller
         // Make sure sure user has write access in forum
         $arr = get_forum_access_levels($forumid) or Redirect::autolink(URLROOT . '/forums', "Bad forum ID");
         if ($_SESSION['class'] < $arr["write"]) {
-                Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_NOT_PERMIT"));
+            Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_NOT_PERMIT"));
         }
         $body = htmlspecialchars_decode($_POST["body"]);
         if (!$body) {
-                Redirect::autolink(URLROOT . '/forums', "No body text.");
+            Redirect::autolink(URLROOT . '/forums', "No body text.");
         }
         if ($newtopic) { //Create topic
             $subject = $subject;
@@ -291,7 +290,7 @@ class Forums extends Controller
             $res = DB::run("SELECT * FROM forum_topics WHERE id=?", [$topicid]);
             $arr = $res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', "Topic id n/a");
             if ($arr["locked"] == 'yes') {
-                    Redirect::autolink(URLROOT . '/forums', "Topic locked");
+                Redirect::autolink(URLROOT . '/forums', "Topic locked");
             }
             //Get forum ID
             $forumid = $arr["forumid"];
@@ -308,7 +307,7 @@ class Forums extends Controller
                 // check if file has one of the following extensions
                 $allowedfileExtensions = array('jpg', 'gif', 'png', 'zip');
                 if (in_array($_FILES['upfile']['type'][$k], $allowedfileExtensions)) {
-                        Redirect::autolink(URLROOT . '/forums', "Sorry, only zip, JPG, JPEG, PNG, GIF files are allowed.");
+                    Redirect::autolink(URLROOT . '/forums', "Sorry, only zip, JPG, JPEG, PNG, GIF files are allowed.");
                 }
                 $sourcePath = $_FILES['upfile']['tmp_name'][$k]; // Storing source path of the file in a variable
                 $fileSize = $_FILES['upfile']['size'][$k];
@@ -323,16 +322,16 @@ class Forums extends Controller
                 if ($extension == 'zip') {
                     move_uploaded_file($sourcePath, $targetPath); // Moving Uploaded file
                     DB::run("
-						        INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
-						        VALUES (?,?,?,?,?,?,?)",
+										        INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
+										        VALUES (?,?,?,?,?,?,?)",
                         [$postid, $_SESSION['id'], TimeDate::gmtime(), $fileName,
                             $fileSize, $hash, $topicid]);
                 } else {
                     if (move_uploaded_file($sourcePath, $targetPath)) { // Moving Uploaded file
                         SimpleThumbnail::create()->image($targetPath)->thumbnail(100)->to($thumbPath);
                         DB::run("
-						            INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
-						            VALUES (?,?,?,?,?,?,?)",
+										            INSERT INTO attachments (content_id, user_id, upload_date, filename, file_size, file_hash, topicid)
+										            VALUES (?,?,?,?,?,?,?)",
                             [$postid, $_SESSION['id'], TimeDate::gmtime(), $fileName,
                                 $fileSize, $hash, $topicid]);
                     }
@@ -361,7 +360,7 @@ class Forums extends Controller
         $page = $_GET["page"];
 
         if (!Validate::Id($topicid)) {
-                Redirect::autolink(URLROOT . '/forums', "Topic Not Valid");
+            Redirect::autolink(URLROOT . '/forums', "Topic Not Valid");
         }
 
         // Get topic info
@@ -379,7 +378,7 @@ class Forums extends Controller
         // Check if user has access to this forum
         $arr2 = Forum::canRead($forumid);
         if (!$arr2 || $_SESSION["class"] < $arr2["minclassread"] && $arr2["guest_read"] == "no") {
-                Redirect::autolink(URLROOT . '/forums', "You do not have access to the forum this topic is in.");
+            Redirect::autolink(URLROOT . '/forums', "You do not have access to the forum this topic is in.");
         }
         $forum = stripslashes($arr2["name"]);
         $levels = get_forum_access_levels($forumid) or die;
@@ -398,10 +397,58 @@ class Forums extends Controller
             }
         }
         // Paginatation
-        $count = get_row_count("forum_posts", "WHERE topicid=$topicid");
-        list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT . "/forums/viewtopic&amp;topicid=$topicid&");
+
+        // Get post count
+        $res = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
+        $arr = $res->fetch(PDO::FETCH_LAZY);
+        $postcount = $arr[0];
+
+        // Make page menu
+        $pagemenu = "<br /><small>\n";
+        $perpage = 30;
+        $pages = floor($postcount / $perpage);
+        if ($pages * $perpage < $postcount) {
+            ++$pages;
+        }
+
+        if ($page == "last") {
+            $page = $pages;
+        } else {
+            if ($page < 1) {
+                $page = 1;
+            } elseif ($page > $pages) {
+                $page = $pages;
+            }
+
+        }
+        $offset = max(0, ($page * $perpage) - $perpage);
+
+        if ($page == 1) {
+            $pagemenu .= "<b>&lt;&lt; Prev</b>";
+        } else {
+            $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=" . ($page - 1) . "'><b>&lt;&lt; Prev</b></a>";
+        }
+
+        $pagemenu .= "&nbsp;&nbsp;";
+        for ($i = 1; $i <= $pages; ++$i) {
+            if ($i == $page) {
+                $pagemenu .= "<b>$i</b>\n";
+            } else {
+                $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=$i'><b>$i</b></a>\n";
+            }
+
+        }
+        $pagemenu .= "&nbsp;&nbsp;";
+        if ($page == $pages) {
+            $pagemenu .= "<b>Next &gt;&gt;</b><br /><br />\n";
+        } else {
+            $pagemenu .= "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=" . ($page + 1) . "'><b>Next &gt;&gt;</b></a><br /><br />\n";
+        }
+
+        $pagemenu .= "</small>";
+
         //Get topic posts
-        $res = DB::run("SELECT * FROM forum_posts WHERE topicid=$topicid ORDER BY id $limit");
+        $res = DB::run("SELECT * FROM forum_posts WHERE topicid=$topicid ORDER BY id LIMIT $offset,$perpage");
 
         Style::header("View Topic: $subject");
         Style::begin("$forum &gt; $subject");
@@ -409,7 +456,7 @@ class Forums extends Controller
         print("<div style='padding: 6px'>");
         if (!$locked && $maypost) {
             print("<div align='right'>
-            <a href='#bottom'><button type='button' class='btn btn-sm btn-warning'><b>Reply</b></button></a>
+            <a href='#bottom'><button type='button' class='btn btn-sm ttbtn'><b>Reply</b></button></a>
             </div>");
         } else {
             print("<div align='right'><img src='" . URLROOT . "/assets/images/forum/button_locked.png'  alt='" . Lang::T("FORUMS_LOCKED") . "' /></div>");
@@ -431,7 +478,7 @@ class Forums extends Controller
             $res2 = DB::run("SELECT * FROM users WHERE id=?", [$posterid]);
             $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
             $postername = Users::coloredname($arr2["username"]);
-			$quotename = $arr2["username"];
+            $quotename = $arr2["username"];
             if ($postername == "") {
                 $by = "Deluser";
                 $title = "Deleted Account";
@@ -491,7 +538,7 @@ class Forums extends Controller
             </div>
             </div>
             <?php
-            //Post Middle
+//Post Middle
 
             $body = format_comment($arr["body"]);
             if (Validate::Id($arr['editedby'])) {
@@ -529,7 +576,7 @@ class Forums extends Controller
                 <?php echo $body; ?>
 
                 <?php
-                // attachments todo
+// attachments todo
                 $sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);
                 if ($sql->rowCount() != 0) {
                     foreach ($sql as $row7) {
@@ -555,14 +602,14 @@ class Forums extends Controller
                     <div class="modal-content">
                         <!-- The Close Button -->
                         <?php
-                        $switchimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
-                        ?><button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>CLOSE</b></button><br><?php
-                        echo $row7['filename']; ?><br>
+$switchimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+                                ?><button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>CLOSE</b></button><br><?php
+echo $row7['filename']; ?><br>
                         <img src='<?php echo data_uri($switchimage, $row7['filename']); ?>' style="width:100%" alt=''>
                     </div>
                 </div>
                                 <?php
-                            } else {
+} else {
                                 print("<a href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><img src='" . URLROOT . "/thumb/$row7[file_hash].jpg' height='110px' width='110px' border='0' alt='' /></a><br>");
                             }
                         }
@@ -579,7 +626,7 @@ class Forums extends Controller
         </div>
         </div>
         <?php
-if ($_SESSION['loggedin']) { ?>
+if ($_SESSION['loggedin']) {?>
         <div class="row card-header1">
         <div class="col-md-3 d-none d-sm-block">
         <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_profile.png' border='0' alt='' /></a>
@@ -589,33 +636,33 @@ if ($_SESSION['loggedin']) { ?>
         </div>
         <div class="col-md-9 d-none d-sm-block">
         <?php
-        // Hide Reply Mod
-        if ($_SESSION["id"] !== $posterid) {
-            // say thanks
-            print("<a href='" . URLROOT . "/likes/likeforum?id=$topicid'><button class='btn btn-sm btn-success'>Say Thanks</button></a>&nbsp;");
-        }
+// Hide Reply Mod
+                if ($_SESSION["id"] !== $posterid) {
+                    // say thanks
+                    //print("<a href='" . URLROOT . "/likes/thanks?id=$topicid&type=thanksforum'><button class='btn btn-sm btn-success'>Say Thanks</button></a>&nbsp;");
+                }
 
-        //define buttons and who can use them
-        if ($_SESSION["id"] == $posterid || $_SESSION["edit_forum"] == "yes" || $_SESSION["delete_forum"] == "yes") {
-            print("<a href='" . URLROOT . "/forums/editpost&amp;postid=$postid'><img src='" . URLROOT . "/assets/images/forum/p_edit.png' border='0' alt='' /></a>&nbsp;");
-        }
-        if ($_SESSION["delete_forum"] == "yes") {
-            print("<a href='" . URLROOT . "/forums/deletepost&amp;postid=$postid&amp;sure=0'><img src='" . URLROOT . "/assets/images/forum/p_delete.png' border='0' alt='' /></a>&nbsp;");
-        }
-        if (!$locked && $maypost) {
-            print("<a href=\"javascript:SmileIT('[quote=$quotename] $quote [/quote]', 'Form', 'body');\"><img src='" . URLROOT . "/assets/images/forum/p_quote.png' border='0' alt='' /></a>&nbsp;");
-            print("<a href='#bottom'><img src='" . URLROOT . "/assets/images/forum/p_reply.png' alt='' /></a>");
-        }
-        ?>
+                //define buttons and who can use them
+                if ($_SESSION["id"] == $posterid || $_SESSION["edit_forum"] == "yes" || $_SESSION["delete_forum"] == "yes") {
+                    print("<a href='" . URLROOT . "/forums/editpost&amp;postid=$postid'><img src='" . URLROOT . "/assets/images/forum/p_edit.png' border='0' alt='' /></a>&nbsp;");
+                }
+                if ($_SESSION["delete_forum"] == "yes") {
+                    print("<a href='" . URLROOT . "/forums/deletepost&amp;postid=$postid&amp;sure=0'><img src='" . URLROOT . "/assets/images/forum/p_delete.png' border='0' alt='' /></a>&nbsp;");
+                }
+                if (!$locked && $maypost) {
+                    print("<a href=\"javascript:SmileIT('[quote=$quotename] $quote [/quote]', 'Form', 'body');\"><img src='" . URLROOT . "/assets/images/forum/p_quote.png' border='0' alt='' /></a>&nbsp;");
+                    print("<a href='#bottom'><img src='" . URLROOT . "/assets/images/forum/p_reply.png' alt='' /></a>");
+                }
+                ?>
         </div>
         </div>
-<?php } ?>
+<?php }?>
         <br>
         <?php
-        //Post Bottom
+//Post Bottom
         }
         //-------- end posts table ---------//
-        print($pagerbottom);
+        print($pagemenu);
 
         //quick reply
         if (!$locked && $_SESSION['loggedin'] == true) {
@@ -636,15 +683,15 @@ if ($_SESSION['loggedin']) { ?>
             }
 
             print("</table>");
-            
+
             textbbcode("Form", "body"); // todo
 
             //echo '<center><input type="file" name="upfile[]" multiple></center><br>';
-            print("<center><br /><button class='btn btn-sm btn-warning'>Reply</button></center><br>");
+            print("<center><br /><button class='btn btn-sm ttbtn'>Reply</button></center><br>");
 
             ?>
     <div class="row justify-content-md-center">
-        <div class="col-md-4 border border-warning">
+        <div class="col-md-4 border ttborder">
 <?php
 echo '<center>Add attachment<center><br>';
             echo '<center><input type="file" name="upfile[]" multiple></center><br></div></div><br>';
@@ -714,7 +761,6 @@ echo '<center>Add attachment<center><br>';
 
         }
         Style::end();
-
         Style::footer();
         die;
     }
@@ -728,26 +774,23 @@ echo '<center>Add attachment<center><br>';
         $postid = Input::get("postid");
         $sure = Input::get("sure");
         if ($_SESSION["delete_forum"] != "yes" || !Validate::Id($postid)) {
-                Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_DENIED"));
+            Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_DENIED"));
         }
         // Get topic id
-        $res = DB::run("SELECT topicid FROM forum_posts WHERE id=?", [$postid]);
-        $arr = $res->fetch(PDO::FETCH_LAZY) or Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_NOT_FOUND_POST"));
+        $arr = Forum::getForumPostTopicId($postid);
         $topicid = $arr[0];
         // We can not delete the post if it is the only one of the topic
-        $res = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
-        $arr = $res->fetch(PDO::FETCH_LAZY);
-        if ($arr[0] < 2) {
+        $arr = Forum::countForumPost($topicid);
+        if ($arr < 2) {
             $msg = sprintf(Lang::T("FORUMS_DEL_POST_ONLY_POST"), $topicid);
-                Redirect::autolink(URLROOT . '/forums', $msg);
+            Redirect::autolink(URLROOT . '/forums', $msg);
         }
         // Delete post
-        DB::run("DELETE FROM forum_posts WHERE id=?", [$postid]);
+        Forum::deleteForumPost($postid);
         // Delete attachment todo
         $sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);
         if ($sql->rowCount() != 0) {
             foreach ($sql as $row7) {
-                //print("<br>&nbsp;<b>$row7[filename]</b><br>");
                 $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
                 if (file_exists($daimage)) {
                     if (unlink($daimage)) {
@@ -758,14 +801,14 @@ echo '<center>Add attachment<center><br>';
                 if ($extension != 'zip') {
                     $dathumb = "uploads/thumbnail/$row7[file_hash].jpg";
                     if (!unlink($dathumb)) {
-                            Redirect::autolink(URLROOT . "/forums/viewtopic&topicid=$topicid", "Could not remove thumbnail = $row7[file_hash].jpg");
+                        Redirect::autolink(URLROOT . "/forums/viewtopic&topicid=$topicid", "Could not remove thumbnail = $row7[file_hash].jpg");
                     }
                 }
             }
         }
         // Update topic
         update_topic_last_post($topicid);
-            Redirect::autolink(URLROOT . "/forums/viewtopic&topicid=$topicid", "Post $topicid has been deleted");
+        Redirect::autolink(URLROOT . "/forums/viewtopic&topicid=$topicid", Lang::T("_SUCCESS_DEL_"));
         die;
     }
 
@@ -776,7 +819,7 @@ echo '<center>Add attachment<center><br>';
     {
         $this->validForumUser();
         $topicid = Input::get("topicid");
-        if (!Validate::Id($topicid) || $this->session["delete_forum"] != "yes") {
+        if (!Validate::Id($topicid) || $_SESSION["delete_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         $sure = Input::get("sure");
@@ -784,7 +827,7 @@ echo '<center>Add attachment<center><br>';
             Redirect::autolink(URLROOT . "/forums", "Sanity check: You are about to delete a topic. Click <a href='" . URLROOT . "/forums/deletetopic&amp;topicid=$topicid?sure=1'>here</a> if you are sure.");
         }
         Forum::deltopic($topicid);
-        Redirect::autolink(URLROOT . "/forums", "Deleted topic");
+        Redirect::autolink(URLROOT . "/forums", Lang::T("_SUCCESS_DEL_"));
         die;
     }
 
@@ -794,7 +837,7 @@ echo '<center>Add attachment<center><br>';
     public function renametopic()
     {
         $this->validForumUser();
-        if ($this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes") {
+        if ($_SESSION["delete_forum"] != "yes" && $_SESSION["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         $topicid = Input::get('topicid');
@@ -822,11 +865,11 @@ echo '<center>Add attachment<center><br>';
         $this->validForumUser();
         $forumid = Input::get("forumid");
         $topicid = Input::get("topicid");
-        if (!Validate::Id($forumid) || !Validate::Id($topicid) || $$this->session["delete_forum"] != "yes" || $_SESSION["edit_forum"] != "yes") {
+        if (!Validate::Id($forumid) || !Validate::Id($topicid) || $_SESSION["delete_forum"] != "yes" || $_SESSION["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", "Invalid ID - $topicid");
         }
         // Make sure topic and forum is valid
-        $res = DB::run("SELECT minclasswrite FROM forum_forums WHERE id=?", [$forumid]);
+        $res = Forum::minClassWrite($forumid);
         if ($res->rowCount() != 1) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_NOT_FOUND"));
         }
@@ -834,13 +877,13 @@ echo '<center>Add attachment<center><br>';
         if ($_SESSION['class'] < $arr[0]) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_NOT_ALLOWED"));
         }
-        $res = DB::run("SELECT subject,forumid FROM forum_topics WHERE id=?", [$topicid]);
+        $res = Forum::getSubjectForunId($topicid);
         if ($res->rowCount() != 1) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_NOT_FOUND_TOPIC"));
         }
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         if ($arr["forumid"] != $forumid) {
-            DB::run("UPDATE forum_topics SET forumid=$forumid, moved='yes' WHERE id=$topicid");
+            Forum::moveTopic($forumid, $topicid);
         }
         Redirect::to(URLROOT . "/forums/viewforum&forumid=$forumid");
         die;
@@ -855,7 +898,7 @@ echo '<center>Add attachment<center><br>';
         $forumid = Input::get("forumid");
         $topicid = Input::get("topicid");
         $page = Input::get("page");
-        if (!Validate::Id($topicid) || $this->session["delete_forum"] != "yes" || $this->session["edit_forum"] != "yes") {
+        if (!Validate::Id($topicid) || $_SESSION["delete_forum"] != "yes" || $_SESSION["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         Forum::lock($topicid, 'yes');
@@ -873,7 +916,7 @@ echo '<center>Add attachment<center><br>';
         $forumid = Input::get("forumid");
         $topicid = Input::get("topicid");
         $page = Input::get("page");
-        if (!Validate::Id($topicid) || $this->session["delete_forum"] != "yes" || $this->session["edit_forum"] != "yes") {
+        if (!Validate::Id($topicid) || $_SESSION["delete_forum"] != "yes" || $_SESSION["edit_forum"] != "yes") {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         Forum::lock($topicid, 'no');
@@ -890,7 +933,7 @@ echo '<center>Add attachment<center><br>';
         $forumid = Input::get("forumid");
         $topicid = Input::get("topicid");
         $page = Input::get("page");
-        if (!Validate::Id($topicid) || ($this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes")) {
+        if (!Validate::Id($topicid) || ($_SESSION["delete_forum"] != "yes" && $_SESSION["edit_forum"] != "yes")) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         Forum::sticky($topicid, 'yes');
@@ -907,7 +950,7 @@ echo '<center>Add attachment<center><br>';
         $forumid = Input::get("forumid");
         $topicid = Input::get("topicid");
         $page = Input::get("page");
-        if (!Validate::Id($topicid) || ($this->session["delete_forum"] != "yes" && $this->session["edit_forum"] != "yes")) {
+        if (!Validate::Id($topicid) || ($_SESSION["delete_forum"] != "yes" && $_SESSION["edit_forum"] != "yes")) {
             Redirect::autolink(URLROOT . "/forums", Lang::T("FORUMS_DENIED"));
         }
         Forum::sticky($topicid, 'no');
@@ -921,10 +964,10 @@ echo '<center>Add attachment<center><br>';
         if (!isset($id) || !$id) {
             Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
-        if ($this->session["view_users"] == "no" && $this->session["id"] != $id) {
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
-        
+
         $res = DB::run("SELECT
             forum_posts.id, topicid, userid, forum_posts.added, body,
             avatar, signature, username, title, class, uploaded, downloaded, privacy, donated
@@ -932,7 +975,7 @@ echo '<center>Add attachment<center><br>';
             LEFT JOIN users
             ON forum_posts.userid = users.id
             WHERE userid = $id ORDER BY forum_posts.userid "); //$limit
-        
+
         $row = $res->fetch(PDO::FETCH_LAZY);
 
         if (!$row) {

@@ -56,7 +56,7 @@ class Signup extends Controller
                 $invite_row = Users::selectInviteIdBySecret($invite, $secret);
             }
 
-            $message = $this->validSign($wantusername, $email, $wantpassword, $passagain);
+            $message = $this->validSign($wantusername, $email, $wantpassword, $passagain, $invite_row);
             if ($message == "") {
                 // If NOT Invite Check
                 if (!$invite_row) {
@@ -164,31 +164,22 @@ class Signup extends Controller
         }
     }
 
-    public function validSign($wantusername, $email, $wantpassword, $passagain)
+    public function validSign($wantusername, $email, $wantpassword, $passagain, $invite_row)
     {
-        if (Validate::isEmpty($wantusername)) {
-            $message = "Please enter the account.";
-        }
-        if (Validate::isEmpty($email)) {
-            //$message = "Please enter an email.";
-        }
-        if (Validate::isEmpty($wantpassword)) {
-            $message = "Please enter a password.";
-        }
-        if (Validate::isEmpty($passagain)) {
-            $message = "Please enter the second password.";
-        }
-        if ($wantpassword != $passagain) {
-            $message = "The passwords do not match.";
-        }
-        if (strlen($wantpassword) < 6 || strlen($passagain) > 16) {
-            $message = "Password must be between 6 and 16 characters long.";
-        }
-        if (strlen($wantusername) < 3 && strlen($wantusername) > 25) {
-            $message = "User can have between 3 and 25 characters.";
-        }
-        if (!ctype_alnum($wantusername)) {
-            $message = "The username can only contain letters and numbers with no space.";
+        if (Validate::isEmpty($wantpassword) || (Validate::isEmpty($email) && !$invite_row) || Validate::isEmpty($wantusername)) {
+            $message = Lang::T("DONT_LEAVE_ANY_FIELD_BLANK");
+        } elseif (strlen($wantusername) > 50) {
+            $message = sprintf(Lang::T("USERNAME_TOO_LONG"), 16);
+        } elseif ($wantpassword != $passagain) {
+            $message = Lang::T("PASSWORDS_NOT_MATCH");
+        } elseif (strlen($wantpassword) < 6) {
+            $message = sprintf(Lang::T("PASS_TOO_SHORT_2"), 6);
+        } elseif (strlen($wantpassword) > 16) {
+            $message = sprintf(Lang::T("PASS_TOO_LONG_2"), 16);
+        } elseif ($wantpassword == $wantusername) {
+            $message = Lang::T("PASS_CANT_MATCH_USERNAME");
+        } elseif (!$invite_row && !Validate::Email($email)) {
+            $message = "That doesn't look like a valid email address.";
         }
         return $message;
     }

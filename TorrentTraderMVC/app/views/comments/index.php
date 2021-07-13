@@ -2,7 +2,7 @@
         if ($_GET['type'] == "news") {
             ?>
             <div class="row justify-content-md-center">
-            <div class="col-8 border border-warning"><br>
+            <div class="col-8 border ttborder"><br>
             <?php
             echo htmlspecialchars($data['newstitle']) . "<br /><br />" . format_comment($data['newsbody']) . "<br />";
             ?><br>
@@ -26,5 +26,5 @@
         echo "<div class='form-group'>";
         echo "<form name='comment' method='post' action=\"comments/take?type=$data[type]&amp;id=$data[id]\">";
         echo textbbcode("comment", "body") . "<br>";
-        echo "<center><input type=\"submit\"  value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
+        echo "<center><input type=\"submit\" class=\"btn ttbtn\" value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
         echo "</form></div>";

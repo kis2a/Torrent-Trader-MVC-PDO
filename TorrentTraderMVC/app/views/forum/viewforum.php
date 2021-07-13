@@ -4,7 +4,7 @@ if ($_SESSION['loggedin'] == true) {
     ?>
     <table class='table table-striped'><tr><td>
     <div align='right'><a href='<?php echo URLROOT; ?>/forums/newtopic&amp;forumid=<?php echo $data['forumid']; ?>'>
-    <button type='submit' class='btn btn-sm btn-warning'>New Post</button></a></div>
+    <button type='submit' class='btn btn-sm ttbtn'>New Post</button></a></div>
     </td></tr></table>
     <?php
 }
@@ -99,7 +99,7 @@ if ($data['topicsres'] > 0) {
         $subject = ($sticky ? "<b>" . Lang::T("FORUMS_STICKY") . ": </b>" : "") . "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid'><b>" .
         encodehtml(stripslashes($topicarr["subject"])) . "</b></a>$topicpages";
         ?>
-        <div class="row border border-primary">
+        <div class="row border ttborder">
         <div class="col-md-1 d-none d-sm-block">
         <img src='<?php echo URLROOT; ?>/assets/images/forum/<?php echo $topicpic ?>.png' alt='' />
         </div>
@@ -129,7 +129,7 @@ if ($data['topicsres'] > 0) {
             }
             print("<a href='" . URLROOT . "/forums/deletetopic&amp;topicid=$topicid&amp;sure=0' title='Delete'><img src='" . URLROOT . "/assets/images/forum/topic_delete.png' alt='Delete Topic' /></a>\n");
             if ($sticky) {
-                print("<a href='" . URLROOT . "/forums/unsetsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='UnStick'><img src='" . URLROOT . "/assets/images/forum/older_sticky_new.png' alt='Unstick Topic' /></a>\n");
+                print("<a href='" . URLROOT . "/forums/unsetsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='UnStick'><img src='" . URLROOT . "/assets/images/forum/folder_sticky_new.png' alt='Unstick Topic' /></a>\n");
             } else {
                 print("<a href='" . URLROOT . "/forums/setsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Stick'><img src='" . URLROOT . "/assets/images/forum/folder_sticky.png' alt='Stick Topic' /></a>\n");
             }

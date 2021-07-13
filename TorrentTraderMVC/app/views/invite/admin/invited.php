@@ -20,12 +20,12 @@ if ($data['count'] > 0): ?>
     <?php
     while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)): ?>
         <tbody><tr>
-        <td><a href="<?php echo URLROOT; ?>/users/profile?id=<?php echo $row["id"]; ?>"><?php echo Users::coloredname($row["username"]); ?></a></td>
+        <td><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>"><?php echo Users::coloredname($row["username"]); ?></a></td>
         <td><?php echo $row["email"]; ?></td>
         <td><?php echo Groups::get_user_class_name($row["class"]); ?></td>
         <td><?php echo TimeDate::utc_to_tz($row["added"]); ?></td>
         <td><?php echo TimeDate::utc_to_tz($row["last_access"]); ?></td>
-        <td><?php echo ($row['inviter']) ? '<a href="' . URLROOT . '/users/profile?id=' . $row["invited_by"] . '">' . $row["inviter"] . '</a>' : 'Unknown User'; ?></td>
+        <td><?php echo ($row['inviter']) ? '<a href="' . URLROOT . '/profile?id=' . $row["invited_by"] . '">' . $row["inviter"] . '</a>' : 'Unknown User'; ?></td>
         <td><input type="checkbox" name="users[]" value="<?php echo $row["id"]; ?>" /></td>
     </tr>
     <?php

@@ -9,7 +9,7 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $forumcat[] = $row;
 }
 ?>
-<div class='border border-warning'>
+<div class='border ttborder'>
     <form action='<?php echo URLROOT ?>/adminforum/addforum' method='post'>
     <input type='hidden' name='sid' value='<?php echo $sid ?>' />
     <input type='hidden' name='action' value='forum' />
@@ -136,7 +136,7 @@ if ($allcat == 0) {
 </tbody></table>
 </div>
 
-<div class='border border-warning'>
+<div class='border ttborder'>
 <form action='<?php echo URLROOT ?>/adminforum/addcat' method='post'>
 <div class='table-responsive'>
 <table class='table'>

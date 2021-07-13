@@ -11,8 +11,26 @@ class Users
 
     public static function updateset($updateset = [], $id)
     {
-    DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$id]);
-}
+        DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$id]);
+    }
+
+    public static function setpasskey($passkey, $id)
+    {
+        DB::run("UPDATE users SET passkey=? WHERE id=?", [$passkey, $id]);
+    }
+
+    public static function getPasswordSecretStatus($id)
+    {
+        $row = DB::run("SELECT `password`, `secret`, `status` FROM `users` WHERE `id` =?", [$id])->fetch();
+        return $row;
+    }
+    
+    public static function updatesecret($newsecret, $id, $oldsecret)
+    {
+        $stmt = DB::run("UPDATE `users` SET `secret` =?, `status` =? WHERE `id` =? AND `secret` =? AND `status` =?", [$newsecret, 'confirmed', $id, $oldsecret, 'pending']);
+        $count = $stmt->rowCount();
+        return $count;
+    }
 
     public static function warnUserWithId($id)
     {
@@ -31,6 +49,11 @@ class Users
         $row = DB::run("UPDATE users SET username=?, password=?, secret=?, status=?, added=? WHERE id=?", [$wantusername, $wantpassword, $secret, $status, $added, $id]);
     }
 
+    public static function updateUserEmailResetEditsecret($email, $id, $editsecret)
+    {
+        DB::run("UPDATE `users` SET `editsecret` =?, `email` =? WHERE `id` =? AND `editsecret` =?", ['', $email, $id, $editsecret]);
+    }
+
     public static function updateUserEditSecret($sec, $id)
     {
         $row = DB::run("UPDATE users SET editsecret =? WHERE id =?", [$sec, $id]);
@@ -44,6 +67,12 @@ class Users
     public static function selectUserEmail($id)
     {
         $row = DB::run("SELECT email FROM users WHERE id=?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public static function getEditsecret($id)
+    {
+        $row = DB::run("SELECT `editsecret` FROM `users` WHERE `enabled` =? AND `status` =? AND `editsecret` !=?  AND `id` =?", ['yes', 'confirmed', '', $id])->fetch();
         return $row;
     }
 

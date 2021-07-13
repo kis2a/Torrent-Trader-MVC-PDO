@@ -1,6 +1,6 @@
 <?php include APPROOT.'/views/message/messagenavbar.php'; ?><br>
 <div class="row justify-content-md-center">
-    <div class="col-8 border border-warning">
+    <div class="col-8 border ttborder">
         <form name="form" action="update?id=<?php echo $data['id']; ?>" method="post"><br>
         <center>
         <label for="receiver">To</label>
@@ -18,6 +18,6 @@
         </div><br>
         <?php print textbbcode("form", "msg", $data['msg']); ?>
         <center><br>
-        <button type="submit" class="btn-sm btn-warning" name="Update" value="Update">Update</button><br><br>
+        <button type="submit" class="btn-sm ttbtn" name="Update" value="Update">Update</button><br><br>
        </form>
         </center>

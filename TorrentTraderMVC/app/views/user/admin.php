@@ -56,7 +56,7 @@ foreach ($data['selectuser'] as $selectedid):
 </div>
 
 <?php
-print("<center><button type='submit' class='btn btn-sm btn-warning' value='" . Lang::T("SUBMIT") . "' />Submit</button></center>");
+print("<center><button type='submit' class='btn btn-sm ttbtn' value='" . Lang::T("SUBMIT") . "' />Submit</button></center>");
  endforeach;?>
 </form>
 </div>

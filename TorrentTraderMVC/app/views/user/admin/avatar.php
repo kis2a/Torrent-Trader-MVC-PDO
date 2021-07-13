@@ -6,7 +6,7 @@
         <th class="table_head">Avatar</th>
         </tr><?php
         while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
-            echo ("<tr><td class='table_col1'><b><a href=\"" . URLROOT . "/users/profile?id=" . $arr['id'] . "\">" . Users::coloredname($arr['username']) . "</a></b></td><td class='table_col2'>");
+            echo ("<tr><td class='table_col1'><b><a href=\"" . URLROOT . "/profile?id=" . $arr['id'] . "\">" . Users::coloredname($arr['username']) . "</a></b></td><td class='table_col2'>");
 
             if (!$arr['avatar']) {
                 echo "<img width=\"80\" src=" . URLROOT . "/images/default_avatar.png' alt='' /></td></tr>";

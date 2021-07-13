@@ -11,10 +11,10 @@ class Teams extends Controller
     {
         $res = Team::getTeams();
         if ($res->rowCount() == 0) {
-            Redirect::autolink(URLROOT . '/home', 'No teams available, to create a group please contact <a href='.URLROOT.'/group/staff>staff</a>');
+            Redirect::autolink(URLROOT, Lang::T("NO_TEAM"));
         }
         $data = [
-            'title' => Lang::T("Teams"),
+            'title' => Lang::T("TEAM[1]"),
             'res' => $res
         ];
         View::render('teams/index', $data, 'user');

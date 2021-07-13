@@ -49,7 +49,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 ?>
 </tbody></table></div>
 <?php if ($_SESSION["class"] >= 6) {?>
-    <button type="submit" class="btn btn-sm btn-warning" value='Remove The Checks '>Remove The Checks</button>
+    <button type="submit" class="btn btn-sm ttbtn" value='Remove The Checks '>Remove The Checks</button>
 <?php }?>
 </form>
  <?php

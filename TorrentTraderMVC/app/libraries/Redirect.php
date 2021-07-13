@@ -21,18 +21,20 @@ class Redirect
 
     public static function autolink($al_url, $al_msg)
     {
-        Style::header("info");
+        Style::error_header("info");
         Style::begin("Info");
         echo "\n<meta http-equiv=\"refresh\" content=\"3; url=$al_url\">\n";
         ?>
-        <div class="alert alert-warning">
+        <div class="alert ttalert">
+        <center>
         <b><font color=#000><?php echo $al_msg; ?></font></b><br>
         <b><font color=#000>Redirecting ...</font></b>&nbsp;
         <b>[ <a href='<?php echo $al_url; ?>'>link</a> ]</b>&nbsp;
+        </center>
         </div>
         <?php
         Style::end();
-        Style::footer();
+        Style::error_footer();
         die();
     }
 

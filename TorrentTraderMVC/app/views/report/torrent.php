@@ -3,4 +3,4 @@
 <form method='post' action='<?php echo URLROOT; ?>/report/torrent'>
 <input type='hidden' name='torrent' value='<?php echo $data['torrent']; ?>' />
 <input class="form-control" type='text' size='100' name='reason' /><br>
-<input class="btn btn-sm btn-warning" type='submit' value='Confirm' /></form>
+<input class="btn btn-sm ttbtn" type='submit' value='Confirm' /></form>

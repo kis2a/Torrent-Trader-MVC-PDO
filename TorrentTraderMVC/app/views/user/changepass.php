@@ -1,6 +1,6 @@
 <?php usermenu($data['id']); ?>
 <div class="row justify-content-md-center">
-    <div class="col-6 border border-warning">
+    <div class="col-6 border ttborder">
 <div class="form-group">
     <form method="post" action="<?php echo URLROOT; ?>/account/changepw?id=<?php echo $data['id']; ?>">
     <input type="hidden" name="do" value="newpassword" />
@@ -14,7 +14,7 @@
     </div>
     <div class="form-group">
     <center>
-	    <button type="submit" class="btn btn-warning"><?php echo Lang::T("Submit"); ?></button>
+	    <button type="submit" class="btn ttbtn"><?php echo Lang::T("Submit"); ?></button>
     </center>
     </div>
     </form>

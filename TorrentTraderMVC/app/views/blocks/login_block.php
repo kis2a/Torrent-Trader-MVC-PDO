@@ -36,9 +36,9 @@ if ($_SESSION['loggedin']) {
     </ul>
     <br />
 	<div class="text-center">
-	<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'><button class="btn btn-warning"><?php echo Lang::T("ACCOUNT"); ?></button></a>
+	<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'><button class="btn ttbtn"><?php echo Lang::T("ACCOUNT"); ?></button></a>
 		<?php if ($_SESSION["control_panel"] == "yes") {?>
-		<a href="<?php echo URLROOT; ?>/admincp" class="btn btn-warning"><?php echo Lang::T("STAFFCP"); ?></a>
+		<a href="<?php echo URLROOT; ?>/admincp" class="btn ttbtn"><?php echo Lang::T("STAFFCP"); ?></a>
 		<?php }?>
 	</div>
 	<br />
@@ -63,7 +63,7 @@ if ($_SESSION['loggedin']) {
 			<td align="center"><input type="password" size="12" name="password"  /></td>
 			</tr><tr>
 			<td align="center">
-			<button type='submit' class='btn btn-sm btn-warning' value='Login'><?php echo Lang::T("LOGIN"); ?></button>
+			<button type='submit' class='btn btn-sm ttbtn' value='Login'><?php echo Lang::T("LOGIN"); ?></button>
 			</td>
 		</table>
 		</td>

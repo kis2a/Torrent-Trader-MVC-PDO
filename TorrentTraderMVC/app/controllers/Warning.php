@@ -15,10 +15,10 @@ class Warning extends Controller
             Redirect::autolink(URLROOT . '/group/members', Lang::T("NO_USER_WITH_ID") . " $id.");
         }
         // Checks
-        if ($this->session["view_users"] == "no" && $this->session["id"] != $id) {
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $id) {
             Redirect::autolink(URLROOT . '/home', Lang::T("NO_USER_VIEW"));
         }
-        if (($this->session["enabled"] == "no" || ($this->session["status"] == "pending")) && $this->session["edit_users"] == "no") {
+        if (($_SESSION["enabled"] == "no" || ($_SESSION["status"] == "pending")) && $_SESSION["edit_users"] == "no") {
             Redirect::autolink(URLROOT . '/group/members', Lang::T("NO_ACCESS_ACCOUNT_DISABLED"));
         }
         // Get Warnings
@@ -43,7 +43,7 @@ class Warning extends Controller
         $expiry = (int) Input::get("expiry");
         $type = Input::get("type");
         // Checks
-        if ($this->session["edit_users"] != "yes") {
+        if ($_SESSION["edit_users"] != "yes") {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
         if (!Validate::Id($userid)) {
@@ -56,13 +56,13 @@ class Warning extends Controller
         $timenow = TimeDate::get_date_time();
         $expiretime = TimeDate::get_date_time(TimeDate::gmtime() + (86400 * $expiry));
         // Insert Warning
-        Warnings::insertWarning($userid, $reason, $timenow, $expiretime, $this->session['id'], $type);
+        Warnings::insertWarning($userid, $reason, $timenow, $expiretime, $_SESSION['id'], $type);
         Users::warnUserWithId($userid);
         // Message & Log
-        $msg = "You have been warned by " . $this->session["username"] . " - Reason: " . $reason . " - Expiry: " . $expiretime . "";
+        $msg = "You have been warned by " . $_SESSION["username"] . " - Reason: " . $reason . " - Expiry: " . $expiretime . "";
         $added = TimeDate::get_date_time();
         Message::insertmessage(0, $userid, $added, 'New Warning', $msg, 'yes', 'in');
-        Logs::write($this->session['username'] . " has added a warning for user: <a href='" . URLROOT . "/profile?id=$userid'>$userid</a>");
+        Logs::write($_SESSION['username'] . " has added a warning for user: <a href='" . URLROOT . "/profile?id=$userid'>$userid</a>");
         Redirect::autolink(URLROOT . "/profile?id=$userid", "Warning given");
     }
 

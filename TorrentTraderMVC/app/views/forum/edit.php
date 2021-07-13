@@ -9,6 +9,6 @@
         ?>
     </div>
 </div>
-<center><button type='submit' class='btn btn-sm btn-warning'><?php echo Lang::T("SUBMIT"); ?></button></center>
+<center><button type='submit' class='btn btn-sm ttbtn'><?php echo Lang::T("SUBMIT"); ?></button></center>
 </form>
 </div>

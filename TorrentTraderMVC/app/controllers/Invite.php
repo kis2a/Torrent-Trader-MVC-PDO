@@ -16,7 +16,7 @@ class Invite extends Controller
         if ($users >= MAXUSERSINVITE) {
             Redirect::autolink(URLROOT, "Sorry, The current user account limit (" . number_format(MAXUSERSINVITE) . ") has been reached. Inactive accounts are pruned all the time, please check back again later...");
         }
-        if ($this->session["invites"] == 0) {
+        if ($_SESSION["invites"] == 0) {
             Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_NO_INVITES_MSG"));
         }
         $data = [
@@ -61,22 +61,16 @@ class Invite extends Controller
             $names = SITENAME;
             $links = URLROOT;
             $emailmain = SITEEMAIL;
-	$body = <<<EOD
-You have been invited to $names by $_SESSION[username]. They have specified this address ($email) as your email.
-If you do not know this person, please ignore this email. Please do not reply.
-Message:
--------------------------------------------------------------------------------
-$mess
--------------------------------------------------------------------------------
-This is a private site and you must agree to the rules before you can enter:
-$links/rules.php
-$links/faq.php
-To confirm your invitation, you have to follow this link:
-$links/signup?invite=$id&secret=$secret
-After you do this, you will be able to use your new account. If you fail to
-do this, your account will be deleted within a few days. We urge you to read
-the RULES and FAQ before you start using $names.
-EOD;
+
+            $body = file_get_contents(APPROOT . "/views/emails/inviteuser.php");
+            $body = str_replace("%sitename%", $names, $body);
+            $body = str_replace("%username%", $_SESSION['username'], $body);
+            $body = str_replace("%email%", $email, $body);
+            $body = str_replace("%mess%", $mess, $body);
+            $body = str_replace("%links%", $links, $body);
+            $body = str_replace("%id%", $id, $body);
+            $body = str_replace("%secret%", $secret, $body);
+
             $TTMail = new TTMail();
             $TTMail->Send($email, "$names user registration confirmation", $body, "", "-f$emailmain");
             Redirect::autolink(URLROOT, Lang::T("A_CONFIRMATION_EMAIL_HAS_BEEN_SENT") . " (" . htmlspecialchars($email) . "). " . Lang::T("ACCOUNT_CONFIRM_SENT_TO_ADDY_REST") . " <br/ >");
@@ -89,7 +83,7 @@ EOD;
     {
         $id = Input::get("id");
         if (!Validate::Id($id)) {
-            $id = $this->session["id"];
+            $id = $_SESSION["id"];
         }
         $res = DB::run("SELECT * FROM users WHERE status = ? AND invited_by = ? ORDER BY username", ['confirmed', $id]);
         $num = $res->rowCount();
@@ -97,7 +91,7 @@ EOD;
         if ($invitees == 0) {
             Redirect::autolink(URLROOT . "/profile?id=$id", "This member has no invitees");
         }
-        if ($id != $this->session["id"]) {
+        if ($id != $_SESSION["id"]) {
             $title = "Invite Tree for [<a href=" . URLROOT . "/profile?id=$id>" . $id . "</a>]";
         } else {
             $title = "You have $invitees invitees " . Users::coloredname($_SESSION["username"]) . "";

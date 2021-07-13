@@ -12,11 +12,11 @@ class Bonus extends Controller
         $id = (int) Input::get("id");
         if (Validate::Id($id)) {
             $row = Bonuses::getBonusByPost($id);
-            if (!$row || $this->session['seedbonus'] < $row['cost']) {
+            if (!$row || $_SESSION['seedbonus'] < $row['cost']) {
                 Redirect::autolink(URLROOT."/bonus", "Demand not valid.");
             }
             $cost = $row['cost'];
-            Bonuses::setBonus($cost, $this->session['id']);
+            Bonuses::setBonus($cost, $_SESSION['id']);
             $this->bonusswitch($row);
             Redirect::autolink(URLROOT."/bonus", "Your account has been credited.");
         }
@@ -28,7 +28,7 @@ class Bonus extends Controller
             'usersbonus' => $_SESSION['seedbonus'],
             'configbonuspertime' => BONUSPERTIME,
             'configautoclean_interval' => floor(ADDBONUS / 60),
-			'usersid' => $this->session['id'],
+			'usersid' => $_SESSION['id'],
         ];
         View::render('bonus/index', $data, 'user');
     }

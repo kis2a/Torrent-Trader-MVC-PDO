@@ -33,9 +33,9 @@ class Upload extends Controller
     public function submit()
     {
         self::checks();
-        if (Input::get("takeupload") == "yes") {
+        if ($_POST["takeupload"] == "yes") {
             // Check form data.
-            if (!Input::get('type') || !Input::get('name')) {
+            if (!isset($_POST['type'], $_POST['name'])) {
                 $message = Lang::T('MISSING_FORM_DATA');
             }
             $tupload = new Tupload('torrent');

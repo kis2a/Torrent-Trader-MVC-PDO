@@ -7,7 +7,7 @@
 <tr><td><?php echo  Lang::T("TEAM_OWNER_NAME") ?>: </td><td><input class="form-control" type='text' size='50' name='team_owner' /></td></tr>
 <tr><td><?php echo  Lang::T("DESCRIPTION") ?>: </td><td><textarea class="form-control" name='team_description' cols='35' rows='5'></textarea><br />(BBCode is allowed)</td></tr>
 <tr><td><?php echo  Lang::T("TEAM_LOGO_URL") ?>: </td><td><input class="form-control" type='text' size='50' name='team_image' /><input type='hidden' name='add' value='true' /></td></tr>
-<tr><td></td><td><div align='left'><button type='submit' class='btn btn-warning btn-sm'><?php echo  Lang::T("TEAM_CREATE") ?></button></div></td></tr>
+<tr><td></td><td><div align='left'><button type='submit' class='btn ttbtn btn-sm'><?php echo  Lang::T("TEAM_CREATE") ?></button></div></td></tr>
 </table></center>
  <br>
 </form>

@@ -80,4 +80,62 @@ class Forum
         return $arr2;
     }
 
+    public static function searchForum($keywords) {
+        $stmt = DB::run("SELECT forum_posts.topicid, forum_posts.userid, forum_posts.id, forum_posts.added,
+                 MATCH ( forum_posts.body ) AGAINST ( ? ) AS relevancy
+                 FROM forum_posts
+                 WHERE MATCH ( forum_posts.body ) AGAINST ( ? IN BOOLEAN MODE )
+                 ORDER BY added DESC", ['%' . $keywords . '%', '%' . $keywords . '%']);
+        return $stmt;
+    }
+
+    public static function getForumTopic($forumid, $limit) {
+        $stmt = DB::run("SELECT * FROM forum_topics WHERE forumid=$forumid ORDER BY sticky, lastpost  DESC $limit")->fetchAll();
+        return $stmt;
+    }
+
+    public static function getMinRead($forumid) {
+        $stmt = DB::run("SELECT name, minclassread, guest_read FROM forum_forums WHERE id=?", [$forumid]);
+        return $stmt;
+    }
+
+    public static function getForumPost($postid) {
+        $stmt = DB::run("SELECT * FROM forum_posts WHERE id=?", [$postid]);
+        return $stmt;
+    }
+
+    public static function updateForumPost($body, $editedat, $id, $postid) {
+        $stmt = DB::run("UPDATE forum_posts SET body=?, editedat=?, editedby=? WHERE id=?", [$body, $editedat, $id, $postid]);
+    }
+
+    public static function getForumPostTopicId($postid) {
+        $stmt = DB::run("SELECT topicid FROM forum_posts WHERE id=?", [$postid])->fetch(PDO::FETCH_LAZY) 
+                or Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_NOT_FOUND_POST"));
+        return $stmt;
+    }
+
+    public static function countForumPost($topicid) {
+        $stmt = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
+        $count = $stmt->rowCount();
+        return $count;
+    }
+    
+    public static function deleteForumPost($postid) {
+        DB::run("DELETE FROM forum_posts WHERE id=?", [$postid]);
+    }
+        
+    public static function minClassWrite($forumid) {
+        $stmt = DB::run("SELECT minclasswrite FROM forum_forums WHERE id=?", [$forumid]);
+        return $stmt;
+    }
+        
+    public static function getSubjectForunId($topicid) {
+        $stmt = DB::run("SELECT subject,forumid FROM forum_topics WHERE id=?", [$topicid]);
+        return $stmt;
+    }
+        
+    public static function moveTopic($forumid, $topicid) {
+        DB::run("UPDATE forum_topics SET forumid=$forumid, moved='yes' WHERE id=$topicid");
+    }
+
 }

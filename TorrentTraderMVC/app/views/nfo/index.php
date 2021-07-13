@@ -2,9 +2,9 @@
 if ($_SESSION["edit_torrents"] == "yes") {
     ?>
     <center>
-    <a href='<?php echo URLROOT ?>/nfo/edit?id=<?php echo $data['id'] ?>' class="btn btn-warning"><?php echo Lang::T("NFO_EDIT") ?></a>
-    <a href="<?php echo URLROOT; ?>/nfo/delete?id=<?php echo $data['id']; ?>" class="btn btn-warning">Delete NFO</a>
-    <a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $data['id']; ?>" class="btn btn-warning">Go Back</a>
+    <a href='<?php echo URLROOT ?>/nfo/edit?id=<?php echo $data['id'] ?>' class="btn ttbtn"><?php echo Lang::T("NFO_EDIT") ?></a>
+    <a href="<?php echo URLROOT; ?>/nfo/delete?id=<?php echo $data['id']; ?>" class="btn ttbtn">Delete NFO</a>
+    <a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $data['id']; ?>" class="btn ttbtn">Go Back</a>
     <center>
     <?php
 } ?>

@@ -10,10 +10,10 @@ class Profile extends Controller
     {
         $id = (int) Input::get("id");
         if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT, "Bad ID.");
+            Redirect::autolink(URLROOT, Lang::T("INVALID_USER_ID"));
         }
         // can view own but not others
-        if ($this->session["view_users"] == "no" && $this->session["id"] != $id) {
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         $user = Users::getUserById($id);
@@ -21,13 +21,13 @@ class Profile extends Controller
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
         // user not ready to be seen yet
-        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $this->session["edit_users"] == "no") {
+        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $_SESSION["edit_users"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_ACCESS_ACCOUNT_DISABLED"));
         }
         // Start Blocked Users
         $blocked = DB::run("SELECT id FROM friends WHERE userid=$user[id] AND friend='enemy' AND friendid=$_SESSION[id]");
         $show = $blocked->rowCount();
-        if ($show != 0 && $this->session["control_panel"] != "yes") {
+        if ($show != 0 && $_SESSION["control_panel"] != "yes") {
             Redirect::autolink(URLROOT, "You're blocked by this member and you can not see his profile!");
         }
         // country
@@ -54,7 +54,7 @@ class Profile extends Controller
 
         $usersignature = stripslashes($user["signature"]); // todo
 
-        $arr = Friend::countFriendAndEnemy($this->session['id'], $id);
+        $arr = Friend::countFriendAndEnemy($_SESSION['id'], $id);
         $friend = $arr['friend'];
         $block = $arr['enemy'];
 
@@ -83,7 +83,7 @@ class Profile extends Controller
         global $tzs;
         $id = (int) Input::get("id");
 
-        if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
+        if ($_SESSION['class'] < _MODERATOR && $id != $_SESSION['id']) {
             Redirect::autolink(URLROOT, Lang::T("You dont have permission"));
         }
         $user = Users::getUserById($id);
@@ -118,7 +118,7 @@ class Profile extends Controller
     {
         $db = new Database();
         $id = (int) Input::get("id");
-        if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
+        if ($_SESSION['class'] < _MODERATOR && $id != $_SESSION['id']) {
             Redirect::autolink(URLROOT, Lang::T("You dont have permission"));
         }
         if (Input::exist()) {
@@ -159,7 +159,7 @@ class Profile extends Controller
     public function admin()
     {
         $id = (int) Input::get("id");
-        if ($this->session['class'] < _MODERATOR && $id != $this->session['id']) {
+        if ($_SESSION['class'] < _MODERATOR && $id != $_SESSION['id']) {
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("You dont have permission"));
         }
         $user1 = Users::getUserById($id);
@@ -176,7 +176,7 @@ class Profile extends Controller
     public function submited()
     {
         $id = (int) $_GET["id"];
-        if ($this->session['class'] < 5 && $id != $this->session['id']) {
+        if ($_SESSION['class'] < 5 && $id != $_SESSION['id']) {
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("You dont have permission"));
         }
         if (Input::exist()) {
@@ -224,7 +224,7 @@ class Profile extends Controller
             WHERE id=?", [$email, $downloaded, $uploaded, $ip, $donated, $forumbanned, $warned, $modcomment,
                 $enabled, $invites, $downloadbanned, $shoutboxpos, $bonus, $id]);
 
-            Logs::write($this->session['username'] . " has edited user: $id details");
+            Logs::write($_SESSION['username'] . " has edited user: $id details");
 
             if (Input::get('resetpasskey') == 'yes') {
                 DB::run("UPDATE users SET passkey=? WHERE id=?", ['', $uploaded]);
@@ -236,7 +236,7 @@ class Profile extends Controller
                 if ($password != $passres['password']) {
                     $password = password_hash($password, PASSWORD_BCRYPT);
                     DB::run("UPDATE users SET password=? WHERE id=?", [$password, $id]);
-                    Logs::write($this->session['username'] . " has changed password for user: $id");
+                    Logs::write($_SESSION['username'] . " has changed password for user: $id");
                 }
             }
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("User Edited"));
@@ -249,20 +249,20 @@ class Profile extends Controller
         $userid = (int) Input::get("userid");
         $username = Input::get("username");
         $delreason = Input::get("delreason");
-        if ($this->session["delete_users"] != "yes") {
+        if ($_SESSION["delete_users"] != "yes") {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
         if (!Validate::Id($userid)) {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("INVALID_USERID"));
         }
-        if ($this->session["id"] == $userid) {
+        if ($_SESSION["id"] == $userid) {
             Redirect::autolink(URLROOT . "/profile?id=$userid", "You cannot delete yourself.");
         }
         if (!$delreason) {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("MISSING_FORM_DATA"));
         }
         Users::deleteuser($userid);
-        Logs::write($this->session['username'] . " has deleted account: $username");
+        Logs::write($_SESSION['username'] . " has deleted account: $username");
         Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("USER_DELETE"));
         die;
     }

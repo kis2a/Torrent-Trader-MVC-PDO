@@ -30,4 +30,22 @@ class Friend
 
         return $data;
     }
+
+    public static function getalltype($userid, $type)
+    {
+        $stmt = DB::run("SELECT f.friendid as id, u.username AS name, u.class, u.avatar, u.title, u.enabled, u.last_access FROM friends AS f LEFT JOIN users as u ON f.friendid = u.id WHERE userid=? AND friend=? ORDER BY name", [$userid, $type])->fetch();
+        return $stmt;
+    }
+
+    public static function insert($userid, $targetid, $type)
+    {
+        DB::run("INSERT INTO friends (userid, friendid, friend) VALUES (?,?,?)", [$userid, $targetid, $type]);
+    }
+
+    public static function isMyFriend($userid, $targetid)
+    {
+        $stmt = DB::run("SELECT id FROM friends WHERE userid=? AND userid=?", [$userid, $targetid]);
+        return $stmt;
+    }
+
 }

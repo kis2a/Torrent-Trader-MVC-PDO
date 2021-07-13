@@ -77,25 +77,25 @@ function strtobytes($str)
 function usermenu($id)
 {
     ?>
-    <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Profile</button></a>
+    <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Profile</button></a>
     <?php if ($_SESSION["id"] == $id or $_SESSION["class"] > _UPLOADER) {?>
-    <a href='<?php echo URLROOT; ?>/profile/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Edit</button></a>&nbsp;
+    <a href='<?php echo URLROOT; ?>/profile/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Edit</button></a>&nbsp;
     <?php }?>
     <?php if ($_SESSION["id"] == $id) {?>
-    <a href='<?php echo URLROOT; ?>/account/changepw?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Password</button></a>
-    <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Email</button></a>
-    <a href='<?php echo URLROOT; ?>/messages'><button type="button" class="btn btn-sm btn-warning">Messages</button></a>
-    <a href='<?php echo URLROOT; ?>/bonus?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Seed Bonus</button></a>
+    <a href='<?php echo URLROOT; ?>/account/changepw?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Password</button></a>
+    <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Email</button></a>
+    <a href='<?php echo URLROOT; ?>/messages'><button type="button" class="btn btn-sm ttbtn">Messages</button></a>
+    <a href='<?php echo URLROOT; ?>/bonus'><button type="button" class="btn btn-sm ttbtn">Seed Bonus</button></a>
     <?php }?>
     <?php if ($_SESSION["view_users"]) {?>
-    <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Friends</button></a>
+    <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Friends</button></a>
     <?php }?>
     <?php if ($_SESSION["view_torrents"]) {?>
-    <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Seeding</button></a>
-    <a href='<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Uploaded</button></a>
+    <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Seeding</button></a>
+    <a href='<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Uploaded</button></a>
     <?php }?>
     <?php if ($_SESSION["class"] > _UPLOADER) {?>
-    <a href='<?php echo URLROOT; ?>/warning?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Warn</button></a>
+    <a href='<?php echo URLROOT; ?>/warning?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Warn</button></a>
     <a href='<?php echo URLROOT; ?>/profile/admin?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-success">Admin</button></a>
 	<?php }?>
     <br><br><?php
@@ -104,17 +104,17 @@ function usermenu($id)
 function torrentmenu($id, $external = 'no')
 {
     ?>
-    <a href='<?php echo URLROOT; ?>/torrent?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Back</button></a>
+    <a href='<?php echo URLROOT; ?>/torrent?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Back</button></a>
     <?php if ($_SESSION["id"] == $id or $_SESSION["edit_torrents"] == 'yes') {?>
-    <a href='<?php echo URLROOT; ?>/torrent/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Edit</button></a>
+    <a href='<?php echo URLROOT; ?>/torrent/edit?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Edit</button></a>
     <?php }?>
-    <a href='<?php echo URLROOT; ?>/comments?type=torrent&amp;id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Comments</button></a>
-    <a href='<?php echo URLROOT; ?>/torrent/torrentfilelist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Files</button></a>
+    <a href='<?php echo URLROOT; ?>/comments?type=torrent&amp;id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Comments</button></a>
+    <a href='<?php echo URLROOT; ?>/torrent/torrentfilelist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Files</button></a>
     <?php if ($external != 'yes') {?>
-    <a href='<?php echo URLROOT; ?>/peers/peerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Peers</button></a>
+    <a href='<?php echo URLROOT; ?>/peers/peerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Peers</button></a>
     <?php }
     if ($external == 'yes') {?>
-     <a href='<?php echo URLROOT; ?>/torrent/torrenttrackerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-warning">Trackers</button></a>
+     <a href='<?php echo URLROOT; ?>/torrent/torrenttrackerlist?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Trackers</button></a>
     <?php }?>
     <br><br>
     <?php

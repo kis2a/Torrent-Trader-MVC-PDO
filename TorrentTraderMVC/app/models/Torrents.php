@@ -111,4 +111,32 @@ class Torrents
         $row = DB::run("SELECT COUNT(*) FROM torrents LEFT JOIN categories ON category = categories.id $where")->fetchColumn();
         return $row;
     }
+
+    public static function updateComments($id, $var)
+    {
+        if ($var == 'sub') {
+            $row = DB::run("SELECT comments FROM torrents WHERE id=$id")->fetch();
+            DB::run("UPDATE torrents SET comments = $row[comments] - 1 WHERE id = $id");
+        } elseif ($var == 'add') {
+            DB::run("UPDATE torrents SET comments = comments + 1 WHERE id = $id");
+        }
+    }
+
+    public static function getNameExternalBanned($id)
+    {
+        $row = DB::run("SELECT name, external, banned FROM torrents WHERE id =?", [$id])->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public static function isAvailableToDownload($id)
+    {
+        $row = DB::run("SELECT filename, banned, external, announce, owner, vip FROM torrents WHERE id =" . intval($id))->fetch(PDO::FETCH_ASSOC);
+        return $row;
+    }
+
+    public static function updateHits($id)
+    {
+        DB::run("UPDATE torrents SET hits = hits + 1 WHERE id = $id");
+    }
+
 }

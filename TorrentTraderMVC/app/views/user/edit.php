@@ -45,7 +45,7 @@ if (SHOUTBOX) {
 </div>
 </div>
 <?php
-print("<br><center><button type='submit' class='btn btn-sm btn-warning' value='" . Lang::T("SUBMIT") . "' />Submit</button></center>");
+print("<br><center><button type='submit' class='btn btn-sm ttbtn' value='" . Lang::T("SUBMIT") . "' />Submit</button></center>");
 endforeach;
 ?>
 </form>

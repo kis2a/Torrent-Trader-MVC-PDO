@@ -286,7 +286,7 @@ function torrenttable($res)
                         } elseif ($_SESSION["id"] == $row["owner"]) {
                             print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
                         } else {
-                            print("<td class='ttable_col$x' align='center'><a href=" . URLROOT . "likes/index?id=$id' ><button  class='btn btn-sm btn-danger'>Thanks</button></td>");
+                            print("<td class='ttable_col$x' align='center'><a href='" . URLROOT . "/likes/thanks?id=$id&type=torrent><button  class='btn btn-sm ttbtn'>Thanks</button></td>");
                         }
                     }
                     break;
@@ -695,7 +695,7 @@ function torrenttable1($query)
                         } elseif ($_SESSION["id"] == $row["owner"]) {
                             print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
                         } else {
-                            print("<td class='ttable_col$x' align='center'><a href='" . URLROOT . "/likes/index?id=$id' ><button  class='btn btn-sm btn-danger'>Thanks</button></td>");
+                            print("<td class='ttable_col$x' align='center'><a href='" . URLROOT . "/likes/thanks?id=$id&type=torrent><button  class='btn btn-sm ttbtn'>Thanks</button></td>");
                         }
                     }
                     break;

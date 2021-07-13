@@ -17,7 +17,7 @@ class Comments extends Controller
         if ($type == "news") {
             $row = News::selectAll($id);
             if (!$row) {
-                Redirect::autolink(URLROOT . "/comments?type=news&id=$id", "News id invalid");
+                Redirect::autolink(URLROOT . "/comments?type=news&id=$id", Lang::T("INVALID_ID"));
             }
             $title = Lang::T("NEWS");
         }
@@ -25,7 +25,7 @@ class Comments extends Controller
         if ($type == "torrent") {
             $row = Torrents::getIdName($id);
             if (!$row) {
-                Redirect::autolink(URLROOT, "Invalid Torrent");
+                Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
             }
             $title = Lang::T("COMMENTSFOR") . "<a href='torrent?id=" . $row['id'] . "'>" . htmlspecialchars($row['name']) . "</a>";
         }
@@ -33,13 +33,13 @@ class Comments extends Controller
         if ($type == "req") {
             $row = Comment::selectByRequest($id);
             if (!$row) {
-                Redirect::autolink(URLROOT, "Request id invalid");
+                Redirect::autolink(URLROOT, Lang::T("INVALID_ID"));
             }
             $title = Lang::T("COMMENTSFOR") . "<a href='" . URLROOT . "/request'>" . htmlspecialchars($row['name']) . "</a>";
         }
 
-        $pager = $this->commentPager($id, $type);
-        // Template
+        $pager = Comment::commentPager($id, $type);
+        
         $data = [
             'title' => $title,
             'pagertop' => $pager['pagertop'],
@@ -54,24 +54,6 @@ class Comments extends Controller
             'id' => $id,
         ];
         View::render('comments/index', $data, 'user');
-    }
-
-    public function commentPager($id, $type)
-    {
-        $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE $type =?", [$id])->fetchColumn();
-        if ($commcount) {
-            list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "comments?id=$id&amp;type=$type");
-            $commres = DB::run("SELECT comments.id, text, user, comments.added, avatar, signature, username, title, class, uploaded, downloaded, privacy, donated FROM comments LEFT JOIN users ON comments.user = users.id WHERE $type = $id ORDER BY comments.id $limit");
-        } else {
-            unset($commres);
-        }
-        return $pager = [
-            'pagertop' => $pagertop,
-            'commres' => $commres,
-            'pagerbottom' => $pagerbottom,
-            'limit' => $limit,
-            'commcount' => $commcount,
-        ];
     }
 
     public function add()
@@ -96,22 +78,21 @@ class Comments extends Controller
         if (!isset($id) || !$id || ($type != "torrent" && $type != "news" && $type != "req")) {
             Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
-        $row = DB::run("SELECT user FROM comments WHERE id=?", [$id])->fetch();
-        if (($type == "torrent" && $_SESSION["edit_torrents"] == "no" || $type == "news" && $_SESSION["edit_news"] == "no") && $_SESSION['id'] != $row['user'] || $type == "req" && $_SESSION['id'] != $row['user']) {
+        $arr = Comment::selectAll($id);
+        if (($type == "torrent" && $_SESSION["edit_torrents"] == "no" || $type == "news" && $_SESSION["edit_news"] == "no") && $_SESSION['id'] != $arr['user'] || $type == "req" && $_SESSION['id'] != $arr['user']) {
             Redirect::autolink(URLROOT, Lang::T("ERR_YOU_CANT_DO_THIS"));
         }
         $save = (int) $_GET["save"];
         if ($save) {
             $text = $_POST['text'];
-            $result = DB::run("UPDATE comments SET text=? WHERE id=?", [$text, $id]);
+            Comment::updateText($text, $id);
             Logs::write(Users::coloredname($_SESSION['username']) . " has edited comment: ID:$id");
-            Redirect::autolink(URLROOT, "Comment Edited OK");
+            Redirect::autolink(URLROOT, Lang::T("_SUCCESS_UPD_"));
         }
-        $arr = Comment::selectAll($id);
 
         $data = [
             'title' => 'Edit Comment',
-            'text' => $arr->text,
+            'text' => $arr['text'],
             'id' => $id,
             'type' => $type,
         ];
@@ -127,15 +108,14 @@ class Comments extends Controller
             Redirect::autolink(URLROOT, Lang::T("ERR_YOU_CANT_DO_THIS"));
         }
         if ($type == "torrent") {
-            $res = DB::run("SELECT torrent FROM comments WHERE id=?", [$id]);
-            $row = $res->fetch(PDO::FETCH_ASSOC);
+            $row = Comment::selectTorrent($id);
             if ($row["torrent"] > 0) {
-                DB::run("UPDATE torrents SET comments = comments - 1 WHERE id = $row[torrent]");
+                Torrents::updateComments($id, 'sub');
             }
         }
         Comment::delete($id);
         Logs::write(Users::coloredname($_SESSION['username']) . " has deleted comment: ID: $id");
-        Redirect::autolink(URLROOT, "Comment deleted OK");
+        Redirect::autolink(URLROOT, Lang::T("_SUCCESS_DEL_"));
     }
 
     public function take()
@@ -147,11 +127,11 @@ class Comments extends Controller
             Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", Lang::T("YOU_DID_NOT_ENTER_ANYTHING"));
         }
         if ($type == "torrent") {
-            DB::run("UPDATE torrents SET comments = comments + 1 WHERE id = $id");
+            Torrents::updateComments($id, 'add');
         }
         $ins = Comment::insert($type, $_SESSION["id"], $id, TimeDate::get_date_time(), $body);
         if ($ins) {
-            Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", "Your Comment was added successfully.");
+            Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", Lang::T("_SUCCESS_ADD_"));
         } else {
             Redirect::autolink(URLROOT . "/comments?type=$type&id=$id", Lang::T("UNABLE_TO_ADD_COMMENT"));
         }
@@ -164,38 +144,19 @@ class Comments extends Controller
             Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
 
-        $res = DB::run("SELECT
-            comments.id, text, user, comments.added, avatar,
-            signature, username, title, class, uploaded, downloaded, privacy, donated
-            FROM comments
-            LEFT JOIN users
-            ON comments.user = users.id
-            WHERE user = $id ORDER BY comments.id "); //$limit
-        $row = $res->fetch(PDO::FETCH_LAZY);
+        $row = Comment::selectCommentUser($id);
         if (!$row) {
-            Redirect::autolink(URLROOT, "User id invalid");
+            Redirect::autolink(URLROOT, Lang::T("INVALID_USERID"));
         }
 
         $title = Lang::T("COMMENTSFOR") . "<a href='profile?id=" . $row['user'] . "'>&nbsp;$row[username]</a>";
 
-        Style::header(Lang::T("COMMENTS"));
-        Style::begin($title);
-        $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE user =? AND torrent = ?", [$id, 0])->fetchColumn();
-        if ($commcount) {
-            list($pagertop, $pagerbottom, $limit) = pager(10, $commcount, "comments?id=$id");
-            $commres = DB::run("SELECT comments.id, text, user, comments.added, avatar, signature, username, title, class, uploaded, downloaded, privacy, donated FROM comments LEFT JOIN users ON comments.user = users.id WHERE user = $id ORDER BY comments.id"); // $limit
-        } else {
-            unset($commres);
-        }
-        if ($commcount) {
-            print($pagertop);
-            commenttable($commres, 'torrent');
-            print($pagerbottom);
-        } else {
-            print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
-        }
-        Style::end();
-        Style::footer();
+        $data = [
+            'title' => $title,
+            'id' => $id,
+        ];
+        View::render('comments/user', $data, 'user');
+        die();
     }
 
 }

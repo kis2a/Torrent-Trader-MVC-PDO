@@ -1,6 +1,6 @@
 <br><?php
 if ($_SESSION['class'] > _MODERATOR) { ?>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Super Moderator Only</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admingroups/groups"><img src="<?php echo URLROOT; ?>/assets/images/admin/user_groups.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("USER_GROUPS_VIEW"); ?></b></a></li>
@@ -12,7 +12,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
 </div> <?php
 } ?>
 <br>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Invites</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/Admininvites/pending"><img src="<?php echo URLROOT; ?>/assets/images/admin/pending_invited_user.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Pending Invited Users</b></b></a></li>
@@ -20,7 +20,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
     </ul>
 </div>
 <br>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Warning/Reports</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminwarning"><img src="<?php echo URLROOT; ?>/assets/images/admin/warned_user.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("WARNED_USERS"); ?></b></a></li>
@@ -28,7 +28,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
     </ul>
 </div>
 <br>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Bans</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminbans/ip"><img src="<?php echo URLROOT; ?>/assets/images/admin/ip_block.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("BANNED_IPS"); ?></b></a></li>
@@ -39,7 +39,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
     </ul>
 </div>
 <br>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Users</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminusers/add"><img src="<?php echo URLROOT; ?>/assets/images/admin/adduser.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("Add User"); ?></b></a></li>

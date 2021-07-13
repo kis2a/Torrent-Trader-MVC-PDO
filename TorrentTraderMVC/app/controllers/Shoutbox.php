@@ -20,7 +20,6 @@ class Shoutbox extends Controller
         <?php
         while ($row = $result->fetch(PDO::FETCH_LAZY)) {
             $ol3 = Users::selectAvatar($row["userid"]);
-            //$ol3 = DB::run("SELECT avatar FROM users WHERE id=" . $row["userid"])->fetch(PDO::FETCH_ASSOC);
             $av = $ol3['avatar'];
             if (!empty($av)) {
                 $av = "<img src='" . $ol3['avatar'] . "' alt='my_avatar' width='20' height='20'>";
@@ -55,7 +54,7 @@ class Shoutbox extends Controller
                         <form method="POST" action="<?php echo URLROOT; ?>/shoutbox/edit?id=<?php echo $row['msgid']; ?>">
                         <input class="form-control" type="text" name="message" value="<?php echo $row['message'] ?>" size="60" /><br>
                         <!-- The submit button -->
-                        <center><input class="btn btn-sm btn-warning"  type="submit" value='<?php echo Lang::T("SUBMIT"); ?>'></center>
+                        <center><input class="btn btn-sm ttbtn"  type="submit" value='<?php echo Lang::T("SUBMIT"); ?>'></center>
                         </form>
                   </div>
                  </div>
@@ -75,11 +74,11 @@ class Shoutbox extends Controller
 
     public function add()
     {
-        if ($this->session["shoutboxpos"] != 'yes') {
+        if ($_SESSION["shoutboxpos"] != 'yes') {
             //INSERT MESSAGE
             if (!empty(Input::get('message')) && $_SESSION['loggedin'] == true) {
                 $message = Input::get('message');
-                $row = Shoutboxs::checkFlood($message, $this->session['username']);
+                $row = Shoutboxs::checkFlood($message, $_SESSION['username']);
                 if ($row[0] == '0') {
                     Shoutboxs::insertShout($_SESSION['id'], TimeDate::get_date_time(), $_SESSION['username'], $message);
                 }
@@ -101,7 +100,7 @@ class Shoutbox extends Controller
                 exit;
             }
             if ($row && ($_SESSION["edit_users"] == "yes" || $_SESSION['username'] == $row[1])) {
-                Logs::write("<b><font color='orange'>Shout Deleted:</font> Deleted by   " . $this->session['username'] . "</b>");
+                Logs::write("<b><font color='orange'>Shout Deleted:</font> Deleted by   " . $_SESSION['username'] . "</b>");
                 Shoutboxs::deleteByShoutId($delete);
             }
         }
@@ -110,7 +109,7 @@ class Shoutbox extends Controller
 
     public function edit()
     {
-        if ($this->session['class'] > _UPLOADER) {
+        if ($_SESSION['class'] > _UPLOADER) {
             $id = Input::get('id');
             $message = $_POST['message'];
             if ($message) {

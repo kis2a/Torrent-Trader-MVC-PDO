@@ -46,7 +46,7 @@ for ($i = 0; $i <= $data['zerofix']; $i++) {
         $counter = $i + 1;
         echo "<tr>";
         echo "<td align='center class='table_col1'>$counter.</td>";
-        echo "<td class='table_col2'><a href='" . URLROOT . "/users/profile?id=$id'>$username</a></td>";
+        echo "<td class='table_col2'><a href='" . URLROOT . "/profile?id=$id'>$username</a></td>";
         echo "<td class='table_col1'>" . mksize($uploaded) . "</td>";
         echo "<td class='table_col2'>" . mksize($downloaded) . "</td>";
         echo "<td class='table_col1'>$ratio</td>";

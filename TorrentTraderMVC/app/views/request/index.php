@@ -1,6 +1,6 @@
-<a href='<?php echo URLROOT ?>/request/makereq'><button  class='btn btn-sm btn-warning'>Add New Request</button></a>&nbsp;
-<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-warning'>View my requests</button></a>&nbsp;
-<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-warning'>All requests</button>
+<a href='<?php echo URLROOT ?>/request/makereq'><button  class='btn btn-sm ttbtn'>Add New Request</button></a>&nbsp;
+<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm ttbtn'>View my requests</button></a>&nbsp;
+<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm ttbtn'>All requests</button></a>
 <br><br>
  
 <form method=post action='<?php echo URLROOT ?>/request/delete'>
@@ -67,6 +67,6 @@ for ($i = 0; $i < $data['num']; ++$i) {
     print("</tr>\n");
 }
 print("</table></div>");
-print("<p align=right><input type=submit class='btn btn-sm btn-warning' value=" . Lang::T('DO_DELETE') . "></p>");
+print("<p align=right><input type=submit class='btn btn-sm ttbtn' value=" . Lang::T('DO_DELETE') . "></p>");
 print("</form>");
 echo $data['pagerbottom'];

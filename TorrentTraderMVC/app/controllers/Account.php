@@ -14,8 +14,8 @@ class Account extends Controller
     public function changepw()
     {
         $id = (int) Input::get("id");
-        if ($this->session['class'] < _MODERATOR && $id != $_SESSION['id']) {
-            Redirect::autolink(URLROOT . "/index", Lang::T("Sorry Staff only"));
+        if ($_SESSION['class'] < _MODERATOR && $id != $_SESSION['id']) {
+            Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
 
         if ($_POST['do'] == "newpassword") {
@@ -32,7 +32,7 @@ class Account extends Controller
                 $secret = Helper::mksecret();
             }
             if ((!$chpassword) || (!$passagain)) {
-                $message = "You must enter something!";
+                $message = Lang::T("YOU_DID_NOT_ENTER_ANYTHING");
             }
             
             Users::updateUserPasswordSecret($chpassword, $secret, $id);
@@ -53,8 +53,8 @@ class Account extends Controller
     public function email()
     {
         $id = (int) Input::get("id");
-        if ($id != $this->session['id']) {
-            Redirect::autolink(URLROOT . "/index", Lang::T("You dont have permission"));
+        if ($id != $_SESSION['id']) {
+            Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
 
         if (Input::exist()) {
@@ -62,24 +62,21 @@ class Account extends Controller
             $sec = Helper::mksecret();
             $obemail = rawurlencode($email);
             $sitename = URLROOT;
-            $body = <<<EOD
-            You have requested that your user profile (username {$this->session["username"]})
-            on {$sitename} should be updated with this email address ($email) as
-            user contact.
-            If you did not do this, please ignore this email. The person who entered your
-            email address had the IP address {$_SERVER["REMOTE_ADDR"]}. Please do not reply.
-            To complete the update of your user profile, please follow this link:
-            {$sitename}/confirmemail?id={$this->session["id"]}&secret=$sec&email=$obemail
-            Your new email address will appear in your profile after you do this. Otherwise
-            your profile will remain unchanged.
-            EOD;
+
+            $body = file_get_contents(APPROOT . "/views/emails/changeemail.php");
+            $body = str_replace("%usersname%", $_SESSION["username"], $body);
+            $body = str_replace("%sitename%", $sitename, $body);
+            $body = str_replace("%usersip%", $_SERVER["REMOTE_ADDR"], $body);
+            $body = str_replace("%usersid%", $_SESSION["id"], $body);
+            $body = str_replace("%userssecret%", $sec, $body);
+            $body = str_replace("%obemail%", $obemail, $body);
+            $body = str_replace("%newemail%", $email, $body);
 
             $TTMail = new TTMail();
             $TTMail->Send($email, "$sitename profile update confirmation", $body, "From: " . SITEEMAIL . "", "-f" . SITEEMAIL . "");
-            Users::updateUserEditSecret($sec, $this->session['id']);
-            Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("Email Edited"));
+            Users::updateUserEditSecret($sec, $_SESSION['id']);
+            Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("EMAIL_CHANGE_SEND"));
         }
-
         $user = Users::selectUserEmail($id);
         $data = [
             'id' => $id,
@@ -91,8 +88,8 @@ class Account extends Controller
     public function avatar()
     {
         $id = (int) Input::get("id");
-        if ($id != $this->session['id']) {
-            Redirect::autolink(URLROOT . "/index", Lang::T("Its not your account"));
+        if ($id != $_SESSION['id']) {
+            Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
         if (isset($_FILES["upfile"])) {
             $upload = new Uploader($_FILES["upfile"]);
@@ -106,7 +103,7 @@ class Account extends Controller
             } else {
                 $avatar = URLROOT . "/uploads/avatars/" . $upload->get_name();
                 Users::updateUserAvatar($avatar, $id);
-                Redirect::autolink(URLROOT . "/profile/edit?id=$id", "Avatar Upload OK");
+                Redirect::autolink(URLROOT . "/profile/edit?id=$id", Lang::T("UP_AVATAR")." OK");
                 
             }
 

@@ -1,5 +1,5 @@
 <div class="row justify-content-md-center">
-    <div class="col-md-6 border border-warning">
+    <div class="col-md-6 border ttborder">
 	<center><b><?php echo stripslashes("Upload Rules"); ?></b><br>
 	<b><?php echo stripslashes(UPLOADRULES); ?></b></center>
 	</div>
@@ -67,7 +67,7 @@ if (ANONYMOUSUPLOAD && MEMBERSONLY) {?>
 <?php
 print textbbcode("upload", "descr", "$descr");
 ?>
-<br><center><input type="submit" class="btn btn-sm btn-warning" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
+<br><center><input type="submit" class="btn btn-sm ttbtn" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
 <i><?php echo Lang::T("CLICK_ONCE_IMAGE"); ?></i>
 </center>
 </form>

@@ -1,13 +1,13 @@
 <center><font color=#ffff00><b>Send message to Staff</b></font></center>
 <div class="row justify-content-md-center">
-    <div class="col-6 border border-warning">
+    <div class="col-6 border ttborder">
 
 <form method=post name=message action='<?php echo URLROOT; ?>/contactstaff/submit'>
 <div class="form-group">
 
 <div class="form-group">
 	<label for="name">Subject: </label>
-	<input id="name" type="text" class="form-control" name="sub" minlength="3" maxlength="75" required autofocus>
+	<input id="name" type="text" class="form-control" name="sub" minlength="3" maxlength="200" required autofocus>
 </div>
 <div class="form-group">
     <label for="msg">Message: </label>
@@ -15,7 +15,7 @@
 </div>
 <div class="form-group">
 <center>
-	<button type="submit" class="btn btn-warning btn-sm"><?php echo Lang::T("Submit"); ?></button>
+	<button type="submit" class="btn ttbtn btn-sm"><?php echo Lang::T("Submit"); ?></button>
 </center>
 </div>
 

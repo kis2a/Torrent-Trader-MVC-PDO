@@ -9,7 +9,7 @@
     }
     print("</select>\n");
     ?> 
-<button type='submit' class='btn btn-warning btn-sm'><?php echo Lang::T("APPLY"); ?></button>
+<button type='submit' class='btn ttbtn btn-sm'><?php echo Lang::T("APPLY"); ?></button>
 </form></center>
 
 <p align='center'>

@@ -1,6 +1,6 @@
 <br><?php
 if ($_SESSION['class'] == _ADMINISTRATOR) { ?>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Admin Only</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminbackup"><img src="<?php echo URLROOT; ?>/assets/images/admin/db_backup.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("BACKUPS"); ?></b></a></li>
@@ -12,7 +12,7 @@ if ($_SESSION['class'] == _ADMINISTRATOR) { ?>
 </div> <?php
 } ?>
 <br>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Community</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminfaq"><img src="<?php echo URLROOT; ?>/assets/images/admin/faq.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("FAQ"); ?></b></a></li>
@@ -26,7 +26,7 @@ if ($_SESSION['class'] == _ADMINISTRATOR) { ?>
     </ul>
 </div>
 <br>
-<div class="border border-warning">
+<div class="border ttborder">
     <center><font color=#ff9900>Torrents</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admincategories"><img src="<?php echo URLROOT; ?>/assets/images/admin/torrent_cats.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("TORRENT_CAT_VIEW"); ?></b></a></li>

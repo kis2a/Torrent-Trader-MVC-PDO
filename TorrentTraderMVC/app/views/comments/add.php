@@ -2,5 +2,5 @@
 echo "<div class='form-group'>";
 echo "<form name='comment' method='post' action='".URLROOT."/comments/take?type=$data[type]&amp;id=$data[id]'>";
 echo textbbcode("comment", "body") . "<br>";
-echo "<center><input type=\"submit\" class='btn btn-sm btn-warning'  value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
+echo "<center><input type=\"submit\" class='btn btn-sm ttbtn'  value=\"" . Lang::T("ADDCOMMENT") . "\" /></center>";
 echo "</form></div>";

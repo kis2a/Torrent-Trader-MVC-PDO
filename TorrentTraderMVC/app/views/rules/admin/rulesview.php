@@ -1,7 +1,7 @@
 <center><a href='<?php echo URLROOT; ?>/adminrules/addsect'>Add New Rules Section</a></center>
 <?php
 while ($arr = $data['res']->fetch(PDO::FETCH_LAZY)) { ?>
-    <div class="border border-warning">
+    <div class="border ttborder">
     <table width='100%' cellspacing='0' class='table_table'><tr>
     <th><?php echo  $arr["title"]; ?></th>
     </tr>

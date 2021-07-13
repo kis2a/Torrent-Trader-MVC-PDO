@@ -61,7 +61,7 @@ class Adminbans extends Controller
         }
 
         $count = get_row_count("bans");
-        list($pagertop, $pagerbottom, $limit) = pager(50, $count, "/adminbans/ip?"); // 50 per page
+        list($pagertop, $pagerbottom, $limit) = pager(50, $count, URLROOT . "/adminbans/ip?"); // 50 per page
         $res = DB::run("SELECT bans.*, users.username FROM bans LEFT JOIN users ON bans.addedby=users.id ORDER BY added $limit");
 
         $data = [
@@ -86,7 +86,6 @@ class Adminbans extends Controller
             $comment = trim($_POST["comment"]);
             if (!$mail_domain || !$comment) {
                 Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("MISSING_FORM_DATA") . ".");
-                require APPROOT . '/views/admin/footer.php';
                 die;
             }
             $mail_domain = $mail_domain;
@@ -95,16 +94,13 @@ class Adminbans extends Controller
             $ins = DB::run("INSERT INTO email_bans (added, addedby, mail_domain, comment) VALUES(?,?,?,?)", [$added, $_SESSION['id'], $mail_domain, $comment]);
             Logs::write(sprintf(Lang::T("EMAIL_BANS_ADD"), $mail_domain, $_SESSION["username"]));
             Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("EMAIL_BAN_ADDED"));
-            require APPROOT . '/views/admin/footer.php';
-            die;
         }
 
         $count = DB::run("SELECT count(id) FROM email_bans")->fetchColumn();
-        $perpage = 40;
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT . "/admin/emailbans?");
-        $title = Lang::T("EMAIL_BANS");
-        $res = DB::run("SELECT * FROM email_bans ORDER BY added DESC $data[limit]");
+        list($pagertop, $pagerbottom, $limit) = pager(40, $count, URLROOT . "/admin/emailbans?");
+        $res = DB::run("SELECT * FROM email_bans ORDER BY added DESC $limit");
 
+        $title = Lang::T("EMAIL_BANS");
         $data = [
             'title' => $title,
             'count' => $count,
@@ -118,13 +114,10 @@ class Adminbans extends Controller
 
     public function torrent()
     {
-        $res2 = DB::run("SELECT COUNT(*) FROM torrents WHERE banned=?", ['yes']);
-        $row = $res2->fetch(PDO::FETCH_LAZY);
-        $count = $row[0];
-        $perpage = 50;
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "/adminbans/torrent?");
-
+        $count = DB::run("SELECT COUNT(*) FROM torrents WHERE banned=?", ['yes'])->fetchColumn();
+        list($pagertop, $pagerbottom, $limit) = pager(50, $count, URLROOT."/adminbans/torrent?");
         $resqq = DB::run("SELECT id, name, seeders, leechers, visible, banned, external FROM torrents WHERE banned=? ORDER BY name", ['yes']);
+        
         $title = "Banned " . Lang::T("TORRENT_MANAGEMENT");
         $data = [
             'title' => $title,

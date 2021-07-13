@@ -8,10 +8,10 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 <div class="row">
     <div class="col">
         <img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar"><br>
-        <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("PM") ?></button></a>&nbsp;
-		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
+        <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("PM") ?></button></a>&nbsp;
+		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
         <?php if ($_SESSION["edit_users"] == "yes") {?>
-		<a href="<?php echo URLROOT; ?>/snatched?uid=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm btn-warning'><?php echo Lang::T("SNATCHLIST") ?></button></a>
+		<a href="<?php echo URLROOT; ?>/snatched?uid=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a>
         <?php } ?>
     </div>
     <div class="col">

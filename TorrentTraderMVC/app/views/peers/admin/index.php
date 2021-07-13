@@ -22,7 +22,7 @@ if ($data['result']->rowCount() != 0) { ?>
             $row1 = DB::run($sql1)->fetch();
         }
         if ($row1['username']) {
-            print '<tr><td class="table_col1"><a href="' . URLROOT . '/users/profile?id=' . $row['userid'] . '">' . Users::coloredname($row1['username']) . '</a></td>';
+            print '<tr><td class="table_col1"><a href="' . URLROOT . '/profile?id=' . $row['userid'] . '">' . Users::coloredname($row1['username']) . '</a></td>';
         } else {
             print '<tr><td class="table_col1">' . $row["ip"] . '</td>';
         }

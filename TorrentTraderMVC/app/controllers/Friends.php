@@ -13,7 +13,7 @@ class Friends extends Controller
         if (!Validate::Id($userid)) {
             Redirect::autolink(URLROOT, "Invalid ID $userid.");
         }
-        if ($this->session["view_users"] == "no" && $this->session["id"] != $userid) {
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $userid) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         $res = DB::run("SELECT * FROM users WHERE id=$userid");
@@ -38,7 +38,7 @@ class Friends extends Controller
         $targetid = (int) $_GET['targetid'];
         $type = $_GET['type'];
         if (!Validate::Id($targetid)) {
-            Redirect::autolink(URLROOT, "Invalid ID $$targetid.");
+            Redirect::autolink(URLROOT, "Invalid ID $targetid.");
         }
         if ($type == 'friend') {
             $r = DB::run("SELECT id FROM friends WHERE userid=$_SESSION[id] AND userid=$targetid");

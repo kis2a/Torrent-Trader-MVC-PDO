@@ -29,4 +29,4 @@ foreach ($data['res'] as $arr) {
 }?>
 <?php echo $data['pagerbottom']; ?>
     <tbody></table></div>
-    <center><button type="submit" class="btn btn-warning" value='Delete Checked' />Delete Checked</button></center>
+    <center><button type="submit" class="btn ttbtn" value='Delete Checked' />Delete Checked</button></center>

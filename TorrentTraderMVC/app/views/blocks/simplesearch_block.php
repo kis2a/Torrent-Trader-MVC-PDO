@@ -8,7 +8,7 @@ if ($_SESSION['loggedin'] == true) {
 		<div class="input-group">
 			<input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($_GET['search']); ?>" />
 			<span class="input-group-btn">
-				<button type="submit" class="btn btn-warning"/><?php echo Lang::T("SEARCH"); ?></button>
+				<button type="submit" class="btn ttbtn"/><?php echo Lang::T("SEARCH"); ?></button>
 			</span>
 		</div>
 	</form>

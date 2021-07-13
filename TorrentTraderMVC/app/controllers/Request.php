@@ -9,40 +9,13 @@ class Request extends Controller
     public function index()
     {
         if ($_SESSION["view_torrents"] == "no") {
-            Redirect::autolink(URLROOT, "You do not have the proper rights to view requests!");
+            Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION_TO_VIEW_AREA"));
         }
 
         if (REQUESTSON) {
             $categ = (int) Input::get("category");
             $requestorid = (int) Input::get("requestorid");
-            $sort = Input::get("sort");
-            $search = Input::get("search");
-            $filter = Input::get("filter");
-            $search = " AND requests.request like '%$search%' ";
-            if ($sort == "votes") {
-                $sort = " order by hits desc ";
-            } else if ($sort == "request") {
-                $sort = " order by request ";
-            } else {
-                $sort = " order by filled asc ";
-            }
-            if ($filter == "true") {
-                $filter = " AND requests.filledby = 0 ";
-            } else {
-                $filter = "";
-            }
-            if ($requestorid != null) {
-                if (($categ != null) && ($categ != 0)) {
-                    $categ = "WHERE requests.cat = " . $categ . " AND requests.userid = " . $requestorid;
-                } else {
-                    $categ = "WHERE requests.userid = " . $requestorid;
-                }
-            } else if ($categ == 0) {
-                $categ = '';
-            } else {
-                $categ = "WHERE requests.cat = " . $categ;
-            }
-            $res = DB::run("SELECT count(requests.id) FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id  $categ $filter $search");
+            $res = DB::run("SELECT count(requests.id) FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id");
             $row = $res->fetch(PDO::FETCH_ASSOC);
             $count = $row[0];
             $perpage = 50;
@@ -50,8 +23,7 @@ class Request extends Controller
             $res = DB::run("SELECT users.downloaded, users.uploaded, users.username, users.privacy, requests.filled, requests.comments,
             requests.filledby, requests.id, requests.userid, requests.request, requests.added, requests.hits, categories.name as cat,
              categories.parent_cat as parent_cat
-             FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id  $categ
-              $filter $search $sort $limit");
+             FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id");
             $num = $res->rowCount();
             $data = [
                 'title' => Lang::T('REQUESTS'),
@@ -62,18 +34,18 @@ class Request extends Controller
             ];
             View::render('request/index', $data, 'user');
         } else {
-            Redirect::autolink(URLROOT, "Request are not available");
+            Redirect::autolink(URLROOT, Lang::T("REQ_OFF"));
         }
     }
 
     public function edit()
     {
-        if ($this->session["class"] < _MODERATOR) {
-            Redirect::autolink(URLROOT . "/request", "Access denied.");
+        if ($_SESSION["class"] < _MODERATOR) {
+            Redirect::autolink(URLROOT . "/request", Lang::T("NO_PERMISSION_TO_VIEW_AREA"));
         }
         $id = (int) Input::get("id");
         if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT . "/request", "You must select a category to put the request in!");
+            Redirect::autolink(URLROOT . "/request", Lang::T("CP_INVALID_ID"));
         }
         $descr = Input::get("desc");
         $cat = Input::get("cat");
@@ -99,16 +71,16 @@ class Request extends Controller
     public function delete()
     {
         $delreq = Input::get('delreq');
-        if (($this->session['class']) > _UPLOADER) {
+        if (($_SESSION['class']) > _UPLOADER) {
             if ($delreq) {
-                Redirect::autolink(URLROOT . "/request", "You must select at least one request to delete");
+                Redirect::autolink(URLROOT . "/request", Lang::T("NOTHING_SELECTED"));
                 die;
             }
             $do = "DELETE FROM requests WHERE id IN (" . implode(", ", $_POST['delreq']) . ")";
             $do2 = "DELETE FROM addedrequests WHERE requestid IN (" . implode(", ", $_POST['delreq']) . ")";
             $res2 = DB::run($do2);
             $res = DB::run($do);
-            Redirect::autolink(URLROOT . "/request", "Request Deleted OK");
+            Redirect::autolink(URLROOT . "/request", Lang::T("_SUCCESS_DEL_"));
         } else {
             foreach ($_POST['delreq'] as $del_req) {
                 $query = DB::run("SELECT * FROM requests WHERE userid=$_SESSION[id] AND id = $del_req");
@@ -138,7 +110,7 @@ class Request extends Controller
 
     public function confirmreq()
     {
-        if ($this->session['class'] < _MODERATOR) {
+        if ($_SESSION['class'] < _MODERATOR) {
             Redirect::autolink(URLROOT . "/request/makereq", "Only Moderators can request - For show only");
         }
         $requesttitle = Input::get("requesttitle");
@@ -238,7 +210,7 @@ class Request extends Controller
     public function addvote()
     {
         $requestid = (int) Input::get("id");
-        $userid = (int) $this->session["id"];
+        $userid = (int) $_SESSION["id"];
         $res = DB::run("SELECT * FROM addedrequests WHERE requestid=$requestid and userid = $userid");
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         $voted = $arr;

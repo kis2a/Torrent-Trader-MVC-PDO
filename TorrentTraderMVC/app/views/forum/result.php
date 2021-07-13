@@ -22,4 +22,4 @@ for ($i = 0; $i < $data['num']; ++$i) {
     print("<tr><td>$post[id]</td><td align='left'><a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$post[topicid]#post$post[id]'><b>" . htmlspecialchars($topic["subject"]) . "</b></a></td><td align='left'><a href='" . URLROOT . "/forums/viewforum&amp;forumid=$topic[forumid]'><b>" . htmlspecialchars($forum["name"]) . "</b></a></td><td align='left'><a href='" . URLROOT . "/profile?id=$post[userid]'><b>$user[username]</b></a><br />at " . TimeDate::utc_to_tz($post["added"]) . "</td></tr>\n");
 }
 print("</table></div></center></p>\n");
-echo "&nbsp<a href='" . URLROOT . "/forums/search' class='btn btn-warning''>Search Again</a>&nbsp";
+echo "&nbsp<center><a href='" . URLROOT . "/forums/search' class='btn ttbtn''>Search Again</a></center>&nbsp";

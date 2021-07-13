@@ -6,7 +6,7 @@ function textbbcode($form, $name, $content = "")
     // Includen JS Function For BBCode
     require "assets/js/BBTag.js";
     ?>
-    <div class="container border border-warning">
+    <div class="container border ttborder">
     <div class="row justify-content-md-center">
     <div class="col-10">
 	<?php
@@ -141,7 +141,7 @@ function textbbcode($form, $name, $content = "")
     <div class="col-10">
     <?php
     // Refresh And Preview Button
-    print("<center><input type='reset' class='btn btn-sm btn-warning' value='Refresh' />&nbsp;<input type='button' class='btn btn-sm btn-warning' value='Preview' onClick='visualisation()' /></center><br>");
+    print("<center><input type='reset' class='btn btn-sm ttbtn' value='Refresh' />&nbsp;<input type='button' class='btn btn-sm ttbtn' value='Preview' onClick='visualisation()' /></center><br>");
     // Creation of the Preview Area
     print("<div id='previsualisation' width='200px' height='200px'></div></font></center></div><br>");
     ?>
@@ -268,7 +268,7 @@ function shoutbbcode($form, $name, $content = "")
         <input  class="form-control shoutbox_msgbox" type='text' size='100%' name="<?php echo $name; ?>"><?php echo $content; ?>
         </div>
         <div class="col-md-1">
-        <center><input type='submit' name='submit' value='<?php echo Lang::T("SHOUT") ?>' class='btn btn-sm btn-warning' /></center>
+        <center><input type='submit' name='submit' value='<?php echo Lang::T("SHOUT") ?>' class='btn btn-sm ttbtn' /></center>
         </div>
         </div>
     </div>

@@ -19,6 +19,6 @@
 <?php }?>
 <tbody></table></div>
 <?php echo '<div style="float: left;">read&nbsp;<img src="' . URLROOT . '/assets/images/forum/folder.png" alt="read" width="20" height="20">&nbsp;unread&nbsp;<img src="' . URLROOT . '/assets/images/forum/folder_new.png" alt="unread" width="20" height="20"></div>'; ?>
-<center><button type="submit" class="btn btn-warning" value='Delete Checked' />Delete Checked</button></center>
+<center><button type="submit" class="btn ttbtn" value='Delete Checked' />Delete Checked</button></center>
 
     <?php echo $data['pagerbottom'];

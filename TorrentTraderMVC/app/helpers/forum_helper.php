@@ -121,7 +121,7 @@ function insert_quick_jump_menu($currentforum = 0)
 
         }
         print("</select>\n");
-        print("<button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("GO") . "</button>\n");
+        print("<button type='submit' class='btn btn-sm ttbtn'>" . Lang::T("GO") . "</button>\n");
     }
     print("</form>\n</div>");
 }
@@ -158,7 +158,7 @@ function insert_compose_frame($id, $newtopic = true)
     textbbcode("Form", "body");
 
     echo '<br><center><input type="file" name="upfile[]" multiple></center><br>';
-    print("<center><button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("SUBMIT") . "</button></center></div>");
+    print("<center><button type='submit' class='btn btn-sm ttbtn'>" . Lang::T("SUBMIT") . "</button></center></div>");
     print("</form>\n");
     print("</div>");
     insert_quick_jump_menu();

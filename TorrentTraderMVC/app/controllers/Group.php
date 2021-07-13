@@ -14,7 +14,7 @@ class Group extends Controller
 
     public function members()
     {
-        if ($this->session["view_users"] == "no") {
+        if ($_SESSION["view_users"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
 
@@ -63,8 +63,8 @@ class Group extends Controller
     {
         $dt = TimeDate::get_date_time(TimeDate::gmtime() - 180);
         $res = Groups::getStaff();
-        $col = []; //undefined var
-        $table = []; //undefined var
+        $col = [];
+        $table = [];
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $table[$row['class']] = ($table[$row['class']] ?? '') .
             "<td><img src='" . URLROOT . "/assets/images/button_o" . ($row["last_access"] > $dt ? "n" : "ff") . "line.png' alt='' /> " .

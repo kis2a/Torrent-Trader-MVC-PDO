@@ -8,7 +8,7 @@
 </div>
 <div class="form-group">
     <?php (new Captcha)->html(); ?>
-	<button type="submit" class="btn btn-warning btn-block"><?php echo Lang::T("Submit"); ?></button>
+	<button type="submit" class="btn ttbtn btn-block"><?php echo Lang::T("Submit"); ?></button>
 </div>
 </div>
 </form>

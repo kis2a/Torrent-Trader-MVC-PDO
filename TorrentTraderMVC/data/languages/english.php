@@ -262,6 +262,7 @@ $LANG["_SUB_DIR_"] = "sub-directory";
 $LANG["_SUCCESS_ADD_"] = "Successfully Added!";
 $LANG["_SUCCESS_DEL_"] = "Successfully Deleted!";
 $LANG["_SUCCESS_UPL_"] = "Successfully Uploaded!";
+$LANG["_SUCCESS_UPD_"] = "Successfully Updated!";
 $LANG["_SUCCESS_UPL_ADD_"] = "Successfully Uploaded and Added!";
 $LANG["_SURE_FULL_PATH_"] = "and be sure to include full path";
 $LANG["_TO_DEST_DIR_"] = "to destination directory!";
@@ -376,6 +377,7 @@ $LANG["YOU_DID_NOT_ENTER_ANYTHING"] = "You did not enter anything!";
 $LANG["YOU_MUST_ENTER_A_REASON"] = "You must enter a reason.";
 
 // Forums
+$LANG["FORUM_AVAILABLE"] = "Unfortunatley the forums are not currently available.";
 $LANG["FORUM_ADD_NEW_CAT"] = "Add new category";
 $LANG["FORUM_ALLOW_GUEST_READ"] = "Allow Guests to Read";
 $LANG["FORUM_BANNED"] = "Unfortunately you have been banned from accessing the forums.  Please contact a member of staff if you do not know the reason.";
@@ -414,10 +416,10 @@ $LANG["FORUM_RULES"] = "Flaming or other anti-social behavior will not be tolera
 $LANG["FORUM_RULES2"] = "Please do try not to discuss upload/release-specific stuff here, post a torrent comment instead!<br /><br /><b>Please make sure to read the <a href='" . URLROOT . "/rules'>rules</a> before you post</b>";
 
 $LANG["FORUMS_DEL_POST"] = "Delete post";
-$LANG["FORUMS_DEL_POST_ONLY_POST"] = "Can't delete post; it is the only post of the topic. You should <a href='" . URLROOT . "/forums/deletetopic&amp;topicid=%s&amp;sure=1'>delete the topic</a> instead.\n";
-$LANG["FORUMS_DEL_POST_SANITY_CHK"] = "Sanity check: You are about to delete a post. Click <a href='" . URLROOT . "/forums/deletepost&amp;postid=%s&amp;sure=1'>here</a> if you are sure.";
+$LANG["FORUMS_DEL_POST_ONLY_POST"] = "Can't delete post; it is the only post of the topic. You should <a href='" . URLROOT . "/forums/deletetopic?topicid=%s&amp;sure=1'>delete the topic</a> instead.\n";
+$LANG["FORUMS_DEL_POST_SANITY_CHK"] = "Sanity check: You are about to delete a post. Click <a href='" . URLROOT . "/forums/deletepost?postid=%s&amp;sure=1'>here</a> if you are sure.";
 $LANG["FORUMS_DEL_TOPIC"] = "Delete topic";
-$LANG["FORUMS_DEL_TOPIC_SANITY_CHK"] = "Sanity check: You are about to delete a topic. Click <a href='" . URLROOT . "/forums/deletetopic&amp;topicid=%s&amp;sure=1'>here</a> if you are sure.";
+$LANG["FORUMS_DEL_TOPIC_SANITY_CHK"] = "Sanity check: You are about to delete a topic. Click <a href='" . URLROOT . "/forums/deletetopic?topicid=%s&amp;sure=1'>here</a> if you are sure.";
 $LANG["FORUMS_DENIED"] = "Denied!";
 $LANG["FORUMS_EDIT_POST"] = "Edit Post";
 $LANG["FORUMS_GOTO_TOP_PAGE"] = "Go to the top of the page";
@@ -679,6 +681,8 @@ $LANG["LOGIN_TYPE"] = "Log-in Type";
 $LANG["MASS_TORRENT_IMPORT"] = "Mass Torrent Import";
 $LANG["MAX_FILE_SIZE"] = "Max File Size";
 $LANG["MESSAGES_SENT"] = "Messages Sent   ";
+$LANG["TRYLATER"] = "We are busy. try again later";
+$LANG["CONTACT_SENT"] = "Your message has been sent. We will reply as soon as possible.";
 $LANG["MISSING_INFO"] = "Missing Info";
 $LANG["MORE_SMILIES"] = "More Smiles";
 $LANG["MORE_TAGS"] = "More Tags";
@@ -1152,3 +1156,10 @@ $LANG["SHOUTBOX_CLEARED_MESSAGE"] = "The shoutbox has been cleared";
 $LANG["CLEAR_SHOUTBOX"] = "Clear Shoutbox";
 // Thanks
 $LANG["PLEASE_THANK"] = "Please click thanks first, its polite to show your appreciation";
+$LANG["DOWNLOADBAN"] = "You are banned from downloading please contact staff if you feel this is a mistake !";
+$LANG["VIPTODOWNLOAD"] = "<b>You can not download, you have to be VIP</b>";
+$LANG["OOPS_ERR"] = "Oops somwthing went wrong, Admin have been notified if this continues please contact a member of staff. Thank you";
+// REQUEST
+$LANG["REQ_OFF"] = "Request are not available";
+
+$LANG["NO_TEAM"] = "No teams available, to create a group please contact <a href='.URLROOT.'/group/staff>staff</a>";

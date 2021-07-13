@@ -91,7 +91,7 @@ class Style
             $lastclean = TimeDate::get_elapsed_time($row);
         }?><br>
         <div class="card w-100 ">
-        <div class="border border-warning">
+        <div class="border ttborder">
         <?php
         echo "<center>Last cleanup performed: " . $lastclean . " ago [<a href='" . URLROOT . "/admintask/cleanup'><b>" . Lang::T("FORCE_CLEAN") . "</b></a>]</center>";
         /*
@@ -153,4 +153,31 @@ class Style
         <?php
     }
 
+    public static function error_header($title = "")
+    {
+        // Site online check
+        if (!SITE_ONLINE) {
+            if ($_SESSION["control_panel"] != "yes") {
+                echo '<br /><br /><br /><center>' . stripslashes(OFFLINEMSG) . '</center><br /><br />';
+                die;
+            } else {
+                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set SITE_ONLINE to true </center><br /><br />';
+            }
+        }
+        if (!$_SESSION['loggedin'] == true) {
+            Guest::guestadd();
+        }
+        if ($title == "") {
+            $title = SITENAME;
+        } else {
+            $title = SITENAME . " : " . htmlspecialchars($title);
+        }
+        require_once APPROOT . "/views/error/error_header.php";
+    }
+    
+    public static function error_footer()
+    {
+        require_once APPROOT . "/views/error/error_footer.php";
+    }
+    
 }

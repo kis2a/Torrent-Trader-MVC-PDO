@@ -290,7 +290,7 @@ class Snatched extends Controller
                 //    if ($users->rowCount() > 0)
                 {
                     if ($uid != $_SESSION['id']) {
-                        print("<div style='margin-bottom:10px' align='center'><a href=".URLROOT."/profile?id=$uid><b><button type='submit' class='btn btn-sm btn-warning'>" . Lang::T("GO_TO_USER_ACCOUNT") . "</button></b></a></div>");
+                        print("<div style='margin-bottom:10px' align='center'><a href=".URLROOT."/profile?id=$uid><b><button type='submit' class='btn btn-sm ttbtn'>" . Lang::T("GO_TO_USER_ACCOUNT") . "</button></b></a></div>");
                     } else {
                         print("<div style='margin-bottom:10px' align='center'>[<a href=".URLROOT."/profile?id=$_SESSION[id]><b>" . Lang::T("GO_TO_YOUR_PROFILE") . "</b></a>]</div>");
                     }

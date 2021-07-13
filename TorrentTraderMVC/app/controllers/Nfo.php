@@ -7,21 +7,29 @@ class Nfo extends Controller
         $this->session = Auth::user(0, 2);
     }
 
-    public function index()
+    public function checks($id, $edit = false)
     {
-        $id = (int) Input::get("id");
-        if ($this->session["view_torrents"] == "no") {
+        if ($_SESSION["view_torrents"] == "no") {
             Redirect::autolink(URLROOT."/torrent?id=$id", "You do not have permission to view nfo's");
         }
         if (!$id) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("ID_NOT_FOUND_MSG_VIEW"));
         }
+        if ($edit) {
+            if ($_SESSION["edit_torrents"] == "no") {
+                Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
+            }
+        }
+    }
 
+    public function index()
+    {
+        $id = (int) Input::get("id");
+        $this->checks($id);
         $res = Torrents::getTorrentNameNfo($id);
         if ($res["nfo"] != "yes") {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NO_NFO"));
         }
-
         if ($res["nfo"] == "yes") {
             $shortname = mb_substr(htmlspecialchars($res["name"]), 0, 50);
             $nfo_dir = NFODIR;
@@ -31,12 +39,10 @@ class Nfo extends Controller
         }
         if ($nfo) {
             $nfo = Helper::my_nfo_translate($nfo);
-            $titleedit = Lang::T("NFO_FILE_FOR") . ": <a href='" . URLROOT . "/torrent?id=$id'>$shortname</a> - <a href='".URLROOT."/nfo/edit?id=$id'>" . Lang::T("NFO_EDIT") . "</a>";
             $title = Lang::T("NFO_FILE_FOR") . ": $shortname";
             $data = [
                 'id' => $id,
                 'title' => $title,
-                'titleedit' => $titleedit,
                 'nfo' => $nfo,
             ];
             View::render('nfo/index', $data, 'user');
@@ -48,28 +54,38 @@ class Nfo extends Controller
     public function edit()
     {
         $id = (int) Input::get("id");
-        $nfo = NFODIR . "/$id.nfo";
-        if ($this->session["edit_torrents"] == "no") {
-            Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
+        $this->checks($id, true);
+        $res = Torrents::getTorrentNameNfo($id);
+        if ($res["nfo"] != "yes") {
+            Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NO_NFO"));
         }
-        if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
-            Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
+        if ($res["nfo"] == "yes") {
+            $shortname = mb_substr(htmlspecialchars($res["name"]), 0, 50);
+            $nfo_dir = NFODIR;
+            $nfofilelocation = "$nfo_dir/$id.nfo";
+            $filegetcontents = file_get_contents($nfofilelocation);
+            $nfo = $filegetcontents;
         }
-        $data = [
-            'id' => $id,
-            'title' => "Edid NFO",
-            'contents' => $contents,
-        ];
-        View::render('nfo/edit', $data, 'user');
+        if ($nfo) {
+            $nfo = Helper::my_nfo_translate($nfo);
+            $title = Lang::T("NFO_FILE_FOR") . ": <a href='" . URLROOT . "/torrent?id=$id'>$shortname</a> - <a href='".URLROOT."/nfo/edit?id=$id'>" . Lang::T("NFO_EDIT") . "</a>";
+            $data = [
+                'id' => $id,
+                'title' => $title,
+                'nfo' => $nfo,
+            ];
+            View::render('nfo/edit', $data, 'user');
+        } else {
+            Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO Found but error"));
+        }
     }
 
     public function submit()
     {
         $id = (int) Input::get("id");
+        $this->checks($id, true);
+
         $nfo = NFODIR . "/$id.nfo";
-        if ($this->session["edit_torrents"] == "no") {
-            Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
-        }
         if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }
@@ -85,10 +101,9 @@ class Nfo extends Controller
     public function delete()
     {
         $id = (int) Input::get("id");
+        $this->checks($id, true);
+
         $nfo = NFODIR . "/$id.nfo";
-        if ($this->session["edit_torrents"] == "no") {
-            Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
-        }
         if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }

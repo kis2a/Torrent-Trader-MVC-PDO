@@ -30,14 +30,14 @@ class Recover extends Controller
                 }
                 if ($arr) {
                     $sec = Helper::mksecret();
-                    $id = $arr->id;
-                    $username = $arr->username; // 06/01
+                    $id = $arr['id'];
+                    $username = $arr['username']; // 06/01
                     $emailmain = SITEEMAIL;
                     $url = URLROOT;
                     $body = Lang::T("SOMEONE_FROM") . " " . $_SERVER["REMOTE_ADDR"] . " " . Lang::T("MAILED_BACK") . " ($email) " . Lang::T("BE_MAILED_BACK") . " \r\n\r\n " . Lang::T("ACCOUNT_INFO") . " \r\n\r\n " . Lang::T("USERNAME") . ": " . $username . " \r\n " . Lang::T("CHANGE_PSW") . "\n\n$url/recover/confirm?id=$id&secret=$sec\n\n\n" . $url . "\r\n";
                     $TTMail = new TTMail();
                     $TTMail->Send($email, Lang::T("ACCOUNT_DETAILS"), $body, "", "-f$emailmain");
-                    $res2 = Users::setSecret($sec, $email);
+                    Users::setSecret($sec, $email);
                     Redirect::autolink(URLROOT . "/home", sprintf(Lang::T('MAIL_RECOVER'), htmlspecialchars($email)));
                 }
             }

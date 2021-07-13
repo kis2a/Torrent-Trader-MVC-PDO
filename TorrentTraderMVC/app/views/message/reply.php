@@ -5,7 +5,7 @@
             <input type="hidden" name="receiver" value="<?php echo $data['userid']; ?>" />
             <input type="hidden" name="subject" value="<?php echo $data['subject']; ?>" />
             <div class="row justify-content-md-center">
-    <div class="col-8 border border-warning"><center>
+    <div class="col-8 border ttborder"><center>
             <label>To</label>&nbsp;
                     <?php echo $data['username']; ?><br>
 
@@ -18,7 +18,7 @@
                      <?php echo $data['subject']; ?></center>
     </div></div><br>
         <?php print textbbcode("form", "body", $data['msg']);?>
-        <center><button type="submit" class="btn-sm btn-warning" name="Update" value="create">Create</button>&nbsp;
+        <center><button type="submit" class="btn-sm ttbtn" name="Update" value="create">Create</button>&nbsp;
     <label>Save Copy In Outbox</label>
     <input type="checkbox" name="save" checked='Checked'>&nbsp;
        </form>

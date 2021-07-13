@@ -8,7 +8,7 @@ class Exceptions extends Controller
 
     public function index()
     {
-        Redirect::autolink(URLROOT, Lang::T("Oops somwthing went wrong, Admin have been notified if this continues please contact a member of staff. Thank you"));
+        Redirect::autolink(URLROOT, Lang::T("OOPS_ERR"));
     }
 
 }

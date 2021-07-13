@@ -37,7 +37,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)):
     $dealtwith = '<b>No</b>';
     if ($row["dealtby"] > 0) {
         $r = DB::run("SELECT username FROM users WHERE id = '$row[dealtby]'")->fetch();
-        $dealtwith = 'By <a href="' . URLROOT . '/users/profile?id=' . $row['dealtby'] . '">' . $r['username'] . '</a>';
+        $dealtwith = 'By <a href="' . URLROOT . '/profile?id=' . $row['dealtby'] . '">' . $r['username'] . '</a>';
     }
     switch ($row["type"]) {
         case "user":
@@ -65,7 +65,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)):
     }
     ?>
     <tr>
-          <td class="table_col1" align="center" width="10%"><a href="<?php echo URLROOT; ?>/users/profile?id=<?php echo $row['addedby']; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
+          <td class="table_col1" align="center" width="10%"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row['addedby']; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
           <td class="table_col2" align="center" width="15%"><a href="<?php echo $link; ?>"><?php echo CutName($r[0], 40); ?></a></td>
           <td class="table_col1" align="center" width="10%"><?php echo $row['type']; ?></td>
           <td class="table_col2" align="center" width="50%"><?php echo htmlspecialchars($row['reason']); ?></td>

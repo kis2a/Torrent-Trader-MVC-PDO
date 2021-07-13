@@ -18,15 +18,14 @@ class Peers extends Controller
         if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, "Bad ID.");
         }
-        $user = DB::run("SELECT * FROM users WHERE id=?", [$id])->fetch();
+        $user =  Users::getUserById($id);
         if (!$user) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
-        //add invites check here
-        if ($this->session["view_users"] == "no" && $this->session["id"] != $id) {
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
-        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $this->session["edit_users"] == "no") {
+        if (($user["enabled"] == "no" || ($user["status"] == "pending"))) {
             Redirect::autolink(URLROOT, Lang::T("NO_ACCESS_ACCOUNT_DISABLED"));
         }
         $res = DB::run("SELECT torrent, uploaded, downloaded FROM peers WHERE userid =? AND seeder =?", [$id, 'yes']);
@@ -64,16 +63,16 @@ class Peers extends Controller
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
         //add invites check here
-        if ($this->session["view_users"] == "no" && $this->session["id"] != $id) {
+        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
-        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $this->session["edit_users"] == "no") {
+        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && $_SESSION["edit_users"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_ACCESS_ACCOUNT_DISABLED"));
         }
         $page = (int) $_GET["page"];
         $perpage = 25;
         $where = "";
-        if ($this->session['control_panel'] != "yes") {
+        if ($_SESSION['control_panel'] != "yes") {
             $where = "AND anon='no'";
         }
         $count = DB::run("SELECT COUNT(*) FROM torrents WHERE owner='$id' $where")->fetchColumn();
@@ -107,7 +106,7 @@ class Peers extends Controller
         if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
-        if ($this->session["view_torrents"] == "no") {
+        if ($_SESSION["view_torrents"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
@@ -136,7 +135,7 @@ class Peers extends Controller
     // popout seed
     public function popoutseed()
     {$id = (int) Input::get("id");
-        if ($id != $this->session["id"]) {
+        if ($id != $_SESSION["id"]) {
             echo "Not allowed to view others activity here.";
         }
         $res = Peer::seedingTorrent($id, 'yes');
@@ -155,7 +154,7 @@ class Peers extends Controller
     public function popoutleech()
     {
         $id = (int) Input::get("id");
-        if ($id != $this->session["id"]) {
+        if ($id != $_SESSION["id"]) {
             echo "Not allowed to view others activity here.";
         }
         $res = Peer::seedingTorrent($id, 'no');
@@ -173,7 +172,7 @@ class Peers extends Controller
     // dead torrents
     public function dead()
     {
-        if ($this->session["control_panel"] != "yes") {
+        if ($_SESSION["control_panel"] != "yes") {
             Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         $page = (int) $_GET["page"];

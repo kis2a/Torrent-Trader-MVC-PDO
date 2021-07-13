@@ -1,5 +1,5 @@
-<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm btn-warning'>All Request</button></a>&nbsp;
-<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm btn-warning'>View my requests</button></a>
+<a href='<?php echo URLROOT ?>/request'><button  class='btn btn-sm ttbtn'>All Request</button></a>&nbsp;
+<a href='<?php echo URLROOT ?>/request?requestorid=<?php echo $_SESSION['id'] ?>'><button  class='btn btn-sm ttbtn'>View my requests</button></a>
 
 <p><center><a href='<?php echo URLROOT ?>/request/addvote?id=<?php echo $data['requestid'] ?>'><b><?php echo Lang::T('VOTE_FOR_THIS') ?>   <?php echo Lang::T('REQUEST') ?></b></a></center></p>
 

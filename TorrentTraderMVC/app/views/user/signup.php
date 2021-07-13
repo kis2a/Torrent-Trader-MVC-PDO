@@ -52,7 +52,7 @@
 	<input id="client" type="text" class="form-control" name="client" minlength="3" maxlength="25" required autofocus>
 </div>
 <div class="form-group no-margin">
-	<button type="submit" class="btn btn-warning btn-block"><?php echo Lang::T("SIGNUP"); ?></button>
+	<button type="submit" class="btn ttbtn btn-block"><?php echo Lang::T("SIGNUP"); ?></button>
 </div>
 </div>
 </form>
