@@ -4,7 +4,7 @@ class Home extends Controller
 
     public function __construct()
     {
-        $this->session = Auth::user(0, 1);
+        $this->session = Auth::user(0, 1, true);
     }
 
     public function index()

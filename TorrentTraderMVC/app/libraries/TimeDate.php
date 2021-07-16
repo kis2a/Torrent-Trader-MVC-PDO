@@ -193,4 +193,19 @@ class TimeDate
         }
         return $tz;
     }
+	
+	// $type=date/string || $target=sqlresult || $amount=add/sub date
+	public static function modify($type, $target, $amount)
+    {
+        if ($type == 'date') {
+            $date = date_create($target);
+            date_modify($date, $amount);
+        } elseif ($type == 'time') {
+            $date = date_create();
+            date_timestamp_set($date, $target);
+            date_modify($date, $amount);
+        }
+            
+        return date_format($date, 'Y-m-d H:i:s');
+    }
 }

@@ -768,6 +768,10 @@ echo '<center>Add attachment<center><br>';
         if ($_SESSION["delete_forum"] != "yes" || !Validate::Id($postid)) {
             Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_DENIED"));
         }
+		//SURE?
+	    if ($sure == "0") {
+		    Redirect::autolink(URLROOT . '/forums', "Sanity check: You are about to delete a post. Click <a href='" . URLROOT . "/forums/deletepost?postid=$postid&sure=1'>here</a> if you are sure.");
+        }
         // Get topic id
         $arr = Forum::getForumPostTopicId($postid);
         $topicid = $arr[0];

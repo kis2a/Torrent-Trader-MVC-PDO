@@ -2,7 +2,7 @@
 <form name="form" action="<?php echo URLROOT; ?>/messages/submit" method="post">
 <center>
     <label for="reciever">Reciever:</label>&nbsp;
-    <input type="text" id="search-box" name="reciever" placeholder="User Name" />
+    <input type="text" id="search-box" name="receiver" placeholder="User Name" />
     <div id="suggesstion-box"></div><br>
     
     <label for="template">Template:</label>&nbsp;

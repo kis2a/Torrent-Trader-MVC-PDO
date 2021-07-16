@@ -31,6 +31,9 @@ define('SITENAME', 'TorrentTraderMVC');
 define('_SITEDESC', 'A PHP support forum for Torrent Trader');
 define('SITEEMAIL', 'something@email.com'); //Emails will be sent from this address
 define('VERSION', 'PDO');
+// Quick Time
+define('TT_TIME', time());
+define('TT_DATE', date("Y-m-d H:i:s"));
 // Caching settings
 define('CACHE_TYPE', 'disk'); // disk = Save cache to disk, memcache = Use memcache, apc = Use APC, xcache = Use XCache
 define('MEMCACHE_HOST', 'localhost'); // Host memcache is running on

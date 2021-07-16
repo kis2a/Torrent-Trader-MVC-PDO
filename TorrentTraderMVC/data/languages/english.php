@@ -680,7 +680,7 @@ $LANG["LOCAL_EXTERNAL"] = "Local/External";
 $LANG["LOGIN_TYPE"] = "Log-in Type";
 $LANG["MASS_TORRENT_IMPORT"] = "Mass Torrent Import";
 $LANG["MAX_FILE_SIZE"] = "Max File Size";
-$LANG["MESSAGES_SENT"] = "Messages Sent   ";
+$LANG["MESSAGES_SENT"] = "Message Sent";
 $LANG["TRYLATER"] = "We are busy. try again later";
 $LANG["CONTACT_SENT"] = "Your message has been sent. We will reply as soon as possible.";
 $LANG["MISSING_INFO"] = "Missing Info";
@@ -1163,3 +1163,9 @@ $LANG["OOPS_ERR"] = "Oops somwthing went wrong, Admin have been notified if this
 $LANG["REQ_OFF"] = "Request are not available";
 
 $LANG["NO_TEAM"] = "No teams available, to create a group please contact <a href='.URLROOT.'/group/staff>staff</a>";
+
+$LANG["EMPTY_BODY"] = "Body cannot be empty !";
+$LANG["EMPTY_RECEIVER"] = "Receiver cannot be empty !";
+$LANG["EMPTY_SUBJECT"] = "Subject cannot be empty !";
+$LANG["SAVED_DRAFT"] = "Saved Message as Draft !";
+$LANG["SAVED_TEMPLATE"] = "Template Created !";
