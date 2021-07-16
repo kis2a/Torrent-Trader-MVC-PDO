@@ -34,4 +34,49 @@ class Message
             [$sender, $receiver, $added, $subject, $msg, $poster, $unread, $location]
         );
     }
+
+    public static function updateRead($id, $receiver)
+    {
+        DB::run("UPDATE messages SET `unread` = 'no' 
+               WHERE `id` = $id AND `receiver` = $receiver");
+    }
+
+    public static function getallmsg($id)
+    {
+        $res = DB::run('SELECT * FROM messages WHERE id = ?', [$id])->fetch(PDO::FETCH_ASSOC);
+        return $res;
+    }
+    
+    public static function updateMessage($msg, $id)
+    {
+        DB::run('UPDATE messages SET msg = ? WHERE id = ?', [$msg, $id]);
+    }
+
+    public static function msgPagination($type)
+    {
+        switch ($type) {
+            case 'inbox':
+                $where = "`receiver` = $_SESSION[id] AND `location` IN ('in','both') ORDER BY added ASC";
+                $count = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
+                list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=inbox&");
+                break;
+            case 'outbox':
+                $where = "`sender` = $_SESSION[id] AND `location` IN ('out','both') ORDER BY added ASC";
+                $count= DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
+                list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=outbox&");
+                break;
+            case 'templates':
+                $where = "`sender` = $_SESSION[id] AND `location` = 'template'";
+                $count= DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
+                list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=templates&");
+                break;
+            case 'draft':
+                $where = "`sender` = $_SESSION[id] AND `location` = 'draft'";
+                $count = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
+                list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=draft&");
+                break;
+            }
+        $arr = ['pagertop' => $pagertop, 'pagerbottom' => $pagerbottom, 'limit' => $limit, 'where' => $where];
+        return $arr;
+    }
 }

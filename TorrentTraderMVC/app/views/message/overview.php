@@ -7,19 +7,19 @@ include APPROOT.'/views/message/messagenavbar.php';?>
 <center>
 <b><?php echo  Lang::T("Overview"); ?></b><br>
 
-    <a href="<?php echo URLROOT; ?>/messages/inbox"><?php echo  Lang::T("INBOX"); ?> :</a>
-    &nbsp;[<a href="<?php echo URLROOT; ?>/messages/inbox"><font color=white><?php echo $data['inbox']; ?></font></a>]
+    <a href="<?php echo URLROOT; ?>/messages?type=inbox"><?php echo  Lang::T("INBOX"); ?> :</a>
+    &nbsp;[<a href="<?php echo URLROOT; ?>/messages?type=inbox"><font color=white><?php echo $data['inbox']; ?></font></a>]
     <br>
-    <a href="<?php echo URLROOT; ?>/messages/inbox"><?php echo  Lang::T("Unread"); ?> :</a>
-    &nbsp;[<a href="<?php echo URLROOT; ?>/messages/inbox"><font color=orange><?php echo $data['unread']; ?></font></a>]
+    <a href="<?php echo URLROOT; ?>/messages?type=inbox"><?php echo  Lang::T("Unread"); ?> :</a>
+    &nbsp;[<a href="<?php echo URLROOT; ?>/messages?type=inbox"><font color=orange><?php echo $data['unread']; ?></font></a>]
     <br>
-    <a href='<?php echo URLROOT; ?>/messages/outbox'><?php echo  Lang::T("OUTBOX"); ?> :</a>
+    <a href='<?php echo URLROOT; ?>/messages?type=outbox'><?php echo  Lang::T("OUTBOX"); ?> :</a>
     &nbsp;<?php echo $data['outbox'], Lang::N("", $data['outbox']); ?>
     <br>
-    <a href="<?php echo URLROOT; ?>/messages/draft"><?php echo  Lang::T("DRAFT"); ?> :</a>
+    <a href="<?php echo URLROOT; ?>/messages?type=draft"><?php echo  Lang::T("DRAFT"); ?> :</a>
     &nbsp;<?php echo $data['draft'], Lang::N("", $data['draft']); ?>
     <br>
-    <a href="<?php echo URLROOT; ?>/messages/templates">-<?php echo  Lang::T("TEMPLATES"); ?> :</a>
+    <a href="<?php echo URLROOT; ?>/messages?type=templates">-<?php echo  Lang::T("TEMPLATES"); ?> :</a>
     &nbsp;<?php echo $data['template'], Lang::N("", $data['template']); ?>
     <br>
     </center>

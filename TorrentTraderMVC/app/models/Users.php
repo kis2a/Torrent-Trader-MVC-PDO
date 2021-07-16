@@ -9,6 +9,18 @@ class Users
         return $row;
     }
 
+    public static function getIdByUsername($username)
+    {
+        $row = DB::run("SELECT id FROM users WHERE username =? ", [$username])->fetch();
+        return $row;
+    }
+
+    public static function getUsernameById($id)
+    {
+        $row = DB::run("SELECT username,id FROM users WHERE id =? ", [$id])->fetch(PDO::FETCH_LAZY);
+        return $row['username'];
+    }
+
     public static function updateset($updateset = [], $id)
     {
         DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$id]);

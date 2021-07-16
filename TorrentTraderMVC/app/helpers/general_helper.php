@@ -84,7 +84,7 @@ function usermenu($id)
     <?php if ($_SESSION["id"] == $id) {?>
     <a href='<?php echo URLROOT; ?>/account/changepw?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Password</button></a>
     <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Email</button></a>
-    <a href='<?php echo URLROOT; ?>/messages'><button type="button" class="btn btn-sm ttbtn">Messages</button></a>
+    <a href='<?php echo URLROOT; ?>/messages/overview'><button type="button" class="btn btn-sm ttbtn">Messages</button></a>
     <a href='<?php echo URLROOT; ?>/bonus'><button type="button" class="btn btn-sm ttbtn">Seed Bonus</button></a>
     <?php }?>
     <?php if ($_SESSION["view_users"]) {?>
