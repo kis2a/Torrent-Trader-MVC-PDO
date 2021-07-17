@@ -1,4 +1,5 @@
-<?php include APPROOT.'/views/message/messagenavbar.php'; ?>
+<?php usermenu($_SESSION['id']);
+include APPROOT.'/views/message/messagenavbar.php'; ?>
 
 <form id='messages' method='post' action='<?php echo URLROOT; ?>/messages/delete?type=<?php echo $_GET['type']; ?>'>
 
@@ -29,10 +30,10 @@ unread&nbsp;<img src="<?php echo URLROOT; ?>/assets/images/forum/folder_new.png"
 </div>
 
 <center>
+<button type="submit" class="btn ttbtn" value='Delete Checked' name='delete' />Delete Checked</button>
 <?php if ($_GET['type'] == 'inbox') { ?>
-     <button type="submit" class="btn ttbtn" value='Delete Checked' name='delete' />Delete Checked</button>
-<?php } ?>
 <button type="submit" class="btn ttbtn" value='Read Checked' name='read' />Read Checked</button>
+<?php } ?>
 </center>
 </form>
 

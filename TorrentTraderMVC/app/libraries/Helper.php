@@ -84,7 +84,7 @@ class Helper
     }
 	
 	// try move message detail array
-    public static function msginboxdetails($arr = [])
+    public static function msgdetails($arr = [], $type)
     {
         if ($arr["sender"] == $_SESSION['id']) {
             $sender = "Yourself";
@@ -104,39 +104,7 @@ class Helper
         } else {
             $receiver = Lang::T("SYSTEM");
         }
-        $subject = "<a href='" . URLROOT . "/messages/read?inbox&amp;id=" . $arr["id"] . "'><b>" . format_comment($arr["subject"]) . "</b></a>";
-        $added = TimeDate::utc_to_tz($arr["added"]);
-        if ($arr["unread"] == "yes") {
-            $unread = "<img src='" . URLROOT . "/assets/images/forum/folder_new.png' alt='read' width='25' height='25'>";
-        } else {
-            $unread = "<img src='" . URLROOT . "/assets/images/forum/folder.png' alt='unread' width='25' height='25'>";
-        }
-        $arr = array($sender, $receiver, $subject, $unread, $added);
-        return $arr;
-    }
-	
-	// try move message detail array
-    public static function msgoutboxdetails($arr = [])
-    {
-        if ($arr["sender"] == $_SESSION['id']) {
-            $sender = "Yourself";
-        } elseif (Validate::Id($arr["sender"])) {
-            $res2 = DB::run("SELECT username FROM users WHERE `id` = $arr[sender]");
-            $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $sender = "<a href=\"" . URLROOT . "/profile?id=$arr[sender]\">" . ($arr2["username"] ? Users::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
-        } else {
-            $sender = Lang::T("SYSTEM");
-        }
-        if ($arr["receiver"] == $_SESSION['id']) {
-            $receiver = "Yourself";
-        } elseif (Validate::Id($arr["receiver"])) {
-            $res2 = DB::run("SELECT username FROM users WHERE `id` = $arr[receiver]");
-            $arr2 = $res2->fetch(PDO::FETCH_ASSOC);
-            $receiver = "<a href=\"" . URLROOT . "/profile?id=$arr[receiver]\">" . ($arr2["username"] ? Users::coloredname($arr2["username"]) : "[Deleted]") . "</a>";
-        } else {
-            $receiver = Lang::T("SYSTEM");
-        }
-        $subject = "<a href='" . URLROOT . "/messages/read?outbox&amp;id=" . $arr["id"] . "'><b>" . format_comment($arr["subject"]) . "</b></a>";
+        $subject = "<a href='" . URLROOT . "/messages/read?&type=$type&id=" . $arr["id"] . "'><b>" . format_comment($arr["subject"]) . "</b></a>";
         $added = TimeDate::utc_to_tz($arr["added"]);
         if ($arr["unread"] == "yes") {
             $unread = "<img src='" . URLROOT . "/assets/images/forum/folder_new.png' alt='read' width='25' height='25'>";

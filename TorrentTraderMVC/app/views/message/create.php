@@ -3,7 +3,7 @@ include APPROOT.'/views/message/messagenavbar.php'; ?><br>
 <form name="form" action="<?php echo URLROOT; ?>/messages/submit" method="post">
 <center>
     <label for="receiver">Receiver:</label>&nbsp;
-    <input type="text" id="search-box" name="receiver" placeholder="User Name" />
+    <input type="text" id="search-box" name="receiver" autocomplete="off" placeholder="User Name" />
     <div id="suggesstion-box"></div><br>
     
     <label for="template">Template:</label>&nbsp;
