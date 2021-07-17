@@ -1,4 +1,5 @@
-<table align="center"><tr><td>
+<div class="row justify-content-center">
+<div class="col-md-8">
 <form name="blocks" method="post" action="<?php echo URLROOT ?>/adminblocks/edit">
     <input type="hidden" name="edit" value="true">
     <center><font size="2"><a href="<?php echo URLROOT ?>/adminblocks"><b><?php echo Lang::T("_BLC_MAN_") ?></b></a></font></center><br />
@@ -57,4 +58,4 @@
     "<td colspan=\"11\" align=\"center\" class=\"table_head\"><input type=\"submit\" value=\"" . Lang::T("_BTN_UPDT_") . "\" /></td>" .
     "</tr>" .
     "</table>" .
-    "</form></td></tr></table>");
+    "</form></div></div>");

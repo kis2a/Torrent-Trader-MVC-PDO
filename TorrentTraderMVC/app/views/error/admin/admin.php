@@ -1,10 +1,10 @@
-<center><font size="4" color="#ffff00">Please Report any exceptions to help improve TT. Please keep this file blank</font></center>
+<center><font size="4">Please Report any exceptions to help improve TT. Please keep this file blank</font></center>
 <form method="post">
 <div class="form-group">
     <center><textarea  class="form-control" name="newcontents" rows="12">
     <?php echo $data['filecontents']; ?></textarea></center>
 </div>
-<center><font size="4" color="#ffff00">Please Double Click</font></center>
+<center><font size="4">Please Double Click</font></center>
 <center><input type="submit" value="Save"></center><br>
 </form>
 

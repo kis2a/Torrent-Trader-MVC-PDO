@@ -24,15 +24,7 @@ class Adminbans extends Controller
             $res = DB::run("SELECT * FROM bans WHERE id IN ($delids)");
             while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
                 DB::run("DELETE FROM bans WHERE id=$row[id]");
-                # Needs to be tested...
-                if (Ip::is_ipv6($row["first"]) && Ip::is_ipv6($row["last"])) {
-                    $first = Ip::long2ip6($row["first"]);
-                    $last = Ip::long2ip6($row["last"]);
-                } else {
-                    $first = long2ip($row["first"]);
-                    $last = long2ip($row["last"]);
-                }
-                Logs::write("IP Ban ($first - $last) was removed by $_SESSION[id] ($_SESSION[username])");
+                Logs::write("IP Ban ($row[first] - $row[last]) was removed by $_SESSION[id] ($_SESSION[username])");
             }
             Redirect::autolink(URLROOT . '/adminbans/ip', "Ban(s) deleted.");
         }
@@ -80,6 +72,7 @@ class Adminbans extends Controller
         if (Validate::Id($remove)) {
             DB::run("DELETE FROM email_bans WHERE id=$remove");
             Logs::write(sprintf(Lang::T("EMAIL_BANS_REM"), $remove, $_SESSION["username"]));
+            Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("EMAIL_BAN_DELETED"));
         }
         if ($_GET["add"] == '1') {
             $mail_domain = trim($_POST["mail_domain"]);
@@ -91,7 +84,7 @@ class Adminbans extends Controller
             $mail_domain = $mail_domain;
             $comment = $comment;
             $added = TimeDate::get_date_time();
-            $ins = DB::run("INSERT INTO email_bans (added, addedby, mail_domain, comment) VALUES(?,?,?,?)", [$added, $_SESSION['id'], $mail_domain, $comment]);
+            DB::run("INSERT INTO email_bans (added, addedby, mail_domain, comment) VALUES(?,?,?,?)", [$added, $_SESSION['id'], $mail_domain, $comment]);
             Logs::write(sprintf(Lang::T("EMAIL_BANS_ADD"), $mail_domain, $_SESSION["username"]));
             Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("EMAIL_BAN_ADDED"));
         }

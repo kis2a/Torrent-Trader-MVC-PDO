@@ -10,7 +10,7 @@ class Adminblocks extends Controller
     public function index()
     {
         $enabled = Blocks::getblock(1);
-        $disabled = Blocks::getblock(0);
+        $disabled = Blocks::getblock(0); 
         $data = [
             'title' => Lang::T("_BLC_MAN_"),
             'enabled' => $enabled,
@@ -22,21 +22,22 @@ class Adminblocks extends Controller
     public function edit()
     {
         if ($_REQUEST["edit"] == "true") {
-            $nextleft = Blocks::getposition('left');
-            $nextmiddle = Blocks::getposition('middle');
-            $nextright = Blocks::getposition('right');
-
             # Prune Block Cache.
             $TTCache = new Cache();
             $TTCache->Delete("blocks_left");
             $TTCache->Delete("blocks_middle");
             $TTCache->Delete("blocks_right");
+
+            $nextleft = Blocks::getposition('left');
+            $nextmiddle = Blocks::getposition('middle');
+            $nextright = Blocks::getposition('right');
+
             // Delete
-            
             if ($_POST["delete"]) {
             foreach ($_POST["delete"] as $delthis) {
                 Blocks::delete($delthis);
             }
+            // Move Blocks
             Blocks::resortleft();
             Blocks::resortmiddle();
             Blocks::resortright();
@@ -51,7 +52,7 @@ class Adminblocks extends Controller
             }
             // Move to center
             if (Validate::Id($_GET["middle"])) {
-                Blocks::update('left', $nextmiddle, $_GET["middle"]);
+                Blocks::update('middle', $nextmiddle, $_GET["middle"]);
                 Blocks::resortleft();
                 Blocks::resortright();
             }
@@ -67,7 +68,7 @@ class Adminblocks extends Controller
                 $curent = $cur->fetch(PDO::FETCH_ASSOC);
                 $sort = (int) $_GET["sort"];
                 DB::run("UPDATE blocks SET sort = ? WHERE sort = ? AND id != ? AND position = ?", [$sort, $sort - 1, $_GET["up"], $_GET["position"]]);
-                DB::run("UPDATE blocks SET sort = " . ($sort - 1) . " WHERE id = " . $_GET["up"]);
+                DB::run("UPDATE blocks SET sort = ? WHERE id = ?", [($sort - 1), $_GET["up"]]);
             }
             // Move lower
             if (Validate::Id($_GET["down"])) {
@@ -75,7 +76,7 @@ class Adminblocks extends Controller
                 $curent = $cur->fetch(PDO::FETCH_ASSOC);
                 $sort = (int) $_GET["sort"];
                 DB::run("UPDATE blocks SET sort = ? WHERE id = ?", [$sort + 1, $_GET["down"]]);
-                DB::run("UPDATE blocks SET sort = " . $sort . " WHERE sort = ? AND id != ? AND position = ?", [$sort + 1, $_GET["down"], $_GET["position"]]);
+                DB::run("UPDATE blocks SET sort = ? WHERE sort = ? AND id != ? AND position = ?", [$sort, $sort + 1, $_GET["down"], $_GET["position"]]);
             }
             // Update
             $res = Blocks::getall();
@@ -148,11 +149,7 @@ class Adminblocks extends Controller
             }
             closedir($folder);
         }
-/*
-        $nextleft = DB::run("SELECT position FROM blocks WHERE position='left' AND enabled=1")->rowCount() + 1;
-        $nextmiddle = DB::run("SELECT position FROM blocks WHERE position='middle' AND enabled=1")->rowCount() + 1;
-        $nextright = DB::run("SELECT position FROM blocks WHERE position='right' AND enabled=1")->rowCount() + 1;
-*/
+
         if ($infolder) {
             $data = [
                 'title' => Lang::T("_BLC_MAN_"),

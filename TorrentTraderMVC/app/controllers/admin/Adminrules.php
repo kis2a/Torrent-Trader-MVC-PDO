@@ -27,7 +27,7 @@ class Adminrules extends Controller
             $class = $_POST["class"];
             DB::run("update rules set title=?, text=?, public=?, class=? where id=?", [$title, $text, $public, $class, $id]);
             Logs::write("Rules have been changed by ($_SESSION[username])");
-            Redirect::autolink(URLROOT."/adminrules/edit", "Rules edited ok<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>");
+            Redirect::autolink(URLROOT."/adminrules", "Rules edited ok<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>");
             die;
         }
         $id = (int) $_POST["id"];
@@ -48,7 +48,7 @@ class Adminrules extends Controller
             $public = $_POST["public"];
             $class = $_POST["class"];
             DB::run("insert into rules (title, text, public, class) values(?,?,?,?)", [$title, $text, $public, $class]);
-            Redirect::autolink(URLROOT."/adminrules/edit", "New Section Added<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>");
+            Redirect::autolink(URLROOT."/adminrules", "New Section Added<br /><br /><a href=" . URLROOT . "/adminrules>Back To Rules</a>");
             die();
         }
         $data = [

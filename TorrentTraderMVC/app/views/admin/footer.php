@@ -1,29 +1,31 @@
-<!-- Start response --> 
-<div id='main'>
-<table class="table">
-  <tr>
-
-    <td class="myBlock-show"  style="width: 15%">
-		<?php require APPROOT . '/views/admin/left.php'; ?>
-    </td>
-    
-    <td class="myBlock-show"  style="width: 15%">
-		<?php require APPROOT . '/views/admin/right.php'; ?>
-    </td>
-  </tr>
-  </table>
+<div class='row'>
+<?php
+if (LEFTNAV) { ?>
+<div class="ttbottombar" >
+  <?php require APPROOT . '/views/admin/left.php'; ?>
+</div> <?php
+} ?>
+<?php
+if (RIGHTNAV) {?>
+<div class="ttbottombar">
+    <?php require APPROOT . '/views/admin/right.php'; ?>
+</div>
+<?php
+} ?>
 </div>
 
-</td>
-
-  <td class="myBlock-hide"  style="width: 15%">
-  <?php require APPROOT . '/views/admin/right.php'; ?>
-</td>
-
-</tr>
-</table>
 </div>
 
+<?php
+if (RIGHTNAV) {?>
+<div class="ttsidebar">
+    <?php require APPROOT . '/views/admin/right.php'; ?>
+</div>
+<?php
+} ?>
+
+</div>
+</div>
 <footer>
 <hr />
   <ul class="list-unstyled text-center">

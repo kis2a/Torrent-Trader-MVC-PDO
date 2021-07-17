@@ -101,13 +101,13 @@ class Blocks
     public static function getposition($position)
     {
         $getposition = DB::run("SELECT position FROM blocks
-                                WHERE position='left' AND enabled=1")->rowCount() + 1;
+                               WHERE position=? AND enabled=1", [$position])->rowCount() + 1;
         return $getposition;
     }
 
     public static function delete($delthis)
     {
-        DB::run("DELETE FROM blocks WHERE id=?"[$delthis]);
+        DB::run("DELETE FROM blocks WHERE id=?", [$delthis]);
     }
 
     public static function update($position, $sort, $id)
@@ -117,7 +117,7 @@ class Blocks
 
     public static function move($id)
     {
-        $move = DB::run("SELECT position, sort, id FROM blocks WHERE id = ?"[$id]);
+        $move = DB::run("SELECT position, sort, id FROM blocks WHERE id = ?", [$id]);
         return $move;
     }
 

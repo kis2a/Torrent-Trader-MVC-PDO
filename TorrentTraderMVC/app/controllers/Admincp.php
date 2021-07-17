@@ -10,8 +10,9 @@ class Admincp extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Staff Panel'
-        ];
+            'title1' => 'Staff Panel',
+            'title' => 'Staff Chat',
+            ];
         View::render('admin/index', $data, 'admin');
     }
     

@@ -61,7 +61,6 @@ class Adminreports extends Controller
         View::render('report/admin/index', $data, 'admin');
     }
 
-
     public function completed()
     {
         if ($_POST["mark"]) {

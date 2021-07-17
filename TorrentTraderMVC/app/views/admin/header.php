@@ -22,19 +22,16 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
   </head>
 <body>
 
-<div class="container-fluid" style="padding-top: 10px;">
+<?php require APPROOT . '/views/admin/navbar.php'; ?><br>
 
-<div class="col-sm-12">
-<?php require APPROOT . '/views/admin/navbar.php'; ?>
-</div>
-
-<table class="table">
-<tr>
+<div class="container-fluid">
+<div class="row">
+  
 <?php
 if (LEFTNAV) { ?>
-<th class="myBlock-hide" style="width: 15%">
-<?php require APPROOT . '/views/admin/left.php'; ?>
-</th> <?php
+<div class="ttsidebar">
+  <?php require APPROOT . '/views/admin/left.php'; ?>
+</div> <?php
 } ?>
 
-<th style="width: 70%">
+<div class="col">

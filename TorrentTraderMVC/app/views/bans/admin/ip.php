@@ -5,38 +5,46 @@ if ($data['count'] == 0) {
     print("<b>No Bans Found</b><br />\n");
 } else { 
     echo $data['pagertop']; ?>
-    <form id='ipbans' action='<?php echo URLROOT ?>/adminbans/ip?do=del' method='post'><table width='98%' cellspacing='0' cellpadding='5' align='center' class='table_table'>
-    <tr>
-    <th class='table_head'><?php echo Lang::T("DATE_ADDED") ?></th>
-    <th class='table_head'>First IP</th>
-    <th class='table_head'>Last IP</th>
-    <th class='table_head'><?php echo Lang::T("ADDED_BY") ?></th>
-    <th class='table_head'>Comment</th>
-    <th class='table_head'><input type='checkbox' name='checkall' onclick='checkAll(this.form.id);' /></th>
-    </tr>
+    <form id='ipbans' action='<?php echo URLROOT ?>/adminbans/ip?do=del' method='post'>
+    <div class='table-responsive'> <table class='table table-striped'><thead><tr>
+    <th><?php echo Lang::T("DATE_ADDED") ?></th>
+    <th>First IP</th>
+    <th>Last IP</th>
+    <th><?php echo Lang::T("ADDED_BY") ?></th>
+    <th>Comment</th>
+    <th><input type='checkbox' name='checkall' onclick='checkAll(this.form.id);' /></th>
+    </tr></thead>
     <?php
     while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) { ?>
-        <tr>
-        <td align='center' class='table_col1'><?php echo date('d/m/Y H:i:s', TimeDate::utc_to_tz_time($arr["added"])) ?></td>
-        <td align='center' class='table_col2'><?php echo $arr['first'] ?></td>
-        <td align='center' class='table_col1'><?php echo $arr['last'] ?></td>
-        <td align='center' class='table_col2'><a href='<?php echo URLROOT ?>/profile?id=<?php echo $arr['addedby'] ?>'><?php echo $arr['username'] ?></a></td>
-        <td align='center' class='table_col1'><?php echo $arr['comment'] ?></td>
-        <td align='center' class='table_col2'><input type='checkbox' name='delids[]' value='<?php echo $arr['id'] ?>' /></td>
-        </tr>
+        <tbody><tr>
+        <td><?php echo date('d/m/Y H:i:s', TimeDate::utc_to_tz_time($arr["added"])) ?></td>
+        <td><?php echo $arr['first'] ?></td>
+        <td><?php echo $arr['last'] ?></td>
+        <td><a href='<?php echo URLROOT ?>/profile?id=<?php echo $arr['addedby'] ?>'><?php echo $arr['username'] ?></a></td>
+        <td><?php echo $arr['comment'] ?></td>
+        <td><input type='checkbox' name='delids[]' value='<?php echo $arr['id'] ?>' /></td>
+        </tr></tbody>
         <?php
     }
     ?>
-    </table><br /><center><input type='submit' value='Delete Checked' /></center></form><br />
+    </table></div><br />
+    <center><input type='submit' value='Delete Checked' /></center>
+    </form>
     <?php
     echo $data['pagerbottom'];
 } ?>
 <br />
 <form method='post' action='<?php echo URLROOT ?>/adminbans/ip?do=add'>
-<table cellspacing='0' cellpadding='5' align='center' class='table_table' width='98%'>
-<tr><th class='table_head' align='center'>Add Ban</th></tr>
-<tr><td class='table_col1' align='center'>First IP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' name='first' size='40' /></td></tr>
-<tr><td class='table_col1' align='center'>Last IP:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='text' name='last' size='40' /></td></tr>
-<tr><td class='table_col1' align='center'>Comment: <input type='text' name='comment' size='40' /></td></tr>
-<tr><td class='table_head' align='center'><input type='submit' value='Okay' /></td></tr>
-</table></form><br />
+<div class="row justify-content-center">
+<div class="col-md-6">
+<center> Ban </center>
+<label for="first">First IP:</label>
+	<input id="first" type="text" class="form-control" name="first" >
+<label for="last">Last IP:</label>
+	<input id="last" type="text" class="form-control" name="last">
+<label for="comment">Comment: </label>
+	<input id="comment" type="text" class="form-control" name="comment">
+<input type='submit'  class='btn btn-sm ttbtn' value='Okay' />
+</div>
+</div>
+</form>

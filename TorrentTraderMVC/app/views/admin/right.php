@@ -43,10 +43,10 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
     <center><font color=#ff9900>Users</font></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminusers/add"><img src="<?php echo URLROOT; ?>/assets/images/admin/adduser.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("Add User"); ?></b></a></li>
-    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminusers/advancedsearch"><img src="<?php echo URLROOT; ?>/assets/images/admin/user_search.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("ADVANCED_USER_SEARCH"); ?></b></a></li>
+    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminsearch/advancedsearch"><img src="<?php echo URLROOT; ?>/assets/images/admin/user_search.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("ADVANCED_USER_SEARCH"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminavatar"><img src="<?php echo URLROOT; ?>/assets/images/admin/avatar_log.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("AVATAR_LOG"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminusers/privacy"><img src="<?php echo URLROOT; ?>/assets/images/admin/privacy_level.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Privacy Level</b></a></li>    
-    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminusers/simplesearch"><img src="<?php echo URLROOT; ?>/assets/images/admin/simple_user_search.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Simple User Search</b></a></li> 
+    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminsearch/simplesearch"><img src="<?php echo URLROOT; ?>/assets/images/admin/simple_user_search.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Simple User Search</b></a></li> 
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminusers/whoswhere"><img src="<?php echo URLROOT; ?>/assets/images/admin/whos_where.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("WHOS_WHERE"); ?></b></a></li>
     </ul>
 </div>
