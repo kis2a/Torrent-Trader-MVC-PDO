@@ -56,22 +56,22 @@ class Message
     {
         switch ($type) {
             case 'inbox':
-                $where = "`receiver` = $_SESSION[id] AND `location` IN ('in','both') ORDER BY added ASC";
+                $where = "`receiver` = $_SESSION[id] AND `location` IN ('in','both') ORDER BY added DESC";
                 $count = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
                 list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=inbox&");
                 break;
             case 'outbox':
-                $where = "`sender` = $_SESSION[id] AND `location` IN ('out','both') ORDER BY added ASC";
+                $where = "`sender` = $_SESSION[id] AND `location` IN ('out','both') ORDER BY added DESC";
                 $count= DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
                 list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=outbox&");
                 break;
             case 'templates':
-                $where = "`sender` = $_SESSION[id] AND `location` = 'template'";
+                $where = "`sender` = $_SESSION[id] AND `location` = 'template' ORDER BY added DESC";
                 $count= DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
                 list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=templates&");
                 break;
             case 'draft':
-                $where = "`sender` = $_SESSION[id] AND `location` = 'draft'";
+                $where = "`sender` = $_SESSION[id] AND `location` = 'draft' ORDER BY added DESC";
                 $count = DB::run("SELECT COUNT(*) FROM messages WHERE $where")->fetchColumn();
                 list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/messages?type=draft&");
                 break;
