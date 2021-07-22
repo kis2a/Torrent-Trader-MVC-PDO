@@ -521,7 +521,7 @@ class Forums extends Controller
 
             //Post Top
             ?>
-            <div class="row card-header">
+            <div class="row frame-header">
             <div class="col-md-2">
                 <?php echo $by; ?>
             </div>
@@ -555,7 +555,7 @@ class Forums extends Controller
                 }
                 ?>
                 <div class="row">
-                <div class="col-md-2 d-none d-sm-block border border-primary">
+                <div class="col-md-2 d-none d-sm-block border ttborder">
                 <center><i><?php echo $title; ?></i></center><br>
                 <center><img width='80' height='80' src='<?php echo $avatar ?>' alt='' /></center><br>
                 Uploaded: <?php echo $useruploaded; ?><br>
@@ -564,7 +564,7 @@ class Forums extends Controller
                 Ratio: <?php echo $userratio; ?><br>
                 Location: <?php echo $usercountry; ?><br>
                 </div>
-                <div class="col-md-10 border border-primary"><br>
+                <div class="col-md-10 border ttborder"><br>
                 <?php echo $body; ?>
 
                 <?php
@@ -619,7 +619,7 @@ echo $row7['filename']; ?><br>
         </div>
         <?php
 if ($_SESSION['loggedin']) {?>
-        <div class="row card-header1">
+        <div class="row ttblend">
         <div class="col-md-3 d-none d-sm-block">
         <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_profile.png' border='0' alt='' /></a>
         <a href='<?php echo URLROOT; ?>/messages/create?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_pm.png' border='0' alt='' /></a>

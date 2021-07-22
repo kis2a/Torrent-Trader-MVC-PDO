@@ -3,10 +3,10 @@
                                 Message
                             </div>
                             <div class="card-body">
-                            <div class="alert alert-info">
+                            <div class="alert ttalert">
                             <?php echo $data['message']; ?>
                             </div>
-                            <div class="alert alert-info">
+                            <div class="alert ttalert">
                             <?php echo $data['message2']; ?>
                             </div>
                             </div>

@@ -12,7 +12,7 @@ include APPROOT.'/views/message/messagenavbar.php'; ?>
     <th>Date</th></tr></thead>
 <?php
 while ($arr = $data['mainsql']->fetch(PDO::FETCH_ASSOC)) {
-    $msgdetails = Helper::msginboxdetails($arr); ?>
+    $msgdetails = Helper::msgdetails($arr, $_GET['type']); ?>
     <tbody><tr>
     <td><input type='checkbox' name='del[]' value='<?php echo $arr['id']; ?>' /></td>
     <td><?php echo $msgdetails['3']; ?></td>

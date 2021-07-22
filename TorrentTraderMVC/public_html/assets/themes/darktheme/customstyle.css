@@ -1,3 +1,10 @@
+html, body {
+	height: 100%;
+    font-size: 1.0 rem;   /* this option adjusts the general font size */
+    background: #242424;
+	color: #fff;
+	line-height: 1.4;
+}
 
 .ttsidebar {
     -ms-flex: 0 0 210px;
@@ -30,7 +37,13 @@
 .navbar {
 	background-image: -webkit-linear-gradient(top, #a9111f, #ffc107);
 	background-image: linear-gradient(to bottom, #a9111f, #ffc107);
-	background-repeat: repeat-x;
+    background-repeat: repeat-x;
+}
+
+.card {
+	background-color: transparent; /* Needed to make the padding-bottom work */
+	border: 0px; /* Needed to make the padding-bottom work */
+	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
 }
 
 .frame-header {
@@ -43,26 +56,28 @@
 }
 
 .frame-body {
-	border: 10px solid;
-	padding: 0.95rem;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
 	background: linear-gradient(90deg, #202e3c 0%, #2e3235 100%) !important;
 	border-image-source: linear-gradient(to bottom, #ff9900, #ffc107) !important;
 }
 
 .block-header {
     color: #fff;
-    background-image: -webkit-linear-gradient(top, #ff9900, #a9111f) !important;
-    background-image: linear-gradient(to bottom, #ff9900, #a9111f) !important;
+    background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
+    background-image: linear-gradient(to bottom, #a9111f, #ff9900);
     background-repeat: repeat-x;
     border-bottom: 0px;
     height: 35px;
 }
 
 .block-body {
-	border: 10px solid;
-	padding: 0.25rem;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
 	background: linear-gradient(90deg, #202e3c 0%, #2e3235 100%) !important;
-	border-image-source: linear-gradient(to bottom, #a9111f, #ffff00) !important;
+	border-image-source: linear-gradient(to bottom, #ff9900, #ffc107) !important;
 }
 
 .ttbtn {
@@ -71,14 +86,18 @@
 	background-image: linear-gradient(to bottom, #a9111f, #ffff00) !IMPORTANT;
 }
 
+.ttbtn:hover {
+	color: #ff9933 !IMPORTANT;
+}
+
 .ttborder {
 	border: 3px solid #ff9900 !IMPORTANT;
 }
 
 .ttblend {
 	color: #fff;
-    background-image: -webkit-linear-gradient(top, #a9111f, #ff9900) !IMPORTANT;
-    background-image: linear-gradient(to bottom, #a9111f, #ff9900) !IMPORTANT;
+	background-image: -webkit-linear-gradient(top, #ff9900, #a9111f) !IMPORTANT;
+    background-image: linear-gradient(to bottom, #ff9900, #a9111f) !IMPORTANT;
 	background-repeat: repeat-x;
 }
   
@@ -89,208 +108,39 @@
 	background-repeat: repeat-x;
 }
 
-
   #country-list{list-style:none;width:190px;}
-  #country-list li{padding: 10px; background: #f0f0f0; color: #000; border-bottom: #bbb9b9 1px solid;}
+  #country-list li{padding: 10px; background: #f0f0f0; border-bottom: #000 1px solid;}
   #country-list li:hover{background:#ece3d2;cursor: pointer;}
   #search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
 
-.custom-toggler .navbar-toggler-icon {
-	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-  }
-  
-  .custom-toggler.navbar-toggler {
-	border-color: rgb(255,102,203);
-  } 
-  
-  .navbar-toggler {
-	  border: 1px solid white !IMPORTANT;
-  }
-  
-  .f-cat {
-	  background-color: #DE9000;
-	  background-image: -webkit-linear-gradient(top, #ff9900, #DE9000);
-	  background-image: linear-gradient(to bottom, #ff9900, #DE9000);
-	  background-repeat: repeat-x;
-	  background-position: top;
-	  margin: 0px;
-	  padding: 0px;
-	  height: 28px;
-  }
-  
-.border-success {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #089c14 !IMPORTANT;
-}
-.border-danger {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #ff0000 !IMPORTANT;
-}
-.border-warning {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 3px solid #ff9900 !IMPORTANT;
-}
- /* used for forum straight border*/
-.border-primary {
-border: 2px solid #ff9900 !IMPORTANT;
-}
-  
-  /* Styles ShoutBox */
-  .shoutbox_body {
-	  color: yellow;
-	  float: middle;
-	  background-color: transparent;
-  }
-  .shoutbox_contain {
-	  border: 0;
-	  height: 250px;
-	  width: 100%;
-	  overflow: auto;
-  }
-  .shoutbox_history {
-	  border: 0;
-	  height: 100%;
-	  width: 100%;
-  }
-  .shoutbox_messageboxback {
-	  background-color: transparent;
-  }
-  .shoutbox_noalt {
-	  background-color: #fff;
-	  font-size: 16px;
-	  color: #000;
-	  border-right: 2px solid #fff;
-	  border-left: 2px solid #fff;
-	  -webkit-border-radius: 12px 4px;
-	  -moz-border-radius: 12px 4px;
-	  border-radius: 12px 4px;
-	  font-variant: small-caps;
-	  line-height: 16px;
-	  margin: 1px;
-  }
-  .shoutbox_alt {
-	  background-color: #fff;
-	  font-size: 16px;
-	  color: #000;
-	  border-left: 2px solid #fff;
-	  border-right: 2px solid #fff;
-	  -webkit-border-radius: 12px 4px;
-	  -moz-border-radius: 12px 4px;
-	  border-radius: 12px 4px;
-	  font-variant: small-caps;
-	  line-height: 16px;
-	  margin: 1px;
-  }
-  .shoutbox_msgbox {
-	  width: 100%;
-	  font-size: 16px;
-	  background-color: #FFF;
-	  border: 1px solid #777;
-  }
-  .shoutbox_shoutbtn {
-	  font-size: 12px;
-	  background-color: AliceBlue;
-	  border: 1px solid black;
-	  font-weight: bold;
-  }
-  /* error sur shoutbox */
-  .shoutbox_error {
-	  color: red;
-	  font-size: 13px;
-  }
-  /* Fin */
-  
-  .newtd {
-	  color: #fff;
-	  background-image: -webkit-linear-gradient(top, #ff9900, #ff9900);
-	  background-image: linear-gradient(to bottom, #ff9900, #ff9900);
-	  background-repeat: repeat-x;
-  }
-  
-  /* -- Bootstrap Table --*/
-  .table thead th {
-		  color: #fff;
-		  background-color: #ff9900;
-		  background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
-		  background-image: linear-gradient(to bottom, #a9111f, #ff9900);
-		  background-repeat: repeat-x;
-  }
-
-  .ttheader {
-	color: #fff;
-	background-color: #ff9900;
-	background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
-	background-image: linear-gradient(to bottom, #a9111f, #ff9900);
-	background-repeat: repeat-x;
+/* Styles ShoutBox */
+.shoutbox_contain {
+	border: 0;
+	height: 250px;
+	width: 100%;
+	overflow: auto;
 }
 
-  .tbody td {
-	  background-color: #EEEEEE;
-  }
-  
-  
-  .card-header {
-	color: #fff;
-	background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
-	background-image: linear-gradient(to bottom, #a9111f, #ff9900);
-	background-repeat: repeat-x;
-	border-bottom: 0px;
-	height: 35px;
+.shoutbox_msgbox {
+	width: 100%;
+	font-size: 16px;
+	background-color: #FFF;
+	border: 1px solid #777;
 }
 
-  .card-header1 {
-	color: #fff;
-	background-image: -webkit-linear-gradient(top, #ff9900, #a9111f);
-	background-image: linear-gradient(to bottom, #ff9900, #a9111f);
-	background-repeat: repeat-x;
-	border-bottom: 0px;
-	height: 35px;
+/* -- Bootstrap Table --*/
+.table thead th {
+        color: #fff;
+		background-color: #ff9900;
+		background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
+		background-image: linear-gradient(to bottom, #a9111f, #ff9900);
+		background-repeat: repeat-x;
 }
-
-  .card-body {
-	  border: 10px solid;
-	  border-image-slice: 1;
-	  border-width: 5px;
-	  border-image-source: linear-gradient(to bottom, #ff9900, #ffc107);
-  }
-  
-  .navbar-nav .nav-link {
-	  color: #fff;
-  }
-
-  .navbarone {
-	  background-image: -webkit-linear-gradient(top, #a9111f, #ffc107);
-	  background-image: linear-gradient(to bottom, #a9111f, #ffc107);
-	  background-repeat: repeat-x;
-	  color: #fff;
-  }
-  
-  
-  .alert-info {
-    color: #070b0c !IMPORTANT;
-    background-color: #f6f863 !IMPORTANT;
-    border-color: #f6f863 !IMPORTANT;
-}
-
-.card {
-	background-color: transparent; /* Needed to make the padding-bottom work */
-	border: 0px; /* Needed to make the padding-bottom work */
-	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
-}
-
-.btn-warning {
-    color: #fff  !IMPORTANT;
-	background-image: -webkit-linear-gradient(top, #a9111f, #ffc107) !IMPORTANT;
-	background-image: linear-gradient(to bottom, #a9111f, #ffc107) !IMPORTANT;
-}
-
 
 a {
+    color: #fff;
+}
+
+.navbar-nav .nav-link {
     color: #fff;
 }

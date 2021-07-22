@@ -1,3 +1,10 @@
+html, body {
+	height: 100%;
+    font-size: 1.0 rem;   /* this option adjusts the general font size */
+    background: #fff !important;
+	color: rgb(22, 102, 207);
+	line-height: 1.4;
+}
 
 .ttsidebar {
     -ms-flex: 0 0 210px;
@@ -33,6 +40,12 @@
     background-repeat: repeat-x;
 }
 
+.card {
+	background-color: transparent; /* Needed to make the padding-bottom work */
+	border: 0px; /* Needed to make the padding-bottom work */
+	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
+}
+
 .frame-header {
     color: #fff;
     background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !important;
@@ -43,26 +56,28 @@
 }
 
 .frame-body {
-	border: 10px solid;
-	padding: 0.95rem;
-	background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
-	border-image-source: linear-gradient(to bottom, #3895D3, #072F5F);
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
 }
 
 .block-header {
     color: #fff;
-    background-image: -webkit-linear-gradient(top, #3895D3, #072F5F) !important;
-    background-image: linear-gradient(to bottom, #3895D3, #072F5F) !important;
+    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !important;
+    background-image: linear-gradient(to bottom, #072F5F, #3895D3) !important;
     background-repeat: repeat-x;
     border-bottom: 0px;
     height: 35px;
 }
 
 .block-body {
-	border: 10px solid;
-	padding: 0.25rem;
-	background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
-	border-image-source: linear-gradient(to bottom, #072F5F, #3895D3) !important;
+    border: 10px solid;
+    border-image-slice: 1;
+    border-width: 5px;
+    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
 }
 
 .ttbtn {
@@ -71,14 +86,19 @@
 	background-image: linear-gradient(to bottom, #072F5F, #3895D3) !IMPORTANT;
 }
 
+.ttbtn:hover {
+	color: #ff9933 !IMPORTANT;
+}
+
 .ttborder {
-	border: 3px solid #3895D3 !IMPORTANT;
+	border: 3px solid #3895D3 !important;
+    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
 }
 
 .ttblend {
 	color: #fff;
-    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !IMPORTANT;
-    background-image: linear-gradient(to bottom, #072F5F, #3895D3) !IMPORTANT;
+    background-image: -webkit-linear-gradient(top, #3895D3, #072F5F) !IMPORTANT;
+    background-image: linear-gradient(to bottom, #3895D3, #072F5F) !IMPORTANT;
 	background-repeat: repeat-x;
 }
   
@@ -94,121 +114,19 @@
   #country-list li:hover{background:#ece3d2;cursor: pointer;}
   #search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
 
-  .custom-toggler .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255,102,203, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-}
-
-.custom-toggler.navbar-toggler {
-  border-color: rgb(255,102,203);
-} 
-
-.navbar-toggler {
-    border: 1px solid white !IMPORTANT;
-}
-
-.f-cat {
-	background-color: #DE9000;
-    background-image: -webkit-linear-gradient(top, #ff9900, #DE9000);
-    background-image: linear-gradient(to bottom, #ff9900, #DE9000);
-    background-repeat: repeat-x;
-	background-position: top;
-	margin: 0px;
-	padding: 0px;
-	height: 28px;
-}
-
-.border-success {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #089c14 !IMPORTANT;
-}
-.border-danger {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 5px solid #ff0000 !IMPORTANT;
-}
-.border-warning {
-	border-radius: 9px 9px 9px 9px !IMPORTANT;
--moz-border-radius: 9px 9px 9px 9px !IMPORTANT;
--webkit-border-radius: 9px 9px 9px 9px !IMPORTANT;
-border: 3px solid #3895D3 !IMPORTANT;
-}
-.border-primary {
-border: 2px solid #3895D3 !IMPORTANT;
-}
-
 /* Styles ShoutBox */
-.shoutbox_body {
-	color: yellow;
-	float: middle;
-	background-color: transparent;
-}
 .shoutbox_contain {
 	border: 0;
 	height: 250px;
 	width: 100%;
 	overflow: auto;
 }
-.shoutbox_history {
-	border: 0;
-	height: 100%;
-	width: 100%;
-}
-.shoutbox_messageboxback {
-	background-color: transparent;
-}
-.shoutbox_noalt {
-	background-color: #fff;
-	font-size: 16px;
-	color: #000;
-	border-right: 2px solid #fff;
-	border-left: 2px solid #fff;
-	-webkit-border-radius: 12px 4px;
-    -moz-border-radius: 12px 4px;
-    border-radius: 12px 4px;
-	font-variant: small-caps;
-	line-height: 16px;
-	margin: 1px;
-}
-.shoutbox_alt {
-	background-color: #fff;
-	font-size: 16px;
-	color: #000;
-	border-left: 2px solid #fff;
-	border-right: 2px solid #fff;
-    -webkit-border-radius: 12px 4px;
-    -moz-border-radius: 12px 4px;
-    border-radius: 12px 4px;
-	font-variant: small-caps;
-	line-height: 16px;
-	margin: 1px;
-}
+
 .shoutbox_msgbox {
 	width: 100%;
 	font-size: 16px;
 	background-color: #FFF;
 	border: 1px solid #777;
-}
-.shoutbox_shoutbtn {
-	font-size: 12px;
-	background-color: AliceBlue;
-	border: 1px solid black;
-	font-weight: bold;
-}
-/* error sur shoutbox */
-.shoutbox_error {
-	color: red;
-	font-size: 13px;
-}
-/* Fin */
-
-.newtd {
-    color: #fff;
-    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3);
-    background-image: linear-gradient(to bottom, #072F5F, #3895D3);
-    background-repeat: repeat-x;
 }
 
 /* -- Bootstrap Table --*/
@@ -220,66 +138,10 @@ border: 2px solid #3895D3 !IMPORTANT;
         background-repeat: repeat-x;
 }
 
-.ttheader {
-	color: #fff;
-	background-color: #ff9900;
-	background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
-	background-image: linear-gradient(to bottom, #a9111f, #ff9900);
-	background-repeat: repeat-x;
-}
-
-.tbody td {
-    background-color: #EEEEEE;
-}
-
-.card-header {
-    color: #fff;
-    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3);
-    background-image: linear-gradient(to bottom, #072F5F, #3895D3);
-    background-repeat: repeat-x;
-	border-bottom: 0px;
-}
-
-.card-header1 {
-	color: #fff;
-	background-image: -webkit-linear-gradient(top, #3895D3, #072F5F);
-	background-image: linear-gradient(to bottom, #3895D3, #072F5F);
-	background-repeat: repeat-x;
-	border-bottom: 0px;
-	height: 35px;
-}
-.card-body {
-    border: 10px solid;
-    border-image-slice: 1;
-    border-width: 5px;
-    background-color: #fff;
-    border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec);
+a {
+    color: rgb(27, 134, 235);
 }
 
 .navbar-nav .nav-link {
     color: #fff;
-}
-
-.navbarone {
-    background-image: -webkit-linear-gradient(top, #3895D3, #072F5F);
-    background-image: linear-gradient(to bottom, #3895D3, #072F5F);
-    background-repeat: repeat-x;
-	color: #fff;
-}  
-
- .alert-info {
-    color: #070b0c !IMPORTANT;
-    background-color: #f6f863 !IMPORTANT;
-    border-color: #f6f863 !IMPORTANT;
-}
-.card {
-	background-color: transparent; /* Needed to make the padding-bottom work */
-	border: 0px; /* Needed to make the padding-bottom work */
-	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
-}
-
-.btn-warning {
-    color: #fff  !IMPORTANT;
-	background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !IMPORTANT;
-	background-image: linear-gradient(to bottom, #072F5F, #3895D3) !IMPORTANT;
 }

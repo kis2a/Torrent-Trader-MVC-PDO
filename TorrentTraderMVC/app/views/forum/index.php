@@ -14,7 +14,7 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
     }
     if ($forums_arr['fcid'] != $fcid) {
         ?>
-        <div class="row card-header">
+        <div class="row frame-header">
         <div class="col-md-8">
         <?php echo htmlspecialchars($forums_arr['fcname']); ?>
         </div>

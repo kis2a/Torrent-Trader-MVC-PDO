@@ -14,7 +14,7 @@ if ($data['topicsres'] > 0) {
     <div class="col-lg-12">
     <div class="wrapper wrapper-content animated fadeInRight">
 
-    <div class="row card-header">
+    <div class="row frame-header">
     <div class="col-md-1">
     Read
     </div>

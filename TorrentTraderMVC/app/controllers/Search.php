@@ -381,12 +381,8 @@ class Search extends Controller
             torrenttable($res);
             print($pagerbottom);
         } else {
-            print("<div class='f-border'>");
-            print("<div class='f-cat' width='100%'>" . Lang::T("NOTHING_FOUND") . "</div>");
-            print("<div>");
-            print Lang::T("NO_RESULTS");
-            print("</div>");
-            print("</div>");
+            print(Lang::T("NOTHING_FOUND") . "&nbsp;&nbsp;");
+            print Lang::T("NO_UPLOADS");
         }
         if ($_SESSION['loggedin'] == true) {
             DB::run("UPDATE users SET last_browse=" . TimeDate::gmtime() . " WHERE id=$_SESSION[id]");
@@ -591,12 +587,8 @@ class Search extends Controller
             torrenttable($res);
             print($pagerbottom);
         } else {
-            print("<div class='f-border'>");
-            print("<div class='f-cat' width='100%'>" . Lang::T("NOTHING_FOUND") . "</div>");
-            print("<div>");
+            print(Lang::T("NOTHING_FOUND") . "&nbsp;&nbsp;");
             print Lang::T("NO_UPLOADS");
-            print("</div>");
-            print("</div>");
         }
         if ($_SESSION) {
             DB::run("UPDATE users SET last_browse=? WHERE id=?", [TimeDate::gmtime(), $_SESSION['id']]);

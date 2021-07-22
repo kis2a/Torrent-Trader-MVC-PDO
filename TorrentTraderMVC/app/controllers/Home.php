@@ -13,7 +13,7 @@ class Home extends Controller
         // Check
         if (file_exists("check.php") && $_SESSION["class"] == 7) {
             Style::begin("<font class='error'>" . htmlspecialchars('WARNING') . "</font>");
-            echo '<div class="alert alert-info">check still exists, please delete or rename the file as it could pose a security risk<br /><br /><a href="check.php">View /check</a> - Use to check your config!<br /></div>';
+            echo '<div class="alert ttalert">check still exists, please delete or rename the file as it could pose a security risk<br /><br /><a href="check.php">View /check</a> - Use to check your config!<br /></div>';
             Style::end();
         }
         // Start Hit And Run Warning
