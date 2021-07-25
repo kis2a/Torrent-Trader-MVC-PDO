@@ -33,7 +33,7 @@ class Adminusers extends Controller
             $password = $_POST["password"];
             $email = $_POST["email"];
             $secret = Helper::mksecret();
-            $passhash = md5($password);
+            $passhash = password_hash($password, PASSWORD_BCRYPT);
             $secret = $secret;
             /*
             $count = get_row_count("users", "WHERE username=$username");
