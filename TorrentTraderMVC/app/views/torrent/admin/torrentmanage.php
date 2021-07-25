@@ -1,5 +1,5 @@
 <center>
-<form method='get' action='<?php echo URLROOT; ?>/admintorrentmanage'>
+<form method='get' action='<?php echo URLROOT; ?>/admintorrents'>
 <input type='hidden' name='action' value='torrentmanage' />
 Search: <input type='text' name='search' value='<?php echo $data['search']; ?>' size='30' />
 <input type='submit' value='Search' />

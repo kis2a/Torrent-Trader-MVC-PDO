@@ -1,5 +1,5 @@
 <?php
-class Adminpeers extends Controller
+class Adminpeers
 {
 
     public function __construct()

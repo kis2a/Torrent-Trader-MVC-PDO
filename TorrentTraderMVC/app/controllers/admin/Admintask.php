@@ -1,5 +1,5 @@
 <?php
-class Admintask extends Controller
+class Admintask
 {
 
     public function __construct()

@@ -1,5 +1,5 @@
 <?php
-class Rating extends Controller
+class Rating
 {
     public function __construct()
     {

@@ -1,5 +1,5 @@
 <?php
-class Faq extends Controller
+class Faq
 {
     public function __construct()
     {

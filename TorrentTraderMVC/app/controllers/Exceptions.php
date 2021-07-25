@@ -1,5 +1,5 @@
 <?php
-class Exceptions extends Controller
+class Exceptions
 {
     public function __construct()
     {

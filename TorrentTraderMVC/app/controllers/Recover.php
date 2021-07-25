@@ -1,5 +1,5 @@
 <?php
-class Recover extends Controller
+class Recover
 {
 
     public function __construct()

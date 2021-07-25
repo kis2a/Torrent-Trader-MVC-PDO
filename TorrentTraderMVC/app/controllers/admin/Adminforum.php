@@ -1,5 +1,5 @@
 <?php
-class Adminforum extends Controller
+class Adminforum
 {
 
     public function __construct()
@@ -93,7 +93,7 @@ class Adminforum extends Controller
     {
         $id = (int) $_POST["id"];
         $changed_sortcat = (int) $_POST["changed_sortcat"];
-        DB::run("UPDATE forumcats SET sort = '$changed_sortcat', name = " . sqlesc($_POST["changed_forumcat"]) . " WHERE id='$id'");
+        DB::run("UPDATE forumcats SET sort = ?, name = ? WHERE id=?", [$changed_sortcat, $_POST["changed_forumcat"], $id]);
         Redirect::autolink(URLROOT . "/adminforum", "<center><b>" . Lang::T("CP_UPDATE_COMPLETED") . "</b></center>");
     }
 

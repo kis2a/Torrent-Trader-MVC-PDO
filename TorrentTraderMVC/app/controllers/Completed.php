@@ -1,6 +1,6 @@
 <?php
 
-class Completed extends Controller {
+class Completed {
 
     public function __construct()
     {

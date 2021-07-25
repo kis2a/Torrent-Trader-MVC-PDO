@@ -1,5 +1,5 @@
 <?php
-class Signup extends Controller
+class Signup
 {
     public function __construct()
     {

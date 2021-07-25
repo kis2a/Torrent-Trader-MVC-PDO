@@ -1,5 +1,5 @@
 <?php
-class Report extends Controller
+class Report
 {
 
     public function __construct()

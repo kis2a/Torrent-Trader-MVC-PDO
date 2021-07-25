@@ -1,6 +1,5 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    $db = Database::instance();
     Style::block_begin(Lang::T("SEEDERS_WANTED"));
     $external = "external = 'no'";
     // Uncomment below to include external torrents
@@ -8,7 +7,7 @@ if ($_SESSION['loggedin'] == true) {
     $TTCache = new Cache();
     $expires = 600; // Cache time in seconds
     if (($rows = $TTCache->Get("seedwanted_block", $expires)) === false) {
-        $res = $db->run("SELECT id, name, seeders, leechers FROM torrents WHERE seeders = ? AND leechers > ? AND banned = ? AND ? ORDER BY leechers DESC LIMIT 5", [0, 0, 'no', $external]);
+        $res = DB::run("SELECT id, name, seeders, leechers FROM torrents WHERE seeders = ? AND leechers > ? AND banned = ? AND ? ORDER BY leechers DESC LIMIT 5", [0, 0, 'no', $external]);
         $rows = array();
 
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {

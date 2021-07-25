@@ -1,5 +1,5 @@
 <?php
-class Adminbonus extends Controller
+class Adminbonus
 {
 
     public function __construct()

@@ -1,5 +1,5 @@
 <?php
-class Adminbans extends Controller
+class Adminbans
 {
 
     public function __construct()

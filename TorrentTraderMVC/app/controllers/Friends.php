@@ -1,5 +1,5 @@
 <?php
-class Friends extends Controller
+class Friends
 {
 
     public function __construct()

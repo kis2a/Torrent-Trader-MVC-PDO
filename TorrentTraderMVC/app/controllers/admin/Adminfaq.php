@@ -1,5 +1,5 @@
 <?php
-class Adminfaq extends Controller
+class Adminfaq
 {
     public function __construct()
     {
@@ -64,7 +64,7 @@ class Adminfaq extends Controller
     public function newsection()
     {
         if ($_POST['action'] == "addnewsect" && $_POST['title'] != null && Validate::Int($_POST['flag'])) {
-            $title = sqlesc($_POST['title']);
+            $title = $_POST['title'];
             $res = DB::run("SELECT MAX(`order`) FROM `faq` WHERE `type`='categ'");
             while ($arr = $res->fetch(PDO::FETCH_BOTH)) {
                 $order = $arr[0] + 1;

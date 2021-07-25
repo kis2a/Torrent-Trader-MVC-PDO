@@ -1,5 +1,5 @@
 <?php
-class Rss extends Controller
+class Rss
 {
 
     public function __construct()

@@ -1,5 +1,5 @@
 <?php
-class Shoutbox extends Controller
+class Shoutbox
 {
     public function __construct()
     {

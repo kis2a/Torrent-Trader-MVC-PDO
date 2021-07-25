@@ -1,9 +1,8 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
     if (NEWSON) { //check news is turned on first
-        $db = Database::instance();
-Style::block_begin(Lang::T("LATEST_NEWS"));
-        $res = $db->run("SELECT * FROM news ORDER BY added DESC LIMIT 10"); ?>
+		Style::block_begin(Lang::T("LATEST_NEWS"));
+        $res = DB::run("SELECT * FROM news ORDER BY added DESC LIMIT 10"); ?>
 	<style type="text/css">
 
 	#marqueecontainer{

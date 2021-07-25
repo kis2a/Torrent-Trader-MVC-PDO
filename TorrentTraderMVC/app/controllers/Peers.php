@@ -1,5 +1,5 @@
 <?php
-class Peers extends Controller
+class Peers
 {
     public function __construct()
     {

@@ -1,5 +1,5 @@
 <?php
-class Adminsearch extends Controller
+class Adminsearch
 {
 
     public function __construct()
@@ -110,7 +110,7 @@ class Adminsearch extends Controller
 
                     DB::run("UPDATE users SET warned='yes' WHERE id IN (" . implode(", ", $_POST['warndisable']) . ")");
                     foreach ($_POST["warndisable"] as $userid) {
-                        $ins = DB::run("INSERT INTO messages (poster, sender, receiver, added, msg) VALUES ('0', '0', '" . $userid . "', '" . TimeDate::get_date_time() . "', " . sqlesc($msg) . ")");
+                        $ins = DB::run("INSERT INTO messages (poster, sender, receiver, added, msg) VALUES (?,?,?,?,?)", [0, 0, $userid, TimeDate::get_date_time(), $msg]);
                         if (!$ins) {
                             die("<b>A fatal MySQL error occured</b>.\n <br />\n" . Lang::T("ERROR") . ": (" . $ins->errorCode() . ") " . $ins->errorInfo());
                         }

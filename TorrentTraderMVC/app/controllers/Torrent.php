@@ -1,5 +1,5 @@
 <?php
-class Torrent extends Controller
+class Torrent
 {
     public function __construct()
     {
@@ -44,19 +44,18 @@ class Torrent extends Controller
             die;
         }
 
-        // scraper
-        $now = TimeDate::gmtime();
-        $ts = $row['last_action'];
-        if ($ts + 172800 > $now) {
+
+        $ts = TimeDate::modify('date', $row['last_action'], '+2 day');
+        if ($ts > TT_DATE) {
+            $scraper = "<br>
+            <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
+            <font  size='4' color=#ff9900><b>Stats Recently Updated</b></font>";
+        } else {
             $scraper = "
             <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
             <form action='" . URLROOT . "/scrape/external?id=" . $id . "' method='post'>
             <button type='submit' class='btn ttbtn center-block' value=''>" . Lang::T("Update Stats") . "</button>
             </form>";
-        } else {
-            $scraper = "<br>
-            <br><b>" . Lang::T("EXTERNAL_TORRENT") . "</b>
-            <font  size='4' color=#ff9900><b>Stats Recently Updated</b></font>";
         }
 
         if ($_SESSION["id"] == $row["owner"] || $_SESSION["edit_torrents"] == "yes") {
@@ -379,10 +378,10 @@ class Torrent extends Controller
         $res2 = DB::run("SELECT users.id FROM completed LEFT JOIN users ON completed.userid = users.id WHERE users.enabled = 'yes' AND users.status = 'confirmed' AND completed.torrentid = $id");
         $message = sprintf(Lang::T('RESEED_MESSAGE'), $_SESSION['username'], URLROOT, $id);
         while ($row2 = $res2->fetch(PDO::FETCH_ASSOC)) {
-            DB::run("INSERT INTO `messages` (`subject`, `sender`, `receiver`, `added`, `msg`) VALUES ('" . Lang::T("RESEED_MES_SUBJECT") . "', '" . $_SESSION['id'] . "', '" . $row2['id'] . "', '" . TimeDate::get_date_time() . "', " . sqlesc($message) . ")");
+            DB::run("INSERT INTO `messages` (`subject`, `sender`, `receiver`, `added`, `msg`) VALUES (?,?,?,?,?)", [Lang::T("RESEED_MES_SUBJECT"), $_SESSION['id'], $row2['id'], TimeDate::get_date_time(), $message]);
         }
         if ($row["owner"] && $row["owner"] != $_SESSION["id"]) {
-            DB::run("INSERT INTO `messages` (`subject`, `sender`, `receiver`, `added`, `msg`) VALUES ('Torrent Reseed Request', '" . $_SESSION['id'] . "', '" . $row['owner'] . "', '" . TimeDate::get_date_time() . "', " . sqlesc($message) . ")");
+            DB::run("INSERT INTO `messages` (`subject`, `sender`, `receiver`, `added`, `msg`) VALUES (?,?,?,?,?)", ['Torrent Reseed Request', $_SESSION['id'], $row['owner'], TimeDate::get_date_time(), $message]);
         }
         setcookie("reseed$id", $id, time() + 86400, '/');
         Redirect::autolink(URLROOT, Lang::T("RESEED_SENT"));

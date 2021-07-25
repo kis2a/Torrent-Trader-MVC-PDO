@@ -1,5 +1,5 @@
 <?php
-class Admintorrents extends Controller
+class Admintorrents
 {
 
     public function __construct()

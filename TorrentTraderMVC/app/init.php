@@ -3,7 +3,11 @@ session_start();
 // Load Config
 require_once 'config/config.php';
 // Load Langauge
-require_once LANG . 'english.php';
+if (array_key_exists('language', $_SESSION)) {
+    require_once LANG . $_SESSION['language'].'.php';
+} else {
+    require_once LANG . 'english.php';
+}
 // Error Reporting
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);

@@ -2,7 +2,7 @@ html, body {
 	height: 100%;
     font-size: 1.0 rem;   /* this option adjusts the general font size */
     background: #fff !important;
-	color: rgb(22, 102, 207);
+	color: #000;
 	line-height: 1.4;
 }
 
@@ -28,7 +28,7 @@ html, body {
 }
 
 
-@media only screen and (max-width: 1567px) {
+@media only screen and (max-width: 1967px) {
 	.ttmobile {
 		max-width: 600px !important;
 	}

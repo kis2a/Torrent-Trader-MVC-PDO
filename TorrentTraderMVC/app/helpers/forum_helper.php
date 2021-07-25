@@ -15,22 +15,21 @@ function forumheader($location)
 // Mark all forums as read
 function catch_up()
 {
-    $pdo = new Database();
     if (!$_SESSION['loggedin'] == true) {
         return;
     }
     $userid = $_SESSION["id"];
-    $res = $pdo->run("SELECT id, lastpost FROM forum_topics");
+    $res = DB::run("SELECT id, lastpost FROM forum_topics");
     while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
         $topicid = $arr["id"];
         $postid = $arr["lastpost"];
-        $r = $pdo->run("SELECT id,lastpostread FROM forum_readposts WHERE userid=? and topicid=?", [$userid, $topicid]);
+        $r = DB::run("SELECT id,lastpostread FROM forum_readposts WHERE userid=? and topicid=?", [$userid, $topicid]);
         if ($r->rowCount() == 0) {
-            $pdo->run("INSERT INTO forum_readposts (userid, topicid, lastpostread) VALUES(?, ?, ?), [$userid, $topicid, $postid]");
+            DB::run("INSERT INTO forum_readposts (userid, topicid, lastpostread) VALUES(?, ?, ?), [$userid, $topicid, $postid]");
         } else {
             $a = $r->fetch(PDO::FETCH_ASSOC);
             if ($a["lastpostread"] < $postid) {
-                $pdo->run("UPDATE forum_readposts SET lastpostread=$postid WHERE id=?", [$a["id"]]);
+                DB::run("UPDATE forum_readposts SET lastpostread=$postid WHERE id=?", [$a["id"]]);
             }
         }
     }
@@ -39,8 +38,7 @@ function catch_up()
 // Returns the minimum read/write class levels of a forum
 function get_forum_access_levels($forumid)
 {
-    $pdo = new Database();
-    $res = $pdo->run("SELECT minclassread, minclasswrite FROM forum_forums WHERE id=?", [$forumid]);
+    $res = DB::run("SELECT minclassread, minclasswrite FROM forum_forums WHERE id=?", [$forumid]);
     if ($res->rowCount() != 1) {
         return false;
     }
@@ -51,8 +49,7 @@ function get_forum_access_levels($forumid)
 // Returns the forum ID of a topic, or false on error
 function get_topic_forum($topicid)
 {
-    $pdo = new Database();
-    $res = $pdo->run("SELECT forumid FROM forum_topics WHERE id=?", [$topicid]);
+    $res = DB::run("SELECT forumid FROM forum_topics WHERE id=?", [$topicid]);
     if ($res->rowCount() != 1) {
         return false;
     }
@@ -63,17 +60,15 @@ function get_topic_forum($topicid)
 // Returns the ID of the last post of a forum
 function update_topic_last_post($topicid)
 {
-    $pdo = new Database();
     $res = DB::run("SELECT id FROM forum_posts WHERE topicid=? ORDER BY id DESC LIMIT 1", [$topicid]);
     $arr = $res->fetch(PDO::FETCH_LAZY) or Redirect::autolink(URLROOT . '/forums', 'No post found');
     $postid = $arr[0];
-    $pdo->run("UPDATE forum_topics SET lastpost=? WHERE id=?", [$postid, $topicid]);
+    DB::run("UPDATE forum_topics SET lastpost=? WHERE id=?", [$postid, $topicid]);
 }
 
 function get_forum_last_post($forumid)
 {
-    $pdo = new Database();
-    $res = $pdo->run("SELECT lastpost FROM forum_topics WHERE forumid=? ORDER BY lastpost DESC LIMIT 1", [$forumid]);
+    $res = DB::run("SELECT lastpost FROM forum_topics WHERE forumid=? ORDER BY lastpost DESC LIMIT 1", [$forumid]);
     $arr = $res->fetch(PDO::FETCH_LAZY);
     $postid = $arr[0];
     if ($postid) {
@@ -107,10 +102,9 @@ function forumpostertable($res)
 // Inserts a quick jump menu
 function insert_quick_jump_menu($currentforum = 0)
 {
-    $pdo = new Database();
     print("<div style='text-align:right'><form method='get' action='?' name='jump'>\n");
     print("<input type='hidden' name='action' value='" . URLROOT . "/forums/viewforum' />\n");
-    $res = $pdo->run("SELECT * FROM forum_forums ORDER BY name");
+    $res = DB::run("SELECT * FROM forum_forums ORDER BY name");
     if ($res->rowCount() > 0) {
         print(Lang::T("FORUM_JUMP") . ": ");
         print("<select class='styled' name='forumid' onchange='if(this.options[this.selectedIndex].value != -1){ forms[jump].submit() }'>\n");
@@ -130,14 +124,13 @@ function insert_quick_jump_menu($currentforum = 0)
 function insert_compose_frame($id, $newtopic = true)
 {
     global $maxsubjectlength;
-    $pdo = new Database();
     if ($newtopic) {
-        $res = $pdo->run("SELECT name FROM forum_forums WHERE id=$id");
+        $res = DB::run("SELECT name FROM forum_forums WHERE id=$id");
         $arr = $res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', Lang::T("FORUM_BAD_FORUM_ID"));
         $forumname = stripslashes($arr["name"]);
         print("<p align='center'><b>" . Lang::T("FORUM_NEW_TOPIC") . " <a href='" . URLROOT . "/forums/viewforum&amp;forumid=$id'>$forumname</a></b></p>\n");
     } else {
-        $res = $pdo->run("SELECT * FROM forum_topics WHERE id=$id");
+        $res = DB::run("SELECT * FROM forum_topics WHERE id=$id");
         $arr = $res->fetch(PDO::FETCH_ASSOC) or Redirect::autolink(URLROOT . '/forums', Lang::T("FORUMS_NOT_FOUND_TOPIC"));
         $subject = stripslashes($arr["subject"]);
         print("<p align='center'>" . Lang::T("FORUM_REPLY_TOPIC") . ": <a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$id'>$subject</a></p>");
@@ -167,7 +160,6 @@ function insert_compose_frame($id, $newtopic = true)
 //LASTEST FORUM POSTS
 function latestforumposts()
 {
-    $db = new Database();
     ?>
     <div class="row">
     <div class="col-lg-12">
@@ -192,13 +184,13 @@ function latestforumposts()
     </div>
     <?php
     // HERE GOES THE QUERY TO RETRIEVE DATA FROM THE DATABASE AND WE START LOOPING ///
-    $for = $db->run("SELECT * FROM forum_topics ORDER BY lastpost DESC LIMIT 5");
+    $for = DB::run("SELECT * FROM forum_topics ORDER BY lastpost DESC LIMIT 5");
     if ($for->rowCount() == 0) {
         print("<b>No Latest Topics</b>");
     }
     while ($topicarr = $for->fetch(PDO::FETCH_ASSOC)) {
         // Set minclass
-        $res = $db->run("SELECT name,minclassread,guest_read FROM forum_forums WHERE id=$topicarr[forumid]");
+        $res = DB::run("SELECT name,minclassread,guest_read FROM forum_forums WHERE id=$topicarr[forumid]");
         $forum = $res->fetch(PDO::FETCH_ASSOC);
         if ($forum && $_SESSION["class"] >= $forum["minclassread"] || $forum["guest_read"] == "yes") {
             $forumname = "<a href='" . URLROOT . "/forums/viewforum&amp;forumid=$topicarr[forumid]'><b>" . htmlspecialchars($forum["name"]) . "</b></a>";
@@ -208,18 +200,18 @@ function latestforumposts()
             // Topic Views
             $views = $topicarr["views"];
             // GETTING TOTAL NUMBER OF POSTS ///
-            $res = $db->run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
+            $res = DB::run("SELECT COUNT(*) FROM forum_posts WHERE topicid=?", [$topicid]);
             $arr = $res->fetch(PDO::FETCH_LAZY);
             $posts = $arr[0];
             $replies = max(0, $posts - 1);
             // GETTING USERID AND DATE OF LAST POST ///
-            $res = $db->run("SELECT * FROM forum_posts WHERE topicid=? ORDER BY id DESC LIMIT 1", [$topicid]);
+            $res = DB::run("SELECT * FROM forum_posts WHERE topicid=? ORDER BY id DESC LIMIT 1", [$topicid]);
             $arr = $res->fetch(PDO::FETCH_ASSOC);
             $postid = 0 + $arr["id"];
             $userid = 0 + $arr["userid"];
             $added = TimeDate::utc_to_tz($arr["added"]);
             // GET NAME OF LAST POSTER ///
-            $res = $db->run("SELECT id, username FROM users WHERE id=$userid");
+            $res = DB::run("SELECT id, username FROM users WHERE id=$userid");
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
                 $username = "<a href='" . URLROOT . "/profile?id=$userid'>" . Users::coloredname($arr['username']) . "</a>";
@@ -227,7 +219,7 @@ function latestforumposts()
                 $username = "Unknown[$topic_userid]";
             }
             // GET NAME OF THE AUTHOR ///
-            $res = $db->run("SELECT username FROM users WHERE id=?", [$topic_userid]);
+            $res = DB::run("SELECT username FROM users WHERE id=?", [$topic_userid]);
             if ($res->rowCount() == 1) {
                 $arr = $res->fetch(PDO::FETCH_ASSOC);
                 $author = "<a href='" . URLROOT . "/profile?id=$topic_userid'>" . Users::coloredname($arr['username']) . "</a>";
@@ -235,7 +227,7 @@ function latestforumposts()
                 $author = "Unknown[$topic_userid]";
             }
             // GETTING THE LAST INFO AND MAKE THE TABLE ROWS ///
-            $r = $db->run("SELECT lastpostread FROM forum_readposts WHERE userid=$userid AND topicid=$topicid");
+            $r = DB::run("SELECT lastpostread FROM forum_readposts WHERE userid=$userid AND topicid=$topicid");
             $a = $r->fetch(PDO::FETCH_LAZY);
             $new = !$a || $postid > $a[0];
             $subject = "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid&amp;page=last#last'>" . stripslashes(encodehtml($topicarr["subject"])) . "</a>";

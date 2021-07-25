@@ -1,5 +1,5 @@
 <?php
-class Admintorrentlang extends Controller
+class Admintorrentlang
 {
 
     public function __construct()

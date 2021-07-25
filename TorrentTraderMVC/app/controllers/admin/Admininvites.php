@@ -1,5 +1,5 @@
 <?php
-class Admininvites extends Controller
+class Admininvites
 {
 
     public function __construct()

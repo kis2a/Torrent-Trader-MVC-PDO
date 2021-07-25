@@ -1,5 +1,5 @@
 <?php
-class Admincomments extends Controller
+class Admincomments
 {
 
     public function __construct()

@@ -1,5 +1,5 @@
 <?php
-class Group extends Controller
+class Group
 {
 
     public function __construct()

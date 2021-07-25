@@ -1,5 +1,5 @@
 <?php
-class Forums extends Controller
+class Forums
 {
 
     public function __construct()

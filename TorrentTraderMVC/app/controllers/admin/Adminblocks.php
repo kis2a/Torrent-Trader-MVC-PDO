@@ -1,5 +1,5 @@
 <?php
-class Adminblocks extends Controller
+class Adminblocks
 {
 
     public function __construct()
@@ -180,9 +180,9 @@ class Adminblocks extends Controller
             foreach ($_POST["addnew"] as $addthis) {
                 $i = $addthis;
                 $addblock = $_POST["addblock_" . $i];
-                $wantedname = sqlesc($_POST["wantedname_" . $i]);
-                $name = sqlesc(str_replace("_block.php", "", Validate::cleanstr($addblock)));
-                $description = sqlesc($_POST["wanteddescription_" . $i]);
+                $wantedname = $_POST["wantedname_" . $i];
+                $name = str_replace("_block.php", "", Validate::cleanstr($addblock));
+                $description = $_POST["wanteddescription_" . $i];
                 $bins = Blocks::insert($wantedname, $name, $description);
                 if ($bins) {
                         Redirect::autolink(URLROOT . '/adminblocks', Lang::T("_SUCCESS_ADD_"));

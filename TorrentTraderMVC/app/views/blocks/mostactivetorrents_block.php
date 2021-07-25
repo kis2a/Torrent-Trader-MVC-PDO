@@ -1,14 +1,13 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    $db = Database::instance();
     Style::block_begin(Lang::T("MOST_ACTIVE"));
     $where = "WHERE banned = 'no' AND visible = 'yes'";
     $TTCache = new Cache();
     $expires = 600; // Cache time in seconds
     if (($rows = $TTCache->Get("mostactivetorrents_block", $expires)) === false) {
-        $res = $db->run("SELECT id, name, seeders, leechers FROM torrents $where ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT 10");
+        $res = DB::run("SELECT id, name, seeders, leechers FROM torrents $where ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT 10");
 
-        $catsquery = $db->run("SELECT distinct parent_cat FROM categories ORDER BY parent_cat");
+        $catsquery = DB::run("SELECT distinct parent_cat FROM categories ORDER BY parent_cat");
         $rows = array();
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $rows[] = $row;

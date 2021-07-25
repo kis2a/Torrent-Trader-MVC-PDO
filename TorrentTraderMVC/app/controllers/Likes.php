@@ -1,5 +1,5 @@
 <?php
-class Likes extends Controller
+class Likes
 {
 
     public function __construct()

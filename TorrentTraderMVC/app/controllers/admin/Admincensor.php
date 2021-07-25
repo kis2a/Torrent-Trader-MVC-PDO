@@ -1,5 +1,5 @@
 <?php
-class Admincensor extends Controller
+class Admincensor
 {
 
     public function __construct()

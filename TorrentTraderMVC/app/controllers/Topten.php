@@ -1,5 +1,5 @@
 <?php
-class Topten extends Controller
+class Topten
 {
     public function __construct()
     {
@@ -8,7 +8,6 @@ class Topten extends Controller
 
     public function index()
     {
-        $db = new Database();
         $limit = isset($_GET["lim"]) ? (int) $_GET["lim"] : false;
         $subtype = isset($_GET["subtype"]) ? (int) $_GET["subtype"] : false;
         $pu = $_SESSION["class"] >= 3;
@@ -26,7 +25,7 @@ class Topten extends Controller
         }
         if ($limit == 10 || $subtype == "ul") {
             $order = "uploaded DESC";
-            $res = $db->run($mainquery . " ORDER BY $order " . " LIMIT $limit");
+            $res = DB::run($mainquery . " ORDER BY $order " . " LIMIT $limit");
             $title = "Top $limit Uploaders" . ($limit == 10 && $pu ? " <font class=small> - [<a href=" . URLROOT . "/topten?lim=100&amp;subtype=ul>Top 100</a>] - [<a href=topten?lim=250&amp;subtype=ul>Top 250</a>]</font>" : "");
             include APPROOT . "/views/topten/user.php";
         }
@@ -62,7 +61,6 @@ class Topten extends Controller
 
     public function torrents()
     {
-        $db = new Database();
         $limit = isset($_GET["lim"]) ? (int) $_GET["lim"] : false;
         $subtype = isset($_GET["subtype"]) ? (int) $_GET["subtype"] : false;
         $pu = $_SESSION["class"] >= 3;
@@ -78,12 +76,12 @@ class Topten extends Controller
             $limit = 10;
         }
         if ($limit == 10 || $subtype == "act") {
-            $res = $db->run("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT $limit");
+            $res = DB::run("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY seeders + leechers DESC, seeders DESC, added ASC LIMIT $limit");
             $title = "Top $limit Most Active Torrents" . ($limit == 10 && $pu ? " <font class=small> - [<a href=" . URLROOT . "/topten/torrents?lim=25&amp;subtype=act>Top 25</a>] - [<a href=" . URLROOT . "/topten/torrents?lim=50&amp;subtype=act>Top 50</a>]</font>" : "");
             include APPROOT . "/views/topten/torrent.php";
         }
         if ($limit == 10 || $subtype == "sna") {
-            $res = $db->run("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT $limit");
+            $res = DB::run("SELECT t.*, (t.size * t.times_completed + SUM(p.downloaded)) AS data FROM torrents AS t LEFT JOIN peers AS p ON t.id = p.torrent WHERE p.seeder = 'no' GROUP BY t.id ORDER BY times_completed DESC LIMIT $limit");
             $title = "Top $limit Most Snatched Torrents" . ($limit == 10 && $pu ? " <font class=small> - [<a href=" . URLROOT . "/topten/torrents?lim=25&amp;subtype=sna>Top 25</a>] - [<a href=" . URLROOT . "/topten/torrents?lim=50&amp;subtype=sna>Top 50</a>]</font>" : "");
             include APPROOT . "/views/topten/torrent.php";
         }
@@ -93,7 +91,6 @@ class Topten extends Controller
 
     public function countries()
     {
-        $db = new Database();
         $limit = isset($_GET["lim"]) ? (int) $_GET["lim"] : false;
         $subtype = isset($_GET["subtype"]) ? (int) $_GET["subtype"] : false;
         $pu = $_SESSION["class"] >= 3;
@@ -109,12 +106,12 @@ class Topten extends Controller
             $limit = 10;
         }
         if ($limit == 10 || $subtype == "us") {
-            $res = $db->run("SELECT name, flagpic, COUNT(users.country) as num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT $limit");
+            $res = DB::run("SELECT name, flagpic, COUNT(users.country) as num FROM countries LEFT JOIN users ON users.country = countries.id GROUP BY name ORDER BY num DESC LIMIT $limit");
             $title = "Top $limit Countries<font class=small> (users)</font>" . ($limit == 10 && $pu ? " <font class=small> - [<a href=" . URLROOT . "/topten/countries?lim=25&amp;subtype=us>Top 25</a>]</font>" : "");
             include APPROOT . "/views/topten/country.php";
         }
         if ($limit == 10 || $subtype == "ul") {
-            $res = $db->run("SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name ORDER BY ul DESC LIMIT $limit");
+            $res = DB::run("SELECT c.name, c.flagpic, sum(u.uploaded) AS ul FROM users AS u LEFT JOIN countries AS c ON u.country = c.id WHERE u.enabled = 'yes' GROUP BY c.name ORDER BY ul DESC LIMIT $limit");
             $title = "Top $limit Countries<font class=small> (total uploaded)</font>" . ($limit == 10 && $pu ? " <font class=small> - [<a href=" . URLROOT . "/topten/countries?lim=25&amp;subtype=ul>Top 25</a>]</font>" : "");
             include APPROOT . "/views/topten/country.php";
         }

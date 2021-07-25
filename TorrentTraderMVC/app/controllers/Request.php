@@ -1,5 +1,5 @@
 <?php
-class Request extends Controller
+class Request
 {
     public function __construct()
     {

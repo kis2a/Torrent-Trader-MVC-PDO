@@ -1,5 +1,5 @@
 <?php
-class Home extends Controller
+class Home
 {
 
     public function __construct()
@@ -99,7 +99,7 @@ class Home extends Controller
             $res = DB::run($query); // should use foreach, but the torrenttablefunction is useful
             if ($res->rowCount() > 0) {
                 $data = [
-                    'torrtable' => $query,
+                    'torrtable' => $res,
                 ];
                 View::render('home/torrent', $data);
             } else {

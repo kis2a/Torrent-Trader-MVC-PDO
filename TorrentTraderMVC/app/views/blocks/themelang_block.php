@@ -1,10 +1,9 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-	$db = Database::instance();
-    Style::block_begin(Lang::T("THEME") . " / " . Lang::T("LANGUAGE"));
+	Style::block_begin(Lang::T("THEME") . " / " . Lang::T("LANGUAGE"));
     $stylesheets = '';
     $languages = '';
-    $ss_r = $db->run("SELECT * from stylesheets");
+    $ss_r = DB::run("SELECT * from stylesheets");
     $ss_sa = array();
 
     while ($ss_a = $ss_r->fetch(PDO::FETCH_ASSOC)) {
@@ -26,7 +25,7 @@ if ($_SESSION['loggedin'] == true) {
         $stylesheets .= "<option value='$ss_id'$ss>$ss_name</option>\n";
     }
 
-    $lang_r = $db->run("SELECT * from languages");
+    $lang_r = DB::run("SELECT * from languages");
     $lang_sa = array();
 
     while ($lang_a = $lang_r->fetch(PDO::FETCH_ASSOC)) {

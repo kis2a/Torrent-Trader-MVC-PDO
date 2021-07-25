@@ -1,5 +1,5 @@
 <?php
-class Bonus extends Controller
+class Bonus
 {
 
     public function __construct()
@@ -115,7 +115,7 @@ class Bonus extends Controller
                     $modcom = $row[9];
                 }
                 $modcomment = gmdate("d-M-Y") . " - " . Lang::T("DELETED_RECORDING") . ": " . $torid . " " . Lang::T("POINTS_OF_SEED_BONUS") . "\n" . $modcom;
-                DB::run("UPDATE users SET seedbonus = seedbonus - '100', modcomment = " . sqlesc($modcomment) . " WHERE id = '$uid'");
+                DB::run("UPDATE users SET seedbonus = seedbonus - '100', modcomment = ? WHERE id = ?", [$modcomment, $uid]);
                 DB::run("UPDATE snatched SET ltime = '86400', hnr = 'no', done = 'yes' WHERE tid = '$torid' AND uid = '$uid'");
                 Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrent?id=$torid><b>$torid</b></a> " . Lang::T("POINTS_OF_SEED_BONUS") . "");
                 Redirect::autolink(URLROOT . "/bonus/trade", Lang::T("ONE_RECORDING_HIT_AND_RUN_DELETED"));
@@ -129,7 +129,7 @@ class Bonus extends Controller
                     $modcom = $row[9];
                 }
                 $modcomment = gmdate("d-M-Y") . " - " . Lang::T("DELETED_RECORDING") . ": " . $torid . " with " . $viewsize . " " . Lang::T("OF_UPLOAD") . "\n" . $modcom;
-                DB::run("UPDATE users SET uploaded = uploaded - '$torsize', modcomment = " . sqlesc($modcomment) . " WHERE id = '$uid'");
+                DB::run("UPDATE users SET uploaded = uploaded - '$torsize', modcomment = ? WHERE id = ?", [$modcomment, $uid]);
                 DB::run("UPDATE snatched SET ltime = '86400', hnr = 'no', done = 'yes' WHERE tid = '$torid' AND uid = '$uid'");
                 Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrent?id=$torid><b>$torid</b></a> " . Lang::T("HIT_AND_RUN_WITH") . " <b>$viewsize</b> " . Lang::T("OF_UPLOAD") . "");
                 Redirect::autolink(URLROOT . "/bonus/trade", Lang::T("ONE_RECORDING_HIT_AND_RUN_DELETED"));

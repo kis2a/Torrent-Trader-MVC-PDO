@@ -1,9 +1,8 @@
 <?php
 if (!MEMBERSONLY || $_SESSION['loggedin'] == true) {
-    $db = Database::instance();
-	$limit = 25; // Only show 25 max
+    $limit = 25; // Only show 25 max
 
-    $res = $db->run("SELECT torrents.id, torrents.name, torrents.image1, torrents.image2, categories.name as cat_name, categories.parent_cat as cat_parent FROM torrents LEFT JOIN categories ON torrents.category=categories.id WHERE banned = 'no' AND (image1 != '' OR image2 != '') AND visible = 'yes' ORDER BY id DESC LIMIT $limit");
+    $res = DB::run("SELECT torrents.id, torrents.name, torrents.image1, torrents.image2, categories.name as cat_name, categories.parent_cat as cat_parent FROM torrents LEFT JOIN categories ON torrents.category=categories.id WHERE banned = 'no' AND (image1 != '' OR image2 != '') AND visible = 'yes' ORDER BY id DESC LIMIT $limit");
     if ($res->rowCount() > 0) {
         Style::block_begin(Lang::T("LATEST_POSTERS"));
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {

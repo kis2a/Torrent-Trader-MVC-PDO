@@ -1,5 +1,5 @@
 <?php
-class Adminexceptions extends Controller
+class Adminexceptions
 {
     public function __construct()
     {

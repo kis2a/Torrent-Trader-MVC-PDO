@@ -1,5 +1,5 @@
 <?php
-class Login extends Controller
+class Login
 {
 
     public function __construct()
@@ -24,8 +24,9 @@ class Login extends Controller
         if (Input::exist() && Cookie::csrf_check()) {
             $username = Input::get("username");
             $password = Input::get("password");
-            
+
             $sql = Users::getUserByUsername($username);
+
             if (!$sql || !password_verify($password, $sql['password'])) {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("LOGIN_INCORRECT"));
             } elseif ($sql['status'] == "pending") {
@@ -48,5 +49,5 @@ class Login extends Controller
         $browser = Ip::agent();
         return md5($browser . $browser);
     }
-    
+
 }

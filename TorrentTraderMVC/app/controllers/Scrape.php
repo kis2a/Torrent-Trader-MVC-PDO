@@ -1,5 +1,5 @@
 <?php
-class Scrape extends Controller
+class Scrape
 {
     public function __construct()
     {
@@ -29,7 +29,7 @@ class Scrape extends Controller
                 } elseif (strlen($info_hash) != 40) {
                     continue;
                 }
-                $infohash[] = sqlesc(strtolower($info_hash));
+                $infohash[] = strtolower($info_hash);
             }
         }
 

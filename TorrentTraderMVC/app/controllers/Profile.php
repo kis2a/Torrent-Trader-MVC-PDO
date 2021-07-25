@@ -1,5 +1,5 @@
 <?php
-class Profile extends Controller
+class Profile
 {
     public function __construct()
     {
@@ -116,7 +116,6 @@ class Profile extends Controller
 
     public function submit()
     {
-        $db = new Database();
         $id = (int) Input::get("id");
         if ($_SESSION['class'] < _MODERATOR && $id != $_SESSION['id']) {
             Redirect::autolink(URLROOT, Lang::T("You dont have permission"));
@@ -137,7 +136,7 @@ class Profile extends Controller
             $notifs = ($pmnotif == 'yes' ? "[pm]" : "");
             if ($_POST['resetpasskey']) {
                 $passkey = '';
-                $db->run("UPDATE users
+                DB::run("UPDATE users
                        SET passkey=?
                        WHERE id =?", [$passkey, $id]);
             }
@@ -149,7 +148,7 @@ class Profile extends Controller
             }
             $hideshoutbox = ($_POST["hideshoutbox"] == "yes") ? "yes" : "no";
             // Save New details. todo removed passkey
-            $db->run("UPDATE users
+            DB::run("UPDATE users
                        SET avatar=?, title=?, signature=?, stylesheet=?, client=?, age=?, gender=?, country=?, team=?, hideshoutbox=?, acceptpms=?, privacy=?, notifs=?, tzoffset=?
                        WHERE id =?", [$avatar, $title, $signature, $stylesheet, $client, $age, $gender, $country, $teams, $hideshoutbox, $acceptpms, $privacy, $notifs, $timezone, $id]);
             Redirect::autolink(URLROOT . "/profile/edit?id=$id", Lang::T("User Edited"));

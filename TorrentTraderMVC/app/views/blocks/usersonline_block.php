@@ -1,11 +1,10 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    $db = Database::instance();
     $TTCache = new Cache();
     $expires = 120; // Cache time in seconds 2 mins
     Style::block_begin(Lang::T("ONLINE_USERS"));
     if (($rows = $TTCache->Get("usersonline_block", $expires)) === false) {
-        $res = $db->run("SELECT id, username FROM users WHERE enabled = 'yes' AND status = 'confirmed' AND privacy !='strong' AND UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(users.last_access) <= 900");
+        $res = DB::run("SELECT id, username FROM users WHERE enabled = 'yes' AND status = 'confirmed' AND privacy !='strong' AND UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(users.last_access) <= 900");
 
         $rows = array();
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {

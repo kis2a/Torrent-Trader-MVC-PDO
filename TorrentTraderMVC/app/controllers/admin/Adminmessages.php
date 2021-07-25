@@ -1,5 +1,5 @@
 <?php
-class Adminmessages extends Controller
+class Adminmessages
 {
 
     public function __construct()

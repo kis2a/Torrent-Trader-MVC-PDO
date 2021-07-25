@@ -1,5 +1,5 @@
 <?php
-class Contactstaff extends Controller
+class Contactstaff
 {
     public function __construct()
     {

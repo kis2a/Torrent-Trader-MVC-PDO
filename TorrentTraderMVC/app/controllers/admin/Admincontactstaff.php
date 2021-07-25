@@ -1,9 +1,14 @@
 <?php
-class Admincontactstaff extends Controller
+class Admincontactstaff
 {
     public function __construct()
     {
         $this->session = Auth::user(_MODERATOR, 2);
+    }
+
+    public function index()
+    {
+        Redirect::to(URLROOT);
     }
 
     public function staffbox()

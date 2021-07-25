@@ -1,5 +1,5 @@
 <?php
-class Account extends Controller
+class Account
 {
     public function __construct()
     {

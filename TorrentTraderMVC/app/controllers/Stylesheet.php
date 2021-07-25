@@ -1,5 +1,5 @@
 <?php
-class Stylesheet extends Controller
+class Stylesheet
 {
 
     public function __construct()

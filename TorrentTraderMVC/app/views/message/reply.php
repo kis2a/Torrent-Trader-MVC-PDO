@@ -1,6 +1,6 @@
 <?php usermenu($_SESSION['id']);
  include APPROOT.'/views/message/messagenavbar.php'; ?><br>
-<form name="form" action="<?php echo URLROOT; ?>/messages/submit" method="post">
+<form name="form" action="<?php echo URLROOT; ?>/messages/submit?type=reply" method="post">
 <input type="hidden" name="receiver" value="<?php echo $data['userid']; ?>" />
 <input type="hidden" name="subject" value="<?php echo $data['subject']; ?>" />
  
@@ -17,7 +17,7 @@
         <?php echo $data['subject']; ?></center>
 </div>
 </div><br>
-<?php print textbbcode("form", "body", $data['msg']);?>
+<?php print textbbcode("form", "body");  // , $data['msg'] ?>
 <center><button type="submit" class="btn-sm ttbtn" name="Update" value="create">Create</button>&nbsp;
     <label>Save Copy In Outbox</label>
     <input type="checkbox" name="save" checked='Checked'>&nbsp;

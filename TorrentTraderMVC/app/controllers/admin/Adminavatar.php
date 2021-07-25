@@ -1,5 +1,5 @@
 <?php
-class Adminavatar extends Controller
+class Adminavatar
 {
 
     public function __construct()

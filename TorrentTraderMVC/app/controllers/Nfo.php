@@ -1,5 +1,5 @@
 <?php
-class Nfo extends Controller
+class Nfo
 {
 
     public function __construct()

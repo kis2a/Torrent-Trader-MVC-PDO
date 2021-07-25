@@ -1,6 +1,6 @@
 <?php
 
-class Search extends Controller
+class Search
 {
 
     public function __construct()

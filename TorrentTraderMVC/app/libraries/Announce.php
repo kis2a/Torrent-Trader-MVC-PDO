@@ -18,7 +18,7 @@ class Announce
         if (preg_match("/^Mozilla|^Opera|^Links|^Lynx/i", $agent)) {
             die("No Browser Access");
         }
-
+        // check infohash strlen
     }
 
     public static function Clientban($peerid)

@@ -1,5 +1,5 @@
 <?php
-class Rules extends Controller
+class Rules
 {
 
     public function __construct()

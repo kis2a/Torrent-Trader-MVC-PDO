@@ -1,5 +1,5 @@
 <?php
-class Adminpolls extends Controller
+class Adminpolls
 {
 
     public function __construct()

@@ -1,5 +1,5 @@
 <?php
-class Snatched extends Controller
+class Snatched
 {
 
     public function __construct()

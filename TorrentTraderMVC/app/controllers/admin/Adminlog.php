@@ -1,5 +1,5 @@
 <?php
-class Adminlog extends Controller
+class Adminlog
 {
 
     public function __construct()

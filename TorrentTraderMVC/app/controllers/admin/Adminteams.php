@@ -1,5 +1,5 @@
 <?php
-class Adminteams extends Controller
+class Adminteams
 {
 
     public function __construct()

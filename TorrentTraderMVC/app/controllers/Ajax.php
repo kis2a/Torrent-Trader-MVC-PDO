@@ -1,5 +1,5 @@
 <?php
-class Ajax extends Controller
+class Ajax
 {
 
     public function __construct()

@@ -1,5 +1,5 @@
 <?php
-class Adminsnatched extends Controller
+class Adminsnatched
 {
 
     public function __construct()

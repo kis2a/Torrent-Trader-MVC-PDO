@@ -1,5 +1,5 @@
 <?php
-class Adminbackup extends Controller
+class Adminbackup
 {
 
     public function __construct()

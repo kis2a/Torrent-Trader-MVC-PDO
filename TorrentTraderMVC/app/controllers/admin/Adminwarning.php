@@ -1,5 +1,5 @@
 <?php
-class Adminwarning extends Controller
+class Adminwarning
 {
 
     public function __construct()

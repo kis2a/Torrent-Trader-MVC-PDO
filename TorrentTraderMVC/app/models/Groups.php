@@ -39,7 +39,6 @@ class Groups
     // Function That Returns The Group Name
     public static function get_user_class_name($i)
     {
-        $pdo = new Database();
         if ($i == $_SESSION["class"]) {
            return $_SESSION["level"];
         }

@@ -1,5 +1,5 @@
 <?php
-class Adminnews extends Controller
+class Adminnews
 {
 
     public function __construct()

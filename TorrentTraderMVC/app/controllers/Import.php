@@ -1,6 +1,6 @@
 <?php
 
-class Import extends Controller
+class Import
 {
 
     public function __construct()
@@ -88,7 +88,9 @@ class Import extends Controller
                         $anon = "no";
                     }
 
-                    $ret = DB::run("INSERT INTO torrents (filename, owner, name, descr, category, added, info_hash, size, numfiles, save_as, announce, external, torrentlang, anon, last_action) VALUES (" . sqlesc($fname) . ", '" . $_SESSION['id'] . "', " . sqlesc($name) . ", " . sqlesc($descr) . ", '" . $catid . "', '" . TimeDate::get_date_time() . "', '" . $infohash . "', '" . $torrentsize . "', '" . $filecount . "', " . sqlesc($fname) . ", '" . $announce . "', '" . $external . "', '" . $langid . "','$anon', '" . TimeDate::get_date_time() . "')");
+                    $ret = DB::run("INSERT INTO torrents (filename, owner, name, descr, category, added, info_hash, size, numfiles, save_as, announce, external, torrentlang, anon, last_action) 
+                                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", 
+                                  [$fname, $_SESSION['id'], $name, $descr, $catid, TimeDate::get_date_time(), $infohash, $torrentsize, $filecount, $fname, $announce, $external, $langid, $anon, TimeDate::get_date_time()]);
                     $id = DB::lastInsertId();
 
                     if ($ret->errorCode() == 1062) {

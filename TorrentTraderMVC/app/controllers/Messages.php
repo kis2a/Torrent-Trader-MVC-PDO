@@ -1,5 +1,5 @@
 <?php
-class Messages extends Controller
+class Messages
 {
 
     public function __construct()
@@ -33,7 +33,8 @@ class Messages extends Controller
 
     public function submit()
     {
-        $receiver = Input::get('receiver');
+        $type = $_GET['type'];
+        $receiver = $_POST['receiver'];
         $subject = Input::get('subject');
         $body = Input::get('body');
         if ($body == "") {
@@ -45,9 +46,13 @@ class Messages extends Controller
         if ($subject == "") {
             Redirect::autolink(URLROOT . "/messages/overview", Lang::T('EMPTY_SUBJECT'));
         }
-        $receiver = Users::getIdByUsername($receiver);
-        // Button Switch
-        $this->insertbytype($_REQUEST['Update'], $receiver['id'], $subject, $body);
+        
+        if ($type == 'reply') {
+            $this->insertbytype($_REQUEST['Update'], $receiver, $subject, $body);
+        } else {
+            $receiver = Users::getIdByUsername($receiver);
+            $this->insertbytype($_REQUEST['Update'], $receiver['id'], $subject, $body);
+        }
     }
 
     public function insertbytype($type, $receiver, $subject, $body)

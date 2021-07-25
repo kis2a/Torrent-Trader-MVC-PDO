@@ -1,5 +1,5 @@
 <?php
-class Confirmemail extends Controller
+class Confirmemail
 {
 
     public function __construct()

@@ -88,9 +88,8 @@ function pager($rpp, $count, $href, $opts = array())
 
 function pagination($query, $per_page = 10, $page = 1, $url = '?')
 {
-    $db = new Database();
     $query = "SELECT COUNT(*) as `num` FROM {$query}";
-    $row = $db->run($query)->fetch();
+    $row = DB::run($query)->fetch();
     $total = $row->num;
     $adjacents = "2";
 

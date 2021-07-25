@@ -1,5 +1,5 @@
 <?php
-class Adminstylesheet extends Controller
+class Adminstylesheet
 {
 
     public function __construct()

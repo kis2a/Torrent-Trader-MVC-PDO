@@ -28,9 +28,8 @@ class Lang
 
     public static function langlist()
     {
-        $db = new Database();
         $ret = array();
-        $stmt = $db->run("SELECT id, name, image FROM torrentlang ORDER BY sort_index, id");
+        $stmt = DB::run("SELECT id, name, image FROM torrentlang ORDER BY sort_index, id");
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $ret[] = $row;
         }

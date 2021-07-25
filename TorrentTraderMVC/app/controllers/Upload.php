@@ -1,6 +1,6 @@
 <?php
 
-class Upload extends Controller
+class Upload
 {
     public function __construct()
     {

@@ -31,6 +31,11 @@ class Users
         DB::run("UPDATE users SET passkey=? WHERE id=?", [$passkey, $id]);
     }
 
+    public static function passwordupdate($password, $id)
+    {
+        DB::run("UPDATE users SET password=? WHERE id=?", [$password, $id]);
+    }
+
     public static function getPasswordSecretStatus($id)
     {
         $row = DB::run("SELECT `password`, `secret`, `status` FROM `users` WHERE `id` =?", [$id])->fetch();
@@ -135,7 +140,7 @@ class Users
     // Get Email&Id by Email
     public static function checkinvite()
     {
-        $stmt = DB::run("SELECT id FROM users WHERE id = $_REQUEST[invite] AND secret = " . sqlesc($_REQUEST["secret"]));
+        $stmt = DB::run("SELECT id FROM users WHERE id = ? AND secret = ?", [$_REQUEST["invite"], $_REQUEST["secret"]]);
         $invite_row = $stmt->fetch(PDO::FETCH_ASSOC);
     }
 

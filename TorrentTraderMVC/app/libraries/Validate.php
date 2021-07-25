@@ -6,7 +6,7 @@ class Validate
 
     public function __construct()
     {
-        $this->db = new Database();
+        //$this->db = new DB
     }
 
     public static function isEmpty($data)

@@ -1,5 +1,5 @@
 <?php
-class Download extends Controller
+class Download
 {
 
     public function __construct()

@@ -1,4 +1,5 @@
 <?php
+usermenu($data['userid']);
 if ($data['friend']->rowCount() == 0) { ?>&nbsp;&nbsp;
     <div class="row ttborder"> <center><b>Friend list is empty!</b></center></div>
     <?php
