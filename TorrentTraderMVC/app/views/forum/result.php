@@ -9,7 +9,7 @@ for ($i = 0; $i < $data['num']; ++$i) {
     $post = $data['res']->fetch(PDO::FETCH_ASSOC);
     $res2 = DB::run("SELECT forumid, subject FROM forum_topics WHERE id=$post[topicid]");
     $topic = $res2->fetch(PDO::FETCH_ASSOC);
-    $res2 = DB::run("SELECT name,minclassread, guest_read FROM forum_forums WHERE id=$post[forumid]");
+    $res2 = DB::run("SELECT name,minclassread, guest_read FROM forum_forums WHERE id=$topic[forumid]");
     $forum = $res2->fetch(PDO::FETCH_ASSOC);
     if ($forum["name"] == "" || ($forum["minclassread"] > $_SESSION["class"] && $forum["guest_read"] == "no")) {
         continue;
