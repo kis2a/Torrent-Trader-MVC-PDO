@@ -21,12 +21,12 @@ while ($row1 = $data['query']->fetch(PDO::FETCH_ASSOC)) {
         $ratio = "---";
     }
     $percentcomp = sprintf("%.2f", 100 * (1 - ($row1["to_go"] / $row["size"])));
-    if (MEMBERSONLY) {
+    if (Config::TT()['MEMBERSONLY']) {
         $res = DB::run("SELECT id, username, privacy FROM users WHERE id=" . $row1["userid"] . "");
         $arr = $res->fetch(PDO::FETCH_ASSOC);
         $arr["username"] = "<a href='".URLROOT."/profile?id=$arr[id]'>" . Users::coloredname($arr['username']) . "</a>";
     }
-    # With MEMBERSONLY off this will be shown.
+    # With Config::TT()['MEMBERSONLY'] off this will be shown.
     if (!$arr["username"]) {
         $arr["username"] = "Unknown User";
     }

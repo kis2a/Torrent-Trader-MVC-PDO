@@ -149,3 +149,11 @@ function uploadimage($x, $imgname, $tid)
         return $ifilename;
     }
 }
+
+function sqlesc($x)
+{
+    if (!is_numeric($x)) {
+        $x = "'" . $x . "'";
+    }
+    return $x;
+}

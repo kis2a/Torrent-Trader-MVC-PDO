@@ -16,7 +16,7 @@ function autoclean()
     }
 
     $ts = $row['last_time']; // $row['0'] returned null now int string
-    if ($ts + AUTOCLEANINTERVAL > $now) {
+    if ($ts + Config::TT()['AUTOCLEANINTERVAL'] > $now) {
         return;
     }
 
@@ -56,7 +56,7 @@ function do_cleanup()
 {
     //LOCAL TORRENTS - GET PEERS DATA AND UPDATE BROWSE STATS
     //DELETE OLD NON-ACTIVE PEERS
-    $deadtime = TimeDate::get_date_time(TimeDate::gmtime() - ANNOUNCEINTERVAL);
+    $deadtime = TimeDate::get_date_time(TimeDate::gmtime() - Config::TT()['ANNOUNCEINTERVAL']);
     DB::run("DELETE FROM peers WHERE last_action < '$deadtime'");
 
     $torrents = array();
@@ -100,7 +100,7 @@ function do_cleanup()
     }
 
     //LOCAL TORRENTS - MAKE NON-ACTIVE/OLD TORRENTS INVISIBLE
-    $deadtime = TimeDate::gmtime() - MAXDEADTORRENTTIMEOUT;
+    $deadtime = TimeDate::gmtime() - Config::TT()['MAXDEADTORRENTTIMEOUT'];
     DB::run("UPDATE torrents SET visible='no' WHERE visible='yes' AND last_action < FROM_UNIXTIME($deadtime) AND seeders = '0' AND leechers = '0' AND external !='yes'");
 
     // Seedbonus Mod
@@ -117,7 +117,7 @@ function do_cleanup()
 
     $ts = $row['last_time']; // $row['0'] returned null
 
-    if ($ts + ADDBONUS < $now) {
+    if ($ts + Config::TT()['ADDBONUS'] < $now) {
         $qry = "SELECT DISTINCT userid as peer, (
     SELECT DISTINCT COUNT( torrent )
     FROM peers
@@ -126,7 +126,7 @@ function do_cleanup()
 
         $res1 = DB::run($qry);
         while ($row = $res1->fetch(PDO::FETCH_LAZY)) {
-            DB::run("UPDATE users SET seedbonus = seedbonus + '" . (BONUSPERTIME * $row->count) . "' WHERE id = '" . $row->peer . "'");
+            DB::run("UPDATE users SET seedbonus = seedbonus + '" . (Config::TT()['BONUSPERTIME'] * $row->count) . "' WHERE id = '" . $row->peer . "'");
             DB::run("UPDATE tasks SET last_time=$now WHERE task='bonus'");
             // Logs::write("bonus and task inserted every hour");
         }
@@ -150,7 +150,7 @@ function do_cleanup()
     // End Remove Vipuntil mod vip
 
     //DELETE PENDING USER ACCOUNTS OVER TIMOUT AGE
-    $deadtime = TimeDate::gmtime() - SIGNUPTIMEOUT;
+    $deadtime = TimeDate::gmtime() - Config::TT()['SIGNUPTIMEOUT'];
     DB::run("DELETE FROM users WHERE status = 'pending' AND added < FROM_UNIXTIME($deadtime)");
 
     // DELETE OLD LOG ENTRIES
@@ -159,10 +159,10 @@ function do_cleanup()
 
     //LEECHWARN USERS WITH LOW RATIO
 
-    if (RATIOWARNENABLE) {
-        $minratio = RATIOWARNMINRATIO;
-        $downloaded = RATIOWARN_MINGIGS * 1024 * 1024 * 1024;
-        $length = RATIOWARN_DAYSTOWARN;
+    if (Config::TT()['RATIOWARNENABLE']) {
+        $minratio = Config::TT()['RATIOWARNMINRATIO'];
+        $downloaded = Config::TT()['RATIOWARN_MINGIGS'] * 1024 * 1024 * 1024;
+        $length = Config::TT()['RATIOWARN_DAYSTOWARN'];
 
         //ADD WARNING
         $res = DB::run("SELECT id,username FROM users WHERE class = 1 AND warned = 'no' AND enabled='yes' AND uploaded / downloaded < $minratio AND downloaded >= $downloaded");
@@ -222,8 +222,8 @@ function do_cleanup()
     //END//
 
     // set freeleech
-    if (FREELEECHGBON);{
-        $gigs = FREELEECHGB;
+    if (Config::TT()['FREELEECHGBON']);{
+        $gigs = Config::TT()['FREELEECHGB'];
         $query = DB::run("SELECT `id`, `name` FROM `torrents` WHERE `banned` = ? AND `freeleech` = ? AND `size` >= ?", ['no', 0, $gigs]);
         if ($query->rowCount() > 0) {
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
@@ -311,16 +311,16 @@ function do_cleanup()
                     DB::run("UPDATE users SET enabled = 'no', warned = 'no', modcomment = '$modcomment' WHERE id = $user");
                     DB::run("DELETE FROM warnings WHERE userid = $user AND type = 'HnR'");
                     Logs::write(Lang::T("CLEANUP_THE_MEMBER") . " <a href='account-details.php?id=" . $user . "'>" . $h[0] . "</a> " . Lang::T("CLEANUP_HAS_BEEN_BANNED_REASON") . " " . $count . " H&R.");
-                    $subject = "" . Lang::T("CLEANUP_YOUR_ACCOUNT") . " " . SITENAME . " " . Lang::T("CLEANUP_HAS_BEEN_DISABLED") . "";
+                    $subject = "" . Lang::T("CLEANUP_YOUR_ACCOUNT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("CLEANUP_HAS_BEEN_DISABLED") . "";
                     $body = "" . Lang::T("CLEANUP_YOU_WERE_BANNED_FOLLOWING") . "\n
 												------------------------------
 												\n/" . Lang::T("CLEANUP_YOU_HAVE_ACCUMULATED") . " $count H&R.\n
 												------------------------------
 												\n" . Lang::T("CLEANUP_YOU_CAN_CONTACT_BY_LINK") . " :
 												" . URLROOT . "/contact.php
-												\n\n\n" . SITENAME . " " . Lang::T("ADMIN");
+												\n\n\n" . Config::TT()['SITENAME'] . " " . Lang::T("ADMIN");
                     $TTMail = new TTMail();
-                    $TTMail->Send($h[1], "$subject", "$body", "" . Lang::T("OF") . ": " . SITEEMAIL . "", "-f" . SITEEMAIL . "");
+                    $TTMail->Send($h[1], "$subject", "$body", "" . Lang::T("OF") . ": " . Config::TT()['SITEEMAIL'] . "", "-f" . Config::TT()['SITEEMAIL'] . "");
                 endif;
             endwhile;
         endif;

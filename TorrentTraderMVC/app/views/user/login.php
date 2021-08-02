@@ -1,5 +1,5 @@
 
-        <?php if (MEMBERSONLY) {?>
+        <?php if (Config::TT()['MEMBERSONLY']) {?>
         <center><b><?php echo Lang::T("MEMBERS_ONLY"); ?></b>
         <?php }?>
         <div class="row justify-content-center">

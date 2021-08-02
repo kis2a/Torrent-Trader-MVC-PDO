@@ -73,6 +73,7 @@ html, body {
 }
 
 .block-body {
+	padding: 0.25rem;
     border: 10px solid;
     border-image-slice: 1;
     border-width: 5px;

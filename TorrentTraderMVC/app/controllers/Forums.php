@@ -12,10 +12,10 @@ class Forums
      */
     private function validForumUser($extra = false)
     {
-        if (!FORUMS) {
+        if (!Config::TT()['FORUMS']) {
             Redirect::autolink(URLROOT, Lang::T("FORUM_AVAILABLE"));
         }
-        if (!FORUMS_GUESTREAD && !$_SESSION['loggedin']) {
+        if (!Config::TT()['FORUMS_GUESTREAD'] && !$_SESSION['loggedin']) {
             Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
         }
         if ($_SESSION["forumbanned"] == "yes" || $_SESSION["view_forum"] == "no") {

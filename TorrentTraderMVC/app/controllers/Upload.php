@@ -13,7 +13,7 @@ class Upload
         if ($_SESSION["can_upload"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("UPLOAD_NO_PERMISSION"));
         }
-        if (UPLOADERSONLY && $_SESSION["class"] < 4) {
+        if (Config::TT()['UPLOADERSONLY'] && $_SESSION["class"] < 4) {
             Redirect::autolink(URLROOT, Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"));
         }
     }
@@ -129,15 +129,15 @@ class Upload
 
                 //if externals is turned off
                 $external = $announce !== ANNOUNCELIST ? "yes" : "no";
-                if (!ALLOWEXTERNAL && $external == 'yes') {
+                if (!Config::TT()['ALLOWEXTERNAL'] && $external == 'yes') {
                     $message = Lang::T("UPLOAD_NO_TRACKER_ANNOUNCE");
                 }
 
             }
             if ($message) {
                 @$tupload->remove();
-                @unlink("$nfo_dir/$nfofilename");
-                Redirect::autolink(URLROOT . '/upload', Lang::T("UPLOAD_FAILED"));
+                @unlink("$torrent_dir/$fname");
+                Redirect::autolink(URLROOT . '/upload', $message);
             }
 
             //release name check and adjust

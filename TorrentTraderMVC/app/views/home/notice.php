@@ -1,4 +1,4 @@
 <?php
 Style::begin(Lang::T("NOTICE"));
-echo SITENOTICE;
+echo Config::TT()['SITENOTICE'];
 Style::end();

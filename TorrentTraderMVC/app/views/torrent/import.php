@@ -32,7 +32,7 @@ foreach ($langs as $row) {
 $language .= "</select>\n";
 print("<tr><td align='right'>Language: </td><td align='left'>" . $language . "</td></tr>");
 $anonycheck = '';
-if (ANONYMOUSUPLOAD) {?>
+if (Config::TT()['ANONYMOUSUPLOAD']) {?>
                        <tr><td align="right"><?php echo Lang::T("UPLOAD_ANONY"); ?>: </td><td><?php printf("<input name='anonycheck' value='yes' type='radio' " . ($anonycheck ? " checked='checked'" : "") . " />Yes <input name='anonycheck' value='no' type='radio' " . (!$anonycheck ? " checked='checked'" : "") . " />No");?> &nbsp;<?php echo Lang::T("UPLOAD_ANONY_MSG"); ?>
                        </td></tr>
 

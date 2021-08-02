@@ -1,17 +1,17 @@
 <?php
-if (MIDDLENAV) {?>
+if (Config::TT()['MIDDLENAV']) {?>
   <?php Blocks::middle();
 }?>
 
 <div class='row'>
 <?php
-if (LEFTNAV) { ?>
+if (Config::TT()['LEFTNAV']) { ?>
 <div class="ttbottombar" >
   <?php Blocks::left();?>
 </div> <?php
 } ?>
 <?php
-if (RIGHTNAV) {?>
+if (Config::TT()['RIGHTNAV']) {?>
 <div class="ttbottombar">
     <?php Blocks::right();?>
 </div>
@@ -22,7 +22,7 @@ if (RIGHTNAV) {?>
 </div>
 
 <?php
-if (RIGHTNAV) {?>
+if (Config::TT()['RIGHTNAV']) {?>
 <div class="ttsidebar">
     <?php Blocks::right();?>
 </div>

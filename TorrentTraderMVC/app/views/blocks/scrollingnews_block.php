@@ -1,6 +1,6 @@
 <?php
 if ($_SESSION['loggedin'] == true) {
-    if (NEWSON) { //check news is turned on first
+    if (Config::TT()['NEWSON']) { //check news is turned on first
 		Style::block_begin(Lang::T("LATEST_NEWS"));
         $res = DB::run("SELECT * FROM news ORDER BY added DESC LIMIT 10"); ?>
 	<style type="text/css">

@@ -10,12 +10,12 @@ class Rating
     {
         $id = (int) Input::get("id");
         if (!Validate::Id($id)) {
-            Redirect::autolink(URLROOT . "//torrent?id=$id", Lang::T("THATS_NOT_A_VALID_ID"));
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("THATS_NOT_A_VALID_ID"));
         }
         if (Input::get("takerating") == 'yes') {
             $rating = (int) Input::get('rating');
             if ($rating <= 0 || $rating > 5) {
-                Redirect::autolink(URLROOT . "//torrent?id=$id", Lang::T("INVAILD_RATING"));
+                Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("INVAILD_RATING"));
             }
             $res = DB::run("INSERT INTO ratings (torrent, user, rating, added) VALUES ($id, " . $_SESSION["id"] . ", $rating, '" . TimeDate::get_date_time() . "')");
             if (!$res) {

@@ -31,7 +31,7 @@ torrentmenu($data['id'], $torr['external']);
         <b><?php echo Lang::T("VIEWS"); ?>:</b>&nbsp;<?php echo number_format($torr["views"]); ?><br>
         <b><?php echo Lang::T("HITS"); ?>:</b>&nbsp;<?php echo number_format($torr["hits"]); ?><br>
         <?php // LIKE MOD
-        if (ALLOWLIKES) {
+        if (Config::TT()['ALLOWLIKES']) {
             $data1 = DB::run("SELECT user FROM likes WHERE liked=? AND type=? AND user=? AND reaction=?", [$torr['id'], 'torrent', $_SESSION['id'], 'like']);
             $likes = $data1->fetch(PDO::FETCH_ASSOC);
             if ($likes) { ?>
@@ -40,7 +40,7 @@ torrentmenu($data['id'], $torr['external']);
                 <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=liketorrent'><img src='<?php echo URLROOT; ?>/assets/images/like.png' width='80' height='40' border='0'></a><br><?php
             }
         }
-        if (ALLOWLIKES) {
+        if (Config::TT()['ALLOWLIKES']) {
             $data3 = DB::run("SELECT * FROM `users` AS u LEFT JOIN `likes` AS l ON(u.id = l.user) WHERE liked=? AND type=?", [$torr['id'], 'torrent']);
             print ('<b>Liked by</b>&nbsp;');
             foreach ($data3 as $stmt): 
@@ -65,7 +65,7 @@ torrentmenu($data['id'], $torr['external']);
     
 <div class="col">
     <?php
-    if (!FORCETHANKS) {
+    if (!Config::TT()['FORCETHANKS']) {
         // Magnet
         if ($torr["external"] == 'yes') {
             print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm btn-success'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");

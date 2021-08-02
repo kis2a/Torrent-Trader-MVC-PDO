@@ -26,8 +26,8 @@ class Bonus
             'title' => 'Seed Bonus',
             'bonus' => $row1,
             'usersbonus' => $_SESSION['seedbonus'],
-            'configbonuspertime' => BONUSPERTIME,
-            'configautoclean_interval' => floor(ADDBONUS / 60),
+            'configbonuspertime' => Config::TT()['BONUSPERTIME'],
+            'configautoclean_interval' => floor(Config::TT()['ADDBONUS'] / 60),
 			'usersid' => $_SESSION['id'],
         ];
         View::render('bonus/index', $data, 'user');

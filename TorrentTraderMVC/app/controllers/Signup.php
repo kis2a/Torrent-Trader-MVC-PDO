@@ -9,10 +9,10 @@ class Signup
     public function index()
     {
         //check if IP is already a peer
-        if (IPCHECK) {
+        if (Config::TT()['IPCHECK']) {
             $ip = $_SERVER['REMOTE_ADDR'];
             $ipq = get_row_count("users", "WHERE ip = '$ip'");
-            if ($ipq >= ACCOUNTMAX) {
+            if ($ipq >= Config::TT()['ACCOUNTMAX']) {
                 Redirect::autolink(URLROOT . '/login', "This IP is already in use !");
             }
         }
@@ -20,13 +20,13 @@ class Signup
         $invite = Input::get("invite");
         $secret = Input::get("secret");
         if (!Validate::Id($invite) || strlen($secret) != 20) {
-            if (INVITEONLY) {
+            if (Config::TT()['INVITEONLY']) {
                 Redirect::autolink(URLROOT . '/home', "<center>" . Lang::T("INVITE_ONLY_MSG") . "<br></center>");
             }
         } else {
             $invite_row = Users::selectInviteIdBySecret($invite, $secret);
             if (!$invite_row) {
-                Redirect::autolink(URLROOT . '/home', Lang::T("INVITE_ONLY_NOT_FOUND") . "" . (SIGNUPTIMEOUT / 86400) . "days.");
+                Redirect::autolink(URLROOT . '/home', Lang::T("INVITE_ONLY_NOT_FOUND") . "" . (Config::TT()['SIGNUPTIMEOUT'] / 86400) . "days.");
             }
         }
         $title = Lang::T("SIGNUP");
@@ -62,8 +62,8 @@ class Signup
                 if (!$invite_row) {
                     // get max members, and check how many users there is
                     $numsitemembers = get_row_count("users");
-                    if ($numsitemembers >= MAXUSERS) {
-                        $msg = Lang::T("SITE_FULL_LIMIT_MSG") . number_format(MAXUSERS) . " " . Lang::T("SITE_FULL_LIMIT_REACHED_MSG") . " " . number_format($numsitemembers) . " members";
+                    if ($numsitemembers >= Config::TT()['MAXUSERS']) {
+                        $msg = Lang::T("SITE_FULL_LIMIT_MSG") . number_format(Config::TT()['MAXUSERS']) . " " . Lang::T("SITE_FULL_LIMIT_REACHED_MSG") . " " . number_format($numsitemembers) . " members";
                         Redirect::autolink(URLROOT . '/home', $msg);
                     }
                     // check email isnt banned
@@ -103,16 +103,16 @@ class Signup
                     Users::updateUserBits($wantusername, $wantpassword, $secret, 'confirmed', TimeDate::get_date_time(), $invite_row['id']);
 
                     //send pm to new user
-                    if (WELCOMEPM_ON) {
+                    if (Config::TT()['WELCOMEPM_ON']) {
                         $dt = TimeDate::get_date_time();
-                        $msg = WELCOMEPM_MSG;
+                        $msg = Config::TT()['WELCOMEPM_MSG'];
                         Message::insertmessage(0, $invite_row['id'], $dt, 'Welcome', $msg, 'yes', 'in');
                     }
                     Redirect::autolink(URLROOT . '/login', Lang::T("ACCOUNT_ACTIVATED"));
                     die;
                 }
 
-                if (CONFIRMEMAIL) {
+                if (Config::TT()['CONFIRMEMAIL']) {
                     $status = "pending";
                 } else {
                     $status = "confirmed";
@@ -135,24 +135,24 @@ class Signup
                     (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     [$wantusername, $wantpassword, $secret, $email, $status, TimeDate::get_date_time(),
                         TimeDate::get_date_time(), TimeDate::get_date_time(), $age, $country, $gender,
-                        $client, DEFAULTTHEME, DEFAULTLANG, $signupclass, Ip::getIP()]);
+                        $client, Config::TT()['DEFAULTTHEME'], Config::TT()['DEFAULTLANG'], $signupclass, Ip::getIP()]);
                 $id = DB::lastInsertId();
 
                 //send pm to new user
-                if (WELCOMEPM_ON) {
+                if (Config::TT()['WELCOMEPM_ON']) {
                     $dt = TimeDate::get_date_time();
-                    $mess = WELCOMEPM_MSG;
+                    $mess = Config::TT()['WELCOMEPM_MSG'];
                     Message::insertmessage(0, $id, $dt, 'Welcome', $mess, 'yes', 'in');
                 }
 
-                if (ACONFIRM) {
-                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . SITENAME . " " . Lang::T("HAS_BEEN_CREATED_YOU_WILL_HAVE_TO_WAIT") . "\n\n" . SITENAME . " " . Lang::T("ADMIN");
+                if (Config::TT()['ACONFIRM']) {
+                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_CREATED_YOU_WILL_HAVE_TO_WAIT") . "\n\n" . Config::TT()['SITENAME'] . " " . Lang::T("ADMIN");
                 } else { //NO ADMIN CONFIRM, BUT EMAIL CONFIRM
-                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . SITENAME . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/confirmemail/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
+                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/Config::TT()['CONFIRMEMAIL']/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
                 }
-                if (CONFIRMEMAIL) {
+                if (Config::TT()['CONFIRMEMAIL']) {
                     $TTMail = new TTMail();
-                    $TTMail->Send($email, "Your " . SITENAME . " User Account", $body, "", "-f" . SITEEMAIL . "");
+                    $TTMail->Send($email, "Your " . Config::TT()['SITENAME'] . " User Account", $body, "", "-f" . Config::TT()['SITEEMAIL'] . "");
                     Redirect::autolink(URLROOT . '/login', Lang::T("A_CONFIRMATION_EMAIL_HAS_BEEN_SENT") . " (" . htmlspecialchars($email) . "). " . Lang::T("ACCOUNT_CONFIRM_SENT_TO_ADDY_REST") . " <br/ >");
                 } else {
                     Redirect::autolink(URLROOT . '/login', Lang::T("ACCOUNT_ACTIVATED"));

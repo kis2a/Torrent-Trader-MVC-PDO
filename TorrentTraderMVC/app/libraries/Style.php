@@ -8,28 +8,28 @@ class Style
     public static function header($title = "")
     {
         // Site online check
-        if (!SITE_ONLINE) {
+        if (!Config::TT()['SITE_ONLINE']) {
             if ($_SESSION["control_panel"] != "yes") {
-                echo '<br /><br /><br /><center>' . stripslashes(OFFLINEMSG) . '</center><br /><br />';
+                echo '<br /><br /><br /><center>' . stripslashes(Config::TT()['OFFLINEMSG']) . '</center><br /><br />';
                 die;
             } else {
-                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set SITE_ONLINE to true </center><br /><br />';
+                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set Config::TT()[SITE_ONLINE] to true </center><br /><br />';
             }
         }
         if (!$_SESSION['loggedin'] == true) {
             Guest::guestadd();
         }
         if ($title == "") {
-            $title = SITENAME;
+            $title = Config::TT()['SITENAME'];
         } else {
-            $title = SITENAME . " : " . htmlspecialchars($title);
+            $title = Config::TT()['SITENAME'] . " : " . htmlspecialchars($title);
         }
-        require_once APPROOT . "/views/inc/" . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . "/header.php";
+        require_once APPROOT . "/views/inc/" . ($_SESSION['stylesheet'] ?: Config::TT()['DEFAULTTHEME']) . "/header.php";
     }
     
     public static function footer()
     {
-        require_once APPROOT . "/views/inc/" . ($_SESSION['stylesheet'] ?: DEFAULTTHEME) . "/footer.php";
+        require_once APPROOT . "/views/inc/" . ($_SESSION['stylesheet'] ?: Config::TT()['DEFAULTTHEME']) . "/footer.php";
     }
     
     public static function begin($caption = "-", $align = "justify")
@@ -57,21 +57,21 @@ class Style
     public static function adminheader($title = "")
     {
         // Site online check
-        if (!SITE_ONLINE) {
+        if (!Config::TT()['SITE_ONLINE']) {
             if ($_SESSION["control_panel"] != "yes") {
-                echo '<br /><br /><br /><center>' . stripslashes(OFFLINEMSG) . '</center><br /><br />';
+                echo '<br /><br /><br /><center>' . stripslashes(Config::TT()['OFFLINEMSG']) . '</center><br /><br />';
                 die;
             } else {
-                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set SITE_ONLINE to true </center><br /><br />';
+                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set Config::TT()[SITE_ONLINE] to true </center><br /><br />';
             }
         }
         if (!$_SESSION['loggedin'] == true) {
             Guest::guestadd();
         }
         if ($title == "") {
-            $title = SITENAME;
+            $title = Config::TT()['SITENAME'];
         } else {
-            $title = SITENAME . " : " . htmlspecialchars($title);
+            $title = Config::TT()['SITENAME'] . " : " . htmlspecialchars($title);
         }
         require_once APPROOT . "/views/admin/header.php";
     }
@@ -123,10 +123,10 @@ class Style
     public static function size()
     {
         $size = 8;
-        if (!RIGHTNAV || !LEFTNAV) {
+        if (!Config::TT()['RIGHTNAV'] || !Config::TT()['LEFTNAV']) {
             $size = 10;
         }
-        if (!RIGHTNAV && !LEFTNAV) {
+        if (!Config::TT()['RIGHTNAV'] && !Config::TT()['LEFTNAV']) {
             $size = 12;
         }
         return $size;
@@ -156,21 +156,21 @@ class Style
     public static function error_header($title = "")
     {
         // Site online check
-        if (!SITE_ONLINE) {
+        if (!Config::TT()['SITE_ONLINE']) {
             if ($_SESSION["control_panel"] != "yes") {
-                echo '<br /><br /><br /><center>' . stripslashes(OFFLINEMSG) . '</center><br /><br />';
+                echo '<br /><br /><br /><center>' . stripslashes(Config::TT()['OFFLINEMSG']) . '</center><br /><br />';
                 die;
             } else {
-                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set SITE_ONLINE to true </center><br /><br />';
+                echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set Config::TT()[SITE_ONLINE] to true </center><br /><br />';
             }
         }
         if (!$_SESSION['loggedin'] == true) {
             Guest::guestadd();
         }
         if ($title == "") {
-            $title = SITENAME;
+            $title = Config::TT()['SITENAME'];
         } else {
-            $title = SITENAME . " : " . htmlspecialchars($title);
+            $title = Config::TT()['SITENAME'] . " : " . htmlspecialchars($title);
         }
         require_once APPROOT . "/views/error/error_header.php";
     }

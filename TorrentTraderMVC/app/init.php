@@ -2,6 +2,7 @@
 session_start();
 // Load Config
 require_once 'config/config.php';
+$config = require_once 'config/settings.php';
 // Load Langauge
 if (array_key_exists('language', $_SESSION)) {
     require_once LANG . $_SESSION['language'].'.php';
@@ -22,7 +23,6 @@ require_once 'helpers/tzs_helper.php';
 // Load Helpers
 require "helpers/general_helper.php";
 require "helpers/cleanup_helper.php";
-require "helpers/security_helper.php";
 require "helpers/forum_helper.php";
 require "helpers/pagination_helper.php";
 require "helpers/format_helper.php";

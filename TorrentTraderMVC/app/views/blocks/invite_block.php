@@ -1,5 +1,5 @@
 <?php
-if ((INVITEONLY || ENABLEINVITES) && $_SESSION['loggedin'] == true) {
+if ((Config::TT()['INVITEONLY'] || Config::TT()['ENABLEINVITES']) && $_SESSION['loggedin'] == true) {
     $invites = $_SESSION["invites"];
     Style::block_begin(Lang::T("INVITES"));
     ?>

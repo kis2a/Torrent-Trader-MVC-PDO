@@ -9,7 +9,7 @@ class Admincensor
 
     public function index()
     {
-        if (OLD_CENSOR) {
+        if (Config::TT()['OLD_CENSOR']) {
             if ($_POST['submit'] == 'Add Censor') {
                 DB::run("INSERT INTO censor (word, censor) VALUES (?,?)", [$_POST['word'], $_POST['censor']]);
             }

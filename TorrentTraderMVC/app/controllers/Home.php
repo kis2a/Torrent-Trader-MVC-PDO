@@ -31,12 +31,12 @@ class Home
             }
         }
         // Site Notice
-        if (SITENOTICEON) {
+        if (Config::TT()['SITENOTICEON']) {
             $data = [];
             View::render('home/notice', $data);
         }
         // Site News
-        if (NEWSON && $_SESSION['view_news'] == "yes") {
+        if (Config::TT()['NEWSON'] && $_SESSION['view_news'] == "yes") {
             Style::begin(Lang::T("NEWS"));
             $res = DB::run("SELECT news.id, news.title, news.added, news.body, users.username FROM news LEFT JOIN users ON news.userid = users.id ORDER BY added DESC LIMIT 10");
             if ($res->rowCount() > 0) {
@@ -69,23 +69,22 @@ class Home
         }
 
         // Shoutbox
-        if (SHOUTBOX && !($_SESSION['hideshoutbox'] == 'yes')) {
+        if (Config::TT()['SHOUTBOX'] && !($_SESSION['hideshoutbox'] == 'yes')) {
             $data = [];
             View::render('home/shoutbox', $data);
         }
         // Last Forum Post On Index
-        if (FORUMONINDEX) {
+        if (Config::TT()['FORUMONINDEX']) {
             $data = [];
             View::render('home/lastforumpost', $data);
         }
 
         // Latest Torrents
-        if (!$_SESSION['loggedin']) {
-            $msg = Lang::T("BROWSE_MEMBERS_ONLY");
+        if (Config::TT()['MEMBERSONLY'] && !$_SESSION['loggedin']) {
             $data = [
-                'message' => $msg,
+                'message' => Lang::T("BROWSE_MEMBERS_ONLY")
             ];
-            View::render('home/ok', $data);
+            View::render('home/notorrents', $data);
         } else {
             $query = "SELECT torrents.id, torrents.anon, torrents.announce, torrents.category, torrents.sticky,  torrents.vip,  torrents.tube,  torrents.imdb, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech,
             categories.name AS cat_name, categories.image AS cat_pic, categories.parent_cat AS cat_parent,
@@ -111,7 +110,7 @@ class Home
             }
         }
         // Disclaimer
-        if (DISCLAIMERON) {
+        if (Config::TT()['DISCLAIMERON']) {
             $data = [];
             View::render('home/disclaimer', $data);
         }

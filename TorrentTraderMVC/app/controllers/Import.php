@@ -70,7 +70,7 @@ class Import
                         $external = 'no';
                     }
 
-                    if (!ALLOWEXTERNAL && $external == 'yes') {
+                    if (!Config::TT()['ALLOWEXTERNAL'] && $external == 'yes') {
                         $message .= Lang::T("UPLOAD_NO_TRACKER_ANNOUNCE");
                         echo $message;
                         continue;
@@ -108,7 +108,7 @@ class Import
                     copy("$dir/$files[$i]", "$torrent_dir/$id.torrent");
 
                     //EXTERNAL SCRAPE
-                    if ($external == 'yes' && UPLOADSCRAPE) {
+                    if ($external == 'yes' && Config::TT()['UPLOADSCRAPE']) {
                         Tscraper::ScrapeId($id);
                     }
 

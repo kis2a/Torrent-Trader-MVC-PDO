@@ -53,7 +53,7 @@ class Adminstylesheet
         $ids = array_map("intval", $_POST["ids"]);
         $ids = implode(', ', $ids);
         DB::run("DELETE FROM `stylesheets` WHERE `id` IN ($ids)");
-        DB::run("UPDATE `users` SET `stylesheet` = " . DEFAULTTHEME . " WHERE stylesheet NOT IN (SELECT id FROM stylesheets)");
+        DB::run("UPDATE `users` SET `stylesheet` = " . Config::TT()['DEFAULTTHEME'] . " WHERE stylesheet NOT IN (SELECT id FROM stylesheets)");
         Redirect::autolink(URLROOT . "/adminstylesheet", Lang::T("THEME_SUCCESS_THEME_DELETED"));
     }
 

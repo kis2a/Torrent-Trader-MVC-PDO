@@ -95,7 +95,7 @@ function format_comment($text)
     //[hr=#ffffff] [hr=red]
     $s = preg_replace("/\[hr=((#[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9])|([a-zA-z]+))\]/i", "<hr color=\"\\1\"/>", $s);
     //[hide]Link[/hide]
-    if (HIDEBBCODE && $_SESSION['loggedin']) {
+    if (Config::TT()['HIDEBBCODE'] && $_SESSION['loggedin']) {
         $id = (int) Input::get("topicid");
         $reply = DB::run("SELECT * FROM forum_posts WHERE topicid=$id AND userid=$_SESSION[id]");
         if ($reply->rowCount() == 0) {
@@ -117,7 +117,7 @@ function format_comment($text)
         $s = str_replace($code, '<img border="0" src="' . URLROOT . '/assets/images/smilies/' . $url . '" alt="' . $code . '" title="' . $code . '" />', $s);
     }
 
-    if (OLD_CENSOR) {
+    if (Config::TT()['OLD_CENSOR']) {
         $r = DB::run("SELECT * FROM censor");
         while ($rr = $r->fetch(PDO::FETCH_ASSOC)) {
             $s = preg_replace("/" . preg_quote($rr[0]) . "/i", $rr[1], $s);

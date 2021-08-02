@@ -17,7 +17,7 @@ class Confirmemail
         }
         $row = Users::getPasswordSecretStatus($id);
         if (!$row) {
-            $mgs = sprintf(Lang::T("CONFIRM_EXPIRE"), SIGNUPTIMEOUT / 86400);
+            $mgs = sprintf(Lang::T("CONFIRM_EXPIRE"), Config::TT()['SIGNUPTIMEOUT'] / 86400);
             Redirect::autolink(URLROOT, $mgs);
         }
         if ($row['status'] != "pending") {

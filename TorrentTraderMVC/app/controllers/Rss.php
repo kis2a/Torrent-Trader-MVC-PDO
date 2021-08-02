@@ -34,8 +34,8 @@ class Rss
         // start the RSS feed output
         header("Content-Type: application/xhtml+xml; charset=".CHARSET."");
         echo ("<?xml version=\"1.0\" encoding=\"".CHARSET."\"?>");
-        echo ("<rss version=\"2.0\"><channel><generator>" . htmlspecialchars(SITENAME) . " RSS 2.0</generator><language>en</language>" .
-            "<title>" . SITENAME . "</title><description>" . htmlspecialchars(SITENAME) . " RSS Feed</description><link>" . URLROOT . "</link><copyright>Copyright " . htmlspecialchars(SITENAME) . "</copyright><pubDate>" . date("r") . "</pubDate>");
+        echo ("<rss version=\"2.0\"><channel><generator>" . htmlspecialchars(Config::TT()['SITENAME']) . " RSS 2.0</generator><language>en</language>" .
+            "<title>" . Config::TT()['SITENAME'] . "</title><description>" . htmlspecialchars(Config::TT()['SITENAME']) . " RSS Feed</description><link>" . URLROOT . "</link><copyright>Copyright " . htmlspecialchars(Config::TT()['SITENAME']) . "</copyright><pubDate>" . date("r") . "</pubDate>");
         $res = DB::run("SELECT torrents.id, torrents.name, torrents.size, torrents.category, torrents.added, torrents.leechers, torrents.seeders, categories.parent_cat as cat_parent, categories.name AS cat_name FROM torrents LEFT JOIN categories ON category = categories.id $where ORDER BY added DESC $limit");
         while ($row = $res->fetch(PDO::FETCH_LAZY)) {
             list($id, $name, $size, $category, $added, $leechers, $seeders, $catname) = $row;

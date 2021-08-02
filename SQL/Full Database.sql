@@ -353,8 +353,8 @@ INSERT INTO `countries` (`id`, `name`, `flagpic`, `domain`) VALUES
 (98, 'Estonia', 'estonia.gif', 'EE'),
 (99, 'Colombia', 'colombia.gif', 'CO'),
 (100, 'England', 'england.gif', 'GB'),
-(101, 'Egypt', 'egypt.gif', 'EG');
-
+(101, 'Egypt', 'egypt.gif', 'EG'),
+(102, 'Bulgaria', 'bulgaria.gif', 'BG');
 
 -- --------------------------------------------------------
 

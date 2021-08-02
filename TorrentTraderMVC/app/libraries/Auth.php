@@ -74,8 +74,8 @@ class Auth
 
     public static function isLoggedIn($force = 0)
     {
-        // If force 0 guest view, force 1 use config membersonly, force 2 always hidden from guest
-        if ($force == 1 && MEMBERSONLY) {
+        // If force 0 guest view, force 1 use config Config::TT()['MEMBERSONLY'], force 2 always hidden from guest
+        if ($force == 1 && Config::TT()['MEMBERSONLY']) {
             if (!$_SESSION['loggedin']) {
                 Redirect::to(URLROOT . "/logout");
             }
@@ -95,14 +95,14 @@ class Auth
 
     public static function isClosed($wrapper = 1)
     {
-        if (!SITE_ONLINE) {
+        if (!Config::TT()['SITE_ONLINE']) {
             if ($_SESSION["control_panel"] != "yes") {
                 if ($wrapper) {
                     ob_start();
                     ob_clean();
                 }
                 require_once "../app/views/inc/darktheme/header.php";
-                echo '<div class="alert alert-warning"><center>' . stripslashes(OFFLINEMSG) . '</center></div>';
+                echo '<div class="alert alert-warning"><center>' . stripslashes(Config::TT()['OFFLINEMSG']) . '</center></div>';
                 require_once "../app/views/inc/default/footer.php";
                 if ($wrapper) {
                     die();

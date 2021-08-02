@@ -1,12 +1,12 @@
 <div class='row'>
 <?php
-if (LEFTNAV) { ?>
+if (Config::TT()['LEFTNAV']) { ?>
 <div class="ttbottombar" >
   <?php require APPROOT . '/views/admin/left.php'; ?>
 </div> <?php
 } ?>
 <?php
-if (RIGHTNAV) {?>
+if (Config::TT()['RIGHTNAV']) {?>
 <div class="ttbottombar">
     <?php require APPROOT . '/views/admin/right.php'; ?>
 </div>
@@ -17,7 +17,7 @@ if (RIGHTNAV) {?>
 </div>
 
 <?php
-if (RIGHTNAV) {?>
+if (Config::TT()['RIGHTNAV']) {?>
 <div class="ttsidebar">
     <?php require APPROOT . '/views/admin/right.php'; ?>
 </div>

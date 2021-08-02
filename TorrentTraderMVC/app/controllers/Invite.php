@@ -9,12 +9,12 @@ class Invite
 
     public function index()
     {
-        if (!INVITEONLY && !ENABLEINVITES) {
+        if (!Config::TT()['INVITEONLY'] && !Config::TT()['ENABLEINVITES']) {
             Redirect::autolink(URLROOT, Lang::T("INVITES_DISABLED_MSG"));
         }
         $users = get_row_count("users", "WHERE enabled = 'yes'");
-        if ($users >= MAXUSERSINVITE) {
-            Redirect::autolink(URLROOT, "Sorry, The current user account limit (" . number_format(MAXUSERSINVITE) . ") has been reached. Inactive accounts are pruned all the time, please check back again later...");
+        if ($users >= Config::TT()['MAXUSERSINVITE']) {
+            Redirect::autolink(URLROOT, "Sorry, The current user account limit (" . number_format(Config::TT()['MAXUSERSINVITE']) . ") has been reached. Inactive accounts are pruned all the time, please check back again later...");
         }
         if ($_SESSION["invites"] == 0) {
             Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_NO_INVITES_MSG"));
@@ -53,17 +53,17 @@ class Invite
             $secret = Helper::mksecret();
             $username = "invite_" . Helper::mksecret(20);
             $ret = DB::run("INSERT INTO users (username, secret, email, status, invited_by, added, stylesheet, language) VALUES (?,?,?,?,?,?,?,?)",
-                [$username, $secret, $email, 'pending', $_SESSION["id"], TimeDate::get_date_time(), DEFAULTTHEME, DEFAULTLANG]);
+                [$username, $secret, $email, 'pending', $_SESSION["id"], TimeDate::get_date_time(), Config::TT()['DEFAULTTHEME'], Config::TT()['DEFAULTLANG']]);
             $id = DB::lastInsertId();
             $invitees = "$id $_SESSION[invitees]";
             DB::run("UPDATE users SET invites = invites - 1, invitees='$invitees' WHERE id = $_SESSION[id]");
             $mess = strip_tags($_POST["mess"]);
-            $names = SITENAME;
+            $names = Config::TT()['SITENAME'];
             $links = URLROOT;
-            $emailmain = SITEEMAIL;
+            $emailmain = Config::TT()['SITEEMAIL'];
 
             $body = file_get_contents(APPROOT . "/views/emails/inviteuser.php");
-            $body = str_replace("%sitename%", $names, $body);
+            $body = str_replace("%Config::TT()['SITENAME']%", $names, $body);
             $body = str_replace("%username%", $_SESSION['username'], $body);
             $body = str_replace("%email%", $email, $body);
             $body = str_replace("%mess%", $mess, $body);

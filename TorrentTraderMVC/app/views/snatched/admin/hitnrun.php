@@ -17,7 +17,7 @@ Style::begin($data['title']);
             print '<th class="table_head"><input type="checkbox" name="checkall" onclick="checkAll(this.form.id)" /></th>';
             print '</tr></thead><tbody>';
             while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
-                if (MEMBERSONLY) {
+                if (Config::TT()['MEMBERSONLY']) {
                     $sql1 = "SELECT id, username FROM users WHERE id = $row[uid]";
                     $result1 = DB::run($sql1);
                     $row1 = $result1->fetch(PDO::FETCH_ASSOC);

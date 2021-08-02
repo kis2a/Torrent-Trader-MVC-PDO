@@ -1,7 +1,7 @@
 <div class="row justify-content-md-center">
     <div class="col-md-6 border ttborder">
 	<center><b><?php echo stripslashes("Upload Rules"); ?></b><br>
-	<b><?php echo stripslashes(UPLOADRULES); ?></b></center>
+	<b><?php echo stripslashes(Config::TT()['UPLOADRULES']); ?></b></center>
 	</div>
 </div><br>
 
@@ -14,7 +14,7 @@
 <?php while (list($key, $value) = thisEach($data['announce_urls'])) { ?>
     <b><?php echo $value; ?></b><br />
 <?php } ?>
-<?php if (ALLOWEXTERNAL) { ?>
+<?php if (Config::TT()['ALLOWEXTERNAL']) { ?>
     <br /><b><?php echo Lang::T("THIS_SITE_ACCEPTS_EXTERNAL"); ?></b>
 <?php }  ?>
 </td></tr>
@@ -24,11 +24,11 @@
 <td align='left'> <input class="form-control" type='file' name='nfo' size='50' value='<?php echo $_FILES['nfo']['name']; ?>'><br></td></tr>
 <tr><td align='right'><?php echo Lang::T("TORRENT_NAME"); ?>: </td>
 <td align='left'><input class="form-control" type='text' name='name' size='60' value='<?php echo $_POST['name']; ?>' /><br /><?php echo Lang::T("THIS_WILL_BE_TAKEN_TORRENT"); ?></td></tr>
-<?php if (IMDB1) { ?>
+<?php if (Config::TT()['IMDB1']) { ?>
 	<tr><td align='right'><a href="https://www.imdb.com/?ref_=nv_home" target='_blank'><img border='0' src='assets/images/imdb.png' width='50' height='50' title='Click here to go to Youtube'></a> </td>
 	<td align='left'> <input class="form-control" type='text' name='imdb' size='60' value='<?php echo $_POST['imdb']; ?>' />Link from IMDB, example https://www.imdb.com/title/tt1799527/</td></tr>
 <?php } ?>
-<?php if (YOU_TUBE) { ?>
+<?php if (Config::TT()['YOU_TUBE']) { ?>
 	<tr><td align=right><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='50' height='50' title='Click here to go to Youtube'></a> </td>
 	<td align=left><input class="form-control" type='text' name='tube' size='50' />&nbsp;<i><?php echo Lang::T("FORMAT"); ?>: </i> <span style='color:#FFff00'><b> https://www.youtube.com/watch?v=aYzVrjB-CWs</b></SPAN></td></tr>
 <?php } ?>
@@ -57,7 +57,7 @@ if ($_SESSION["class"] > _VIP) {
         (($row["free"] == 1) ? " checked='checked' " : "") . " value='yes'>Check this box if you want the torrent freeleech.</td></tr>");
 }
 
-if (ANONYMOUSUPLOAD && MEMBERSONLY) {?>
+if (Config::TT()['ANONYMOUSUPLOAD'] && Config::TT()['MEMBERSONLY']) {?>
 	<tr><td align="right"><?php echo Lang::T("UPLOAD_ANONY"); ?>: </td><td><?php printf("<input name='anonycheck' value='yes' type='radio' " . ($anonycheck ? " checked='checked'" : "") . " />" . Lang::T("YES") . " <input name='anonycheck' value='no' type='radio' " . (!$anonycheck ? " checked='checked'" : "") . " />" . Lang::T("NO") . "");?> &nbsp;<i><?php echo Lang::T("UPLOAD_ANONY_MSG"); ?></i>
 	</td></tr>
 <?php } ?>

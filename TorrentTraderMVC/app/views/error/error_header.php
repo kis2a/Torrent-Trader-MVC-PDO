@@ -14,10 +14,10 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
     <title><?php echo $title; ?></title>
   
     <!-- Bootstrap & core CSS -->
-    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo ($_SESSION['stylesheet'] ?: DEFAULTTHEME) ?>/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo ($_SESSION['stylesheet'] ?: Config::TT()['DEFAULTTHEME']) ?>/bootstrap.min.css" rel="stylesheet">
     <link href="<?php echo URLROOT; ?>/assets/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- TT Custom CSS, any edits must go here-->
-    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo ($_SESSION['stylesheet'] ?: DEFAULTTHEME) ?>/customstyle.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo ($_SESSION['stylesheet'] ?: Config::TT()['DEFAULTTHEME']) ?>/customstyle.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css">
   </head>
 <body>

@@ -28,7 +28,7 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
 <div class="row">
   
 <?php
-if (LEFTNAV) { ?>
+if (Config::TT()['LEFTNAV']) { ?>
 <div class="ttsidebar">
   <?php Blocks::left();?>
 </div> <?php

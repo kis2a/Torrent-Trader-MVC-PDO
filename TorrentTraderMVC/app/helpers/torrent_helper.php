@@ -102,7 +102,7 @@ function torrenttable($res)
 {
     global $config, $THEME, $LANGUAGE, $pdo; //Define globals
     //$res = DB::run($query);
-    if (MEMBERSONLY_WAIT && MEMBERSONLY && in_array($_SESSION["class"], explode(",", CLASS_WAIT))) {
+    if (Config::TT()['_WAIT'] && Config::TT()['MEMBERSONLY'] && in_array($_SESSION["class"], explode(",", CLASS_WAIT))) {
         $gigs = $_SESSION["uploaded"] / (1024 * 1024 * 1024);
         $ratio = (($_SESSION["downloaded"] > 0) ? ($_SESSION["uploaded"] / $_SESSION["downloaded"]) : 0);
         if ($ratio < 0 || $gigs < 0) {
@@ -183,7 +183,7 @@ function torrenttable($res)
                 echo "<th>" . Lang::T("HEALTH") . "</th>";
                 break;
             case 'external':
-                if ($config["ALLOWEXTERNAL"]) {
+                if ($config["Config::TT()['ALLOWEXTERNAL']"]) {
                     echo "<th>" . Lang::T("L/E") . "</th>";
                 }
 
@@ -270,9 +270,9 @@ function torrenttable($res)
                 case 'magnet':
                     $magnet = DB::run("SELECT info_hash FROM torrents WHERE id=?", [$id])->fetch();
                     // Like Mod
-                    if (!FORCETHANKS) {
+                    if (!Config::TT()['FORCETHANKS']) {
                         print("<td class='ttable_col$x' align='center'><a href=\"magnet:?xt=urn:btih:" . $magnet["info_hash"] . "&dn=" . rawurlencode($row['name']) . "&tr=" . $row['announce'] . "?passkey=" . $_SESSION['passkey'] . "\"><img src='" . URLROOT . "/assets/images/magnetique.png' border='0' title='Download via Magnet' /></a></td>");
-                    } elseif (FORCETHANKS) {
+                    } elseif (Config::TT()['FORCETHANKS']) {
                         $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', $_SESSION['id']]);
                         $like = $data->fetch(PDO::FETCH_ASSOC);
                         if ($like) {
@@ -343,7 +343,7 @@ function torrenttable($res)
                     print("<td class='ttable_col$x' align='center'><img src='" . URLROOT . "/assets/images/health/health_" . health($row["leechers"], $row["seeders"]) . ".gif' alt='' /></td>\n");
                     break;
                 case 'external':
-                    if ($config["ALLOWEXTERNAL"]) {
+                    if ($config["Config::TT()['ALLOWEXTERNAL']"]) {
                         if ($row["external"] == 'yes') {
                             print("<td class='ttable_col$x' align='center'>" . Lang::T("E") . "</td>\n");
                         } else {

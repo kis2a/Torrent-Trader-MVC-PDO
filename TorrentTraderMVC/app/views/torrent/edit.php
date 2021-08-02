@@ -34,11 +34,11 @@ torrentmenu($data['id'], $torr['external']); ?>
 
 <div class="col">
 <?php 
-if (IMDB1) { ?>
+if (Config::TT()['IMDB1']) { ?>
     <b><?php echo Lang::T("IMDB") ?></b><br>
     <input class="form-control" type="text" name="imdb" value="<?php echo htmlspecialchars($torr["imdb"])  ?>" size="60"><br><br><?php
 } 
-if (YOU_TUBE) { ?>
+if (Config::TT()['YOU_TUBE']) { ?>
     <b><?php echo Lang::T("VIDEOTUBE") ?>: </b><br>
     <input class="form-control" type='text' name='tube' value='<?php echo htmlspecialchars($torr["tube"]) ?>' size='60' /><br>&nbsp;<i><?php echo Lang::T("FORMAT") ?>: </i> <span style='color:#FF0000'><b>https://www.youtube.com/watch?v=aYzVrjB-CWs</b></span><br><br><?php
 }
@@ -60,7 +60,7 @@ if ($torr["external"] != "yes" && $_SESSION["edit_torrents"] == "yes") { ?>
     <b>VIP:</b><br>
     <input name=vip type='checkbox'<?php echo (($torr["vip"] == "yes") ? " checked='checked'" : "")  ?> value='yes' /> Check the box to make the torrent VIP only.<br><?php
 } 
-if (ANONYMOUSUPLOAD) { ?>
+if (Config::TT()['ANONYMOUSUPLOAD']) { ?>
     <b><?php echo Lang::T("ANONYMOUS_UPLOAD")  ?>: </b><br>
     <input type="checkbox" name="anon"<?php echo (($torr["anon"] == "yes") ? " checked=\"checked\"" : "")  ?> value="1" /><br>(<?php echo Lang::T("ANONYMOUS_UPLOAD_MSG") ?>)<br /><?php
 }  ?>

@@ -12,7 +12,7 @@ class Request
             Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION_TO_VIEW_AREA"));
         }
 
-        if (REQUESTSON) {
+        if (Config::TT()['REQUESTSON']) {
             $categ = (int) Input::get("category");
             $requestorid = (int) Input::get("requestorid");
             $res = DB::run("SELECT count(requests.id) FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id");
@@ -98,7 +98,7 @@ class Request
 
     public function makereq()
     {
-        if (REQUESTSON) {
+        if (Config::TT()['REQUESTSON']) {
             $data = [
                 'title' => Lang::T('REQUESTS'),
             ];

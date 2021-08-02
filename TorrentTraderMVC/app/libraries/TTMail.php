@@ -14,21 +14,21 @@ class TTMail
     // Mail Class Constructor Function
     public function __construct()
     {
-        switch (strtolower(mail_type)) {
+        switch (strtolower(Config::TT()['mail_type'])) {
             case "pear":
                 $this->smtp_ssl = mail_smtp_ssl;
 
                 if ($this->smtp_ssl) {
-                    $this->smtp_host = "ssl://" . mail_smtp_host;
+                    $this->smtp_host = "ssl://" . Config::TT()['mail_smtp_host'];
                 } else {
-                    $this->smtp_host = mail_smtp_host;
+                    $this->smtp_host = Config::TT()['mail_smtp_host'];
                 }
 
                 $this->type = "pear";
-                $this->smtp_port = mail_smtp_port;
-                $this->smtp_auth = mail_smtp_auth;
-                $this->smtp_user = mail_smtp_user;
-                $this->smtp_pass = mail_smtp_pass;
+                $this->smtp_port = Config::TT()['mail_smtp_port'];
+                $this->smtp_auth = Config::TT()['mail_smtp_auth'];
+                $this->smtp_user = Config::TT()['mail_smtp_user'];
+                $this->smtp_pass = Config::TT()['mail_smtp_pass'];
 
                 if (!@include_once ("Mail.php")) {
                     trigger_error("Config is set to use PEAR Mail but it is not installed (or include_path is wrong).", E_USER_WARNING);
@@ -47,7 +47,7 @@ class TTMail
         if (preg_match("!^From:(.*)!m", $additional_headers, $matches)) {
             $from = trim($matches[1]);
         } else {
-            $from = SITEEMAIL;
+            $from = Config::TT()['SITEEMAIL'];
         }
 
         $additional_headers = preg_replace("!^From:(.*)!m", "", $additional_headers);

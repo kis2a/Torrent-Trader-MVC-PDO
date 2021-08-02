@@ -17,7 +17,7 @@ if ($data['result']->rowCount() != 0) { ?>
     <th class="table_head">Last<br />Action</th>
     </tr> <?php
     while ($row = $data['result']->fetch(PDO::FETCH_ASSOC)) {
-        if (MEMBERSONLY) {
+        if (Config::TT()['MEMBERSONLY']) {
             $sql1 = "SELECT id, username FROM users WHERE id = $row[userid]";
             $row1 = DB::run($sql1)->fetch();
         }

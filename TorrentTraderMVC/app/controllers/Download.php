@@ -47,7 +47,7 @@ class Download
         $friendlyext = ".torrent";
         $name = $friendlyname . "[" . $friendlyurl . "]" . $friendlyext;
         // LIKE MOD
-        if (FORCETHANKS) {
+        if (Config::TT()['FORCETHANKS']) {
             if ($_SESSION["id"] != $row["owner"]) {
                 $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', $_SESSION['id']]);
                 $like = $data->fetch(PDO::FETCH_ASSOC);
@@ -67,7 +67,7 @@ class Download
             }
         }
 
-        // if not external and current member, note - it was membersonly
+        // if not external and current member, note - it was Config::TT()['MEMBERSONLY']
         if ($row["external"] != 'yes' && $_SESSION['loggedin']) { // local torrent so add passkey
             // Bencode
             $dict = Bencode::decode(file_get_contents($fn));

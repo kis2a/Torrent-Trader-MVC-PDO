@@ -35,7 +35,7 @@ print("<br><b>" . Lang::T("SIGNATURE") . ":</b><textarea name='signature'  class
 ?>
 <br><br><b><?php echo Lang::T("RESET_PASSKEY"); ?>:</b><br> &nbsp;<input type='checkbox' name='resetpasskey' value='1' />&nbsp;<i><?php echo Lang::T("RESET_PASSKEY_MSG"); ?></i><br>
 <?php
-if (SHOUTBOX) {
+if (Config::TT()['SHOUTBOX']) {
     print("<br><b>".Lang::T("HIDE_SHOUT").":</b><br>
     <input type='checkbox' name='hideshoutbox' value='yes' ".($CURUSER['hideshoutbox'] == 'yes' ? 'checked="checked"' : '')." />
     &nbsp;".Lang::T("HIDE_SHOUT")."<br> ");

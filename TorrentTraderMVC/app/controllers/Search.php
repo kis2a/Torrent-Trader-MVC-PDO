@@ -11,7 +11,7 @@ class Search
     public function index()
     {
         //check permissions
-        if (MEMBERSONLY) {
+        if (Config::TT()['MEMBERSONLY']) {
             if ($_SESSION["view_torrents"] == "no") {
                 Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
             }
@@ -324,7 +324,7 @@ class Search
         ?>><?php echo Lang::T("ONLY_FREELEECH"); ?></option>
                  </select>
 
-                <?php if (ALLOWEXTERNAL) {?>
+                <?php if (Config::TT()['ALLOWEXTERNAL']) {?>
                     <select name="inclexternal">
                      <option value="0"><?php echo Lang::T("LOCAL_EXTERNAL"); ?></option>
                     <option value="1" <?php if ($_GET["inclexternal"] == 1) {
@@ -394,7 +394,7 @@ class Search
     public function today()
     {
         //check permissions
-        if (MEMBERSONLY) {
+        if (Config::TT()['MEMBERSONLY']) {
             if ($_SESSION["view_torrents"] == "no") {
                 Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
             }
@@ -425,7 +425,7 @@ class Search
     public function browse()
     {
         //check permissions
-        if (MEMBERSONLY) {
+        if (Config::TT()['MEMBERSONLY']) {
             if ($_SESSION["view_torrents"] == "no") {
                 Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
             }

@@ -4,12 +4,12 @@ class Cache
     public function __construct()
     {
         $this->cachedir = CACHE;
-        $this->type = strtolower(trim(CACHE_TYPE));
+        $this->type = strtolower(trim(Config::TT()['CACHE_TYPE']));
         // Cache Connection
         switch ($this->type) {
             case "memcache":
                 $this->obj = new Memcache;
-                if (!@$this->obj->Connect(MEMCACHE_HOST, MEMCACHE_PORT)) {
+                if (!@$this->obj->Connect(Config::TT()['MEMCACHE_HOSTE'], Config::TT()['MEMCACHE_PORT'])) {
                     $this->type = "disk";
                 }
                 break;
@@ -25,7 +25,7 @@ class Cache
         }
         switch ($this->type) {
             case "memcache":
-                return $this->obj->set(SITENAME . "_" . $var, $val, 0, $expire);
+                return $this->obj->set(Config::TT()['SITENAME'] . "_" . $var, $val, 0, $expire);
                 break;
             case "disk":
                 $fp = fopen($this->cachedir . "/$var.cache", "w");
@@ -40,7 +40,7 @@ class Cache
     {
         switch ($this->type) {
             case "memcache":
-                return $this->obj->delete(SITENAME . "_" . $var);
+                return $this->obj->delete(Config::TT()['SITENAME'] . "_" . $var);
                 break;
             case "disk":
                 @unlink($this->cachedir . "/$var.cache");
@@ -55,7 +55,7 @@ class Cache
         }
         switch ($this->type) {
             case "memcache":
-                return $this->obj->get(SITENAME . "_" . $var);
+                return $this->obj->get(Config::TT()['SITENAME'] . "_" . $var);
                 break;
             case "disk":
                 $file = $this->cachedir . "/$var.cache";

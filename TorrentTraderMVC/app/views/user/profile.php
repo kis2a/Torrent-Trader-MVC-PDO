@@ -16,7 +16,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
     </div>
     <div class="col">
         <b><?php echo Lang::T("PROFILE"); ?></b><br>
-        <?php echo Lang::T("USERNAME"); ?>: <?php echo Users::coloredname($selectedid["username"]) ?><br />
+        <?php echo Lang::T("USERNAME"); ?>: <a href="<?php echo URLROOT ?>/profile?id=<?php echo $selectedid['id'] ?>"><?php echo Users::coloredname($selectedid["username"]) ?></a><br />
 	    <?php if ($_SESSION['class']  > _MODERATOR) { ?>
 	    <?php echo Lang::T("EMAIL"); ?>: <?php echo $selectedid["email"]; ?><br />
 		<?php echo Lang::T("PASSKEY"); ?>: <?php echo $selectedid["passkey"]; ?><br />
@@ -43,7 +43,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 	    <?php echo Lang::T("GENDER"); ?>: <?php echo Lang::T($selectedid["gender"]); ?><br />
 		<?php echo Lang::T("CLIENT"); ?>: <?php echo htmlspecialchars($selectedid["client"]) ?><br />
 		<?php echo Lang::T("COUNTRY"); ?>: <?php echo $data['country'] ?><br />
-		<?php echo Lang::T("DONATED"); ?>  <?php echo CURRENCYSYMBOL; ?><?php echo number_format($selectedid["donated"], 2); ?><br />
+		<?php echo Lang::T("DONATED"); ?>  <?php echo Config::TT()['CURRENCYSYMBOL']; ?><?php echo number_format($selectedid["donated"], 2); ?><br />
 		<?php echo Lang::T("WARNINGS"); ?>: <?php echo htmlspecialchars($selectedid["warned"]) ?><br />
         
         <?php if ($_SESSION["edit_users"] == "yes") {

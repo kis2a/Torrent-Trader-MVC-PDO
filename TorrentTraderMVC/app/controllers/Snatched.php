@@ -201,7 +201,7 @@ class Snatched
 		    	<table border="0" class="table_table" cellpadding="4" cellspacing="0" width="100%">
 					<tr>
 						<th class="table_head" align="left"><?php echo Lang::T("TORRENT_NAME"); ?></th>
-					  <?php if (ALLOWEXTERNAL) {?>
+					  <?php if (Config::TT()['ALLOWEXTERNAL']) {?>
 						<th class="table_head"><img src="assets/images/t_le.png" border="0" title="<?php echo Lang::T("T_L_OR_E"); ?>"></th>
 					  <?php }?>
 						<th class="table_head"><?php echo Lang::T("UPLOADED"); ?></th>
@@ -237,7 +237,7 @@ class Snatched
                     ?>
 						<tr align="center">  <!-- below was ".(count($expandrows)?" -->
 							<?php echo ("<td class='ttable_col1' align='left' nowrap='nowrap'>" . ($expandrows ? "<a href=\"javascript: klappe_torrent('t" . $row['0'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['0'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "<a title=\"" . $row["1"] . "\" href=\"/torrent?id=" . $row['0'] . "&amp;hit=1\"><b>$smallname</b></a> $freeleech</td>"); ?>
-						  <?php if (ALLOWEXTERNAL) {?>
+						  <?php if (Config::TT()['ALLOWEXTERNAL']) {?>
 							<td class="table_col2" align="center"><?php echo $type; ?></td>
 						  <?php }?>
 							<td class="table_col1"><font color="#27B500"><?php echo mksize($row[2]); ?></font></td>

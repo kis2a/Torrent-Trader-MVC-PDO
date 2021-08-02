@@ -26,7 +26,7 @@ if ($_SESSION['loggedin']) {
 			<option value="1"><?php echo Lang::T("INCLUDE_DEAD"); ?></option>
 			<option value="2"><?php echo Lang::T("ONLY_DEAD"); ?></option>
 		</select><br />
-		<?php if (ALLOWEXTERNAL) {?>
+		<?php if (Config::TT()['ALLOWEXTERNAL']) {?>
 		<select name="inclexternal" style="width: 95%" >
 			<option value="0"><?php echo Lang::T("LOCAL"); ?>/<?php echo Lang::T("EXTERNAL"); ?></option>
 			<option value="1"><?php echo Lang::T("LOCAL_ONLY"); ?></option>

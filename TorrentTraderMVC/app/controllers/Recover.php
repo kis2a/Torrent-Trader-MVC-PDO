@@ -32,7 +32,7 @@ class Recover
                     $sec = Helper::mksecret();
                     $id = $arr['id'];
                     $username = $arr['username']; // 06/01
-                    $emailmain = SITEEMAIL;
+                    $emailmain = Config::TT()['SITEEMAIL'];
                     $url = URLROOT;
                     $body = Lang::T("SOMEONE_FROM") . " " . $_SERVER["REMOTE_ADDR"] . " " . Lang::T("MAILED_BACK") . " ($email) " . Lang::T("BE_MAILED_BACK") . " \r\n\r\n " . Lang::T("ACCOUNT_INFO") . " \r\n\r\n " . Lang::T("USERNAME") . ": " . $username . " \r\n " . Lang::T("CHANGE_PSW") . "\n\n$url/recover/confirm?id=$id&secret=$sec\n\n\n" . $url . "\r\n";
                     $TTMail = new TTMail();
