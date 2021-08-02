@@ -94,6 +94,7 @@ html, body {
 .ttborder {
 	border: 3px solid #3895D3 !important;
     background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    padding-bottom: 2%;
 }
 
 .ttblend {

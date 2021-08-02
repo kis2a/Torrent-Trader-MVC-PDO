@@ -139,4 +139,19 @@ class Torrents
         DB::run("UPDATE torrents SET hits = hits + 1 WHERE id = $id");
     }
 
+    public static function search($where, $orderby, $limit, $params)
+    {
+        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.announce, torrents.tube,  torrents.imdb, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed,
+        torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name
+        AS cat_name, categories.parent_cat AS cat_parent, categories.image AS cat_pic, users.username, users.privacy,
+        IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1))
+        AS rating FROM torrents
+        LEFT JOIN categories
+        ON category = categories.id
+        LEFT JOIN users
+        ON torrents.owner = users.id
+        $where $orderby $limit", $params);
+        return $row;
+    }
+
 }

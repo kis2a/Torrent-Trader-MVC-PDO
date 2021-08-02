@@ -45,7 +45,7 @@ if ($_SESSION['loggedin']) {
         <!-- end content -->
 
     <?php Style::block_end();
-}/* else {
+} elseif (!Config::TT()['MEMBERSONLY']) {
     Style::block_begin('Login');
     ?>
 <form method="post" action="<?php echo URLROOT ?>/login/submit">
@@ -73,4 +73,4 @@ if ($_SESSION['loggedin']) {
 	</table>
     </form> 
     <?php Style::block_end();
-}*/
+}

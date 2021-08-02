@@ -12,10 +12,6 @@ class Auth
     {
         self::ipBanned();
 
-        if ($autoclean) {
-            autoclean();
-        }
-
         Cookie::csrf_token();
 
         if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["key_token"] != self::loginString()) {
@@ -50,6 +46,13 @@ class Auth
                 $_SESSION["loggedin"] = true;
                 unset($row);
                 self::isClosed();
+            }
+
+            if ($autoclean) {
+                autoclean();
+            }
+    
+            if ($user) {
                 return $user;
             }
         }

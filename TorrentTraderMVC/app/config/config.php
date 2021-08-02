@@ -78,3 +78,5 @@ define('HNR_WARN', 5); // 5 hit & runs then warned
 define('HNR_STOP_DL', 5); // After 5 H & R stop downloading
 define('HNR_BAN', 50); // After 50 H&R they are banned
 define('HNR_DISABLED', TRUE);
+
+define('_ANNOUNCEINTERVAL', 600);

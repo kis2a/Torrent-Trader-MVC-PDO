@@ -93,6 +93,7 @@ html, body {
 
 .ttborder {
 	border: 3px solid #ff9900 !IMPORTANT;
+	padding-bottom: 2%;
 }
 
 .ttblend {

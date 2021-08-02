@@ -55,7 +55,9 @@ torrentmenu($data['id'], $torr['external']);
             print("<b>Torrent VIP: </b><font color='orange'>Torrent reserved for VIP</font><br>");
         }
         print("<b>" . Lang::T("LAST_CHECKED") . ": </b>" . date("d-m-Y H:i:s", TimeDate::utc_to_tz_time($torr["last_action"])) . "<br><br>");
+        if ($_SESSION['loggedin']) {
         echo  Ratings::ratingtor($data['id']) ;
+        }
 		// Scrape External Torrents
         if ($torr["external"] == 'yes') {
             echo $data['scraper'];

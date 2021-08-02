@@ -3,13 +3,13 @@ class Torrent
 {
     public function __construct()
     {
-        $this->session = Auth::user(0, 2);
+        $this->session = Auth::user(0, 1);
     }
 
     public function index()
     {
         //check permissions
-        if ($_SESSION["view_torrents"] != "yes") {
+        if ($_SESSION["view_torrents"] != "yes" && Config::TT()['MEMBERSONLY']) {
             Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         $id = (int) $_GET["id"];

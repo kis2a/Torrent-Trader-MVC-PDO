@@ -3,7 +3,7 @@ class Peers
 {
     public function __construct()
     {
-        $this->session = Auth::user(0, 2);
+        $this->session = Auth::user(0, 1);
     }
 
     public function index()
@@ -106,7 +106,7 @@ class Peers
         if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
-        if ($_SESSION["view_torrents"] == "no") {
+        if ($_SESSION["view_torrents"] == "no" && Config::TT()['MEMBERSONLY']) {
             Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
