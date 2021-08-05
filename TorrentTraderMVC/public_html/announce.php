@@ -63,6 +63,9 @@ if (!$peer) {
     Announce::UpdatePeer($ip, $passkey, $port, $uploaded, $downloaded, $left, $user_agent, $seeder, $torrent['id'], $peerid);
 }
 
+// Run Events Updates
+Announce::Event($event, $torrent['id'], $peerid, $user['id'], $seeder, $torrent['freeleech']);
+
 // Count Peers In Table
 $count_peers = Announce::CountPeers($torrent['id']);
 $reply[] = array($ipadress, $port, $peerid);
@@ -72,9 +75,6 @@ if ($r = $count_peers->fetch(PDO::FETCH_NUM)) {
     $seeders = $r[1];
     $leechers = $r[0];
 }
-
-// Run Events Updates
-Announce::Event($event, $torrent['id'], $peerid, $user['id'], $seeder, $torrent['freeleech']);
 
 // Update Torrent
 Announce::UpdateTorrent($leechers, $seeders, $torrent['completed'] + $completed, $torrent['banned'], $torrent['id']);

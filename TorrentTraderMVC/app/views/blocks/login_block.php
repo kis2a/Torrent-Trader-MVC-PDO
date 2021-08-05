@@ -41,10 +41,8 @@ if ($_SESSION['loggedin']) {
 		<a href="<?php echo URLROOT; ?>/admincp" class="btn ttbtn"><?php echo Lang::T("STAFFCP"); ?></a>
 		<?php }?>
 	</div>
-	<br />
-        <!-- end content -->
-
     <?php Style::block_end();
+	
 } elseif (!Config::TT()['MEMBERSONLY']) {
     Style::block_begin('Login');
     ?>

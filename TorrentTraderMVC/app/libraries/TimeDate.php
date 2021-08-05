@@ -98,7 +98,7 @@ class TimeDate
             $timestamp = self::sql_timestamp_to_unix_timestamp($timestamp);
         }
         if ($timestamp == 0) {
-            $timestamp = gmtime();
+            $timestamp = self::gmtime();
         }
         $timestamp = $timestamp + ($_SESSION['tzoffset'] * 60);
         if (date("I")) {
@@ -125,7 +125,7 @@ class TimeDate
             $timestamp = self::sql_timestamp_to_unix_timestamp($timestamp);
         }
         if ($timestamp == 0) {
-            $timestamp = gmtime();
+            $timestamp = self::gmtime();
         }
         $timestamp = $timestamp + ($_SESSION['tzoffset'] * 60);
         if (date("I")) {

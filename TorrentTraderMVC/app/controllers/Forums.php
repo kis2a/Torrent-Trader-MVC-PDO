@@ -334,7 +334,7 @@ class Forums
         update_topic_last_post($topicid);
         if ($newtopic) {
             $msg_shout = "New Forum Topic: [url=" . URLROOT . "/forums/viewtopic&topicid=" . $topicid . "]" . $subject . "[/url] posted by [url=" . URLROOT . "/profile?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]";
-            DB::run("INSERT INTO shoutbox (userid, date, user, message) VALUES(?,?,?,?)", [0, TimeDate::get_date_time(), $_SESSION["username"], $msg_shout]);
+            DB::run("INSERT INTO shoutbox (userid, date, user, message) VALUES(?,?,?,?)", [0, TimeDate::get_date_time(), 'System', $msg_shout]);
             Redirect::to(URLROOT . "/forums/viewtopic&topicid=$topicid&page=last");
         } else {
             Redirect::to(URLROOT . "/forums/viewtopic&topicid=$topicid&page=last#post$postid");

@@ -166,11 +166,14 @@ function shoutbbcode($form, $name, $content = "")
     print("<input id='BBCode' type='button' name='Align Right'            	value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/right.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[align=left]','[/align]')\" 			alt='Align Right' 		title='Align Right' 	/>");
     print("<input id='BBCode' type='button' name='Align Center'        	value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/center.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[align=center]','[/align]')\" 		alt='Align Center' 		title='Align Center' 	/>");
     print("<input id='BBCode' type='button' name='Align Left'             	value='' style=\"background: url('" . URLROOT . "/assets/images/bbcodes/left.gif');  height:20px; width:20px;\" 					onclick=\"bbcomment('[align=right]','[/align]')\" 		alt='Align Left' 		       title='Align Left' 	/>");
-    print("<a href='#' onClick=\"window.open('http://www.zupimages.net','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/imgur.gif');  height:20px; width:20px;\" 		alt='Upload Image' 			title='Upload Image' /></a>");
+    print("<a href='#' onClick=\"window.open('https://imgur.com/upload','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/imgur.gif');  height:20px; width:20px;\" 		alt='Upload Image' 			title='Upload Image' /></a>");
     print("<a href='#' onClick=\"window.open('http://www.youtube.com','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/youtube.gif');  height:20px; width:20px;\"										alt='YouTube' 				title='YouTube' /></a></center>");
     // History & Staff
-    echo "<center><a href=" . URLROOT . "/shoutbox/history><b>History</b></a>
-	&nbsp;&nbsp;";
+    if ($_GET['url'] == 'admincp' || $_GET['url'] == 'adminshoutbox') {
+        echo "<center><a href=" . URLROOT . "/adminshoutbox/history><b>History</b></a>&nbsp;&nbsp;";
+    } elseif ($_SESSION['class'] > _UPLOADER) {
+        echo "<center><a href=" . URLROOT . "/shoutbox/history><b>History</b></a>&nbsp;&nbsp;";
+    }
     if ($_SESSION['class'] > _UPLOADER) {
         echo "<a href='" . URLROOT . "/adminshoutbox'><b>Staff</b></a>&nbsp;&nbsp;";
     }

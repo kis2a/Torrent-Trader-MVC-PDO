@@ -51,14 +51,14 @@ if ($_SESSION['loggedin'] == true) {
 
  <form method="post" action="<?php echo URLROOT; ?>/stylesheet" class="form-horizontal">
  	<div class="form-group">
-		<label><?php echo Lang::T("THEME"); ?></label>
+		<center><label><?php echo Lang::T("THEME"); ?></label></center>
 		<select name="stylesheet" style="width: 95%" ><?php echo $stylesheets; ?></select>
   	</div>
 	<div class="form-group">
-		<label><?php echo Lang::T("LANGUAGE"); ?></label>
+        <center><label><?php echo Lang::T("LANGUAGE"); ?></label></center>
 		<select name="language" style="width: 95%" ><?php echo $languages; ?></select>
   	</div>
-	<button type="submit" class="btn ttbtn center-block" value="" /><?php echo Lang::T("APPLY"); ?></button>
+      <center><button type="submit" class="btn ttbtn center-block" value="" /><?php echo Lang::T("APPLY"); ?></button></center>
   </form>
 
 <?php

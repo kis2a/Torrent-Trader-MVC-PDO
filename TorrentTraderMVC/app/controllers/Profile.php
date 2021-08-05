@@ -182,7 +182,7 @@ class Profile
             $downloaded = strtobytes(Input::get("downloaded"));
             $uploaded = strtobytes(Input::get("uploaded"));
             $ip = Input::get("ip");
-            $class = (int) Input::get("class");
+            $class = (int) Input::get("class") ?? 0;
             $donated = (float) Input::get("donated");
             $password = Input::get("password");
             $warned = Input::get("warned");
@@ -198,7 +198,7 @@ class Profile
             if (!Validate::Email($email)) {
                 Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("EMAIL_ADDRESS_NOT_VALID"));
             }
-
+if ($class != 0 && $class != $_SESSION['class']) {
             //change user class
             $arr = DB::run("SELECT class FROM users WHERE id=?", [$id])->fetch();
             $uc = $arr['class'];
@@ -215,7 +215,7 @@ class Profile
                 $added = TimeDate::get_date_time();
                 DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(?,?,?,?)", [0, $_SESSION['id'], $msg, $added]);
             }
-
+        }
             //continue updates
             DB::run("UPDATE users
             SET email=?, downloaded=?, uploaded=?, ip=?, donated=?, forumbanned=?, warned=?,

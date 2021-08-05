@@ -49,7 +49,7 @@ class Auth
             }
 
             if ($autoclean) {
-                autoclean();
+                Cleanup::autoclean();
             }
     
             if ($user) {

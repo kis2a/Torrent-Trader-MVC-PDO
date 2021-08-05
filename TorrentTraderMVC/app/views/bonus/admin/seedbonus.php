@@ -2,7 +2,7 @@
 This page displays all available options trade which users can exchange for seedbonus <?php echo number_format($data['count']); ?>
 </center>
 <center>
-<a href="<?php echo URLROOT ?> /adminbonus/change&id=">Add</a> a new option?
+<a href="<?php echo URLROOT ?>/adminbonus/change">Add</a> a new option?
 </center>
 <?php
 if ($data['count'] > 0): ?>

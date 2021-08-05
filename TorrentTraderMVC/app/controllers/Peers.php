@@ -112,6 +112,7 @@ class Peers
         //GET ALL MYSQL VALUES FOR THIS TORRENT
         $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.banned, torrents.imdb, torrents.tube, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
         $row = $res->fetch(PDO::FETCH_ASSOC);
+        $size = $row['size'];
         $shortname = mb_substr(htmlspecialchars($row["name"]), 0, 50);
         $title = Lang::T("TORRENT_DETAILS_FOR") . " \"" . $shortname . "\"";
         if ($row["external"] != 'yes') {
@@ -124,6 +125,7 @@ class Peers
                     'id' => $id,
                     'title' => $title,
                     'query' => $query,
+                    'size' => $size,
                 ];
                 View::render('peers/peerlist', $data, 'user');
             }

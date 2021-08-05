@@ -164,8 +164,9 @@ if ($_SESSION['loggedin'] == true) {
     	     <input type='radio' name='choice' value='255' /><?php echo Lang::T("BLANK_VOTE"); ?>
         </label>
       </div>
-
+        <center>
     	<button type='submit' class="btn ttbtn center-block" /><?php echo Lang::T("VOTE"); ?></button>
+		</center>
       </form>
 
   	<?php }

@@ -164,7 +164,7 @@ class Announce
 
     public static function UpdateTorrent($leechers, $seeders, $completed, $banned, $torrentid)
     {
-        if ($banned != "yes") {
+        if ($banned == "yes") {
             $visible = 'no';
         } else {
             $visible = 'yes';

@@ -16,8 +16,7 @@ class Admintask
     {
         $now = TimeDate::gmtime();
         DB::run("UPDATE tasks SET last_time=$now WHERE task='cleanup'");
-        require_once APPROOT . "/helpers/cleanup_helper.php";
-        do_cleanup();
+        Cleanup::run();
         Redirect::autolink(URLROOT . '/admincp', Lang::T("FORCE_CLEAN_COMPLETED"));
     }
 

@@ -6,7 +6,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 
 <div class="jumbotron">
 <div class="row">
-    <div class="col">
+    <div class="col-md-3">
         <img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar"><br>
         <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("PM") ?></button></a>&nbsp;
 		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
@@ -14,7 +14,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 		<a href="<?php echo URLROOT; ?>/snatched?uid=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a>
         <?php } ?>
     </div>
-    <div class="col">
+    <div class="col-md-3">
         <b><?php echo Lang::T("PROFILE"); ?></b><br>
         <?php echo Lang::T("USERNAME"); ?>: <a href="<?php echo URLROOT ?>/profile?id=<?php echo $selectedid['id'] ?>"><?php echo Users::coloredname($selectedid["username"]) ?></a><br />
 	    <?php if ($_SESSION['class']  > _MODERATOR) { ?>
@@ -37,7 +37,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         }
         ?>
     </div>
-    <div class="col">
+    <div class="col-md-3">
         <b><?php echo Lang::T("ADDITIONAL_INFO"); ?></b><br>
 	    <?php echo Lang::T("AGE"); ?>: <?php echo htmlspecialchars($selectedid["age"]) ?><br />
 	    <?php echo Lang::T("GENDER"); ?>: <?php echo Lang::T($selectedid["gender"]); ?><br />
@@ -71,7 +71,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         [<a href="<?php echo URLROOT ?>/invite/invitetree?id=<?php echo $selectedid["id"] ?>">Invite Tree</a>]<br>
 
     </div>
-    <div class="col">
+    <div class="col-md-3">
         <b><?php echo Lang::T("STATISTICS"); ?></b><br>
         <?php echo Lang::T("UPLOADED"); ?>: <?php echo mksize($selectedid["uploaded"]); ?><br />
 		<?php echo Lang::T("DOWNLOADED"); ?>: <?php echo mksize($selectedid["downloaded"]); ?><br />
@@ -81,7 +81,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 		<?php echo Lang::T("AVG_DAILY_UL"); ?>: <?php echo mksize($selectedid["uploaded"] / (TimeDate::DateDiff($selectedid["added"], time()) / 86400)); ?><br />
 
 	    <?php echo Lang::T("TORRENTS_POSTED"); ?>: <a href="<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $selectedid["id"] ?>">
-        <?php echo number_format($data['numforumposts']); ?></a><br>
+        <?php echo number_format($data['numtorrents']); ?></a><br>
 
         <?php echo Lang::T("COMMENTS_POSTED"); ?>:  <a href="<?php echo URLROOT; ?>/comments/user?id=<?php echo $selectedid["id"] ?>">
         <?php echo number_format($data['numcomments']); ?></a><br>

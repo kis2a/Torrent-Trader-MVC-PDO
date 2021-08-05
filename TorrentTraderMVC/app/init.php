@@ -18,17 +18,16 @@ ini_set('error_log', '../data/logs/errors_log.txt');
 // Register custom exception handler
 include "helpers/exception_helper.php";
 set_exception_handler("handleUncaughtException"); //handleException
-// Load TimeZones
+// Load TimeZones/Smileys Array
 require_once 'helpers/tzs_helper.php';
+require "helpers/smileys.php";
 // Load Helpers
 require "helpers/general_helper.php";
-require "helpers/cleanup_helper.php";
 require "helpers/forum_helper.php";
 require "helpers/pagination_helper.php";
 require "helpers/format_helper.php";
 require "helpers/comment_helper.php";
 require "helpers/torrent_helper.php";
-require "helpers/smileys.php";
 require "helpers/bbcode_helper.php";
 // Autoload Classes
 spl_autoload_register(function ($model){
