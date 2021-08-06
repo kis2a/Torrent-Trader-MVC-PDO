@@ -53,7 +53,7 @@ html, body {
     background-repeat: repeat-x;
     border-bottom: 0px;
     padding-top: 0;
-    height: 20px;
+    height: 25px;
 }
 
 .frame-body {
@@ -71,7 +71,7 @@ html, body {
     background-repeat: repeat-x;
     border-bottom: 0px;
     padding-top: 0;
-    height: 20px;
+    height: 25px;
 }
 
 .block-body {
@@ -95,7 +95,7 @@ html, body {
 
 .ttborder {
 	border: 2px solid #ff9900 !IMPORTANT;
-	padding-bottom: 2%;
+	padding-bottom: 2px;
 }
 
 .ttblend {
@@ -134,11 +134,13 @@ html, body {
 
 /* -- Bootstrap Table --*/
 .table thead th {
-        color: #fff;
-		background-color: #ff9900;
-		background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
-		background-image: linear-gradient(to bottom, #a9111f, #ff9900);
-		background-repeat: repeat-x;
+    color: #fff;
+	background-color: #ff9900;
+	background-image: -webkit-linear-gradient(top, #a9111f, #ff9900);
+	background-image: linear-gradient(to bottom, #a9111f, #ff9900);
+	background-repeat: repeat-x;
+	height: 25px !important;
+    padding: .15rem;
 }
 
 a {
