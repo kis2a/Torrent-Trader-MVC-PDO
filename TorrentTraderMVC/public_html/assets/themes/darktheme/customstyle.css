@@ -150,3 +150,7 @@ a {
 .navbar-nav .nav-link {
     color: #fff;
 }
+
+.list-group-item {
+    background: transparent !important;
+}

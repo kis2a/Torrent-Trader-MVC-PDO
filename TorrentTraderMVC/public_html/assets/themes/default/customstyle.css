@@ -2,7 +2,7 @@ html, body {
 	height: 100%;
     font-size: 1.0 rem;   /* this option adjusts the general font size */
     background: #fff !important;
-	color: #000;
+	color: rgb(5, 42, 97);
 	line-height: 1.4;
 }
 
@@ -145,9 +145,14 @@ html, body {
 }
 
 a {
-    color: rgb(27, 134, 235);
+    color: rgb(5, 33, 59);
 }
 
 .navbar-nav .nav-link {
     color: #fff;
+}
+
+.list-group-item {
+    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
 }
