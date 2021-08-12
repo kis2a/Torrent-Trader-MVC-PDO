@@ -2,10 +2,7 @@
 forumheader($data['forumname']);
 if ($_SESSION['loggedin'] == true) {
     ?>
-    <table class='table table-striped'><tr><td>
-    <div align='right'><a href='<?php echo URLROOT; ?>/forums/newtopic&amp;forumid=<?php echo $data['forumid']; ?>'>
-    <button type='submit' class='btn btn-sm ttbtn'>New Post</button></a></div>
-    </td></tr></table>
+    <div class="d-flex flex-row-reverse"><a href='<?php echo URLROOT; ?>/forums/newtopic&amp;forumid=<?php echo $data['forumid']; ?>'  class='btn btn-sm ttbtn'>New Post</a></div><br>
     <?php
 }
 if ($data['topicsres'] > 0) {

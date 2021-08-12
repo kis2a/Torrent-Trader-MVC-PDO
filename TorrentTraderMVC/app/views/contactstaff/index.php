@@ -1,4 +1,4 @@
-<center><font color=#ffff00><b>Send message to Staff</b></font></center>
+<center><b>Send message to Staff</b></center>
 <div class="row justify-content-md-center">
     <div class="col-6 border ttborder">
 

@@ -15,8 +15,7 @@ class Shoutbox
     {
         $result = Shoutboxs::getAllShouts();
         ?>
-        <div class="shoutbox_contain">
-        <div class="msg-wrap">
+        <div class='shoutbox_contain'><table class='table table-striped'>
         <?php
         while ($row = $result->fetch(PDO::FETCH_LAZY)) {
             $ol3 = Users::selectAvatar($row["userid"]);
@@ -30,45 +29,35 @@ class Shoutbox
                 $av = "<img src='" . URLROOT . "/assets/images/default_avatar.png' alt='default_avatar' width='20' height='20'>";
             }
             ?>
-            <div class="media msg ">
-                <a class="pull-left d-none d-sm-block" href="#">
-                <?php echo $av ?>
-                <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
-                <b><?php echo Users::coloredname($row['user']) ?>:</b></a>
-                </a>
-                <?php
-            if ($_SESSION['class'] > _UPLOADER) {
+            <tr>
+            
+            <td class="shouttable">
+            <small class="pull-left time d-none d-sm-block" style="width:99px;font-size:11px"><i class="fa fa-clock-o"></i>&nbsp;<?php echo date('jS M,  g:ia', TimeDate::utc_to_tz_time($row['date'])); ?></small>
+            </td>
+            <td class="shouttable">
+            <a class="pull-left d-none d-sm-block" href="#"><?php echo $av ?></a>
+            </td>
+            <td class="shouttable">
+            <a class="pull-left" href="<?php echo URLROOT ?>/profile?id=<?php echo $row['userid'] ?>" target="_parent">
+            <b><?php echo Users::coloredname($row['user']) ?>:</b></a>&nbsp;
+            <?php echo nl2br(format_comment($row['message'])); ?>
+            <?php
+            if ($_SESSION["edit_users"]=="yes") {
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
-                ?>
-                <!-- Trigger/Open The Model -->
-                <a data-toggle="modal" data-target="#editshout-<?=$row['msgid'];?>">
-                    <i class='fa fa-pencil' aria-hidden='true'></i>
-                </a>
-                <!-- The Modal -->
-                <div id="editshout-<?=$row['msgid'];?>" class="modal">
-                  <!-- Modal content -->
-                  <div class="modal-content">
-                        <!-- Close Modal -->
-                        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>CLOSE</b></button><br>
-                        <!-- The Message to edit -->
-                        <form method="POST" action="<?php echo URLROOT; ?>/shoutbox/edit?id=<?php echo $row['msgid']; ?>">
-                        <input class="form-control" type="text" name="message" value="<?php echo $row['message'] ?>" size="60" /><br>
-                        <!-- The submit button -->
-                        <center><input class="btn btn-sm ttbtn"  type="submit" value='<?php echo Lang::T("SUBMIT"); ?>'></center>
-                        </form>
-                  </div>
-                 </div>
-                 <?php
-            }?>
-            <div class="media-body">
-                <small class="pull-right time d-none d-sm-block"><i class="fa fa-clock-o"></i>&nbsp;<?php echo date('jS M,  g:ia', TimeDate::utc_to_tz_time($row['date'])); ?></small>
-                <small class="col-lg-10"><?php echo nl2br(format_comment($row['message'])); ?></small>
-            </div>
-            </div>
+                echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=" . $row['msgid'] . "''><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
+            }
+            if ($_SESSION["edit_users"]=="no" && $_SESSION['username'] == $row['user']) {
+                $ts = TimeDate::modify('date', $row['date'], "+1 day");
+                if ($ts > TT_DATE) {
+                echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=$row[msgid]&user=$row[userid]'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
+                }
+            } ?>
+            </td>
+
+            </tr>
             <?php 
-        }?>
-        </div>
-        </div>
+        } ?>
+        </table></div>
         <?php
     }
 
@@ -109,13 +98,22 @@ class Shoutbox
 
     public function edit()
     {
-        if ($_SESSION['class'] > _UPLOADER) {
+        $user = Input::get('user');
+        if ($_SESSION['class'] > _UPLOADER || $_SESSION['id'] == $user) {
             $id = Input::get('id');
             $message = $_POST['message'];
             if ($message) {
                 Shoutboxs::updateShout($message, $id);
                 Redirect::autolink(URLROOT, Lang::T("Message edited"));
             }
+            $edit = Shoutboxs::getByShoutId($id);
+            $data = [
+                'title' => 'Edit',
+                'id' => $edit['msgid'],
+                'message' => $edit['message'],
+                'user' => $edit['userid'],
+            ];
+            View::render('shoutbox/edit', $data, 'user');
         } else {
             Redirect::autolink(URLROOT . '/logout', Lang::T("You do not have permission"));
         }

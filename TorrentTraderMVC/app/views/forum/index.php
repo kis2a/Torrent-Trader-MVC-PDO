@@ -62,13 +62,13 @@ while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
 </div>
 </div>
 
-<table cellspacing='0' cellpadding='3'><tr valign='middle'>
-    <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_new.png' style='margin: 5px' alt='' /></td><td>New posts</td>
-    <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder.png' style='margin: 5px' alt='' /></td><td>No New posts</td>
-    <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_locked.png' style='margin: 5px' alt='' /></td><td><?php echo Lang::T("FORUMS_LOCKED"); ?> topic</td>
-    <td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_sticky.png' style='margin: 5px' alt='' /></td><td><?php echo Lang::T("FORUMS_STICKY"); ?> topic</td>
-    </tr>
-</table>
+<div container><br>
+<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_new.png' style='margin: 5px' alt='' />New posts &nbsp;
+<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder.png' style='margin: 5px' alt='' />No New posts &nbsp;
+<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_locked.png' style='margin: 5px' alt='' /><?php echo Lang::T("FORUMS_LOCKED"); ?> topic &nbsp;
+<img src='<?php echo URLROOT; ?>/assets/images/forum/folder_sticky.png' style='margin: 5px' alt='' /><?php echo Lang::T("FORUMS_STICKY"); ?> topic
+</div>
+
 <center>Our members have made <?php echo $data['postcount']; ?> posts in  <?php echo $data['topiccount']; ?> topics</center>
 <?php 
 insert_quick_jump_menu();

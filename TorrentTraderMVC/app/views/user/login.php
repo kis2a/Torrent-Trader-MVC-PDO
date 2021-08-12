@@ -3,6 +3,7 @@
         <center><b><?php echo Lang::T("MEMBERS_ONLY"); ?></b>
         <?php }?>
         <div class="row justify-content-center">
+        <div class="col-6">
         <form method="post" action="<?php echo URLROOT; ?>/login/submit" autocomplete="off">
         <input type="hidden" name="csrf_token" value="<?php echo $data['token'] ?>" />
         <div class="form-group">
@@ -15,7 +16,7 @@
 	    </div>
         <div class="form-group">
             <?php (new Captcha)->html(); ?>
-            <button type="submit" class="btn ttbtn btn-block"><?php echo Lang::T("LOGIN"); ?></button>
+            <button type="submit" class="btn ttbtn "><?php echo Lang::T("LOGIN"); ?></button>
             <center><i><?php echo Lang::T("COOKIES"); ?></i></center>
 		</div>
         <div class="margin-top20 text-center">
@@ -23,5 +24,6 @@
             <a href="<?php echo URLROOT; ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT"); ?></a>
 		</div>
         </form>
+        </div>
         </div>
         </center>

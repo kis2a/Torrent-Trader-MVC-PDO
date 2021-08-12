@@ -3,72 +3,136 @@
 	<center><b><?php echo stripslashes("Upload Rules"); ?></b><br>
 	<b><?php echo stripslashes(Config::TT()['UPLOADRULES']); ?></b></center>
 	</div>
-</div><br>
-
+</div>
+<br>
 <div class="row justify-content-md-center">
+<div class="col-md-6">
 <form name="upload" enctype="multipart/form-data" action="<?php echo URLROOT; ?>/upload/submit" method="post">
 <input type="hidden" name="takeupload" value="yes" />
-<table border="0" cellspacing="0" cellpadding="6" align="center">
-<tr>
-<td align='right' valign='top'><?php echo Lang::T("ANNOUNCE_URL"); ?>: </td><td align='left'>
+<?php echo Lang::T("ANNOUNCE_URL"); ?>: 
 <?php while (list($key, $value) = thisEach($data['announce_urls'])) { ?>
     <b><?php echo $value; ?></b><br />
 <?php } ?>
 <?php if (Config::TT()['ALLOWEXTERNAL']) { ?>
-    <br /><b><?php echo Lang::T("THIS_SITE_ACCEPTS_EXTERNAL"); ?></b>
+    <br /><p class="text-center"><b><?php echo Lang::T("THIS_SITE_ACCEPTS_EXTERNAL"); ?></b></p>
 <?php }  ?>
-</td></tr>
-<tr><td align='right'><?php echo Lang::T("TORRENT_FILE"); ?>: </td>
-<td align='left'> <input class="form-control" type='file' name='torrent' size='50' value='<?php echo $_FILES['torrent']['name']; ?>'></td></tr>
-<tr><td align='right'><?php echo Lang::T("NFO"); ?>: </td>
-<td align='left'> <input class="form-control" type='file' name='nfo' size='50' value='<?php echo $_FILES['nfo']['name']; ?>'><br></td></tr>
-<tr><td align='right'><?php echo Lang::T("TORRENT_NAME"); ?>: </td>
-<td align='left'><input class="form-control" type='text' name='name' size='60' value='<?php echo $_POST['name']; ?>' /><br /><?php echo Lang::T("THIS_WILL_BE_TAKEN_TORRENT"); ?></td></tr>
-<?php if (Config::TT()['IMDB1']) { ?>
-	<tr><td align='right'><a href="https://www.imdb.com/?ref_=nv_home" target='_blank'><img border='0' src='assets/images/imdb.png' width='50' height='50' title='Click here to go to Youtube'></a> </td>
-	<td align='left'> <input class="form-control" type='text' name='imdb' size='60' value='<?php echo $_POST['imdb']; ?>' />Link from IMDB, example https://www.imdb.com/title/tt1799527/</td></tr>
-<?php } ?>
-<?php if (Config::TT()['YOU_TUBE']) { ?>
-	<tr><td align=right><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='50' height='50' title='Click here to go to Youtube'></a> </td>
-	<td align=left><input class="form-control" type='text' name='tube' size='50' />&nbsp;<i><?php echo Lang::T("FORMAT"); ?>: </i> <span style='color:#FFff00'><b> https://www.youtube.com/watch?v=aYzVrjB-CWs</b></SPAN></td></tr>
-<?php } ?>
-	 <tr><td colspan='2' align='center'><?php echo Lang::T("MAX_FILE_SIZE"); ?>: <?php echo mksize(IMAGEMAXFILESIZE); ?>"&nbsp;
-	 <?php echo Lang::T("ACCEPTED_FORMATS"); ?>: <?php echo implode(", ", array_unique(ALLOWEDIMAGETYPES)); ?><br /></td></tr>
-	 <tr><td align='right'><?php echo Lang::T("IMAGE"); ?> 1:&nbsp;&nbsp;</td><td><input type='file' name='image0' size='50' /></td></tr>
-	 <tr><td align='right'><?php echo Lang::T("IMAGE"); ?> 2:&nbsp;&nbsp;</td><td><input type='file' name='image1' size='50' /></td></tr>
-<?php
+
+<div class="mb-6 row">
+  <label for="torrent" class="col-sm-2 col-form-label"><?php echo Lang::T("TORRENT_FILE"); ?>:</label>
+  <div class="col-sm-6">
+  <input class="form-control" type="file" name="torrent" value='<?php echo $_FILES['torrent']['name']; ?>'>
+  </div>
+</div><br>
+
+<div class="mb-6 row">
+    <label for="nfo" class="col-sm-2 col-form-label"><?php echo Lang::T("NFO"); ?>:</label>
+    <div class="col-sm-6">
+    <input class="form-control" type="file" name="nfo" value='<?php echo $_FILES['nfo']['name']; ?>'>
+    </div>
+</div><br>
+
+<div class="mb-6 row">
+    <label for="name" class="col-sm-2 col-form-label"><?php echo Lang::T("TORRENT_NAME"); ?>:</label>
+    <div class="col-sm-6">
+	<input class="form-control" type='text' name='name'><?php echo Lang::T("THIS_WILL_BE_TAKEN_TORRENT"); ?>
+    </div>
+</div><br>
+
+<?php 
+if (Config::TT()['IMDB1']) { ?>
+<div class="mb-6 row">
+    <label for="imdb" class="col-sm-2 col-form-label"><a href="https://www.imdb.com/?ref_=nv_home" target='_blank'><img border='0' src='assets/images/imdb.png' width='30' height='30' title='Click here to go to IMDB'></a></label>
+    <div class="col-sm-8">
+	<input class="form-control" type='text' name='imdb'>Example https://www.imdb.com/title/tt1799527/
+    </div>
+</div><br><?php
+}
+
+if (Config::TT()['YOU_TUBE']) { ?>
+<div class="mb-6 row">
+	<label for="imdb" class="col-sm-2 col-form-label"><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='30' height='30' title='Click here to go to Youtube'></a></label>
+	<div class="col-sm-8">
+	<input class="form-control" type='text' name='tube'>Example https://www.youtube.com/watch?v=aYzVrjB-CWs
+	</div>
+</div><br><?php
+} ?>
+
+<div class="mb-6 row">
+    <label for="image0" class="col-sm-2 col-form-label"><?php echo Lang::T("IMAGE"); ?> 1:</label>
+    <div class="col-sm-6">
+    <input class="form-control" type="file" name="image0" value='<?php echo $_FILES['nfo']['name']; ?>'>
+    </div>
+</div><br>
+
+<div class="mb-6 row">
+    <label for="image1" class="col-sm-2 col-form-label"><?php echo Lang::T("IMAGE"); ?> 2:</label>
+    <div class="col-sm-6">
+    <input class="form-control" type="file" name="image1">
+    <?php
+    echo Lang::T("MAX_FILE_SIZE"); ?>: <?php echo mksize(IMAGEMAXFILESIZE);?><br><?php
+    echo Lang::T("ACCEPTED_FORMATS"); ?>: <?php echo implode(", ", array_unique(ALLOWEDIMAGETYPES));
+    ?>
+    </div>
+</div><br><?php
+
 $category = "<select name=\"type\">\n<option value=\"0\">" . Lang::T("CHOOSE_ONE") . "</option>\n";
 $cats = genrelist();
 foreach ($cats as $row) {
     $category .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["parent_cat"]) . ": " . htmlspecialchars($row["name"]) . "</option>\n";
 }
-$category .= "</select>\n";
-print("<tr><td align='right'>" . Lang::T("CATEGORY") . ": </td><td align='left'>" . $category . "</td></tr>");
+$category .= "</select>\n"; ?>
+<div class="mb-6 row">
+    <label for="type" class="col-sm-2"><?php echo Lang::T("CATEGORY") ?></label>
+    <div class="col-sm-6">
+    <?php echo $category ?>
+    </div>
+</div><br><?php
 
-$language = Lang::select();
-print("<tr><td align='right'>" . Lang::T("LANGUAGE") . ": </td><td align='left'>" . $language . "</td></tr>");
+$language = Lang::select(); ?>
+<div class="mb-6 row">
+    <label for="type" class="col-sm-2"><?php echo Lang::T("LANGUAGE") ?></label>
+    <div class="col-sm-6">
+    <?php echo  $language ?>
+    </div>
+</div><br><?php
 
-if ($_SESSION["class"] > _VIP) {
-    print("<tr><td align='right'>VIP: </td><td align=left><input type='checkbox' name='vip' " .
-        (($row["vip"] == "yes") ? " checked='checked' " : "") . " value='yes'>Check this box if you want the torrent or only for VIP.</td></tr>");
+if ($_SESSION["class"] > _VIP) { ?>
+<div class="mb-6 row">
+	<label for="free" class="col-sm-2 form-check-label">Freeleech:</label>
+	<div class="col-sm-7">
+	<input class="form-check-input" type='checkbox' name='free' value=1>&nbsp;Check this box if you want the torrent freeleech.
+	</div>
+</div><br><?php
 }
-if ($_SESSION["class"] > _VIP) {
-    print("<tr><td align='right'>Freeleech: </td><td align=left><input type='checkbox' name='freeleech' " .
-        (($row["free"] == 1) ? " checked='checked' " : "") . " value='yes'>Check this box if you want the torrent freeleech.</td></tr>");
+
+if ($_SESSION["class"] > _VIP) { ?>
+<div class="mb-6 row">
+	<label for="vip" class="col-sm-2 form-check-label">VIP:</label>
+	<div class="col-sm-7">
+	<input class="form-check-input" type='checkbox' name='vip'  value='yes'>&nbsp;Check this box if you want the torrent VIP only.
+	</div>
+</div> <br><?php
 }
 
-if (Config::TT()['ANONYMOUSUPLOAD'] && Config::TT()['MEMBERSONLY']) {?>
-	<tr><td align="right"><?php echo Lang::T("UPLOAD_ANONY"); ?>: </td><td><?php printf("<input name='anonycheck' value='yes' type='radio' " . ($anonycheck ? " checked='checked'" : "") . " />" . Lang::T("YES") . " <input name='anonycheck' value='no' type='radio' " . (!$anonycheck ? " checked='checked'" : "") . " />" . Lang::T("NO") . "");?> &nbsp;<i><?php echo Lang::T("UPLOAD_ANONY_MSG"); ?></i>
-	</td></tr>
-<?php } ?>
-<tr><td align='center' colspan='2'><?php echo Lang::T("DESCRIPTION"); ?></td></tr></table>
+if (Config::TT()['ANONYMOUSUPLOAD']) { ?>
+<div class="mb-6 row">
+      <label for="anonycheck" class="col-sm-2 form-check-label">Anon :</label>
+      <div class="col-sm-7">
+	  <input class="form-check-input" type="checkbox" name="anonycheck" value='yes'>&nbsp;<?php echo Lang::T("UPLOAD_ANONY"); ?>
+      </div>
+</div><br><?php
+} ?>
 
-
-<?php
-print textbbcode("upload", "descr", "$descr");
-?>
+</div>
+</div>
+<div class="row justify-content-md-center">
+<div class="col-md-8">
+<p class="text-center"><?php echo Lang::T("DESCRIPTION"); ?></p><?php
+print textbbcode("upload", "descr", "$descr"); ?>
 <br><center><input type="submit" class="btn btn-sm ttbtn" value="<?php echo Lang::T("UPLOAD_TORRENT"); ?>" /><br />
 <i><?php echo Lang::T("CLICK_ONCE_IMAGE"); ?></i>
 </center>
 </form>
+
+</div>
 </div>

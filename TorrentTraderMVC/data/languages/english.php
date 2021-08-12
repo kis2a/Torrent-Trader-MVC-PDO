@@ -595,7 +595,7 @@ $LANG["YOUR_MESSAGES"] = "Your Messages";
 $LANG["YOUR_TORRENTS"] = "Your Torrents";
 
 // Navigation Menus
-$LANG["ACCOUNT"] = "Your Account";
+$LANG["ACCOUNT"] = "Account";
 $LANG["CATEGORY_ADD"] = "Add Category";
 $LANG["CATEGORY_DEL"] = "Delete Category";
 $LANG["CATEGORY_MANAGEMENT"] = "Category Management";

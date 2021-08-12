@@ -20,7 +20,7 @@
             commenttable($data['commres'], $data['type']);
             print($data['pagerbottom']);
         } else {
-            print("<br><b>" . Lang::T("NOCOMMENTS") . "</b><br>\n");
+            print("<br><center><b>" . Lang::T("NOCOMMENTS") . "</b></center><br>\n");
         }
         
         echo "<div class='form-group'>";

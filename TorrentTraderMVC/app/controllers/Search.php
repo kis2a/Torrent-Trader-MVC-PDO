@@ -91,7 +91,7 @@ class Search
 
         $count = DB::run("SELECT COUNT(*) FROM torrents " . $where, $params)->fetchcolumn();
         if ($count) {
-            list($pagertop, $pagerbottom, $limit) = pager(5, $count, URLROOT . "/search?$url$pagerlink");
+            list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT . "/search?$url$pagerlink");
             $res = Torrents::search($where, $orderby, $limit, $params);
 
             if (!$keyword == '') {
@@ -266,7 +266,7 @@ class Search
 
         //get sql info
         if ($count) {
-            list($pagertop, $pagerbottom, $limit) = pager(1, $count, URLROOT."/search/browse" . $url.$pagerlink);
+            list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT."/search/browse" . $url.$pagerlink);
             $res = DB::run("SELECT torrents.id, torrents.anon, torrents.announce, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.tube, torrents.imdb, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name AS cat_name, categories.parent_cat AS cat_parent, categories.image AS cat_pic, users.username, users.privacy, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating FROM torrents LEFT JOIN categories ON category = categories.id LEFT JOIN users ON torrents.owner = users.id $where $orderby $limit", $params);
         } else {
             unset($res);

@@ -11,22 +11,11 @@ html, body {
     flex: 0 0 210px;
 } 
 
-@media only screen and (max-width: 1143px) {
+@media only screen and (max-width: 1300px) {
 	.ttsidebar {
 		display: none !important;
 	}
 }
-
-.ttbottombar {
-    width: 50% !important;
-}
-
-@media only screen and (min-width: 1143px) {
-	.ttbottombar {
-		display: none !important;
-	}
-}
-
 
 @media only screen and (max-width: 1967px) {
 	.ttmobile {
@@ -133,6 +122,10 @@ html, body {
 	border: 1px solid #777;
 }
 
+.shouttable {
+    padding: .05rem .05rem !important;
+}
+
 /* -- Bootstrap Table --*/
 .table thead th {
     color: #fff;
@@ -142,6 +135,10 @@ html, body {
     background-repeat: repeat-x;
 	height: 25px !important;
     padding: .15rem;
+}
+
+.table {
+    color: rgb(5, 42, 97);
 }
 
 a {
@@ -154,5 +151,25 @@ a {
 
 .list-group-item {
     background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
-    border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
+    border-image-source: rgb(5, 33, 59) !important;
+}
+
+.shoutsmile {
+    flex-direction: row !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    color: #000102 !important;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(157, 213, 248);
+}
+
+tr:nth-child(even) {
+    background-color: rgb(182, 208, 255);
+}
+
+.test {
+    background: #a7cdf5 !important;
 }

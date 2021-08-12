@@ -6,15 +6,16 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 
 <div class="jumbotron">
 <div class="row">
-    <div class="col-md-3">
-        <img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar"><br>
+    <div class="col-md-2">
+        <center><img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar" width="200px" height="200px"><br>
         <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("PM") ?></button></a>&nbsp;
 		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
         <?php if ($_SESSION["edit_users"] == "yes") {?>
 		<a href="<?php echo URLROOT; ?>/snatched?uid=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a>
         <?php } ?>
+        </center>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <b><?php echo Lang::T("PROFILE"); ?></b><br>
         <?php echo Lang::T("USERNAME"); ?>: <a href="<?php echo URLROOT ?>/profile?id=<?php echo $selectedid['id'] ?>"><?php echo Users::coloredname($selectedid["username"]) ?></a><br />
 	    <?php if ($_SESSION['class']  > _MODERATOR) { ?>

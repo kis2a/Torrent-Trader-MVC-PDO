@@ -3,27 +3,11 @@ if (Config::TT()['MIDDLENAV']) {?>
   <?php Blocks::middle();
 }?>
 
-<div class='row'>
-<?php
-if (Config::TT()['LEFTNAV']) { ?>
-<div class="ttbottombar" >
-  <?php Blocks::left();?>
-</div> <?php
-} ?>
-<?php
-if (Config::TT()['RIGHTNAV']) {?>
-<div class="ttbottombar">
-    <?php Blocks::right();?>
-</div>
-<?php
-} ?>
-</div>
-
 </div>
 
 <?php
 if (Config::TT()['RIGHTNAV']) {?>
-<div class="ttsidebar">
+<div class="col  ttsidebar">
     <?php Blocks::right();?>
 </div>
 <?php
@@ -39,7 +23,7 @@ if (Config::TT()['RIGHTNAV']) {?>
         <li><?php $totaltime = array_sum(explode(" ", microtime())) - $GLOBALS['tstart'];?></li>
         <li><?php printf(Lang::T("PAGE_GENERATED_IN"), $totaltime);?></li>
         <li><a href="https://torrenttrader.uk" target="_blank">torrenttrader.uk</a> -|- <a href='<?php echo URLROOT; ?>/rss'><i class="fa fa-rss-square"></i> <?php echo Lang::T("RSS_FEED"); ?></a> - <a href='<?php echo URLROOT; ?>/rss/custom'><?php echo Lang::T("FEED_INFO"); ?></a></li>
-        <li>Bootstrap 4.3.1 -|- jQuery 3.4.1</li>
+        <li>Bootstrap v5.1.0 -|- jQuery 3.4.1</li>
 		<li>Update By: <a href="https://github.com/M-jay84/Torrent-Trader-MVC-PDO-OOP" target="_blank">M-jay</a> 2020</li>
       </ul>
 </footer>
@@ -59,16 +43,7 @@ if (Config::TT()['RIGHTNAV']) {?>
         setInterval( "updateShouts()", 15000 );
 		updateShouts();
     </script>
-<script>
-function myFunction() {
-  var x = document.getElementById("myDIVsmileytog");
-  if (x.style.display === "none") {
-    x.style.display = "block";
-  } else {
-    x.style.display = "none";
-  }
-}
-</script>
+
 <script>
 $(document).ready(function(){
 	$("#search-box").keyup(function(){

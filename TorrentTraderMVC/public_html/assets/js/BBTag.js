@@ -116,10 +116,10 @@
 			t=remblaie(t)
 		// balise Citation
 			t=deblaie(/(\[\/quote\])/g,t)
-			t=remplace_tag(/\[quote\](.+)\[\/quote\]/g,'<p class=sub><b> Citation : </b></p><table class=main border=1 cellspacing=0 cellpadding=10><tr><td style="border: 1px black dotted">$1</td></tr></table>',t)  
+			t=remplace_tag(/\[quote\](.+)\[\/quote\]/g,'<p class=sub><b> Quote : </b></p><table class=main border=1 cellspacing=0 cellpadding=10><tr><td style="border: 1px black dotted">$1</td></tr></table>',t)  
 			t=remblaie(t)
 			t=deblaie(/(\[\/quote\])/g,t)
-			t=remplace_tag(/\[quote=([a-zA-Z]+)\]((\s|.)+?)\[\/quote\]/g,'<p class=sub><b>$1 a écrit : </b></p><table class=main border=1 cellspacing=0 cellpadding=10><tr><td style="border: 1px black dotted">$2</td></tr></table>',t)  
+			t=remplace_tag(/\[quote=([a-zA-Z]+)\]((\s|.)+?)\[\/quote\]/g,'<p class=sub><b>$1 a quote : </b></p><table class=main border=1 cellspacing=0 cellpadding=10><tr><td style="border: 1px black dotted">$2</td></tr></table>',t)  
 			t=remblaie(t)
 		// Balise Multi Citation Pour Message Privé
 			t=deblaie(/(\[\/reponse\])/g,t)

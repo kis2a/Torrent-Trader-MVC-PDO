@@ -24,7 +24,7 @@ if ($_SESSION['loggedin']) {
     Style::block_begin("<a href=". URLROOT ."/profile?id=".$_SESSION['id'].">". Users::coloredname($_SESSION['username'])."</b></a>");
     ?>
 
-        <img class="embed-responsive" src="<?php echo $avatar; ?>" alt="Avatar"  />
+        <center><img src="<?php echo $avatar; ?>" alt="Avatar"  /></center>
 	<ul class="list-group">
 		<li class="list-group-item"><?php echo Lang::T("DOWNLOADED"); ?> : <span class="label label-danger pull-right"><?php echo $userdownloaded; ?></span></li>
 		<li class="list-group-item"><?php echo Lang::T("UPLOADED"); ?>: <span class="label label-success pull-right"><?php echo $useruploaded; ?></span></li>
@@ -61,6 +61,7 @@ if ($_SESSION['loggedin']) {
 			<td align="center"><input type="password" size="12" name="password"  /></td>
 			</tr><tr>
 			<td align="center">
+			<?php (new Captcha)->html(); ?>
 			<button type='submit' class='btn btn-sm ttbtn' value='Login'><?php echo Lang::T("LOGIN"); ?></button>
 			</td>
 		</table>

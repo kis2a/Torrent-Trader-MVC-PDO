@@ -19,6 +19,7 @@ class Topten
         <a href=" . URLROOT . "/topten/torrents>Torrents</a> |
         <a href=" . URLROOT . "/topten/countries>Countries</a>
         </div>\n");
+        
         $mainquery = "SELECT id as userid, username, added, uploaded, downloaded, uploaded / (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(added)) AS upspeed, downloaded / (UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(added)) AS downspeed FROM users WHERE enabled = 'yes'";
         if (!$limit || $limit > 250) {
             $limit = 10;
@@ -31,27 +32,27 @@ class Topten
         }
         if ($limit == 10 || $subtype == "dl") {
             $order = "downloaded DESC";
-            $res = $db->run($mainquery . " ORDER BY $order " . " LIMIT $limit");
+            $res = DB::run($mainquery . " ORDER BY $order " . " LIMIT $limit");
             $title = "Top $limit Downloaders" . ($limit == 10 && $pu ? " <font class=small> - [<a href=" . URLROOT . "/topten?lim=100&amp;subtype=dl>Top 100</a>] - [<a href=topten?lim=250&amp;subtype=dl>Top 250</a>]</font>" : "");
             include APPROOT . "/views/topten/user.php";
         }
         if ($limit == 10 || $subtype == "dls") {
             $order = "downspeed DESC";
-            $res = $db->run($mainquery . "  ORDER BY $order " . " LIMIT $limit");
+            $res = DB::run($mainquery . "  ORDER BY $order " . " LIMIT $limit");
             $title = "Top $limit Fastest Downloaders <font class=small>(average, includes inactive time)</font>" . ($limit == 10 && $pu ? " <font class=small> - [<a href=topten?lim=100&amp;subtype=dls>Top 100</a>] - [<a href=topten?lim=250&amp;subtype=dls>Top 250</a>]</font>" : "");
             include APPROOT . "/views/topten/user.php";
         }
         if ($limit == 10 || $subtype == "bsh") {
             $order = "uploaded / downloaded DESC";
             $extrawhere = " AND downloaded > 1073741824";
-            $res = $db->run($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit");
+            $res = DB::run($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit");
             $title = "Top $limit Best Sharers <font class=small>(with minimum 1 GB downloaded)</font>" . ($limit == 10 && $pu ? " <font class=small> - [<a href=topten?lim=100&amp;subtype=bsh>Top 100</a>] - [<a href=topten?lim=250&amp;subtype=bsh>Top 250</a>]</font>" : "");
             include APPROOT . "/views/topten/user.php";
         }
         if ($limit == 10 || $subtype == "wsh") {
             $order = "uploaded / downloaded ASC, downloaded DESC";
             $extrawhere = " AND downloaded > 1073741824";
-            $res = $db->run($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit");
+            $res = DB::run($mainquery . $extrawhere . " ORDER BY $order " . " LIMIT $limit");
             $title = "Top $limit Worst Sharers <font class=small>(with minimum 1 GB downloaded)</font>" . ($limit == 10 && $pu ? " <font class=small> - [<a href=topten?lim=100&amp;subtype=wsh>Top 100</a>] - [<a href=topten?lim=250&amp;subtype=wsh>Top 250</a>]</font>" : "");
             include APPROOT . "/views/topten/user.php";
         }

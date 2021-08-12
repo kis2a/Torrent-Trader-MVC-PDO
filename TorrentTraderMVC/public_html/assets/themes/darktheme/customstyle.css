@@ -11,22 +11,11 @@ html, body {
     flex: 0 0 210px;
 } 
 
-@media only screen and (max-width: 1143px) {
+@media only screen and (max-width: 1300px) {
 	.ttsidebar {
 		display: none !important;
 	}
 }
-
-.ttbottombar {
-    width: 50% !important;
-}
-
-@media only screen and (min-width: 1143px) {
-	.ttbottombar {
-		display: none !important;
-	}
-}
-
 
 @media only screen and (max-width: 1567px) {
 	.ttmobile {
@@ -41,6 +30,7 @@ html, body {
 }
 
 .card {
+	color: #fff !important;
 	background-color: transparent; /* Needed to make the padding-bottom work */
 	border: 0px; /* Needed to make the padding-bottom work */
 	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
@@ -57,6 +47,7 @@ html, body {
 }
 
 .frame-body {
+	color: #fff !important;
     border: 10px solid;
     border-image-slice: 1;
     border-width: 2px;
@@ -75,6 +66,7 @@ html, body {
 }
 
 .block-body {
+	color: #fff !important;
 	padding: 0.05rem;
     border: 10px solid;
     border-image-slice: 1;
@@ -113,8 +105,8 @@ html, body {
 }
 
   #country-list{list-style:none;width:190px;}
-  #country-list li{padding: 10px; background: #f0f0f0; border-bottom: #000 1px solid;}
-  #country-list li:hover{background:#ece3d2;cursor: pointer;}
+  #country-list li{padding: 10px; color:#272727; background: #f0f0f0; border-bottom: #000 1px solid;}
+  #country-list li:hover{background:#ece3d2; color:#272727; cursor: pointer;}
   #search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
 
 /* Styles ShoutBox */
@@ -132,6 +124,10 @@ html, body {
 	border: 1px solid #777;
 }
 
+.shouttable {
+    padding: .05rem .05rem !important;
+}
+
 /* -- Bootstrap Table --*/
 .table thead th {
     color: #fff;
@@ -141,6 +137,10 @@ html, body {
 	background-repeat: repeat-x;
 	height: 25px !important;
     padding: .15rem;
+}
+
+.table {
+    color: #ffffff;
 }
 
 a {
@@ -153,4 +153,25 @@ a {
 
 .list-group-item {
     background: transparent !important;
+	color: #fff !important;
+}
+
+.shoutsmile {
+    flex-direction: row !important;
+}
+
+.table-striped>tbody>tr:nth-of-type(odd) {
+    color: #fff;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(72, 78, 82);
+}
+
+tr:nth-child(even) {
+    background-color: rgb(61, 64, 70);
+}
+
+.test {
+    background: rgb(61, 64, 70) !important;
 }

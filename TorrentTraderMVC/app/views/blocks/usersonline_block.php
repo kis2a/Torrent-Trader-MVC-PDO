@@ -19,7 +19,7 @@ if ($_SESSION['loggedin'] == true) {
     <?php } else {?>
 	<?php for ($i = 0, $cnt = count($rows), $n = $cnt - 1; $i < $cnt; $i++) {
         $row = &$rows[$i];?>
-        <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>'><?php echo Users::coloredname($row["username"]); ?></a><?php echo ($i < $n ? ", " : ""); ?>
+        <a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>'><b><?php echo Users::coloredname($row["username"]); ?></b></a><?php echo ($i < $n ? ", " : ""); ?>
 	<?php
     }
     }

@@ -20,13 +20,10 @@ if ($_SESSION['loggedin'] == true) {
         foreach ($rows as $row) {
             $char1 = 40; //cut length
             $smallname = htmlspecialchars(substr($row["name"], 0, 30)) . "..."; ?>
-            <div class="pull-left">
             <a href='<?php echo URLROOT; ?>/torrent?id=<?php echo $row["id"]; ?>' title='<?php echo htmlspecialchars($row["name"]); ?>'><?php echo $smallname; ?></a>
-            </div>
-            <div class="pull-left">
                 <span class="label label-success"> S: <?php echo number_format($row['seeders']); ?></span>
                 <span class="label label-warning"> L: <?php echo number_format($row['leechers']); ?></span>
-            </div>
+            <br>
 		<?php }
 
     } else {

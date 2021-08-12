@@ -210,7 +210,7 @@ class Messages
             }
             $ids = array_map("intval", $_POST["del"]);
             $ids = implode(", ", $ids);
-            if ($type == 'inboxbox') {
+            if ($type == 'inbox') {
                 DB::run("DELETE FROM messages WHERE `location` = 'in' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
                 DB::run("UPDATE messages SET `location` = 'out' WHERE `location` = 'both' AND `receiver` = $_SESSION[id] AND `id` IN ($ids)");
             } elseif ($type == 'outbox') {

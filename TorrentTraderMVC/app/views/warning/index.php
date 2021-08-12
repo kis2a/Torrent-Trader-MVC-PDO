@@ -45,7 +45,7 @@ if ($data['res']->rowCount() > 0) {
 
 if ($_SESSION["edit_users"] == "yes" && $_SESSION["control_panel"] == "yes") {
     ?>
-    <center><font color=#ffff00>Warn User</font></center>
+    <center><b>Warn User</b></center>
     <div class="row justify-content-md-center">
     <div class="col-6 border ttborder">
     <form method='post' action='<?php echo URLROOT; ?>/warning/submit'>
@@ -61,7 +61,7 @@ if ($_SESSION["edit_users"] == "yes" && $_SESSION["control_panel"] == "yes") {
 }
 if ($_SESSION["delete_users"] == "yes" && $_SESSION["control_panel"] == "yes") {
     ?>
-    <center><font color=#ffff00>Delete User</font></center>
+    <center><b>Delete User</b></center>
     <div class="row justify-content-md-center">
     <div class="col-6 border ttborder">
     <form method='post' action='<?php echo URLROOT; ?>/profile/delete'>
