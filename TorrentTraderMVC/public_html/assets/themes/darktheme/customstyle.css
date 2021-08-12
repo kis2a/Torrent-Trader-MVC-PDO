@@ -172,6 +172,6 @@ tr:nth-child(even) {
     background-color: rgb(61, 64, 70);
 }
 
-.test {
+.browsebg {
     background: rgb(61, 64, 70) !important;
 }

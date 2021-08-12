@@ -305,7 +305,7 @@ class Search
         ?>
                 <br /><br />
                 <form method="get" action="<?php echo URLROOT ?>/search/browse">
-                <table align="center">
+                <table class='browsebg' align="center">
                 <tr align='right'>
                 <?php
 $i = 0;
@@ -313,7 +313,7 @@ $i = 0;
         while ($cat = $cats->fetch(PDO::FETCH_ASSOC)) {
             $catsperrow = 5;
             print(($i && $i % $catsperrow == 0) ? "</tr><tr align='right'>" : "");
-            print("<td style=\"padding-bottom: 2px;padding-left: 2px\"><a href=" . URLROOT . "/search/browse?cat=$cat[id]>" . htmlspecialchars($cat["parent_cat"]) . " - " . htmlspecialchars($cat["name"]) . "</a> <input name='c{$cat["id"]}' type=\"checkbox\" " . (in_array($cat["id"], $wherecatina) || $_GET["cat"] == $cat["id"] ? "checked='checked' " : "") . "value='1' /></td>\n");
+            print("<td class='browsebg' style=\"padding-bottom: 2px;padding-left: 2px\"><a href=" . URLROOT . "/search/browse?cat=$cat[id]>" . htmlspecialchars($cat["parent_cat"]) . " - " . htmlspecialchars($cat["name"]) . "</a> <input name='c{$cat["id"]}' type=\"checkbox\" " . (in_array($cat["id"], $wherecatina) || $_GET["cat"] == $cat["id"] ? "checked='checked' " : "") . "value='1' /></td>\n");
             $i++;
         }
         echo "</tr><tr align='center'><td colspan='$catsperrow' align='center'><input type='submit' value='" . Lang::T("GO") . "' /></td></tr>";

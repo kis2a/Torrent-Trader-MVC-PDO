@@ -3,7 +3,7 @@ if ($_SESSION['loggedin'] || !Config::TT()['MEMBERSONLY']) {
     Style::block_begin(Lang::T("NAVIGATION"));
     ?>
 
-    <div class="list-group">
+    <ul class="list-group">
 	<a href='<?php echo URLROOT; ?>/index' class="list-group-item"><i class="fa fa-chevron-right"></i> <?php echo Lang::T("HOME"); ?></a>
 	<?php
 if ($_SESSION["view_torrents"] == "yes") {?>
@@ -25,7 +25,7 @@ if ($_SESSION["view_torrents"] == "yes") {?>
 <?php if ($_SESSION['loggedin'] == true && $_SESSION["view_users"] == "yes") {?>
 	<a href='<?php echo URLROOT; ?>/group/staff' class="list-group-item"><i class="fa fa-chevron-right"></i> <?php echo Lang::T("STAFF"); ?></a>
 <?php }?>
-    </div>
+    </ul>
 	<!-- end content -->
 
 <?php Style::block_end();
