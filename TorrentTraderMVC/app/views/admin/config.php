@@ -1,4 +1,8 @@
 <form method="post" action="<?php echo URLROOT ?>/adminconfig/submit">
+
+<p class='text-center'>To Allow User, add username to _OWNERS setting manually at app/config/settings.php</p>
+<p class='text-center'>Like your Settings ? Make a backup before changing <a href='<?php echo URLROOT; ?>/adminconfig/backup ?>'> Here</a></p>
+
 <div class="jumbotron border ttborder">
   <div class="row">
     <div class="col-md-4">

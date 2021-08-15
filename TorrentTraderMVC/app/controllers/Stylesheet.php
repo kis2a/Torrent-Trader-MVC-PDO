@@ -23,4 +23,20 @@ class Stylesheet
         }
         Redirect::to($_SERVER["HTTP_REFERER"]);
     }
+
+    
+    public function forbooty()
+    {
+        $updateset = array();
+        $stylesheet = Input::get('stylesheet');
+        $updateset[] = "stylesheet = '$stylesheet'";
+        if (count($updateset)) {
+            Users::updateset($updateset, $_SESSION['id']);
+        }
+        if (empty($_SERVER["HTTP_REFERER"])) {
+            Redirect::to(URLROOT);
+            return;
+        }
+        Redirect::to($_SERVER["HTTP_REFERER"]);
+    }
 }

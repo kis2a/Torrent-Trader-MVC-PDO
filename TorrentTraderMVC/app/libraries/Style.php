@@ -49,7 +49,7 @@ class Style
     {
         ?>
             </div>
-        </div>
+        </div><br>
         <?php
     }
 
@@ -149,7 +149,7 @@ class Style
     {
             ?>
             </div>
-        </div>
+        </div><br>
         <?php
     }
 

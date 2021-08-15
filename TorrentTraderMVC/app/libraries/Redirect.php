@@ -27,8 +27,8 @@ class Redirect
         ?>
         <div class="alert ttalert">
         <center>
-        <b><font color=#000><?php echo $al_msg; ?></font></b><br>
-        <b><font color=#000>Redirecting ...</font></b>&nbsp;
+        <b><?php echo $al_msg; ?></b><br>
+        <b>Redirecting ...</b>&nbsp;
         <b>[ <a href='<?php echo $al_url; ?>'>link</a> ]</b>&nbsp;
         </center>
         </div>

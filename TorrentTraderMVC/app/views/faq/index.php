@@ -2,7 +2,7 @@
 print("<a name='top'></a>");
 foreach ($data['faq_categ'] as $id => $temp) {
     if ($data['faq_categ'][$id]['flag'] == "1") {
-        print("<ul style='list-style: none'>\n<li><a href=\"#section" . $id . "\"><b>" . stripslashes($data['faq_categ'][$id]['title']) . "</b></a>\n<ul style='list-style: none'>\n");
+        print("<ul style='list-style: none'>\n<li><a href=\"#section" . $id . "\"><b>" . stripslashes($data['faq_categ'][$id]['title']) . "</b></a>\n<ul style='list-style: none'><br>\n");
         if (array_key_exists("items", $data['faq_categ'][$id])) {
             foreach ($data['faq_categ'][$id]['items'] as $id2 => $temp) {
                 if ($data['faq_categ'][$id]['items'][$id2]['flag'] == "1") {

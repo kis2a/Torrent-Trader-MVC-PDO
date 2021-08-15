@@ -7,7 +7,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
 <div class="jumbotron">
 <div class="row">
     <div class="col-md-2">
-        <center><img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar" width="200px" height="200px"><br>
+        <center><img class="embed-responsive" src="<?php echo $data['avatar']; ?>" alt="Avatar" width="200px" height="200px"><br><br>
         <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("PM") ?></button></a>&nbsp;
 		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
         <?php if ($_SESSION["edit_users"] == "yes") {?>

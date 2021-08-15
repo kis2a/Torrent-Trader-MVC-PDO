@@ -1,7 +1,7 @@
 <br><?php
 if ($_SESSION['class'] > _MODERATOR) { ?>
 <div class="border ttborder">
-    <center><font color=#ff9900>Super Moderator Only</font></center>
+    <center><b>Super Moderator Only</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admingroups/groups"><img src="<?php echo URLROOT; ?>/assets/images/admin/user_groups.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("USER_GROUPS_VIEW"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminshoutbox/clear"><img src="<?php echo URLROOT; ?>/assets/images/shoutclear.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("CLEAR_SHOUTBOX"); ?></b></a></li>
@@ -13,7 +13,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
 } ?>
 <br>
 <div class="border ttborder">
-    <center><font color=#ff9900>Invites</font></center>
+    <center><b>Invites</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/Admininvites/pending"><img src="<?php echo URLROOT; ?>/assets/images/admin/pending_invited_user.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Pending Invited Users</b></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/Admininvites"><img src="<?php echo URLROOT; ?>/assets/images/admin/invited_user.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Invited Users</b></a></li>   
@@ -21,7 +21,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
 </div>
 <br>
 <div class="border ttborder">
-    <center><font color=#ff9900>Warning/Reports</font></center>
+    <center><b>Warning/Reports</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminwarning"><img src="<?php echo URLROOT; ?>/assets/images/admin/warned_user.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("WARNED_USERS"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminreports"><img src="<?php echo URLROOT; ?>/assets/images/admin/report_system.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("REPORTS"); ?></b></a></li>

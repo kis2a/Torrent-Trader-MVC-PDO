@@ -969,7 +969,8 @@ CREATE TABLE IF NOT EXISTS `stylesheets` (
 
 INSERT INTO `stylesheets` (`id`, `uri`, `name`) VALUES 
 (1, 'darktheme', 'darktheme'),
-(2, 'default', 'Default');
+(2, 'default', 'Default'),
+(3, 'booty', 'booty');
 
 -- --------------------------------------------------------
 

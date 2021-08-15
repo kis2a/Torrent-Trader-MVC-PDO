@@ -32,7 +32,6 @@ html, body {
 .card {
 	background-color: transparent; /* Needed to make the padding-bottom work */
 	border: 0px; /* Needed to make the padding-bottom work */
-	padding-bottom: 10px;  /* adjust this value to change the vertical spacing for left and right column, and also center column */
 }
 
 .frame-header {
@@ -76,6 +75,7 @@ html, body {
 	color: #fff !IMPORTANT;
 	background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !IMPORTANT;
 	background-image: linear-gradient(to bottom, #072F5F, #3895D3) !IMPORTANT;
+    padding: .075rem .25rem;
 }
 
 .ttbtn:hover {
@@ -172,4 +172,29 @@ tr:nth-child(even) {
 
 .browsebg {
     background: #a7cdf5 !important;
+}
+
+.form-control {	
+    color: rgb(5, 33, 59);	
+    background-color: #a7cdf5;	
+    border: 1px solid #1F8AC0 !important;	
+}
+
+button, input, optgroup, select, textarea {	
+    color: rgb(5, 33, 59);	
+    background-color: #a7cdf5;	
+}
+
+.dropdown-item {	
+    color: rgb(5, 33, 59);	
+    background-color: #a7cdf5;	
+}
+
+.dropdown-menu {	
+    color: rgb(5, 33, 59);	
+    background-color: #a7cdf5;	
+}
+
+.progress-bar {	
+    color: #a7cdf5;	
 }

@@ -10,7 +10,11 @@ class Adminconfig
     // Check admin name !!!
     public static function check()
     {
-        if ($_SESSION["control_panel"] != "yes" || $_SESSION["username"] != "mjay") {
+        if (!in_array($_SESSION["username"], _OWNERS)) {
+            Redirect::to(URLROOT . "/logout");
+        }
+        
+        if ($_SESSION["control_panel"] != "yes") {
             Redirect::to(URLROOT . "/logout");
         }
     }
@@ -113,6 +117,18 @@ class Adminconfig
                 "<?php\nreturn " . var_export($data, true) . "\n?>"
             );
             var_dump($data);
+    }
+
+    public static function backup()
+    {
+        self::check();
+        $file = APPROOT.'/config/settings.php';
+        $newfile = APPROOT.'/config/settings.php.bak';
+        
+        if (!copy($file, $newfile)) {
+            Redirect::autolink(URLROOT . "/adminconfig", 'Backup Failed');
+        }
+        Redirect::autolink(URLROOT . "/adminconfig", 'Success');
     }
 
 }

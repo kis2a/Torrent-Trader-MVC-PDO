@@ -1,19 +1,20 @@
 <br><?php
 if ($_SESSION['class'] == _ADMINISTRATOR) { ?>
 <div class="border ttborder">
-    <center><font color=#ff9900>Admin Only</font></center>
+    <center><b>Admin Only</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminbackup"><img src="<?php echo URLROOT; ?>/assets/images/admin/db_backup.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("BACKUPS"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminblocks"><img src="<?php echo URLROOT; ?>/assets/images/admin/blocks.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("BLOCKS"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminmessages"><img src="<?php echo URLROOT; ?>/assets/images/admin/message_spy.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("MESSAGE_SPY"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminexceptions"><img src="<?php echo URLROOT; ?>/assets/images/admin/sql_error.png" border="0" width="20" height="20" alt="" />&nbsp;<b>SQL Error</b></a></li> 
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminstylesheet"><img src="<?php echo URLROOT; ?>/assets/images/admin/themes.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("THEME_MANAGEMENT"); ?></b></a></li>
+    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminconfig"><img src="<?php echo URLROOT; ?>/assets/images/admin/config.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("Settings"); ?></b></a></li>
     </ul>
 </div> <?php
 } ?>
 <br>
 <div class="border ttborder">
-    <center><font color=#ff9900>Community</font></center>
+    <center><b>Community</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminfaq"><img src="<?php echo URLROOT; ?>/assets/images/admin/faq.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("FAQ"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminforum"><img src="<?php echo URLROOT; ?>/assets/images/admin/forums.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("FORUM_MANAGEMENT"); ?></b></a></li>
@@ -27,7 +28,7 @@ if ($_SESSION['class'] == _ADMINISTRATOR) { ?>
 </div>
 <br>
 <div class="border ttborder">
-    <center><font color=#ff9900>Torrents</font></center>
+    <center><b>Torrents</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admincategories"><img src="<?php echo URLROOT; ?>/assets/images/admin/torrent_cats.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("TORRENT_CAT_VIEW"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admintorrentlang/torrentlang"><img src="<?php echo URLROOT; ?>/assets/images/admin/torrent_lang.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("TORRENT_LANG"); ?></b></a></li>

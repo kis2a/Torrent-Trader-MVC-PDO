@@ -1,59 +1,79 @@
 <div class="row justify-content-center">
+<div class="col-4">
 <form method="post" action="<?php echo URLROOT; ?>/signup/submit">
 <?php if ($data['invite']) {?>
 	<input type="hidden" name="invite" value="<?php echo $_GET["invite"]; ?>" />
 	<input type="hidden" name="secret" value="<?php echo htmlspecialchars($_GET["secret"]); ?>" />
 <?php }?>
-<div class="form-group">
-    <?php echo Lang::T("COOKIES"); ?><br>
-<div class="form-group">
-	<label for="wantusername"><?php echo Lang::T("USERNAME"); ?>:</label>
-	<input id="wantusername" type="text" class="form-control" name="wantusername" minlength="3" maxlength="25" required autofocus>
-</div>
-<div class="form-group">
-	<label for="wantpassword"><?php echo Lang::T("PASSWORD"); ?>:</label>
-	<input id="wantpassword" type="password" class="form-control" name="wantpassword" minlength="6" maxlength="25" required autofocus>
-</div>
-<div class="form-group">
-	<label for="passagain"><?php echo Lang::T("CONFIRM"); ?>:</label>
-	<input id="passagain" type="password" class="form-control" name="passagain" minlength="6" maxlength="25" required autofocus>
-</div>
+<p class="text-center"><?php echo Lang::T("COOKIES"); ?></p><br>
+<div class="mb-3 row">
+       <label for="wantusername" class="col-sm-3 col-form-label"><?php echo Lang::T("USERNAME"); ?>:</label>
+       <div class="col-sm-9">
+	   <input id="wantusername" type="text" class="form-control" name="wantusername" minlength="3" maxlength="25" required autofocus>
+       </div>
+</div><br>
+
+<div class="mb-3 row">
+       <label for="wantpassword" class="col-sm-3 col-form-label"><?php echo Lang::T("PASSWORD"); ?>:</label>
+       <div class="col-sm-9">
+	   <input id="wantpassword" type="password" class="form-control" name="wantpassword" minlength="6" maxlength="25" required autofocus>
+       </div>
+</div><br>
+
+<div class="mb-3 row">
+       <label for="passagain" class="col-sm-3 col-form-label"><?php echo Lang::T("CONFIRM"); ?>:</label>
+       <div class="col-sm-9">
+	   <input id="passagain" type="password" class="form-control" name="passagain" minlength="6" maxlength="25" required autofocus>
+       </div>
+</div><br>
 
 <?php if (!$data['invite']) { ?>
-	<div class="form-group">
-	    <label for="email"><?php echo Lang::T("EMAIL"); ?>:</label>
-	    <input id="email" type="text" class="form-control" name="email" minlength="3" maxlength="25" required autofocus>
-    </div>
+	<div class="mb-3 row">
+       <label for="email" class="col-sm-3 col-form-label"><?php echo Lang::T("EMAIL"); ?>:</label>
+       <div class="col-sm-9">
+	   <input id="email" type="text" class="form-control" name="email" minlength="3" maxlength="25" required autofocus>
+       </div>
+</div><br>
 <?php } ?>
 
-<div class="form-group">
-	<label for="age"><?php echo Lang::T("AGE"); ?>:</label>
-	<input id="age" type="text" class="form-control" name="age" minlength="2" required autofocus>
-</div>
-<div class="form-group">
-	<label for="country"><?php echo Lang::T("COUNTRY"); ?>:</label><br>
+<div class="mb-3 row">
+       <label for="age" class="col-sm-3 col-form-label"><?php echo Lang::T("AGE"); ?>:</label>
+       <div class="col-sm-9">
+	   <input id="age" type="text" class="form-control" name="age" minlength="2" required autofocus>
+       </div>
+</div><br>
+
+<div class="mb-3 row">
+	<label for="country" class="col-sm-3 col-form-label"><?php echo Lang::T("COUNTRY"); ?>:</label><br>
+	<div class="col-sm-9">
 	<select name="country" size="1">
 		<?php Countries::echoCountry(); ?>
 	</select>
-</div>
+	</div>
+</div><br>
 
-<label for="name"><?php echo Lang::T("GENDER"); ?>:</label><br>
-<div class="form-check form-check-inline">
+<div class="mb-3 row">
+   <label for="name" class="col-sm-3 col-form-label"><?php echo Lang::T("GENDER"); ?>:</label><br>
+   <div class="col-sm-9">
   <input class="form-check-input" type="checkbox" name="gender" id="Male" value="Male">
   <label class="form-check-label" for="gender">Male</label>
-</div>
-<div class="form-check form-check-inline">
+
   <input class="form-check-input" type="checkbox" name="gender" id="Female" value="Female">
   <label class="form-check-label" for="gender">Female</label>
-</div><br><br>
+   </div>
+</div><br>
 
-<div class="form-group">
-	<label for="client"><?php echo Lang::T("PREF_BITTORRENT_CLIENT"); ?>:</label><br>
-	<input id="client" type="text" class="form-control" name="client" minlength="3" maxlength="25" required autofocus>
-</div>
-<div class="form-group no-margin">
+<div class="mb-3 row">
+       <label for="client" class="col-sm-3 col-form-label"><?php echo Lang::T("PREF_BITTORRENT_CLIENT"); ?>:</label>
+       <div class="col-sm-9">
+	   <input id="client" type="text" class="form-control" name="client" minlength="3" maxlength="25" required autofocus>
+       </div>
+</div><br>
+
+<div class="text-center">
 	<button type="submit" class="btn ttbtn btn-block"><?php echo Lang::T("SIGNUP"); ?></button>
 </div>
 </div>
 </form>
+</div>
 </div>
