@@ -116,7 +116,7 @@ class Adminconfig
                 APPROOT.'/config/settings.php',
                 "<?php\nreturn " . var_export($data, true) . "\n?>"
             );
-            var_dump($data);
+            Redirect::autolink(URLROOT . "/adminconfig", 'Settings Saved');
     }
 
     public static function backup()
