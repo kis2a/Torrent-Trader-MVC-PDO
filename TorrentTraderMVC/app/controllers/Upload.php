@@ -228,7 +228,7 @@ class Upload
             // Log Upload
             Logs::write(sprintf(Lang::T("TORRENT_UPLOADED"), htmlspecialchars($name), $_SESSION["username"]));
             // Shout new torrent
-            $msg_shout = "New Torrent: [url=" . URLROOT . "/torrent?id=" . $id . "]" . $torrent . "[/url] has been uploaded " . ($anon == 'no' ? "by [url=" . URLROOT . "/account-details.php?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]" : "") . "";
+            $msg_shout = "New Torrent: [url=" . URLROOT . "/torrent?id=" . $id . "]" . $torrent . "[/url] has been uploaded " . ($anon == 'no' ? "by [url=" . URLROOT . "/profile?id=" . $_SESSION['id'] . "]" . $_SESSION['username'] . "[/url]" : "") . "";
             Shoutboxs::insertShout(0, TimeDate::get_date_time(), 'System', $msg_shout);
             //Uploaded ok message
             if ($external == 'no') {

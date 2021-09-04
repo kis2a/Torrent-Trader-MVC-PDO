@@ -148,7 +148,7 @@ a {
 }
 
 .table-striped>tbody>tr:nth-of-type(odd) {
-    color: #fff;
+  color: #fff;
 }
 
 tr:nth-child(odd) {

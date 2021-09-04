@@ -112,7 +112,7 @@ class Signup
                     die;
                 }
 
-                if (Config::TT()['CONFIRMEMAIL']) {
+                if (Config::TT()['CONFIRMEMAIL'] || Config::TT()['ACONFIRM']) {
                     $status = "pending";
                 } else {
                     $status = "confirmed";
@@ -148,9 +148,9 @@ class Signup
                 if (Config::TT()['ACONFIRM']) {
                     $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_CREATED_YOU_WILL_HAVE_TO_WAIT") . "\n\n" . Config::TT()['SITENAME'] . " " . Lang::T("ADMIN");
                 } else { //NO ADMIN CONFIRM, BUT EMAIL CONFIRM
-                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/confirmemail/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
+                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/Config::TT()['CONFIRMEMAIL']/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
                 }
-                if (Config::TT()['CONFIRMEMAIL']) {
+                if (Config::TT()['CONFIRMEMAIL'] || Config::TT()['ACONFIRM']) {
                     $TTMail = new TTMail();
                     $TTMail->Send($email, "Your " . Config::TT()['SITENAME'] . " User Account", $body, "", "-f" . Config::TT()['SITEEMAIL'] . "");
                     Redirect::autolink(URLROOT . '/login', Lang::T("A_CONFIRMATION_EMAIL_HAS_BEEN_SENT") . " (" . htmlspecialchars($email) . "). " . Lang::T("ACCOUNT_CONFIRM_SENT_TO_ADDY_REST") . " <br/ >");
@@ -168,6 +168,9 @@ class Signup
     {
         if (Validate::isEmpty($wantpassword) || (Validate::isEmpty($email) && !$invite_row) || Validate::isEmpty($wantusername)) {
             $message = Lang::T("DONT_LEAVE_ANY_FIELD_BLANK");
+        }
+        if (Validate::usernameAlfNum($wantusername)) {
+            $message = sprintf(Lang::T("Wierd Username, Only letters & numbers allowed"), 16);
         } elseif (strlen($wantusername) > 50) {
             $message = sprintf(Lang::T("USERNAME_TOO_LONG"), 16);
         } elseif ($wantpassword != $passagain) {
