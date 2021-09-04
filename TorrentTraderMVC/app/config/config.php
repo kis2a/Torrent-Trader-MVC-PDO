@@ -30,7 +30,7 @@ define('ANNOUNCELIST', URLROOT . '/announce.php');
 // Passkey Url
 define('PASSKEYURL', URLROOT . '/announce.php?passkey=%s');
 // Can edit Settings
-define('_OWNERS', array('mjay')); // Example & with more define('_OWNERS', array('mjay', 'mjay', 'mjay'));
+define('_OWNERS', array('M-jay')); // Example & with more define('_OWNERS', array('mjay', 'mjay', 'mjay'));
 // Image upload settings
 define('IMAGEMAXFILESIZE', 524288); // Max uploaded image size in bytes (Default: 512 kB)
 define('ALLOWEDIMAGETYPES', array(

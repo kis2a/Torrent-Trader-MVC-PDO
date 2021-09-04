@@ -38,13 +38,12 @@ class Validate
         return is_numeric($id) && ($id > 0) && (floor($id) == $id);
     }
 
-    public static function usernameAlfNum($username)
-    {
-        if (!preg_match('/^[A-Za-z]{1}[A-Za-z0-9]{5,31}$/', $username)) {
-            return true;
-        } else {
-            return false;
-        }
+    public static function username($username) {
+		$allowedchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-";
+		for ($i = 0; $i < strlen($username); ++$i)
+			if (strpos($allowedchars, $username[$i]) === false)
+			return false;
+		return true;
     }
 
     public static function Int($id)

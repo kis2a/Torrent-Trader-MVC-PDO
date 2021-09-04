@@ -486,7 +486,7 @@ CREATE TABLE IF NOT EXISTS `forum_forums` (
   `minclasswrite` tinyint(3) UNSIGNED NOT NULL DEFAULT 1,
   `guest_read` enum('yes','no') DEFAULT 'yes',
   `category` tinyint(2) NOT NULL DEFAULT 0,
-  `sub` int(500) NOT NULL DEFAULT 0,
+  `sub` int(250) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 

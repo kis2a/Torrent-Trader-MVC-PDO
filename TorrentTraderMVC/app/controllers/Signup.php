@@ -168,9 +168,6 @@ class Signup
     {
         if (Validate::isEmpty($wantpassword) || (Validate::isEmpty($email) && !$invite_row) || Validate::isEmpty($wantusername)) {
             $message = Lang::T("DONT_LEAVE_ANY_FIELD_BLANK");
-        }
-        if (Validate::usernameAlfNum($wantusername)) {
-            $message = sprintf(Lang::T("Wierd Username, Only letters & numbers allowed"), 16);
         } elseif (strlen($wantusername) > 50) {
             $message = sprintf(Lang::T("USERNAME_TOO_LONG"), 16);
         } elseif ($wantpassword != $passagain) {
@@ -181,6 +178,8 @@ class Signup
             $message = sprintf(Lang::T("PASS_TOO_LONG_2"), 16);
         } elseif ($wantpassword == $wantusername) {
             $message = Lang::T("PASS_CANT_MATCH_USERNAME");
+        } elseif (!Validate::username($wantusername)) {
+              $message = "Invalid username.";
         } elseif (!$invite_row && !Validate::Email($email)) {
             $message = "That doesn't look like a valid email address.";
         }
