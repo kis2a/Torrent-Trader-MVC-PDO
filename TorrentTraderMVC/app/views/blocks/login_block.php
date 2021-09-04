@@ -24,7 +24,7 @@ if ($_SESSION['loggedin']) {
     Style::block_begin("<a href=". URLROOT ."/profile?id=".$_SESSION['id'].">". Users::coloredname($_SESSION['username'])."</b></a>");
     ?>
 
-        <center><img src="<?php echo $avatar; ?>" alt="Avatar"  /></center>
+        <center><img src="<?php echo $avatar; ?>" alt="Avatar" width="170px" height="170px"/></center>
 	<ul class="list-group">
 		<li class="list-group-item"><?php echo Lang::T("DOWNLOADED"); ?> : <span class="label label-danger pull-right"><?php echo $userdownloaded; ?></span></li>
 		<li class="list-group-item"><?php echo Lang::T("UPLOADED"); ?>: <span class="label label-success pull-right"><?php echo $useruploaded; ?></span></li>

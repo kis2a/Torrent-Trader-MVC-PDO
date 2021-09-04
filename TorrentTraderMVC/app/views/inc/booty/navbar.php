@@ -10,6 +10,7 @@
           <span class="link_name">Home</span>
         </a>
       </li>
+      <?php if (isset($_SESSION['id'])) { ?>
       <li>
         <div class="iocn-link">
           <a href="<?php echo URLROOT ?>/messages?type=inbox">
@@ -51,6 +52,8 @@
           <li><a href="<?php echo URLROOT ?>/group/staff">Staff</a></li>
         </ul>
       </li>
+      <?php } ?>
+      <?php if (isset($_SESSION['view_torrents']) == 'yes') { ?>
       <li>
         <div class="iocn-link">
          <a href="<?php echo URLROOT ?>/search/browse">
@@ -70,7 +73,8 @@
           <li><a href="<?php echo URLROOT ?>/search/needseed">Need Seed</a></li>
         </ul>
       </li>
-
+      <?php } ?>
+      <?php if (isset($_SESSION['id'])) { ?>
       <li>
         <div class="iocn-link">
          <a href="<?php echo URLROOT ?>/search/browse">
@@ -97,7 +101,7 @@
             $ss = "";
         }
         $stylesheets .= "<option value='$ss_id'$ss>$ss_name</option>\n";
-    }   ?>
+    } ?>
 
 <form method="post" action="<?php echo URLROOT; ?>/stylesheet/forbooty" class="form-horizontal">
   
@@ -109,5 +113,5 @@
 </form>
         </ul>
       </li>
-
+<?php } ?>
   </ul>

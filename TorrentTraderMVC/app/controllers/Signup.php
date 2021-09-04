@@ -148,7 +148,7 @@ class Signup
                 if (Config::TT()['ACONFIRM']) {
                     $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_CREATED_YOU_WILL_HAVE_TO_WAIT") . "\n\n" . Config::TT()['SITENAME'] . " " . Lang::T("ADMIN");
                 } else { //NO ADMIN CONFIRM, BUT EMAIL CONFIRM
-                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/Config::TT()['CONFIRMEMAIL']/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
+                    $body = Lang::T("YOUR_ACCOUNT_AT") . " " . Config::TT()['SITENAME'] . " " . Lang::T("HAS_BEEN_APPROVED_EMAIL") . "\n\n	" . URLROOT . "/confirmemail/signup?id=$id&secret=$secret\n\n" . Lang::T("HAS_BEEN_APPROVED_EMAIL_AFTER") . "\n\n	" . Lang::T("HAS_BEEN_APPROVED_EMAIL_DELETED") . "\n\n" . URLROOT . " " . Lang::T("ADMIN");
                 }
                 if (Config::TT()['CONFIRMEMAIL']) {
                     $TTMail = new TTMail();

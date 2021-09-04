@@ -124,6 +124,7 @@ html, body {
 
 .shouttable {
     padding: .05rem .05rem !important;
+	color: #000;
 }
 
 /* -- Bootstrap Table --*/
