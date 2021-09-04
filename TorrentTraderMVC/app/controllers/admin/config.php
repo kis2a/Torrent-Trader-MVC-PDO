@@ -88,6 +88,8 @@
     <?php print("<input name='DISCLAIMERON' value='true' type='radio' " . (Config::TT()['DISCLAIMERON'] ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='DISCLAIMERON' value='false' type='radio' " . (!Config::TT()['DISCLAIMERON'] ? " checked='checked'" : "") . " />False<br><br>");?>
     <label for="FORUMONINDEX">Forum On Index:</label><br>
     <?php print("<input name='FORUMONINDEX' value='true' type='radio' " . (Config::TT()['FORUMONINDEX'] ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='FORUMONINDEX' value='false' type='radio' " . (!Config::TT()['FORUMONINDEX'] ? " checked='checked'" : "") . " />False<br><br>");?>
+    <label for="LATESTFORUMPOSTONINDEX">lastest Forum Post On Index:</label><br>
+    <?php print("<input name='LATESTFORUMPOSTONINDEX' value='true' type='radio' " . (Config::TT()['LATESTFORUMPOSTONINDEX'] ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='LATESTFORUMPOSTONINDEX' value='false' type='radio' " . (!Config::TT()['LATESTFORUMPOSTONINDEX'] ? " checked='checked'" : "") . " />False<br><br>");?>
     <label for="IPCHECK">IP Check:</label><br>
     <?php print("<input name='IPCHECK' value='true' type='radio' " . (Config::TT()['IPCHECK'] ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='IPCHECK' value='false' type='radio' " . (!Config::TT()['IPCHECK'] ? " checked='checked'" : "") . " />False<br><br>");?>
     <label for="ACCOUNTMAX">Account Max:</label><br>

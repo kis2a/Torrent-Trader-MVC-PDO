@@ -1,8 +1,57 @@
 <?php
-forumheader($data['forumname']);
+$test = DB::run("SELECT sub FROM forum_forums WHERE id = $data[forumid]")->fetch(); // sub forum mod
+$test1 = DB::run("SELECT `name`,`id` FROM forum_forums WHERE id = $test[sub]")->fetch(); // sub forum mod
+
+forumheader($data['forumname'], $test1['name'], $test1['id']);
+
+$testz = DB::run("SELECT * FROM forum_forums WHERE sub = $data[forumid]")->fetchAll(PDO::FETCH_ASSOC); // sub forum mod
+if ($testz) { ?>
+<div class="row frame-header">
+<div class="col-md-8">
+Sub Forums
+</div>
+<div class="col-md-1 d-none d-sm-block">
+    Topics
+</div>
+<div class="col-md-1 d-none d-sm-block">
+    Posts
+</div>
+<div class="col-md-2 d-none d-sm-block">
+    Last post
+</div>
+</div>
+<?php foreach ($testz as $testy) { ?>
+<div class="row border ttborder">
+    <div class="col-md-8">
+    <a href='<?php echo URLROOT ?>/forums/viewforum&amp;forumid=<?php echo $testy['id'] ?>'><b><?php echo $testy['name'] ?></b></a>
+    </div>
+    <div class="col-md-1 d-none d-sm-block">
+        <?php
+    $topiccount = number_format(get_row_count("forum_topics", "WHERE forumid = $testy[id]"));
+    echo $topiccount;
+        ?>
+    </div>
+    <div class="col-md-1 d-none d-sm-block">
+    <?php
+    $postcount = number_format(get_row_count("forum_posts", "WHERE topicid IN (SELECT id FROM forum_topics WHERE forumid=$testy[id])"));
+    echo $postcount;
+        ?>
+    </div>
+    <div class="col-md-2 d-none d-sm-block">
+    <?php
+    $lastpostid = get_forum_last_post($testy['id']);
+    // Get last post info in a array return img & lastpost
+    $detail = lastpostdetails($lastpostid);
+    echo $detail['lastpost'];
+        ?>
+    </div>
+</div>
+<?php } ?><br><?php
+}
+
 if ($_SESSION['loggedin'] == true) {
     ?>
-    <div class="d-flex flex-row-reverse"><a href='<?php echo URLROOT; ?>/forums/newtopic&amp;forumid=<?php echo $data['forumid']; ?>'  class='btn btn-sm ttbtn'>New Post</a></div><br>
+    <div class="d-flex flex-row-reverse"><a href='<?php echo URLROOT; ?>/forums/newtopic&amp;forumid=<?php echo $data['forumid']; ?>'  class='btn btn-sm ttbtn'>New Post</a></div>
     <?php
 }
 if ($data['topicsres'] > 0) {

@@ -107,6 +107,10 @@ class Adminforum
         $minclassread = (int) $_POST["minclassread"];
         $minclasswrite = (int) $_POST["minclasswrite"];
         $guest_read = $_POST["guest_read"];
+
+        $new_forum_forum = (int) $_POST["new_forum_forum"] ?? 0; // sub forum mod
+
+
         if ($new_forum_name == "") {
             $error_ac .= "<li>" . Lang::T("CP_FORUM_NAME_WAS_EMPTY") . "</li>\n";
         }
@@ -120,7 +124,7 @@ class Adminforum
             $error_ac .= "<li>" . Lang::T("CP_FORUM_CATAGORY_WAS_EMPTY") . "</li>\n";
         }
         if ($error_ac == "") {
-            $res = DB::run("INSERT INTO forum_forums (`name`, `description`, `sort`, `category`, `minclassread`, `minclasswrite`, `guest_read`) VALUES (?,?,?,?,?,?,?)", [$new_forum_name, $new_desc, $new_forum_sort, $new_forum_cat, $minclassread, $minclasswrite, $guest_read]);
+            $res = DB::run("INSERT INTO forum_forums (`name`, `description`, `sort`, `category`, `minclassread`, `minclasswrite`, `guest_read`, `sub`) VALUES (?,?,?,?,?,?,?,?)", [$new_forum_name, $new_desc, $new_forum_sort, $new_forum_cat, $minclassread, $minclasswrite, $guest_read, $new_forum_forum]);
             if ($res) {
                 Redirect::autolink(URLROOT . "/adminforum", Lang::T("CP_FORUM_NEW_ADDED_TO_DB"));
             } else {

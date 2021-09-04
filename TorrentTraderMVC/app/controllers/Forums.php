@@ -39,6 +39,8 @@ class Forums
             Redirect::autolink(URLROOT, Lang::T("FORUM_AVAILABLE"));
         }
 
+        $subforums_res = Forum::getsub();
+
         //topic count and post counts
         $postcount = number_format(get_row_count("forum_posts"));
         $topiccount = number_format(get_row_count("forum_topics"));
@@ -46,6 +48,7 @@ class Forums
         $data = [
             'title' => 'Forums',
             'mainquery' => $forums_res,
+            'mainsub' => $subforums_res,
             'postcount' => $postcount,
             'topiccount' => $topiccount,
         ];

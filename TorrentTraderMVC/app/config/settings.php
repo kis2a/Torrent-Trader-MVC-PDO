@@ -64,6 +64,7 @@ return array (
   'mail_smtp_user' => '',
   'mail_smtp_pass' => '',
   'FORUMONINDEX' => 1,
+  'LATESTFORUMPOSTONINDEX' => 0,
   'IPCHECK' => 1,
   'ACCOUNTMAX' => 1,
   'IMDB1' => 0,

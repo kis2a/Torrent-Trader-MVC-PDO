@@ -1,6 +1,6 @@
 <?php
 // setup the forum head
-function forumheader($location)
+function forumheader($location, $subforum = '', $subforumid = 0)
 {
     echo "<div>
     <img src='" . URLROOT . "/assets/images/forum/help.png'  alt='' />&nbsp;<a href='" . URLROOT . "/faq'>" . Lang::T("FORUM_FAQ") . "</a>&nbsp; &nbsp;&nbsp;
@@ -9,7 +9,11 @@ function forumheader($location)
     &middot; <a href='" . URLROOT . "/forums/viewunread'>" . Lang::T("FORUM_NEW_POSTS") . "</a>
     &middot; <a href='" . URLROOT . "/forums?do=catchup'>" . Lang::T("FORUM_MARK_READ") . "</a>
     </div><br />";
-    print("<div>" . Lang::T("YOU_ARE_IN") . ": &nbsp;<a href='" . URLROOT . "/forums'>" . Lang::T("FORUMS") . "</a> <b style='vertical-align:middle'>/ $location</b></div>");
+    if ($subforum == '') {
+        print("<div>" . Lang::T("YOU_ARE_IN") . ": &nbsp;<a href='" . URLROOT . "/forums'>" . Lang::T("FORUMS") . "</a> <b style='vertical-align:middle'>/ $location</b></div>");
+    } else {
+        print("<div>" . Lang::T("YOU_ARE_IN") . ": &nbsp;<a href='" . URLROOT . "/forums'>" . Lang::T("FORUMS") . "</a>/<a href='" . URLROOT . "/forums/viewforum&forumid=$subforumid'>$subforum</a><b style='vertical-align:middle'>/ $location</b></div>");
+    }
 }
 
 // Mark all forums as read

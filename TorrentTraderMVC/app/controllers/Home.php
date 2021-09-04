@@ -74,11 +74,26 @@ class Home
             View::render('home/shoutbox', $data);
         }
         // Last Forum Post On Index
-        if (Config::TT()['FORUMONINDEX']) {
+        if (Config::TT()['LATESTFORUMPOSTONINDEX']) {
             $data = [];
             View::render('home/lastforumpost', $data);
         }
-
+        // Last Forum Post On Index
+        if (Config::TT()['FORUMONINDEX']) {
+            $forums_res = Forum::getIndex();
+            if ($forums_res->rowCount() == 0) {
+                Style::begin(Lang::T("Forums"));
+                echo Lang::T("NO fORUMS fOUND");
+                Style::end();
+            } else {
+                $subforums_res = Forum::getsub();
+                $data = [
+                    'mainquery' => $forums_res,
+                    'mainsub' => $subforums_res,
+                ];
+                View::render('home/forum', $data);
+            }
+        }
         // Latest Torrents
         if (Config::TT()['MEMBERSONLY'] && !$_SESSION['loggedin']) {
             $data = [

@@ -1,11 +1,8 @@
 <?php
-forumheader('index');
-latestforumposts();
-// MAIN LAYOUT 
+Style::begin(Lang::T("Forum "));
 ?>
 <div class="row">
 <div class="col-lg-12">
-<div class="wrapper wrapper-content animated fadeInRight">
 <?php
 $fcid = 0;
 while ($forums_arr = $data['mainquery']->fetch(PDO::FETCH_ASSOC)) {
@@ -71,16 +68,5 @@ foreach ($testz as $testy) {
     <?php
 } ?>
 </div>
-</div>
-</div>
-
-<div container><br>
-<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_new.png' style='margin: 5px' alt='' />New posts &nbsp;
-<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder.png' style='margin: 5px' alt='' />No New posts &nbsp;
-<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_locked.png' style='margin: 5px' alt='' /><?php echo Lang::T("FORUMS_LOCKED"); ?> topic &nbsp;
-<img src='<?php echo URLROOT; ?>/assets/images/forum/folder_sticky.png' style='margin: 5px' alt='' /><?php echo Lang::T("FORUMS_STICKY"); ?> topic
-</div>
-
-<center>Our members have made <?php echo $data['postcount']; ?> posts in  <?php echo $data['topiccount']; ?> topics</center>
-<?php 
-insert_quick_jump_menu();
+</div> <?php
+Style::end();

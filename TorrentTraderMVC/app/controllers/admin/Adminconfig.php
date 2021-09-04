@@ -103,6 +103,7 @@ class Adminconfig
             'mail_smtp_user' => $_POST['mail_smtp_user'],
             'mail_smtp_pass' => $_POST['mail_smtp_pass'],
             'FORUMONINDEX' => (int) $_POST['FORUMONINDEX'],
+            'LATESTFORUMPOSTONINDEX' => (int) $_POST['LATESTFORUMPOSTONINDEX'],
             'IPCHECK' => (int) $_POST['IPCHECK'],
             'ACCOUNTMAX' => (int) $_POST['ACCOUNTMAX'],
             'IMDB1' => (int) $_POST['IMDB1'],

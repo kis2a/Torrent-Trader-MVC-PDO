@@ -9,7 +9,19 @@ class Forum
               AS fcid, forumcats.name AS fcname, forum_forums.*
               FROM forum_forums
               LEFT JOIN forumcats
-              ON forumcats.id = forum_forums.category
+              ON forumcats.id = forum_forums.category WHERE sub = 0
+              ORDER BY forumcats.sort, forum_forums.sort, forum_forums.name");
+        return $stmt;
+    }
+
+    public static function getsub()
+    {
+        $stmt = DB::run("
+              SELECT forumcats.id
+              AS fcid, forumcats.name AS fcname, forum_forums.*
+              FROM forum_forums
+              LEFT JOIN forumcats
+              ON forumcats.id = forum_forums.category WHERE sub != 0
               ORDER BY forumcats.sort, forum_forums.sort, forum_forums.name");
         return $stmt;
     }

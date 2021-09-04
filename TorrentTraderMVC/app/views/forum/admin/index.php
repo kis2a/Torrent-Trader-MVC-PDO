@@ -8,6 +8,12 @@ $forumcat = array();
 while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $forumcat[] = $row;
 }
+$query1 = DB::run("SELECT * FROM forum_forums WHERE sub = 0 ORDER BY sort, name");
+$allforum = $query1->rowCount();
+$forumforum = array();
+while ($row = $query1->fetch(PDO::FETCH_ASSOC)) {
+        $forumforum[] = $row;
+}
 ?>
 <div class='border ttborder'>
     <form action='<?php echo URLROOT ?>/adminforum/addforum' method='post'>
@@ -33,6 +39,17 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         <?php
         foreach ($forumcat as $row) {
             echo "<option value='{$row['id']}'>{$row['name']}</option>";
+        }
+        ?>
+        </select>
+        </tr>
+        <tr>
+        <td class='table_col1'><?php echo Lang::T("Sub Forum To (If not sub Forum Leave as none)") ?>:</td>
+        <td class='table_col2' align='right'><select name='new_forum_forum'>";
+        <?php
+            echo "<option value=0>None</option>";
+        foreach ($forumforum as $row) {
+            echo "<option value='{$row['id']}'>{$row['name']}</option>"; // sub forum mod
         }
         ?>
         </select>
@@ -85,12 +102,13 @@ while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
 <th class='table_head' width='120'><?php echo Lang::T("NAME") ?></th>
 <th class='table_head' width='250'>DESC</th>
 <th class='table_head' width='45'><?php echo Lang::T("SORT") ?></th>
+<th class='table_head' width='45'>Sub Forum</th>
 <th class='table_head' width='45'>CATEGORY</th>
 <th class='table_head' width='18'><?php echo Lang::T("EDIT") ?></th>
 <th class='table_head' width='18'><?php echo Lang::T("DEL") ?></th></tr>
 </thead><tbody>
 <?php
-$query = DB::run("SELECT * FROM forum_forums ORDER BY sort, name");
+$query = DB::run("SELECT * FROM forum_forums ORDER BY sub, sort");
 $allforums = $query->rowCount();
 if ($allforums == 0) {
     echo "<tr><td class='table_col1' colspan='7' align='center'>No Forums found</td></tr>\n";
@@ -101,11 +119,18 @@ if ($allforums == 0) {
                 $category = $cat['name'];
             }
         }
+        if ($row['sub'] != 0) {
+            $getsub = DB::run("SELECT `name` FROM forum_forums WHERE id = $row[sub]")->fetch();
+            $row['sub'] = $getsub['name'];
+        } else {
+            $row['sub'] = 'Parent';
+        }
         ?>
         <tr><td class='table_col1' width='60' align='center'><font size='2'><b>ID(<?php echo $row['id'] ?>)</b></font></td>
         <td class='table_col2' width='120'><?php echo  $row['name'] ?></td>
         <td class='table_col1'  width='250'><?php echo $row['description'] ?></td>
         <td class='table_col2' width='45' align='center'><?php echo $row['sort'] ?></td>
+        <td class='table_col1' width='45'><?php echo $row['sub'] ?></td>
         <td class='table_col1' width='45'><?php echo $category ?></td>
         <td class='table_col2' width='18' align='center'><a href='<?php echo URLROOT ?>/adminforum/editforum?id=<?php echo $row['id'] ?>'>[<?php echo Lang::T("EDIT") ?>]</a></td>
         <td class='table_col1' width='18' align='center'><a href='<?php echo URLROOT ?>/adminforum/deleteforum?id=<?php echo $row['id'] ?>'><img src='<?php echo URLROOT ?>/assets/images/delete.png' alt='" . Lang::T("FORUM_DELETE_CATEGORY") ?>' width='17' height='17' border='0' /></a></td></tr>
