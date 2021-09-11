@@ -1,3 +1,6 @@
+SET GLOBAL SQL_MODE = "";
+START TRANSACTION;
+SET time_zone = "+00:00";
 
 --
 -- Table structure for table `addedrequests`
@@ -9,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `addedrequests` (
   `userid` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -24,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `ins_date` datetime DEFAULT NULL,
   PRIMARY KEY (`agent_id`),
   UNIQUE KEY `agent_name` (`agent_name`) USING HASH
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -45,7 +48,7 @@ CREATE TABLE `attachments` (
   `content_type` varchar(10) NOT NULL DEFAULT 'post',
   `topicid` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 --
 -- Table structure for table `bans`
@@ -60,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `bans` (
   `last` varchar(39) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `first_last` (`first`,`last`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -78,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `blocks` (
   `sort` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   KEY `position_enabled` (`position`,`enabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `blocks` (`id`, `named`, `name`, `position`, `description`, `enabled`, `sort`) VALUES
 (1, 'donate', 'donate', 'right', 'Description here...', 1, 11),
@@ -120,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `bonus` (
   `descr` varchar(100) NOT NULL,
   `type` enum('traffic','invite','VIP','other','HnR') NOT NULL DEFAULT 'other',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 
 INSERT INTO `bonus` (`id`, `title`, `cost`, `value`, `descr`, `type`) VALUES
@@ -146,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `sub_sort` char(3) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `parent_cat-name` (`parent_cat`,`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `categories` (`id`, `name`, `sort_index`, `image`, `subcat`, `parent_cat`, `sub_sort`) VALUES 
 (1, 'DVD', 1, '', 'yes', 'Movies', '1'),
@@ -200,7 +203,7 @@ INSERT INTO `categories` (`id`, `name`, `sort_index`, `image`, `subcat`, `parent
 CREATE TABLE IF NOT EXISTS `censor` (
   `word` varchar(25) NOT NULL DEFAULT '',
   `censor` varchar(25) NOT NULL DEFAULT ''
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `censor` VALUES ('fuck', 'f**k');
 
@@ -224,7 +227,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `torrent` (`torrent`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -239,7 +242,7 @@ CREATE TABLE IF NOT EXISTS `completed` (
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `userid_torrentid` (`userid`,`torrentid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -253,7 +256,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `flagpic` varchar(50) DEFAULT NULL,
   `domain` char(3) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 
 INSERT INTO `countries` (`id`, `name`, `flagpic`, `domain`) VALUES 
@@ -370,7 +373,7 @@ CREATE TABLE IF NOT EXISTS `email_bans` (
   `comment` varchar(255) NOT NULL DEFAULT '',
   `mail_domain` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -387,7 +390,7 @@ CREATE TABLE IF NOT EXISTS `faq` (
   `categ` int(10) NOT NULL DEFAULT 0,
   `order` int(10) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `faq` (`id`, `type`, `question`, `answer`, `flag`, `categ`, `order`) VALUES
 (1, 'categ', 'Site information', '', '1', 0, 1),
@@ -456,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `filesize` bigint(20) UNSIGNED NOT NULL,
   PRIMARY KEY (`id`),
   KEY `torrent` (`torrent`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -469,7 +472,7 @@ CREATE TABLE IF NOT EXISTS `forumcats` (
   `name` varchar(60) NOT NULL DEFAULT '',
   `sort` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -488,7 +491,7 @@ CREATE TABLE IF NOT EXISTS `forum_forums` (
   `category` tinyint(2) NOT NULL DEFAULT 0,
   `sub` int(250) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -509,7 +512,7 @@ CREATE TABLE IF NOT EXISTS `forum_posts` (
   KEY `topicid` (`topicid`),
   KEY `userid` (`userid`),
   FULLTEXT KEY `body` (`body`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -525,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `forum_readposts` (
   PRIMARY KEY (`id`),
   KEY `userid` (`id`),
   KEY `topicid` (`topicid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -547,7 +550,7 @@ CREATE TABLE IF NOT EXISTS `forum_topics` (
   KEY `userid` (`userid`),
   KEY `subject` (`subject`),
   KEY `lastpost` (`lastpost`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -562,7 +565,7 @@ CREATE TABLE IF NOT EXISTS `friends` (
   `friend` varchar(6) NOT NULL DEFAULT 'maybe',
   PRIMARY KEY (`id`),
   UNIQUE KEY `userfriend` (`userid`,`friendid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -594,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `staff_sort` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   `maxslots` int(10) NOT NULL DEFAULT 0,
   UNIQUE KEY `base` (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `groups` (`group_id`, `level`, `Color`, `view_torrents`, `edit_torrents`, `delete_torrents`, `view_users`, `edit_users`, `delete_users`, `view_news`, `edit_news`, `delete_news`, `can_upload`, `can_download`, `view_forum`, `edit_forum`, `delete_forum`, `control_panel`, `staff_page`, `staff_public`, `staff_sort`, `maxslots`) VALUES
 (1, 'Member', '#856A00', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'no', 'no', 'yes', 'yes', 'yes', 'no', 'no', 'no', 'no', 'no', 7, 2),
@@ -615,7 +618,7 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `ip` varchar(39) NOT NULL DEFAULT '',
   `time` decimal(20,0) UNSIGNED NOT NULL DEFAULT 0,
   UNIQUE KEY `IP` (`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -631,7 +634,7 @@ CREATE TABLE IF NOT EXISTS `iplog` (
   `lastused` datetime DEFAULT NULL,
   `timesused` int(10) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -644,7 +647,7 @@ CREATE TABLE IF NOT EXISTS `languages` (
   `uri` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `languages` (`id`, `uri`, `name`) VALUES 
 (1, 'english', 'english');
@@ -665,7 +668,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `liked` (`liked`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -679,7 +682,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `txt` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -699,7 +702,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `location` enum('in','out','both','draft','template') NOT NULL DEFAULT 'in',
   PRIMARY KEY (`id`),
   KEY `receiver` (`receiver`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -715,7 +718,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `body` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `added` (`added`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `news` (`id`, `userid`, `added`, `title`, `body`) VALUES 
 (1, 1, '2011-07-27 09:29:22', 'Welcome', 'Welcome To TorrentTrader MVC/PDO');
@@ -747,7 +750,7 @@ CREATE TABLE IF NOT EXISTS `peers` (
   KEY `torrent` (`torrent`),
   KEY `torrent_seeder` (`torrent`,`seeder`),
   KEY `last_action` (`last_action`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -764,7 +767,7 @@ CREATE TABLE IF NOT EXISTS `pollanswers` (
   KEY `pollid` (`pollid`),
   KEY `selection` (`selection`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -798,7 +801,7 @@ CREATE TABLE IF NOT EXISTS `polls` (
   `option19` varchar(40) NOT NULL DEFAULT '',
   `sort` enum('yes','no') NOT NULL DEFAULT 'yes',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `polls` (`id`, `added`, `question`, `option0`, `option1`, `option2`, `option3`, `option4`, `option5`, `option6`, `option7`, `option8`, `option9`, `option10`, `option11`, `option12`, `option13`, `option14`, `option15`, `option16`, `option17`, `option18`, `option19`, `sort`) VALUES 
 (1, NULL, 'Do You Like This Site', 'Excellent!', 'Its OK', 'Its my first visit', 'Don''t Like It', 'Im Off', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'yes');
@@ -816,7 +819,7 @@ CREATE TABLE IF NOT EXISTS `ratings` (
   `added` datetime DEFAULT NULL,
   PRIMARY KEY (`torrent`,`user`),
   KEY `user` (`user`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -835,7 +838,7 @@ CREATE TABLE IF NOT EXISTS `reports` (
   `dealtwith` tinyint(1) NOT NULL DEFAULT 0,
   `complete` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -859,7 +862,7 @@ CREATE TABLE IF NOT EXISTS `requests` (
   `poster` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `userid` (`userid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -874,7 +877,7 @@ CREATE TABLE IF NOT EXISTS `rules` (
   `public` enum('yes','no') NOT NULL DEFAULT 'yes',
   `class` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `rules` (`id`, `title`, `text`, `public`, `class`) VALUES 
 (1, 'General rules - Breaking these rules can and will get you banned!', '- We are a English only site, so please only talk in english! \r\n\r\n- Keep your overall ratio at or above 0.5 at all times! \r\n\r\n- Do not defy the moderators expressed wishes! ', 'yes', 0),
@@ -895,7 +898,7 @@ CREATE TABLE IF NOT EXISTS `shoutbox` (
   `userid` int(8) UNSIGNED NOT NULL DEFAULT 0,
   `staff` tinyint(3) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`msgid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -922,7 +925,7 @@ CREATE TABLE IF NOT EXISTS `snatched` (
   KEY `completed` (`completed`),
   KEY `tid` (`tid`),
   KEY `uid` (`uid`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -935,7 +938,7 @@ CREATE TABLE IF NOT EXISTS `sqlerr` (
   `txt` text NOT NULL DEFAULT '',
   `time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -953,7 +956,7 @@ CREATE TABLE IF NOT EXISTS `staffmessages` (
   `answered` tinyint(1) NOT NULL DEFAULT 0,
   `answer` text DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -966,7 +969,7 @@ CREATE TABLE IF NOT EXISTS `stylesheets` (
   `uri` varchar(255) NOT NULL DEFAULT '',
   `name` varchar(64) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `stylesheets` (`id`, `uri`, `name`) VALUES 
 (1, 'darktheme', 'darktheme'),
@@ -983,7 +986,7 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `task` varchar(20) NOT NULL DEFAULT '',
   `last_time` int(10) NOT NULL DEFAULT 0,
   PRIMARY KEY (`task`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `tasks` (`task`, `last_time`) VALUES 
 ('cleanup', 0);
@@ -1002,7 +1005,7 @@ CREATE TABLE IF NOT EXISTS `teams` (
   `name` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -1019,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `thanks` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `thanked` (`thanked`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -1033,7 +1036,7 @@ CREATE TABLE IF NOT EXISTS `torrentlang` (
   `image` varchar(255) NOT NULL DEFAULT '',
   `sort_index` int(10) UNSIGNED NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 INSERT INTO `torrentlang` (`id`, `name`, `image`, `sort_index`) VALUES 
 (1, 'English', 'england.gif', 1),
@@ -1093,7 +1096,7 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   KEY `visible` (`visible`),
   KEY `category_visible` (`category`,`visible`),
   FULLTEXT KEY `name` (`name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -1160,7 +1163,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   KEY `uploaded` (`uploaded`),
   KEY `downloaded` (`downloaded`),
   KEY `country` (`country`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -1178,4 +1181,4 @@ CREATE TABLE IF NOT EXISTS `warnings` (
   `type` varchar(10) NOT NULL DEFAULT '',
   `active` enum('yes','no') DEFAULT 'yes',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM;

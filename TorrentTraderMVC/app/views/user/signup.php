@@ -71,6 +71,7 @@
 </div><br>
 
 <div class="text-center">
+    <?php (new Captcha)->html(); ?>
 	<button type="submit" class="btn ttbtn btn-block"><?php echo Lang::T("SIGNUP"); ?></button>
 </div>
 </div>

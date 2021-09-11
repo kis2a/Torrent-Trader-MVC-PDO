@@ -21,6 +21,10 @@
     ?>
     </select></td>
     </tr>
+    <tr class='f-form'>
+    <td class='table_col1'>Parent Forum (If main Forum 0):</td>
+    <td class='table_col2' align='right'><input type="text" name="changed_sub" class="option" size="35" value="<?php echo $data["sub"]; ?>" /></td>
+    </tr>
     <tr>
     <td class='table_col1'>Mininum Class Needed to Read:</td>
     <td class='table_col2' align='right'><select name='minclassread'>

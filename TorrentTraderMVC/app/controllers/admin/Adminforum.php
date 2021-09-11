@@ -174,6 +174,7 @@ class Adminforum
             'id' => $id,
             'sort' => $r['sort'],
             'name' => $r['name'],
+            'sub' => $r['sub'],
             'description' => $r['description'],
             'guest_read' => $r['guest_read'],
             'query' => $query,
@@ -191,7 +192,8 @@ class Adminforum
         $minclasswrite = (int) $_POST["minclasswrite"];
         $minclassread = (int) $_POST["minclassread"];
         $guest_read = $_POST["guest_read"];
-        DB::run("UPDATE forum_forums SET sort =?, name =?, description =?, category =?, minclassread=?, minclasswrite=?, guest_read=? WHERE id=?", [$changed_sort, $changed_forum, $changed_forum_desc, $changed_forum_cat, $minclassread, $minclasswrite, $guest_read, $id]);
+        $changed_sub = (int) $_POST["changed_sub"];
+        DB::run("UPDATE forum_forums SET sort =?, name =?, description =?, category =?, minclassread=?, minclasswrite=?, guest_read=?, sub=? WHERE id=?", [$changed_sort, $changed_forum, $changed_forum_desc, $changed_forum_cat, $minclassread, $minclasswrite, $guest_read, $changed_sub, $id]);
         Redirect::autolink(URLROOT . "/adminforum", "<center><b>" . Lang::T("CP_UPDATE_COMPLETED") . "</b></center>");
     }
 

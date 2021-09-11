@@ -5,7 +5,8 @@ $test1 = DB::run("SELECT `name`,`id` FROM forum_forums WHERE id = $test[sub]")->
 forumheader($data['forumname'], $test1['name'], $test1['id']);
 
 $testz = DB::run("SELECT * FROM forum_forums WHERE sub = $data[forumid]")->fetchAll(PDO::FETCH_ASSOC); // sub forum mod
-if ($testz) { ?>
+if ($testz) { 
+?>
 <div class="row frame-header">
 <div class="col-md-8">
 Sub Forums
@@ -47,6 +48,9 @@ Sub Forums
     </div>
 </div>
 <?php } ?><br><?php
+
+latestforumposts($data['forumid']); // mod
+
 }
 
 if ($_SESSION['loggedin'] == true) {

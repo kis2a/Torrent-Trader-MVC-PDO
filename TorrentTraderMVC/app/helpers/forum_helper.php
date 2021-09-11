@@ -162,7 +162,7 @@ function insert_compose_frame($id, $newtopic = true)
 }
 
 //LASTEST FORUM POSTS
-function latestforumposts()
+function latestforumposts($sub_id = 0)
 {
     ?>
     <div class="row">
@@ -188,7 +188,11 @@ function latestforumposts()
     </div>
     <?php
     // HERE GOES THE QUERY TO RETRIEVE DATA FROM THE DATABASE AND WE START LOOPING ///
-    $for = DB::run("SELECT * FROM forum_topics ORDER BY lastpost DESC LIMIT 5");
+    if ($sub_id != 0) {
+        $for = DB::run("SELECT * FROM forum_topics WHERE forumid IN (SELECT id FROM forum_forums WHERE sub=$sub_id) ORDER BY lastpost DESC LIMIT 10");
+    } else {
+        $for = DB::run("SELECT * FROM forum_topics ORDER BY lastpost DESC LIMIT 5");
+    }
     if ($for->rowCount() == 0) {
         print("<b>No Latest Topics</b>");
     }

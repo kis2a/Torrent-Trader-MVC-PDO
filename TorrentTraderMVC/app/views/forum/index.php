@@ -35,9 +35,48 @@ if ($_SESSION['class'] < $forums_arr["minclassread"] && $forums_arr["guest_read"
     $forumid = 0 + $forums_arr["id"];
     $forumname = htmlspecialchars($forums_arr["name"]);
     $forumdescription = htmlspecialchars($forums_arr["description"]);
-    $postcount = number_format(get_row_count("forum_posts", "WHERE topicid IN (SELECT id FROM forum_topics WHERE forumid=$forumid)"));
-    $topiccount = number_format(get_row_count("forum_topics", "WHERE forumid = $forumid"));
-    $lastpostid = get_forum_last_post($forumid);
+   
+    // Does Forum have Sub-Forum
+    $is_sub = DB::run("SELECT * FROM forum_forums WHERE sub = $forumid")->fetchAll(PDO::FETCH_ASSOC); // sub forum mod
+    if ($is_sub) {
+        // Is Sub so lets count topics
+        $topic = number_format(get_row_count("forum_topics", "WHERE forumid IN (SELECT id FROM forum_forums WHERE forumid=$forumid)"));
+        if ($topic == 0) {
+            // No topics so lets get count from sub-forums
+            $newest = 0;
+            foreach ($is_sub as $subforum) {
+               $countall[] = number_format(get_row_count("forum_posts", "WHERE topicid IN (SELECT id FROM forum_topics WHERE forumid=$subforum[id])"));
+               $forumidarr[] = $subforum['id'];
+               $test = DB::run("SELECT forum_posts.added, forum_topics.forumid
+                                FROM forum_topics 
+                                INNER JOIN forum_posts 
+                                ON forum_topics.id = forum_posts.topicid
+                                WHERE forumid =$subforum[id] 
+                                ORDER BY added DESC 
+                                LIMIT 1")->fetchAll(PDO::FETCH_ASSOC);
+                $max = $test[0]['added'];
+                
+                if ($max > $newest) {
+                  $newest = $max;
+                  $getforumid = $test[0]['forumid'];
+                  $lastpostid = get_forum_last_post($getforumid);
+                }
+            }
+            $postcount = array_sum($countall);
+            $topiccount = number_format(get_row_count("forum_topics", "WHERE forumid IN (SELECT id FROM forum_forums WHERE sub=$forumid)"));
+        } else {
+            // Topics so count them only
+            $postcount = number_format(get_row_count("forum_posts", "WHERE topicid IN (SELECT id FROM forum_topics WHERE forumid=$forumid)"));
+            $topiccount = number_format(get_row_count("forum_topics", "WHERE forumid = $forumid"));
+            $lastpostid = get_forum_last_post($forumid);
+        }
+    } else {
+        // Does not contain sub-forum so count for each forum
+        $postcount = number_format(get_row_count("forum_posts", "WHERE topicid IN (SELECT id FROM forum_topics WHERE forumid=$forumid)"));
+        $topiccount = number_format(get_row_count("forum_topics", "WHERE forumid = $forumid"));
+        $lastpostid = get_forum_last_post($forumid);
+    }
+    
     // Get last post info in a array return img & lastpost
     $detail = lastpostdetails($lastpostid); ?>
 

@@ -41,6 +41,7 @@ class Signup
     public function submit()
     {
         if (Input::exist()) {
+            (new Captcha)->response($_POST['g-recaptcha-response']);
             $wantusername = Input::get("wantusername");
             $email = Input::get("email");
             $wantpassword = Input::get("wantpassword");
