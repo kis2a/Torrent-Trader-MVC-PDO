@@ -94,6 +94,19 @@ class Home
                 View::render('home/forum', $data);
             }
         }
+		
+		// Carousel
+        if ($_SESSION['loggedin'] && $_SESSION["view_torrents"] == "yes") {
+            $stmt = DB::run("SELECT id, name, image1 , seeders, leechers, category, size 
+                             FROM torrents 
+                             WHERE  banned ='no' AND visible='yes' AND image1 <> '' 
+                             ORDER BY added DESC limit 60");
+            $data = [
+                'sql' => $stmt
+            ];
+            View::render('home/carousel', $data);
+        }
+		
         // Latest Torrents
         if (Config::TT()['MEMBERSONLY'] && !$_SESSION['loggedin']) {
             $data = [
