@@ -169,7 +169,8 @@ function shoutbbcode($form, $name, $content = "")
     print("<a href='#' onClick=\"window.open('https://imgur.com/upload','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/imgur.gif');  height:20px; width:20px;\" 		alt='Upload Image' 			title='Upload Image' /></a>");
     print("<a href='#' onClick=\"window.open('http://www.youtube.com','_blank');return(false)\">		<input id='BBCode' type='button' value='' 	style=\"background: url('" . URLROOT . "/assets/images/bbcodes/youtube.gif');  height:20px; width:20px;\"										alt='YouTube' 				title='YouTube' /></a></center>");
     // History & Staff
-    if ($_GET['url'] == 'admincp' || $_GET['url'] == 'adminshoutbox') {
+    $url = $_GET['url'] ?? '';
+    if ($url == 'admincp' || $url == 'adminshoutbox') {
         echo "<center><a href=" . URLROOT . "/adminshoutbox/history><b>History</b></a>&nbsp;&nbsp;";
     } else {
         echo "<center><a href=" . URLROOT . "/shoutbox/history><b>History</b></a>&nbsp;&nbsp;";

@@ -27,7 +27,7 @@ $LANG["PASSKEY"] = "Passkey";
 $LANG["PASSWORD_CHANGED_OK"] = "Password Changed OK, You will now need to re-login";
 $LANG["PLEASE_NOW_LOGIN"] = "Please now login";
 $LANG["PLEASE_NOW_LOGIN_REST"] = "Please now login, there is no confirmation email to activate your account";
-$LANG["RECOVER_ACCOUNT"] = "Recover Account";
+$LANG["RECOVER_ACCOUNT"] = "Recover";
 $LANG["REPLY_TO_CONFIRM_EMAIL"] = "You will need to reply to the confirmation email";
 $LANG["REPORT_MEMBER_MSG"] = "<b>This member has elected to keep their details private</b><br /><br /><a href='" . URLROOT . "/report/user?user=%s'>Report.</a><br />";
 $LANG["TIMES_USED"] = "Times Used";

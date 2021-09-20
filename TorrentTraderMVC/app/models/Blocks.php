@@ -13,7 +13,8 @@ class Blocks
             $TTCache->Set("blocks_left", $blocks, 900);
         }
         foreach ($blocks as $blockfilename) {
-            if (!in_array($_GET['url'], ISURL)) {
+            $url = $_GET['url'] ?? '';
+            if (!in_array($url, ISURL)) {
                 include "../app/views/blocks/" . $blockfilename . "_block.php";
             }
         }
@@ -31,7 +32,8 @@ class Blocks
             $TTCache->Set("blocks_right", $blocks, 900);
         }
         foreach ($blocks as $blockfilename) {
-            if (!in_array($_GET['url'], ISURL)) {
+            $url = $_GET['url'] ?? '';
+            if (!in_array($url, ISURL)) {
                 include "../app/views/blocks/" . $blockfilename . "_block.php";
             }
         }
@@ -49,7 +51,8 @@ class Blocks
             $TTCache->Set("blocks_middle", $blocks, 900);
         }
         foreach ($blocks as $blockfilename) {
-            if (!in_array($_GET['url'], ISURL)) {
+            $url = $_GET['url'] ?? '';
+            if (!in_array($url, ISURL)) {
                 include "../app/views/blocks/" . $blockfilename . "_block.php";
             }
         }

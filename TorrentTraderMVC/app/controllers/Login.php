@@ -20,7 +20,7 @@ class Login
     public function submit()
     {
         // check if using google captcha
-        (new Captcha)->response($_POST['g-recaptcha-response']);
+        (new Captcha)->response(Input::get('g-recaptcha-response'));
         if (Input::exist() && Cookie::csrf_check()) {
             $username = Input::get("username");
             $password = Input::get("password");

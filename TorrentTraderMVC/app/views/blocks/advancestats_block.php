@@ -22,14 +22,12 @@ $result = DB::run("SELECT SUM(uploaded) AS totalul FROM users");
 while ($row = $result->fetch(PDO::FETCH_LAZY)) {
     $totaluploaded = $row["totalul"];
 }
+
 $localpeers = $leechers + $seeders;
-if ($_SESSION['loggedin'] === true && $_SESSION["edit_users"] == "yes") {
+if (Auth::permission('loggedin') === true && Auth::permission("edit_users") == "yes") {
 	Style::block_begin(Lang::T("STATS"));
     ?>
-
-		<!-- content -->
-		
-<ul class="list-unstyled">
+	<ul class="list-unstyled">
 	<p><strong><?php echo Lang::T("TORRENTS"); ?></strong></p>
 	<li><i class="fa fa-folder-open-o"></i> <?php echo Lang::T("TRACKING"); ?>: <strong><?php echo $ntor; ?> <?php echo Lang::N("TORRENT", $ntor); ?></strong></li>
 	<li><i class="fa fa-calendar-o"></i> <?php echo Lang::T("NEW_TODAY"); ?>: <strong><?php echo $todaytor; ?></strong></li>
@@ -50,33 +48,18 @@ if ($_SESSION['loggedin'] === true && $_SESSION["edit_users"] == "yes") {
 	<li><?php echo Lang::T("GUESTS_ONLINE"); ?>: <strong><?php echo $guests; ?></strong></li>
 	<li><?php echo Lang::T("COMMENTS_POSTED"); ?>: <strong><?php echo $ncomments; ?></strong></li>
 	<li><?php echo Lang::T("MESSAGES_SENT"); ?>: <strong><?php echo $nmessages; ?></strong></li>
-</ul>
-       <!-- end content -->
-	   </div>
-</div>
-<br />
-<?php
+    </ul>
+    <?php
+	Style::block_end();
 }
-if ($_SESSION["edit_users"] == "no") {
-    $title = Lang::T("STATS");
-	$blockId = "b-" . sha1($title);
-    ?>
-<div class="card">
-    <div class="card-header">
-        <?php echo $title ?>
-        <a data-toggle="collapse" href="#" class="showHide" id="<?php echo $blockId; ?>" style="float: right;"></a>
-    </div>
-    <div class="card-body slidingDiv<?php echo $blockId; ?>">
-		<!-- content -->
-
-<ul class="list-unstyled">
+if (Auth::permission("edit_users") == "no") {
+    Style::block_begin(Lang::T("STATS"));
+	?>
+    <ul class="list-unstyled">
 	<p><strong><?php echo Lang::T("TORRENTS"); ?></strong></p>
 	<li><i class="fa fa-folder-open-o"></i> <?php echo Lang::T("TRACKING"); ?>: <strong><?php echo $ntor; ?> <?php echo Lang::N("TORRENT", $ntor); ?></strong></li>
 	<li><i class="fa fa-calendar-o"></i> <?php echo Lang::T("NEW_TODAY"); ?>: <strong><?php echo $todaytor; ?></strong></li>
-</ul>
-
-       <!-- end content -->
-
-   <?php Style::block_end();
+    </ul>
+	<?php
+	Style::block_end();
 }
-?>

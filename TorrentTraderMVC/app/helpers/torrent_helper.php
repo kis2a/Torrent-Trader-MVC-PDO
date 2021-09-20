@@ -67,6 +67,21 @@ function genrelist()
     }
     return $ret;
 }
+
+function catdropdown()
+{
+    $cats = genrelist();
+    $catdropdown = "";
+    foreach ($cats as $cat) {
+        $catdropdown .= "<option value=\"" . $cat["id"] . "\"";
+        if ($cat["id"] == @$_GET["cat"]) {
+            $catdropdown .= " selected=\"selected\"";
+        }
+        $catdropdown .= ">" . htmlspecialchars($cat["parent_cat"]) . ": " . htmlspecialchars($cat["name"]) . "</option>\n";
+    }
+    return $catdropdown;
+}
+
 // Function To Edit The List Of Possible Languages For Torrents
 function langlist()
 {

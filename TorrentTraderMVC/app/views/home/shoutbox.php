@@ -1,6 +1,6 @@
 <?php
 Style::begin(Lang::T("SHOUTBOX"));
-if ($_SESSION['loggedin']) {
+if (Auth::permission('loggedin')) {
     ?>
 <p id="shoutbox"></p>
 <form name='shoutboxform' action='<?php echo URLROOT ?>/shoutbox/add' method='post'>

@@ -14,7 +14,7 @@ class Auth
 
         Cookie::csrf_token();
 
-        if (strlen($_COOKIE["password"]) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["key_token"] != self::loginString()) {
+        if (strlen(Cookie::get("password")) != 60 || !is_numeric($_COOKIE["id"]) || $_COOKIE["key_token"] != self::loginString()) {
             self::isClosed();
             self::isLoggedIn($force);
             return;
@@ -113,4 +113,12 @@ class Auth
             }
         }
     }
+
+	public static function permission($name) {
+		if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        } else {
+            return false;
+        }
+	}
 }

@@ -1,5 +1,5 @@
 <?php
-if ($_SESSION['loggedin'] == true) {
+if (Auth::permission('loggedin') == true) {
     Style::block_begin("Latest Requests");
     $TTCache = new Cache();
     $expires = 600; // Cache time in seconds 10 mins
@@ -7,15 +7,13 @@ if ($_SESSION['loggedin'] == true) {
         $latestrequestsquery = DB::run("SELECT requests.id, requests.request, categories.name AS cat, categories.id AS catid,
 		categories.parent_cat AS parent_cat FROM requests INNER JOIN categories ON requests.cat = categories.id ORDER BY
 		requests.id DESC LIMIT 5");
-
         while ($latestrequestsrecord = $latestrequestsquery->fetch(PDO::FETCH_ASSOC)) {
             $latestrequestsrecords[] = $latestrequestsrecord;
         }
-
         $TTCache->Set("request_block", $rows, $expires);
     }
 
-    if ($latestrequestsrecords) {
+    if (isset($latestrequestsrecords)) {
         foreach ($latestrequestsrecords as $row) {
             $smallname = htmlspecialchars(CutName($row["request"], 12));
             $smallnamereq = htmlspecialchars(CutName($row["cat"], 4));
@@ -24,8 +22,5 @@ if ($_SESSION['loggedin'] == true) {
     } else {
         print("<center>No requests</center> \n");
     }
-    ?>
-    <!-- end content -->
-
-<?php Style::block_end();
+    Style::block_end();
 }

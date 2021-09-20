@@ -11,7 +11,7 @@ class Home
     {
         Style::header(Lang::T("HOME"));
         // Check
-        if (file_exists("check.php") && $_SESSION["class"] == 7) {
+        if (file_exists("check.php") && Auth::permission("class") == 7) {
             Style::begin("<font class='error'>" . htmlspecialchars('WARNING') . "</font>");
             echo '<div class="alert ttalert">check still exists, please delete or rename the file as it could pose a security risk<br /><br /><a href="check.php">View /check</a> - Use to check your config!<br /></div>';
             Style::end();
@@ -36,7 +36,7 @@ class Home
             View::render('home/notice', $data);
         }
         // Site News
-        if (Config::TT()['NEWSON'] && $_SESSION['view_news'] == "yes") {
+        if (Config::TT()['NEWSON'] && Auth::permission('view_news') == "yes") {
             Style::begin(Lang::T("NEWS"));
             $res = DB::run("SELECT news.id, news.title, news.added, news.body, users.username FROM news LEFT JOIN users ON news.userid = users.id ORDER BY added DESC LIMIT 10");
             if ($res->rowCount() > 0) {
@@ -69,7 +69,7 @@ class Home
         }
 
         // Shoutbox
-        if (Config::TT()['SHOUTBOX'] && !($_SESSION['hideshoutbox'] == 'yes')) {
+        if (Config::TT()['SHOUTBOX'] && !(Auth::permission('hideshoutbox') == 'yes')) {
             $data = [];
             View::render('home/shoutbox', $data);
         }
@@ -96,7 +96,7 @@ class Home
         }
 		
 		// Carousel
-        if ($_SESSION['loggedin'] && $_SESSION["view_torrents"] == "yes") {
+        if (Auth::permission('loggedin') && Auth::permission("view_torrents") == "yes") {
             $stmt = DB::run("SELECT id, name, image1 , seeders, leechers, category, size 
                              FROM torrents 
                              WHERE  banned ='no' AND visible='yes' AND image1 <> '' 
@@ -108,7 +108,7 @@ class Home
         }
 		
         // Latest Torrents
-        if (Config::TT()['MEMBERSONLY'] && !$_SESSION['loggedin']) {
+        if (Config::TT()['MEMBERSONLY'] && !Auth::permission('loggedin')) {
             $data = [
                 'message' => Lang::T("BROWSE_MEMBERS_ONLY")
             ];
@@ -133,7 +133,7 @@ class Home
                 $data = [];
                 View::render('home/nothingfound', $data);
             }
-            if ($_SESSION['loggedin'] == true) {
+            if (Auth::permission('loggedin') == true) {
                 DB::run("UPDATE users SET last_browse=" . TimeDate::gmtime() . " WHERE id=?", [$_SESSION['id']]);
             }
         }

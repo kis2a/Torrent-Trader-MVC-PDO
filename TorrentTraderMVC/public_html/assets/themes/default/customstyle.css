@@ -1,8 +1,8 @@
 html, body {
 	height: 100%;
     font-size: 1.0 rem;   /* this option adjusts the general font size */
-    background: #fff !important;
-	color: rgb(5, 42, 97);
+    background: #ffffffcc !important;
+	color: rgb(5, 33, 59);
 	line-height: 1.4;
 }
 
@@ -36,8 +36,7 @@ html, body {
 
 .frame-header {
     color: #fff;
-    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !important;
-    background-image: linear-gradient(to bottom, #072F5F, #3895D3) !important;
+    background-color: #3895D3 !important;
     background-repeat: repeat-x;
     border-bottom: 0px;
     padding-top: 0;
@@ -48,14 +47,13 @@ html, body {
     border: 10px solid;
     border-image-slice: 1;
     border-width: 2px;
-    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    background-color: #c0d9e0 !important;
     border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
 }
 
 .block-header {
     color: #fff;
-    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !important;
-    background-image: linear-gradient(to bottom, #072F5F, #3895D3) !important;
+    background-color: #3895D3 !important;
     background-repeat: repeat-x;
     border-bottom: 0px;
     padding-top: 0;
@@ -67,7 +65,7 @@ html, body {
     border: 10px solid;
     border-image-slice: 1;
     border-width: 2px;
-    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    background-color: #c0d9e0 !important;
     border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
 }
 
@@ -150,7 +148,8 @@ a {
 }
 
 .list-group-item {
-    background: linear-gradient(90deg, rgb(198 228 236) 0%, #a7cdf5 100%) !important;
+    color: rgb(5, 33, 59);
+    background-color: #c0d9e0 !important;
     border-image-source: rgb(5, 33, 59) !important;
 }
 
@@ -182,17 +181,17 @@ tr:nth-child(even) {
 
 button, input, optgroup, select, textarea {	
     color: rgb(5, 33, 59);	
-    background-color: #a7cdf5;	
+    background-color: #c0d9e0 !important;	
 }
 
 .dropdown-item {	
     color: rgb(5, 33, 59);	
-    background-color: #a7cdf5;	
+    background-color: #c0d9e0 !important;	
 }
 
 .dropdown-menu {	
     color: rgb(5, 33, 59);	
-    background-color: #a7cdf5;	
+    background-color: #c0d9e0 !important;	
 }
 
 .progress-bar {	

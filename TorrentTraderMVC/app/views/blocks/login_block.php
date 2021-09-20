@@ -1,18 +1,15 @@
 <?php
-if ($_SESSION['loggedin']) {
-
+if (Auth::permission('loggedin')) {
     $avatar = htmlspecialchars($_SESSION["avatar"]);
     if (!$avatar) {
         $avatar = URLROOT . "/assets/images/default_avatar.png";
     }
-
     $userdownloaded = mksize($_SESSION["downloaded"]);
     $useruploaded = mksize($_SESSION["uploaded"]);
     $privacylevel = Lang::T($_SESSION["privacy"]);
     $countslot = DB::run("SELECT DISTINCT torrent FROM peers WHERE userid =?  AND seeder=?", [$_SESSION['id'], 'yes']);
     $maxslotdownload = $countslot->rowCount();
     $slots = number_format($_SESSION["maxslots"]) . "/" . number_format($maxslotdownload);
-
     if ($_SESSION["uploaded"] > 0 && $_SESSION["downloaded"] == 0) {
         $userratio = '<span class="label label-success pull-right">Inf.</span>';
     } elseif ($_SESSION["downloaded"] > 0) {
@@ -23,8 +20,7 @@ if ($_SESSION['loggedin']) {
 
     Style::block_begin("<a href=". URLROOT ."/profile?id=".$_SESSION['id'].">". Users::coloredname($_SESSION['username'])."</b></a>");
     ?>
-
-        <center><img src="<?php echo $avatar; ?>" alt="Avatar" width="170px" height="170px"/></center>
+    <center><img src="<?php echo $avatar; ?>" alt="Avatar" width="170px" height="170px"/></center>
 	<ul class="list-group">
 		<li class="list-group-item"><?php echo Lang::T("DOWNLOADED"); ?> : <span class="label label-danger pull-right"><?php echo $userdownloaded; ?></span></li>
 		<li class="list-group-item"><?php echo Lang::T("UPLOADED"); ?>: <span class="label label-success pull-right"><?php echo $useruploaded; ?></span></li>
@@ -37,39 +33,31 @@ if ($_SESSION['loggedin']) {
     <br />
 	<div class="text-center">
 	<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $_SESSION["id"]; ?>'><button class="btn ttbtn"><?php echo Lang::T("ACCOUNT"); ?></button></a>
-		<?php if ($_SESSION["control_panel"] == "yes") {?>
+	<?php
+    if ($_SESSION["control_panel"] == "yes") {?>
 		<a href="<?php echo URLROOT; ?>/admincp" class="btn ttbtn"><?php echo Lang::T("STAFFCP"); ?></a>
-		<?php }?>
+		<?php
+    } ?>
 	</div>
-    <?php Style::block_end();
-	
+    <?php
+    Style::block_end();
 } elseif (!Config::TT()['MEMBERSONLY']) {
     Style::block_begin('Login');
     ?>
-<form method="post" action="<?php echo URLROOT ?>/login/submit">
-<input type="hidden" name="csrf_token" value="<?php echo Cookie::csrf_token(); ?>" />
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr><td>
-		<table border="0" cellpadding="1" align="center">
-			<tr>
-			<td align="center"><font face="verdana" size="1"><b><?php echo Lang::T("USERNAME"); ?>:</b></font></td>
-			</tr><tr>
-			<td align="center"><input type="text" size="12" name="username" /></td>
-			</tr><tr>
-			<td align="center"><font face="verdana" size="1"><b><?php echo Lang::T("PASSWORD"); ?>:</b></font></td>
-			</tr><tr>
-			<td align="center"><input type="password" size="12" name="password"  /></td>
-			</tr><tr>
-			<td align="center">
-			<?php (new Captcha)->html(); ?>
-			<button type='submit' class='btn btn-sm ttbtn' value='Login'><?php echo Lang::T("LOGIN"); ?></button>
-			</td>
-		</table>
-		</td>
-		</tr>
-	<tr>
-<td align="center">[<a href="<?php echo URLROOT ?>/signup"><?php echo Lang::T("SIGNUP");?></a>]<br />[<a href="<?php echo URLROOT ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT");?></a>]</td> </tr>
-	</table>
+    <form method="post" action="<?php echo URLROOT ?>/login/submit">
+    <div class="justify-content-md-center">
+    <input type="hidden" name="csrf_token" value="<?php echo Cookie::csrf_token(); ?>" />
+    <font face="verdana" size="1"><b><?php echo Lang::T("USERNAME"); ?>:</b></font>
+    <input type="text" class="form-control" name="username" />
+	<font face="verdana" size="1"><b><?php echo Lang::T("PASSWORD"); ?>:</b></font>
+    <input type="password"  class="form-control"  name="password"  />
+       <div class="text-center">
+	   <?php (new Captcha)->html(); ?>
+	   <button type='submit' class='btn btn-sm ttbtn' value='Login'><?php echo Lang::T("LOGIN"); ?></button>
+       </div>
+    <p class="text-center">[<a href="<?php echo URLROOT ?>/signup"><?php echo Lang::T("SIGNUP");?></a>] / [<a href="<?php echo URLROOT ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT");?></a>]
+    </div>
     </form> 
-    <?php Style::block_end();
+    <?php
+    Style::block_end();
 }

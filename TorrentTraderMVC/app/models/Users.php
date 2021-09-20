@@ -21,7 +21,7 @@ class Users
         return $row['username'];
     }
 
-    public static function updateset($updateset = [], $id)
+    public static function updateset($id, $updateset = [])
     {
         DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$id]);
     }
@@ -41,7 +41,7 @@ class Users
         $row = DB::run("SELECT `password`, `secret`, `status` FROM `users` WHERE `id` =?", [$id])->fetch();
         return $row;
     }
-    
+
     public static function updatesecret($newsecret, $id, $oldsecret)
     {
         $stmt = DB::run("UPDATE `users` SET `secret` =?, `status` =? WHERE `id` =? AND `secret` =? AND `status` =?", [$newsecret, 'confirmed', $id, $oldsecret, 'pending']);
@@ -166,9 +166,9 @@ class Users
         DB::run("DELETE FROM `snatched` WHERE `uid` = '$userid'");
     }
 
-    public static function coloredname($name)
+    function coloredname($name)
     {
-        $classy = DB::run("SELECT u.class, u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
+        $classy = DB::run("SELECT u.class, u.id, u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
         $gcolor = $classy['Color'];
         if ($classy['donated'] > 0) {
             $star = "<img src='" . URLROOT . "/assets/images/donor.png' alt='donated' border='0' width='15' height='15'>";
@@ -185,7 +185,7 @@ class Users
         } else {
             $disabled = "";
         }
-        return stripslashes("<font color='" . $gcolor . "'>" . $name . "" . $star . "" . $warn . "" . $disabled . "</font>");
+        return stripslashes("<a href='".URLROOT."/profile?id=" . $classy['id'] . "'><font color='" . $gcolor . "'>" . $name . "</a>" . $star . "" . $warn . "" . $disabled . "</font>");
     }
 
     public static function where($where, $userid, $update = 1)
