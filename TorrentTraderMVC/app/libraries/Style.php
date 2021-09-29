@@ -13,7 +13,7 @@ class Style
                 echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set Config::TT()[SITE_ONLINE] to true </center><br /><br />';
             }
         }
-        if (!Auth::permission('loggedin') == true) {
+        if (!Users::has('loggedin') == true) {
             Guest::guestadd();
         }
         if ($title == "") {
@@ -21,12 +21,12 @@ class Style
         } else {
             $title = Config::TT()['SITENAME'] . " : " . htmlspecialchars($title);
         }
-        require_once APPROOT . "/views/inc/" . (Auth::permission('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/header.php";
+        require_once APPROOT . "/views/inc/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/header.php";
     }
     
     public static function footer()
     {
-        require_once APPROOT . "/views/inc/" . (Auth::permission('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/footer.php";
+        require_once APPROOT . "/views/inc/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/footer.php";
     }
     
     public static function begin($caption = "-", $align = "justify")
@@ -55,14 +55,14 @@ class Style
     {
         // Site online check
         if (!Config::TT()['SITE_ONLINE']) {
-            if (Auth::permission("control_panel") != "yes") {
+            if (Users::has("control_panel") != "yes") {
                 echo '<br /><br /><br /><center>' . stripslashes(Config::TT()['OFFLINEMSG']) . '</center><br /><br />';
                 die;
             } else {
                 echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set Config::TT()[SITE_ONLINE] to true </center><br /><br />';
             }
         }
-        if (!Auth::permission($_SESSION['loggedin']) == true) {
+        if (!Users::has($_SESSION['loggedin']) == true) {
             Guest::guestadd();
         }
         if ($title == "") {
@@ -149,7 +149,7 @@ class Style
                 echo '<br /><br /><br /><center><b><font color="#ff0000">SITE OFFLINE, STAFF ONLY VIEWING! DO NOT LOGOUT</font></b><br />If you logout please edit app/config/config.php and set Config::TT()[SITE_ONLINE] to true </center><br /><br />';
             }
         }
-        if (!Auth::permission('loggedin') == true) {
+        if (!Users::has('loggedin') == true) {
             Guest::guestadd();
         }
         if ($title == "") {

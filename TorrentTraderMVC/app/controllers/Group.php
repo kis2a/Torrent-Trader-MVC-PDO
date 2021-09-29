@@ -83,7 +83,7 @@ class Group
         }
 
         $where = null;
-        if (Auth::permission("edit_users") == "no") {
+        if (Users::has("edit_users") == "no") {
             $where = "AND `staff_public` = 'yes'";
         }
 

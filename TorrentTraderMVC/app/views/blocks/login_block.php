@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin')) {
+if (Users::has('loggedin')) {
     $avatar = htmlspecialchars($_SESSION["avatar"]);
     if (!$avatar) {
         $avatar = URLROOT . "/assets/images/default_avatar.png";

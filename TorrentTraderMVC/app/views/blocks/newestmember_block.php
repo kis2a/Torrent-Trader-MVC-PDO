@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
 	Style::block_begin(Lang::T("NEWEST_MEMBERS"));
     $TTCache = new Cache();
     $expire = 600; // time in seconds

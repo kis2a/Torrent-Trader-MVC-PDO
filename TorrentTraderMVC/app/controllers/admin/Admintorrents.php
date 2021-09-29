@@ -58,7 +58,7 @@ class Admintorrents
     // dead torrents
     public function dead()
     {
-        if (Auth::permission("control_panel") != "yes") {
+        if (Users::has("control_panel") != "yes") {
             Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         $page = (int) $_GET["page"];

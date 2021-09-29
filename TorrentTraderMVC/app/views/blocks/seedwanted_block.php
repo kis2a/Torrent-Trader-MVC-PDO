@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
     Style::block_begin(Lang::T("SEEDERS_WANTED"));
     $TTCache = new Cache();
     $expires = 600; // Cache time in seconds

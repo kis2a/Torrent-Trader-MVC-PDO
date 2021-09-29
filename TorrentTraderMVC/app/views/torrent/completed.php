@@ -8,7 +8,7 @@
 <?php
 while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 
-    if (($row["privacy"] == "strong") && (Auth::permission("edit_users") == "no")) {
+    if (($row["privacy"] == "strong") && (Users::has("edit_users") == "no")) {
     continue;
     }
 

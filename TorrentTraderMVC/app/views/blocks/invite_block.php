@@ -1,5 +1,5 @@
 <?php
-if ((Config::TT()['INVITEONLY'] || Config::TT()['ENABLEINVITES']) && Auth::permission('loggedin') == true) {
+if ((Config::TT()['INVITEONLY'] || Config::TT()['ENABLEINVITES']) && Users::has('loggedin') == true) {
    $invites = $_SESSION["invites"];
    Style::block_begin(Lang::T("INVITES"));
    ?>
@@ -8,7 +8,7 @@ if ((Config::TT()['INVITEONLY'] || Config::TT()['ENABLEINVITES']) && Auth::permi
    if ($invites > 0) {  ?>
       <a href="<?php echo URLROOT ?>/invite" class="btn ttbtn"><?php echo Lang::T("SEND_AN_INVITE"); ?></a> <?php
    }
-   if (Auth::permission("invitees") > 0) { ?>
+   if (Users::has("invitees") > 0) { ?>
       <a href="<?php echo URLROOT ?>/invite/invitetree" class="btn ttbtn"><?php echo Lang::T("Invite Tree"); ?></a> <?php
    } ?>
    </div>

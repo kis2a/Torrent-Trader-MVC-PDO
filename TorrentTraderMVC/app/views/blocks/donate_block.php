@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin')) {
+if (Users::has('loggedin')) {
     Style::block_begin(Lang::T("DONATE"));
     ?>
     <p class="text-center">This would need to contain your donation code, or something. maybe even a paypal link</p>

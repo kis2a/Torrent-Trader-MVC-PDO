@@ -9,14 +9,14 @@ class Nfo
 
     public function checks($id, $edit = false)
     {
-        if (Auth::permission("view_torrents") == "no") {
+        if (Users::has("view_torrents") == "no") {
             Redirect::autolink(URLROOT."/torrent?id=$id", "You do not have permission to view nfo's");
         }
         if (!$id) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("ID_NOT_FOUND_MSG_VIEW"));
         }
         if ($edit) {
-            if (Auth::permission("edit_torrents") == "no") {
+            if (Users::has("edit_torrents") == "no") {
                 Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
             }
         }

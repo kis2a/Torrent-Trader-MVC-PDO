@@ -15,7 +15,7 @@ class Warning
             Redirect::autolink(URLROOT . '/group/members', Lang::T("NO_USER_WITH_ID") . " $id.");
         }
         // Checks
-        if (Auth::permission("view_users") == "no" && Auth::permission("id") != $id) {
+        if (Users::has("view_users") == "no" && Users::has("id") != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         if (($_SESSION["enabled"] == "no" || ($_SESSION["status"] == "pending")) && $_SESSION["edit_users"] == "no") {
@@ -43,7 +43,7 @@ class Warning
         $expiry = (int) Input::get("expiry");
         $type = Input::get("type");
         // Checks
-        if (Auth::permission("edit_users") != "yes") {
+        if (Users::has("edit_users") != "yes") {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
         if (!Validate::Id($userid)) {

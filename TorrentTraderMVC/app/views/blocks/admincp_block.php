@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') === true && Auth::permission("control_panel") == "yes") {
+if (Users::has('loggedin') === true && Users::has("control_panel") == "yes") {
     Style::block_begin(Lang::T("AdminCP"));
     ?>
     <select name="admin" style="width: 95%" onchange="if(this.options[this.selectedIndex].value != -1){ window.location = this.options[this.selectedIndex].value; }">

@@ -13,7 +13,7 @@ class Profile
             Redirect::autolink(URLROOT, Lang::T("INVALID_USER_ID"));
         }
         // can view own but not others
-        if (Auth::permission("view_users") == "no" && Auth::permission("id") != $id) {
+        if (Users::has("view_users") == "no" && Users::has("id") != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         $user = Users::getUserById($id);
@@ -21,13 +21,13 @@ class Profile
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
         // user not ready to be seen yet
-        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && Auth::permission("edit_users") == "no") {
+        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && Users::has("edit_users") == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_ACCESS_ACCOUNT_DISABLED"));
         }
         // Start Blocked Users
         $blocked = DB::run("SELECT id FROM friends WHERE userid=$user[id] AND friend='enemy' AND friendid=$_SESSION[id]");
         $show = $blocked->rowCount();
-        if ($show != 0 && Auth::permission("control_panel") != "yes") {
+        if ($show != 0 && Users::has("control_panel") != "yes") {
             Redirect::autolink(URLROOT, "You're blocked by this member and you can not see his profile!");
         }
         // Country
@@ -81,7 +81,7 @@ class Profile
         global $tzs;
         $id = (int) Input::get("id");
 
-        if (Auth::permission('class') < _MODERATOR && $id != Auth::permission('id')) {
+        if (Users::has('class') < _MODERATOR && $id != Users::has('id')) {
             Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         $user = Users::getUserById($id);
@@ -115,7 +115,7 @@ class Profile
     public function submit()
     {
         $id = (int) Input::get("id");
-        if (Auth::permission('class') < _MODERATOR && $id != Auth::permission('id')) {
+        if (Users::has('class') < _MODERATOR && $id != Users::has('id')) {
             Redirect::autolink(URLROOT, Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         if (Input::exist()) {
@@ -156,7 +156,7 @@ class Profile
     public function admin()
     {
         $id = (int) Input::get("id");
-        if (Auth::permission('class') < _MODERATOR && $id != Auth::permission('id')) {
+        if (Users::has('class') < _MODERATOR && $id != Users::has('id')) {
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("SORRY_NO_RIGHTS_TO_ACCESS"));
         }
         $user1 = Users::getUserById($id);
@@ -173,7 +173,7 @@ class Profile
     public function submited()
     {
         $id = (int) Input::get("id");
-        if (Auth::permission('class') < 5 && $id != Auth::permission('id')) {
+        if (Users::has('class') < 5 && $id != Users::has('id')) {
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("You dont have permission"));
         }
         if (Input::exist()) {
@@ -196,7 +196,7 @@ class Profile
             if (!Validate::Email($email)) {
                 Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("EMAIL_ADDRESS_NOT_VALID"));
             }
-            if ($class != 0 && $class != Auth::permission('class')) {
+            if ($class != 0 && $class != Users::has('class')) {
                 // change user class
                 $arr = DB::run("SELECT class FROM users WHERE id=?", [$id])->fetch();
                 $uc = $arr['class'];
@@ -244,20 +244,20 @@ class Profile
         $userid = (int) Input::get("userid");
         $username = Input::get("username");
         $delreason = Input::get("delreason");
-        if (Auth::permission("delete_users") != "yes") {
+        if (Users::has("delete_users") != "yes") {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("TASK_ADMIN"));
         }
         if (!Validate::Id($userid)) {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("INVALID_USERID"));
         }
-        if (Auth::permission("id") == $userid) {
+        if (Users::has("id") == $userid) {
             Redirect::autolink(URLROOT . "/profile?id=$userid", "Staff cannot delete themself. Please PM a admin.");
         }
         if (!$delreason) {
             Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("MISSING_FORM_DATA"));
         }
         Users::deleteuser($userid);
-        Logs::write(Auth::permission('username') . " has deleted account: $username");
+        Logs::write(Users::has('username') . " has deleted account: $username");
         Redirect::autolink(URLROOT . "/profile?id=$userid", Lang::T("USER_DELETE"));
         die;
     }

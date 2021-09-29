@@ -117,7 +117,7 @@ class TimeDate
                 $timestamp = TimeDate::get_date_time();
             }
             $date = new DateTime($timestamp, new DateTimeZone("UTC"));
-            $ZONE = $tzs[Auth::permission("tzoffset")][1] ?? "Europe/London";
+            $ZONE = $tzs[Users::has("tzoffset")][1] ?? "Europe/London";
             $date->setTimezone(new DateTimeZone($ZONE));
             return self::sql_timestamp_to_unix_timestamp($date->format('Y-m-d H:i:s'));
         }

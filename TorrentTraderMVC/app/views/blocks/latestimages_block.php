@@ -1,5 +1,5 @@
 <?php
-if (!Config::TT()['MEMBERSONLY'] || Auth::permission('loggedin') == true) {
+if (!Config::TT()['MEMBERSONLY'] || Users::has('loggedin') == true) {
     $limit = 25; // Only show 25 max
     $res = DB::run("SELECT torrents.id, torrents.name, torrents.image1, torrents.image2, categories.name as cat_name, categories.parent_cat as cat_parent FROM torrents LEFT JOIN categories ON torrents.category=categories.id WHERE banned = 'no' AND (image1 != '' OR image2 != '') AND visible = 'yes' ORDER BY id DESC LIMIT $limit");
     if ($res->rowCount() > 0) {

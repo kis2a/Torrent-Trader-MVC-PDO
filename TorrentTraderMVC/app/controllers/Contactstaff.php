@@ -28,7 +28,7 @@ class Contactstaff
                 Redirect::autolink(URLROOT, $error_msg);
             } else {
                 $added = TimeDate::get_date_time();
-                $userid = Auth::permission('id') ?? 0;
+                $userid = Users::has('id') ?? 0;
                 $req = Staffmessage::insertStaffMessage($userid, $added, $msg, $sub);
                 if ($req == 1) {
                     Redirect::autolink(URLROOT, Lang::T("CONTACT_SENT"));

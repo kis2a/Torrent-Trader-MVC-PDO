@@ -26,7 +26,7 @@ class Import
         //ini_set("upload_max_filesize",$max_torrent_size);
         $files = self::gettorrentfiles();
         // check access and rights
-        if (Auth::permission("edit_torrents") != "yes") {
+        if (Users::has("edit_torrents") != "yes") {
             Redirect::autolink(URLROOT, Lang::T("ACCESS_DENIED"));
         }
         $data = [
@@ -43,7 +43,7 @@ class Import
         $announce_urls = explode(",", strtolower(ANNOUNCELIST));
         set_time_limit(0);
         // check access and cat id
-        if (Auth::permission("edit_torrents") != "yes") {
+        if (Users::has("edit_torrents") != "yes") {
             Redirect::autolink(URLROOT, Lang::T("ACCESS_DENIED"));
         }
         $catid = (int) Input::get("type");

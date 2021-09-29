@@ -42,11 +42,11 @@ class Shoutbox
             <b><?php echo Users::coloredname($row['user']) ?>:</b></a>&nbsp;
             <?php echo nl2br(format_comment($row['message'])); ?>
             <?php
-            if (Auth::permission("edit_users") =="yes") {
+            if (Users::has("edit_users") =="yes") {
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=" . $row['msgid'] . "''><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
             }
-            if (Auth::permission("edit_users") =="no" && Auth::permission('username') == $row['user']) {
+            if (Users::has("edit_users") =="no" && Users::has('username') == $row['user']) {
                 $ts = TimeDate::modify('date', $row['date'], "+1 day");
                 if ($ts > TT_DATE) {
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=$row[msgid]&user=$row[userid]'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";

@@ -16,7 +16,7 @@ class Invite
         if ($users >= Config::TT()['MAXUSERSINVITE']) {
             Redirect::autolink(URLROOT, "Sorry, The current user account limit (" . number_format(Config::TT()['MAXUSERSINVITE']) . ") has been reached. Inactive accounts are pruned all the time, please check back again later...");
         }
-        if (Auth::permission("invites") == 0) {
+        if (Users::has("invites") == 0) {
             Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_NO_INVITES_MSG"));
         }
         $data = [
@@ -85,7 +85,7 @@ class Invite
     {
         $id = Input::get("id");
         if (!Validate::Id($id)) {
-            $id = Auth::permission("id");
+            $id = Users::has("id");
         }
         $res = DB::run("SELECT * FROM users WHERE status = ? AND invited_by = ? ORDER BY username", ['confirmed', $id]);
         $num = $res->rowCount();
@@ -93,10 +93,10 @@ class Invite
         if ($invitees == 0) {
             Redirect::autolink(URLROOT . "/profile?id=$id", "This member has no invitees");
         }
-        if ($id != Auth::permission("id")) {
+        if ($id != Users::has("id")) {
             $title = "Invite Tree for [<a href=" . URLROOT . "/profile?id=$id>" . $id . "</a>]";
         } else {
-            $title = "You have $invitees invitees " . Users::coloredname(Auth::permission("username")) . "";
+            $title = "You have $invitees invitees " . Users::coloredname(Users::has("username")) . "";
         }
         $data = [
             'title' => $title,

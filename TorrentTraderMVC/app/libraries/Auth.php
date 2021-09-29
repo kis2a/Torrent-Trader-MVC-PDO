@@ -109,11 +109,4 @@ class Auth
         }
     }
 
-	public static function permission($name) {
-		if (isset($_SESSION[$name])) {
-            return $_SESSION[$name];
-        } else {
-            return false;
-        }
-	}
 }

@@ -9,7 +9,7 @@ class Completed {
     
     public function index()
     {
-        if (Auth::permission("view_torrents") == "no") {
+        if (Users::has("view_torrents") == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         $id = (int) Input::get("id");

@@ -10,11 +10,11 @@ class Download
     public function index()
     {
         // Check The User
-        if (Auth::permission('loggedin')) {
-            if (Auth::permission("can_download") == "no") {
+        if (Users::has('loggedin')) {
+            if (Users::has("can_download") == "no") {
                 Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION_TO_DOWNLOAD"));
             }
-            if (Auth::permission("downloadbanned") == "yes") {
+            if (Users::has("downloadbanned") == "yes") {
                 Redirect::autolink(URLROOT, Lang::T("DOWNLOADBAN"));
             }
         }
@@ -27,7 +27,7 @@ class Download
         $row = Torrents::isAvailableToDownload($id);
         // Check The Torrent
         $vip = $row['vip'];
-        if (Auth::permission('class') < _VIP && $vip == "yes") {
+        if (Users::has('class') < _VIP && $vip == "yes") {
             Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("VIPTODOWNLOAD"));
         }
         if (!$row) {
@@ -49,9 +49,9 @@ class Download
         $friendlyext = ".torrent";
         $name = $friendlyname . "[" . $friendlyurl . "]" . $friendlyext;
         // LIKE MOD
-        if (Config::TT()['FORCETHANKS'] && Auth::permission('loggedin')) {
-            if (Auth::permission("id") != $row["owner"]) {
-                $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', Auth::permission('id')]);
+        if (Config::TT()['FORCETHANKS'] && Users::has('loggedin')) {
+            if (Users::has("id") != $row["owner"]) {
+                $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', Users::has('id')]);
                 $like = $data->fetch(PDO::FETCH_ASSOC);
                 if (!$like) {
                     Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("PLEASE_THANK"));
@@ -61,11 +61,11 @@ class Download
         // Update Hit When Downloaded
         Torrents::updateHits($id);
         // if user dont have a passkey generate one, only if current member
-        if (Auth::permission('loggedin')) {
-            if (strlen(Auth::permission('passkey')) != 32) {
+        if (Users::has('loggedin')) {
+            if (strlen(Users::has('passkey')) != 32) {
                 $rand = array_sum(explode(" ", microtime()));
-                $_SESSION['passkey'] = md5(Auth::permission('username') . $rand . Auth::permission('secret') . ($rand * mt_rand()));
-                Users::setpasskey(Auth::permission('passkey'), Auth::permission('id'));
+                $_SESSION['passkey'] = md5(Users::has('username') . $rand . Users::has('secret') . ($rand * mt_rand()));
+                Users::setpasskey(Users::has('passkey'), Users::has('id'));
             }
         }
 

@@ -1,5 +1,5 @@
 <?php
-if (!Auth::permission('loggedin') && !Config::TT()['MEMBERSONLY'] || Auth::permission('loggedin')) {
+if (!Users::has('loggedin') && !Config::TT()['MEMBERSONLY'] || Users::has('loggedin')) {
     Style::block_begin(Lang::T("Ip Details"));
     $osName = Ip::operatingSystem();
     $osVersion = Ip::osVersion();

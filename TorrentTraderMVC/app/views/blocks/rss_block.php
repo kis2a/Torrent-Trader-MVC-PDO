@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
     $feedUrl = "";
     Style::block_begin(Lang::T("RSS"));
     if (!$feedUrl): ?>

@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
     Style::block_begin("Server Load");
     if (strtoupper(substr(PHP_OS, 0, 3)) == "WIN") {
         // Get total physical memory (this is in bytes)

@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
     if (Config::TT()['NEWSON']) { //check news is turned on first
 		Style::block_begin(Lang::T("LATEST_NEWS"));
         $res = DB::run("SELECT * FROM news ORDER BY added DESC LIMIT 10"); ?>

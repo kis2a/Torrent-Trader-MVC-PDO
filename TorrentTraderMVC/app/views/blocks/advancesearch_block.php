@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin')) {
+if (Users::has('loggedin')) {
     Style::block_begin(Lang::T("SEARCH"));
 	$search = $_GET['search'] ?? '';
     ?>

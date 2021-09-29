@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true || !Config::TT()['MEMBERSONLY']) {
+if (Users::has('loggedin') == true || !Config::TT()['MEMBERSONLY']) {
 	Style::block_begin(Lang::T("BROWSE_TORRENTS"));
     $catsquery = DB::run("SELECT distinct parent_cat FROM categories ORDER BY parent_cat");?>
 	<div class="list-group">

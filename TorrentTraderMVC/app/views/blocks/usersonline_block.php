@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
     $TTCache = new Cache();
     $expires = 120; // Cache time in seconds 2 mins
     Style::block_begin(Lang::T("ONLINE_USERS"));

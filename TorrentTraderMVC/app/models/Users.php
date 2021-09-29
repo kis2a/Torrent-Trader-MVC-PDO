@@ -223,4 +223,11 @@ class Users
         echo $user;
     }
 
+	public static function has($name) {
+		if (isset($_SESSION[$name])) {
+            return $_SESSION[$name];
+        } else {
+            return false;
+        }
+	}
 }

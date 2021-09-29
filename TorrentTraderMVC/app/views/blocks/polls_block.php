@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true) {
+if (Users::has('loggedin') == true) {
     Style::block_begin(Lang::T("POLL"));
     if (!function_exists("srt")) {
         function srt($a, $b)

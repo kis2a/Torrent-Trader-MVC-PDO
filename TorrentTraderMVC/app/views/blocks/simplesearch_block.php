@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') || !Config::TT()['MEMBERSONLY']) {
+if (Users::has('loggedin') || !Config::TT()['MEMBERSONLY']) {
     $keyword = $_GET['keyword'] ?? '';
     Style::block_begin(Lang::T("SEARCH"));
     ?>

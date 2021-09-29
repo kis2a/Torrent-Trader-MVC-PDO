@@ -1,5 +1,5 @@
 <?php
-if (Auth::permission('loggedin') == true || !Config::TT()['MEMBERSONLY']) {
+if (Users::has('loggedin') == true || !Config::TT()['MEMBERSONLY']) {
     Style::block_begin(Lang::T("LATEST_TORRENTS"));
     $expire = 900; // time in seconds
     $TTCache = new Cache();

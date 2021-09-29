@@ -14,7 +14,7 @@ class Account
     public function changepw()
     {
         $id = (int) Input::get("id");
-        if (Auth::permission('class') < _MODERATOR && $id != Auth::permission('id')) {
+        if (Users::has('class') < _MODERATOR && $id != Users::has('id')) {
             Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
 
@@ -54,7 +54,7 @@ class Account
     public function email()
     {
         $id = (int) Input::get("id");
-        if ($id != Auth::permission('id')) {
+        if ($id != Users::has('id')) {
             Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
 
@@ -65,17 +65,17 @@ class Account
             $sitename = URLROOT;
 
             $body = file_get_contents(APPROOT . "/views/emails/changeemail.php");
-            $body = str_replace("%usersname%", Auth::permission("username"), $body);
+            $body = str_replace("%usersname%", Users::has("username"), $body);
             $body = str_replace("%sitename%", $sitename, $body);
             $body = str_replace("%usersip%", $_SERVER["REMOTE_ADDR"], $body);
-            $body = str_replace("%usersid%", Auth::permission("id"), $body);
+            $body = str_replace("%usersid%", Users::has("id"), $body);
             $body = str_replace("%userssecret%", $sec, $body);
             $body = str_replace("%obemail%", $obemail, $body);
             $body = str_replace("%newemail%", $email, $body);
 
             $TTMail = new TTMail();
             $TTMail->Send($email, "$sitename profile update confirmation", $body, "From: " . Config::TT()['SITEEMAIL'] . "", "-f" . Config::TT()['SITEEMAIL'] . "");
-            Users::updateUserEditSecret($sec, Auth::permission('id'));
+            Users::updateUserEditSecret($sec, Users::has('id'));
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("EMAIL_CHANGE_SEND"));
         }
         $user = Users::selectUserEmail($id);
@@ -89,7 +89,7 @@ class Account
     public function avatar()
     {
         $id = (int) Input::get("id");
-        if ($id != Auth::permission('id')) {
+        if ($id != Users::has('id')) {
             Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
         if (isset($_FILES["upfile"])) {

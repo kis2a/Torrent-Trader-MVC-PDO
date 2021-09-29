@@ -22,7 +22,7 @@ class Peers
         if (!$user) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
-        if (Auth::permission("view_users") == "no" && Auth::permission("id") != $id) {
+        if (Users::has("view_users") == "no" && Users::has("id") != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         if (($user["enabled"] == "no" || ($user["status"] == "pending"))) {
@@ -63,15 +63,15 @@ class Peers
             Redirect::autolink(URLROOT, Lang::T("NO_USER_WITH_ID") . " $id.");
         }
         //add invites check here
-        if (Auth::permission("view_users") == "no" && Auth::permission("id") != $id) {
+        if (Users::has("view_users") == "no" && Users::has("id") != $id) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
-        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && Auth::permission("edit_users") == "no") {
+        if (($user["enabled"] == "no" || ($user["status"] == "pending")) && Users::has("edit_users") == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_ACCESS_ACCOUNT_DISABLED"));
         }
         $page = (int) Input::get("page");
         $where = "";
-        if (Auth::permission('control_panel') != "yes") {
+        if (Users::has('control_panel') != "yes") {
             $where = "AND anon='no'";
         }
         $count = DB::run("SELECT COUNT(*) FROM torrents WHERE owner='$id' $where")->fetchColumn();
@@ -103,7 +103,7 @@ class Peers
         if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
-        if (Auth::permission("view_torrents") == "no" && Config::TT()['MEMBERSONLY']) {
+        if (Users::has("view_torrents") == "no" && Config::TT()['MEMBERSONLY']) {
             Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
@@ -135,7 +135,7 @@ class Peers
     public function popoutseed()
     {
         $id = (int) Input::get("id");
-        if ($id != Auth::permission("id")) {
+        if ($id != Users::has("id")) {
             echo Lang::T("FORUMS_NOT_ALLOWED");
         }
         $res = Peer::seedingTorrent($id, 'yes');
@@ -156,7 +156,7 @@ class Peers
     public function popoutleech()
     {
         $id = (int) Input::get("id");
-        if ($id != Auth::permission("id")) {
+        if ($id != Users::has("id")) {
             echo Lang::T("FORUMS_NOT_ALLOWED");
         }
         $res = Peer::seedingTorrent($id, 'no');

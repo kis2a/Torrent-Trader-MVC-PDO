@@ -13,7 +13,7 @@ class Friends
         if (!Validate::Id($userid)) {
             Redirect::autolink(URLROOT, Lang::T("INVALID_USERID"));
         }
-        if (Auth::permission("view_users") == "no" && Auth::permission("id") != $userid) {
+        if (Users::has("view_users") == "no" && Users::has("id") != $userid) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         $res = DB::run("SELECT * FROM users WHERE id=$userid");

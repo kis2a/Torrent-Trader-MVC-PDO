@@ -24,7 +24,7 @@ while ($row = $result->fetch(PDO::FETCH_LAZY)) {
 }
 
 $localpeers = $leechers + $seeders;
-if (Auth::permission('loggedin') === true && Auth::permission("edit_users") == "yes") {
+if (Users::has('loggedin') === true && Users::has("edit_users") == "yes") {
 	Style::block_begin(Lang::T("STATS"));
     ?>
 	<ul class="list-unstyled">
@@ -52,7 +52,7 @@ if (Auth::permission('loggedin') === true && Auth::permission("edit_users") == "
     <?php
 	Style::block_end();
 }
-if (Auth::permission("edit_users") == "no") {
+if (Users::has("edit_users") == "no") {
     Style::block_begin(Lang::T("STATS"));
 	?>
     <ul class="list-unstyled">
