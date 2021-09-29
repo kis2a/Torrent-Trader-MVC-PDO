@@ -14,11 +14,11 @@ class Account
     public function changepw()
     {
         $id = (int) Input::get("id");
-        if ($_SESSION['class'] < _MODERATOR && $id != $_SESSION['id']) {
+        if (Auth::permission('class') < _MODERATOR && $id != Auth::permission('id')) {
             Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
 
-        if ($_POST['do'] == "newpassword") {
+        if (Input::get('do') == "newpassword") {
             $chpassword = Input::get('chpassword');
             $passagain = Input::get('passagain');
             if ($chpassword != "") {
@@ -45,15 +45,16 @@ class Account
         }
 
         $data = [
+            'title' => Lang::T('CHANGE_PASS'),
             'id' => $id,
         ];
-        View::render('user/changepass', $data, 'user');
+        View::render('user/accountpassword', $data, 'user');
     }
 
     public function email()
     {
         $id = (int) Input::get("id");
-        if ($id != $_SESSION['id']) {
+        if ($id != Auth::permission('id')) {
             Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
 
@@ -64,17 +65,17 @@ class Account
             $sitename = URLROOT;
 
             $body = file_get_contents(APPROOT . "/views/emails/changeemail.php");
-            $body = str_replace("%usersname%", $_SESSION["username"], $body);
+            $body = str_replace("%usersname%", Auth::permission("username"), $body);
             $body = str_replace("%sitename%", $sitename, $body);
             $body = str_replace("%usersip%", $_SERVER["REMOTE_ADDR"], $body);
-            $body = str_replace("%usersid%", $_SESSION["id"], $body);
+            $body = str_replace("%usersid%", Auth::permission("id"), $body);
             $body = str_replace("%userssecret%", $sec, $body);
             $body = str_replace("%obemail%", $obemail, $body);
             $body = str_replace("%newemail%", $email, $body);
 
             $TTMail = new TTMail();
-            $TTMail->Send($email, "$sitename profile update confirmation", $body, "From: " . SITEEMAIL . "", "-f" . SITEEMAIL . "");
-            Users::updateUserEditSecret($sec, $_SESSION['id']);
+            $TTMail->Send($email, "$sitename profile update confirmation", $body, "From: " . Config::TT()['SITEEMAIL'] . "", "-f" . Config::TT()['SITEEMAIL'] . "");
+            Users::updateUserEditSecret($sec, Auth::permission('id'));
             Redirect::autolink(URLROOT . "/profile?id=$id", Lang::T("EMAIL_CHANGE_SEND"));
         }
         $user = Users::selectUserEmail($id);
@@ -82,13 +83,13 @@ class Account
             'id' => $id,
             'email' => $user['email'],
         ];
-        View::render('user/changeemail', $data, 'user');
+        View::render('user/accountemail', $data, 'user');
     }
 
     public function avatar()
     {
         $id = (int) Input::get("id");
-        if ($id != $_SESSION['id']) {
+        if ($id != Auth::permission('id')) {
             Redirect::autolink(URLROOT . "/index", Lang::T("NO_PERMISSION"));
         }
         if (isset($_FILES["upfile"])) {
@@ -104,14 +105,13 @@ class Account
                 $avatar = URLROOT . "/uploads/avatars/" . $upload->get_name();
                 Users::updateUserAvatar($avatar, $id);
                 Redirect::autolink(URLROOT . "/profile/edit?id=$id", Lang::T("UP_AVATAR")." OK");
-                
             }
-
         }
         $data = [
+            'title' => Lang::T("AVATAR_UPLOAD"),
             'id' => $id,
         ];
-        View::render('user/avatar', $data, 'user');
+        View::render('user/accountavatar', $data, 'user');
     }
 
 }

@@ -6,7 +6,6 @@ class Rule
     {
         $stmt = DB::run("SELECT * FROM `rules` ORDER BY `id`");
         return $stmt;
-
     }
 
 }

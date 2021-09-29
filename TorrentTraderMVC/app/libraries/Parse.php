@@ -3,10 +3,6 @@
 class Parse
 {
 
-    public function __construct() {}
-
-    private function __clone() {}
-
     public function torr($filename = "")
     {
         $torrentInfo = array();

@@ -78,7 +78,7 @@ class Users
     }
     public static function updateUserAvatar($avatar, $id)
     {
-        $row = DB::run("UPDATE users SET avatar=? WHERE id =?", [$avatar, $id]);
+        DB::run("UPDATE users SET avatar=? WHERE id =?", [$avatar, $id]);
 
     }
     public static function selectUserEmail($id)
@@ -166,26 +166,28 @@ class Users
         DB::run("DELETE FROM `snatched` WHERE `uid` = '$userid'");
     }
 
-    function coloredname($name)
+    public static function coloredname($name)
     {
-        $classy = DB::run("SELECT u.class, u.id, u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
-        $gcolor = $classy['Color'];
-        if ($classy['donated'] > 0) {
-            $star = "<img src='" . URLROOT . "/assets/images/donor.png' alt='donated' border='0' width='15' height='15'>";
-        } else {
-            $star = "";
+        $classy = DB::run("SELECT u.class, u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
+        if ($classy) {
+            $gcolor = $classy['Color'];
+            if ($classy['donated'] > 0) {
+                $star = "<img src='" . URLROOT . "/assets/images/donor.png' alt='donated' border='0' width='15' height='15'>";
+            } else {
+                $star = "";
+            }
+            if ($classy['warned'] == "yes") {
+                $warn = "<img src='" . URLROOT . "/assets/images/warn.png' alt='Warn' border='0'>";
+            } else {
+                $warn = "";
+            }
+            if ($classy['enabled'] == "no") {
+                $disabled = "<img src='" . URLROOT . "/assets/images/disabled.png' title='Disabled' border='0'>";
+            } else {
+                $disabled = "";
+            }
+            return stripslashes("<font color='" . $gcolor . "'>" . $name . "" . $star . "" . $warn . "" . $disabled . "</font>");
         }
-        if ($classy['warned'] == "yes") {
-            $warn = "<img src='" . URLROOT . "/assets/images/warn.png' alt='Warn' border='0'>";
-        } else {
-            $warn = "";
-        }
-        if ($classy['enabled'] == "no") {
-            $disabled = "<img src='" . URLROOT . "/assets/images/disabled.png' title='Disabled' border='0'>";
-        } else {
-            $disabled = "";
-        }
-        return stripslashes("<a href='".URLROOT."/profile?id=" . $classy['id'] . "'><font color='" . $gcolor . "'>" . $name . "</a>" . $star . "" . $warn . "" . $disabled . "</font>");
     }
 
     public static function where($where, $userid, $update = 1)

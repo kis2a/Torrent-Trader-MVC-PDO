@@ -39,34 +39,24 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)):
         $r = DB::run("SELECT username FROM users WHERE id = '$row[dealtby]'")->fetch();
         $dealtwith = 'By <a href="' . URLROOT . '/profile?id=' . $row['dealtby'] . '">' . $r['username'] . '</a>';
     }
-    switch ($row["type"]) {
-        case "user":
-            $q = DB::run("SELECT username FROM users WHERE id = '$row[votedfor]'");
-            break;
-        case "torrent":
-            $q = DB::run("SELECT name FROM torrents WHERE id = '$row[votedfor]'");
-            break;
-        case "comment":
-            $q = DB::run("SELECT text, news, torrent FROM comments WHERE id = '$row[votedfor]'");
-            break;
-        case "forum":
-            $q = DB::run("SELECT subject FROM forum_topics WHERE id = '$row[votedfor]'");
-            break;
-    }
-    $r = $q->fetch(PDO::FETCH_LAZY);
+
+    $r = Reports::getname($row['type'], $row['votedfor']);
+
+    var_dump($r);
+    //$r = $q->fetch(PDO::FETCH_LAZY);
     if ($row["type"] == "user") {
         $link = "".URLROOT."/profile?id=$row[votedfor]";
     } else if ($row["type"] == "torrent") {
     $link = "".URLROOT."/torrent?id=$row[votedfor]";
     } else if ($row["type"] == "comment") {
-        $link = "".URLROOT."/comments?type=" . ($r[1] > 0 ? "news" : "torrent") . "&amp;id=" . ($r[1] > 0 ? $r[1] : $r[2]) . "#comment$row[votedfor]";
+        $link = "".URLROOT."/comments?type=" . ($r['news'] > 0 ? "news" : "torrent") . "&amp;id=" . ($r['news'] > 0 ? $r['news'] : $r['torrent']) . "#comment$row[votedfor]";
     } else if ($row["type"] == "forum") {
         $link = "".URLROOT."/forums/viewtopic&amp;topicid=$row[votedfor]&amp;page=last#post$row[votedfor_xtra]";
     }
     ?>
     <tr>
           <td class="table_col1" align="center" width="10%"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row['addedby']; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
-          <td class="table_col2" align="center" width="15%"><a href="<?php echo $link; ?>"><?php echo CutName($r[0], 40); ?></a></td>
+          <td class="table_col2" align="center" width="15%"><a href="<?php echo $link; ?>"><?php echo CutName($r['name'], 40); ?></a></td>
           <td class="table_col1" align="center" width="10%"><?php echo $row['type']; ?></td>
           <td class="table_col2" align="center" width="50%"><?php echo htmlspecialchars($row['reason']); ?></td>
           <td class="table_col1" align="center" width="10%"><?php echo $dealtwith; ?></td>

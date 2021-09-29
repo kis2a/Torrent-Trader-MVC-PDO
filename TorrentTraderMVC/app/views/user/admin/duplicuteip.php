@@ -20,7 +20,7 @@ if ($data['num'] > 0): ?>
         <td class="table_col1" align="center"><?php echo $row["email"]; ?></td>
         <td class="table_col2" align="center"><?php echo $row["ip"]; ?></td>
         <td class="table_col1" align="center"><?php echo TimeDate::utc_to_tz($row["added"]); ?></td>
-        <td class="table_col1" align="center"><a href="<?php echo URLROOT; ?>/admincp?action=usersearch&amp;ip=<?php echo $row['ip']; ?>" target='_blank'><?php echo number_format($row['count']); ?></a></td>
+        <td class="table_col1" align="center"><a href="<?php echo URLROOT; ?>/adminsearch/simplesearch&amp;ip=<?php echo $row['ip']; ?>"><?php echo number_format($row['count']); ?></a></td>
         </tr>
         <?php
     endwhile;?>

@@ -29,9 +29,9 @@
         <td><textarea name="descr" rows="5" cols="38"><?php echo ($data['row'] != null ? $data['row']->descr : null); ?></textarea></td>
     </tr></tbody>
     </table>
-    <ul>
-        <input type="reset" value="Cancel" />
-        <input type="submit" value="To send" />
-    </ul>
+    <div class="text-center">
+        <a href="<?php echo URLROOT; ?>/adminbonus" class="btn btn-sm ttbtn">Cancel</a>
+        <input type="submit" class="btn btn-sm ttbtn" value="To send" />
+        </div>
     </form>
     </div>

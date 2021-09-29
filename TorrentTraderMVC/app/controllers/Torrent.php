@@ -106,7 +106,7 @@ class Torrent
         }
         //UPDATE CATEGORY DROPDOWN
         $catdropdown = "<select name=\"type\">\n";
-        $cats = genrelist();
+        $cats = Catagorie::genrelist();
         foreach ($cats as $catdropdownubrow) {
             $catdropdown .= "<option value=\"" . $catdropdownubrow["id"] . "\"";
             if ($catdropdownubrow["id"] == $row["category"]) {
@@ -117,7 +117,7 @@ class Torrent
         $catdropdown .= "</select>\n";
         //UPDATE TORRENTLANG DROPDOWN
         $langdropdown = "<select name=\"language\"><option value='0'>Unknown</option>\n";
-        $lang = langlist();
+        $lang = Lang::langlist();
         foreach ($lang as $lang) {
             $langdropdown .= "<option value=\"" . $lang["id"] . "\"";
             if ($lang["id"] == $row["torrentlang"]) {
@@ -298,7 +298,7 @@ class Torrent
             if (!$delreason) {
                 Redirect::autolink(URLROOT . "/torrent/delete?id=$torrentid", Lang::T("MISSING_FORM_DATA"));
             }
-            deletetorrent($torrentid);
+            Torrents::deletetorrent($torrentid);
             DB::run("SELECT `owner` FROM `torrents` WHERE id=?", [$torrentid])->fetch();
             Logs::write($_SESSION['username'] . " has deleted torrent: ID:$torrentid - " . htmlspecialchars($torrentname) . " - Reason: " . htmlspecialchars($delreason));
             if ($_SESSION['id'] != $torrentid) {

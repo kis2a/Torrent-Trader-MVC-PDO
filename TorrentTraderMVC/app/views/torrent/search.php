@@ -8,7 +8,7 @@
     <select name="cat">
     <option value="0"><?php echo "(" . Lang::T("ALL") . " " . Lang::T("TYPES") . ")"; ?></option>
     <?php
-    $cats = genrelist();
+    $cats = Catagorie::genrelist();
     $catdropdown = "";
     foreach ($cats as $cat) {
         $catdropdown .= "<option value=\"" . $cat["id"] . "\"";
@@ -50,7 +50,7 @@ if (Config::TT()['ALLOWEXTERNAL']) { ?>
     <select name="lang">
     <option value="0"><?php echo "(" . Lang::T("ALL") . ")"; ?></option>
     <?php
-    $lang = langlist();
+    $lang = Lang::langlist();
     $langdropdown = "";
     foreach ($lang as $lang) {
         $langdropdown .= "<option value=\"" . $lang["id"] . "\"";

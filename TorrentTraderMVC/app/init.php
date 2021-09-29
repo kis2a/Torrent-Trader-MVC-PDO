@@ -4,17 +4,13 @@ session_start();
 require_once 'config/config.php';
 $config = require_once 'config/settings.php';
 // Load Langauge
-if (array_key_exists('language', $_SESSION)) {
-    require_once LANG . $_SESSION['language'].'.php';
-} else {
-    require_once LANG . 'english.php';
-}
+$language = isset($_SESSION['language'])  ? $_SESSION['language'] : 'english';
+require_once LANG . $language.'.php';
 // Error Reporting
+error_reporting(0); // error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
-error_reporting(0);
-ini_set('error_log', '../data/logs/errors_log.txt');
-//error_reporting(E_ALL ^ E_NOTICE);
+//ini_set('error_log', '../data/logs/errors_log.txt');
 // Register custom exception handler
 include "helpers/exception_helper.php";
 set_exception_handler("handleUncaughtException"); //handleException

@@ -21,9 +21,7 @@ class Group
         $search = Input::get('search');
         $class = (int) Input::get('class');
         $letter = Input::get('letter');
-        if (!$class) {
-            unset($class);
-        }
+
         $q = $query = null;
         if ($search) {
             $query = "username LIKE " . sqlesc("%$search%") . " AND status='confirmed'";
@@ -44,19 +42,24 @@ class Group
         if (!$query) {
             $query = "status='confirmed'";
         }
-        if ($class) {
+        if (!$class) {
+            unset($class);
+        } else {
             $query .= " AND class=$class";
             $q .= ($q ? "&amp;" : "") . "class=$class";
         }
+        $count = DB::run("SELECT COUNT(*) FROM users WHERE " . $query)->fetchcolumn();
+        list($pagertop, $pagerbottom, $limit) = pager(1, $count, URLROOT . "/group/members?$q&");
+        $results = Groups::getGroupsearch($query, $limit);
 
         $res = Groups::getGroups();
         $data = [
             'title' => 'Members',
             'getgroups' => $res,
-            'query1' => $query,
-            'query2' => $q,
+            'results' => $results,
+            'pagerbottom' => $pagerbottom,
         ];
-        View::render('groups/index', $data, 'user');
+        View::render('groups/members', $data, 'user');
     }
 
     public function staff()
@@ -80,7 +83,7 @@ class Group
         }
 
         $where = null;
-        if ($_SESSION["edit_users"] == "no") {
+        if (Auth::permission("edit_users") == "no") {
             $where = "AND `staff_public` = 'yes'";
         }
 

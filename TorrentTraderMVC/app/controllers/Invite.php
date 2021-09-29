@@ -16,13 +16,13 @@ class Invite
         if ($users >= Config::TT()['MAXUSERSINVITE']) {
             Redirect::autolink(URLROOT, "Sorry, The current user account limit (" . number_format(Config::TT()['MAXUSERSINVITE']) . ") has been reached. Inactive accounts are pruned all the time, please check back again later...");
         }
-        if ($_SESSION["invites"] == 0) {
+        if (Auth::permission("invites") == 0) {
             Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_NO_INVITES_MSG"));
         }
         $data = [
             'title' => 'Invite User',
         ];
-        View::render('invite/index', $data, 'user');
+        View::render('invite/invite', $data, 'user');
     }
 
     public function submit()
@@ -75,6 +75,8 @@ class Invite
             $TTMail->Send($email, "$names user registration confirmation", $body, "", "-f$emailmain");
             Redirect::autolink(URLROOT, Lang::T("A_CONFIRMATION_EMAIL_HAS_BEEN_SENT") . " (" . htmlspecialchars($email) . "). " . Lang::T("ACCOUNT_CONFIRM_SENT_TO_ADDY_REST") . " <br/ >");
             die;
+        } else {
+            Redirect::autolink(URLROOT, Lang::T("OOPS_ERR"));
         }
 
     }
@@ -83,7 +85,7 @@ class Invite
     {
         $id = Input::get("id");
         if (!Validate::Id($id)) {
-            $id = $_SESSION["id"];
+            $id = Auth::permission("id");
         }
         $res = DB::run("SELECT * FROM users WHERE status = ? AND invited_by = ? ORDER BY username", ['confirmed', $id]);
         $num = $res->rowCount();
@@ -91,10 +93,10 @@ class Invite
         if ($invitees == 0) {
             Redirect::autolink(URLROOT . "/profile?id=$id", "This member has no invitees");
         }
-        if ($id != $_SESSION["id"]) {
+        if ($id != Auth::permission("id")) {
             $title = "Invite Tree for [<a href=" . URLROOT . "/profile?id=$id>" . $id . "</a>]";
         } else {
-            $title = "You have $invitees invitees " . Users::coloredname($_SESSION["username"]) . "";
+            $title = "You have $invitees invitees " . Users::coloredname(Auth::permission("username")) . "";
         }
         $data = [
             'title' => $title,
@@ -103,7 +105,7 @@ class Invite
             'res' => $res,
             'num' => $num,
         ];
-        View::render('invite/tree', $data, 'user');
+        View::render('invite/invitetree', $data, 'user');
     }
     
 }

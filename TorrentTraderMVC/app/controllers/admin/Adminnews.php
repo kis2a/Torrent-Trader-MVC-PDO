@@ -41,7 +41,7 @@ class Adminnews
         }
         $afr = DB::run("INSERT INTO news (userid, added, body, title) VALUES (?,?,?,?)", [$_SESSION['id'], $added, $body, $title]);
         if ($afr) {
-            Redirect::autolink(URLROOT."/adminnews/add", Lang::T("CP_NEWS_ITEM_ADDED_SUCCESS"));
+            Redirect::autolink(URLROOT."/adminnews", Lang::T("CP_NEWS_ITEM_ADDED_SUCCESS"));
         } else {
             Redirect::autolink(URLROOT."/adminnews/add", Lang::T("CP_NEWS_UNABLE_TO_ADD"));
         }
@@ -78,7 +78,6 @@ class Adminnews
         if ($title == "") {
             Redirect::autolink(URLROOT."/adminnews/edit", Lang::T("ERR_NEWS_TITLE_CAN_NOT_BE_EMPTY"));
         }
-        $editedat = TimeDate::get_date_time();
         DB::run("UPDATE news SET body=?, title=? WHERE id=?", [$body, $title, $newsid]);
         Redirect::autolink(URLROOT . "/adminnews", Lang::T("CP_NEWS_ITEM_WAS_EDITED_SUCCESS"));
 

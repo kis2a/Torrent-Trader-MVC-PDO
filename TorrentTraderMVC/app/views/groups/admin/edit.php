@@ -1,5 +1,6 @@
-
-<?php $level = $data['rlevel']->fetch(PDO::FETCH_ASSOC); ?>
+<?php
+$level = $data['rlevel']->fetch(PDO::FETCH_ASSOC);
+?>
 <form action="<?php echo URLROOT; ?>/admingroups/update?group_id=<?php echo $level["group_id"]; ?>" name="level" method="post">
 <table width="100%" align="center">
 	<tr><td>Name:</td><td><input type="text" name="gname" value="<?php echo $level["level"]; ?>" size="40" /></td></tr>
@@ -126,5 +127,5 @@
     ?> /></td></tr>
     <tr><td>Staff Sort:</td><td><input type='text' name='sort' size='3' value='<?php echo $level["staff_sort"]; ?>' /></td></tr>
     <?php
-    print("\n<tr><td align=\"center\" ><input type=\"submit\" name=\"write\" value=\"Confirm\" /></td></tr>");
+    print("\n<tr><td align=\"center\" ><input type=\"submit\" class='btn ttbtn btn-sm' name=\"write\" value=\"Confirm\" /></td></tr>");
     print("</table></form><br /><br />");

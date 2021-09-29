@@ -22,7 +22,12 @@ while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     <td><?php echo $time; ?></td>
     <td><?php echo stripslashes($arr["txt"]); ?></td>
     <?php
-}
-echo '</tbody></table>';
-echo "<input type='submit' value='Delete Checked' /> <input type='submit' value='Delete All' name='delall' /></form>";
-print($data['pagerbottom']);
+} ?>
+</tbody></table>
+<div class="text-center">
+<input type='submit' class='btn btn-sm ttbtn' value='Delete Checked' /> 
+<input type='submit' class='btn btn-sm ttbtn' value='Delete All' name='delall' />
+</div>
+</form>
+<?php
+echo $data['pagerbottom'];

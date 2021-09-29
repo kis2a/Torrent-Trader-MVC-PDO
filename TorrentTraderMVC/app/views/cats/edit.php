@@ -7,6 +7,6 @@ $sql = $data['res']->fetch(PDO::FETCH_ASSOC);
 <tr><td align='left'><b>Sub Category: </b><input type='text' name='name' value="<?php echo $sql['name'] ?>"></td></tr>
 <tr><td align='left'><b>Sort: </b><input type='text' name='sort_index' value="<?php echo $sql['sort_index'] ?>" /></td></tr>
 <tr><td align='left'><b>Image: </b><input type='text' name='image' value="<?php echo $sql['image'] ?>" > single filename</td></tr>
-<tr><td align='center'><input type='submit' value='<?php echo Lang::T("SUBMIT") ?>' ></td></tr>
+<tr><td align='center'><input type='submit' class="btn btn-sm ttbtn" value='<?php echo Lang::T("SUBMIT") ?>' ></td></tr>
 </table></center>
 </form>

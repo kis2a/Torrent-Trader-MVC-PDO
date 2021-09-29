@@ -8,6 +8,8 @@ class Scrape
     
     public function index()
     {
+        //disable error reporting
+        error_reporting(0);
         // check if client can handle gzip
         if (stristr($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip") && extension_loaded('zlib') && ini_get("zlib.output_compression") == 0) {
             if (ini_get('output_handler') != 'ob_gzhandler') {

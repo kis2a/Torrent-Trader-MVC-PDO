@@ -5,7 +5,7 @@ This page displays all invited users which have been sent invites but haven't ye
 if ($data['count'] > 0): ?>
     <br />
     <form id="pendinginvite" method="post" action="<?php echo URLROOT; ?>/Admininvites/pending">
-    <input type="hidden" name="do" value="del" />
+    <input type="hidden" name="pending" value="1" />
     <table class='table table-striped table-bordered table-hover'><thead>
     <tr>
     <th class="table_head">Username</th>
@@ -26,12 +26,10 @@ if ($data['count'] > 0): ?>
         </tr>
         <?php
     endwhile;?>
-    <tr>
-    <td colspan="5" align="right">
-    <input type="submit" value="Delete Checked" />
-    </td>
-    </tr>
     </tbody></table>
+    <div class="text-center">
+    <input type="submit" value="Delete Checked" />
+    </div>
     </form>
     <?php
 endif;

@@ -18,7 +18,7 @@ class Home
         }
         // Start Hit And Run Warning
         if (HNR_ON) {
-            $query = DB::run("SELECT count(hnr) FROM `snatched` WHERE `uid` = '" . $_SESSION["id"] . "' AND `hnr` = 'yes'");
+            $query = DB::run("SELECT count(hnr) FROM `snatched` WHERE `uid` = '" . Auth::permission("id") . "' AND `hnr` = 'yes'");
             $res2 = $query->fetch(PDO::FETCH_ASSOC);
             $hnr = "<b><b>&nbsp; " . $res2[0] . " &nbsp;</b>";
             $hnr2 = $res2[0];
@@ -123,7 +123,7 @@ class Home
             LEFT JOIN users ON torrents.owner = users.id
             WHERE visible = 'yes' AND banned = 'no'
             ORDER BY sticky ASC, id DESC LIMIT 25";
-            $res = DB::run($query); // should use foreach, but the torrenttablefunction is useful
+            $res = DB::run($query);
             if ($res->rowCount() > 0) {
                 $data = [
                     'torrtable' => $res,
@@ -134,7 +134,7 @@ class Home
                 View::render('home/nothingfound', $data);
             }
             if (Auth::permission('loggedin') == true) {
-                DB::run("UPDATE users SET last_browse=" . TimeDate::gmtime() . " WHERE id=?", [$_SESSION['id']]);
+                DB::run("UPDATE users SET last_browse=" . TimeDate::gmtime() . " WHERE id=?", [Auth::permission('id')]);
             }
         }
         // Disclaimer

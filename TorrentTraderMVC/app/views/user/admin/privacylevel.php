@@ -2,9 +2,7 @@
 This page displays all users which are enabled, confirmed grouped by their privacy level.
 </center>
 
-<table align="right">
-<tr>
-    <td valign="top">
+<div class="text-center">
     <form id='sort' action=''>
     <b>Privacy Level:</b>
     <select name="type" onchange="window.location='<?php echo URLROOT; ?>/adminusers/privacy?type='+this.options[this.selectedIndex].value">
@@ -14,9 +12,7 @@ This page displays all users which are enabled, confirmed grouped by their priva
     <option value="strong" <?php echo ($_GET['type'] == "strong" ? " selected='selected'" : ""); ?>>Strong</option>
     </select>
     </form>
-</td>
-</tr>
-</table>
+</div>
 
 <?php if ($data['count'] > 0): ?>
 <br />

@@ -1,9 +1,6 @@
 <?php
 class Input
 {
-    public function __construct() {}
-
-    private function __clone() {}
 
     public static function exist($type = "POST")
     {

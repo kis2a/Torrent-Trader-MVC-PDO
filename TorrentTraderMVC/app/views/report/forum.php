@@ -1,4 +1,5 @@
-<b>Are you sure you would like to report the following forum post:</b><br /><a href='<?php echo URLROOT; ?>/forums/viewtopic&amp;topicid=<?php echo $data['$forumid']; ?>&amp;page=p#post<?php echo $data['forumpost']; ?>'>
+<b>Are you sure you would like to report the following forum post:</b><br />
+<a href='<?php echo URLROOT; ?>/forums/viewtopic&amp;topicid=<?php echo $data['forumid']; ?>&amp;page=p#post<?php echo $data['forumpost']; ?>'>
 <br><b><?php echo $data['subject']; ?></b></a><br />
 <b>Reason</b> (required): <form method='post' action='<?php echo URLROOT; ?>/report/forum'>
 <input type='hidden' name='forumid' value='<?php echo $data['forumid']; ?>' />

@@ -1,7 +1,6 @@
 <?php
 class Redirect
 {
-    public $url;
 
     public static function to($url)
     {
@@ -23,7 +22,7 @@ class Redirect
     {
         Style::error_header("info");
         Style::begin("Info");
-        echo "\n<meta http-equiv=\"refresh\" content=\"3; url=$al_url\">\n";
+        echo "\n<meta http-equiv=\"refresh\" content=\"5; url=$al_url\">\n";
         ?>
         <div class="alert ttalert">
         <center>

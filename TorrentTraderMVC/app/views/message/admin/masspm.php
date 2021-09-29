@@ -1,4 +1,4 @@
-<form name='masspm' method='post' action='<?php echo URLROOT ?>/adminmessages/mass?send=1'>
+<form name='masspm' method='post' action='<?php echo URLROOT ?>/adminmessages/send'>
 <table border='0' cellspacing='0' cellpadding='5' align='center' width='90%'>
 <tr><td><b>Send to:</b></td></tr>
 <?php
@@ -14,7 +14,9 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)) { ?>
 <td><b><?php echo Lang::T("SENDER"); ?></b>
 <?php echo $_SESSION['username'] ?> <input name="sender" type="radio" value="self" checked="checked" />
 System <input name="sender" type="radio" value="system" /></td>
-</tr><tr>
-<td><input type="submit" value="Send" /></td>
 </tr>
-</table></form>
+</table>
+<div class="text-center">
+    <input type="submit" class='btn btn-sm ttbtn' value="Send" />
+</div>
+</form>

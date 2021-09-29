@@ -8,12 +8,7 @@ class Admincontactstaff
 
     public function index()
     {
-        Redirect::to(URLROOT);
-    }
-
-    public function staffbox()
-    {
-        $res = DB::run("SELECT staffmessages.id, staffmessages.added, staffmessages.subject, staffmessages.answered, staffmessages.answeredby, staffmessages.sender, staffmessages.answer, users.username FROM staffmessages INNER JOIN users on staffmessages.sender = users.id ORDER BY id desc");
+        $res = Staffmessage::getAll();
         $data = [
             'title' => 'Staff PMs',
             'res' => $res,
@@ -67,7 +62,7 @@ class Admincontactstaff
         View::render('contactstaff/admin/viewpm', $data, 'admin');
     }
 
-    public function answermessage()
+    public function reply()
     {
         $answeringto = $_GET["answeringto"];
         $receiver = (int) $_GET["receiver"];
@@ -83,7 +78,37 @@ class Admincontactstaff
             'answeringto' => $answeringto,
             'receiver' => $receiver,
         ];
-        View::render('contactstaff/admin/answermessage', $data, 'admin');
+        View::render('contactstaff/admin/reply', $data, 'admin');
+    }
+
+    public function takeanswer()
+    {
+        $receiver = (int) $_POST["receiver"];
+        $answeringto = $_POST["answeringto"];
+        if (!Validate::Id($receiver)) {
+            Redirect::autolink(URLROOT . '/admincontactstaff', "Invalid ID");
+        }
+        $userid = $_SESSION["id"];
+        $msg = trim($_POST["msg"]);
+        $message = $msg;
+        $added = TimeDate::get_date_time();
+        if (!$msg) {
+            Redirect::autolink(URLROOT . '/admincontactstaff', "Please enter something!");
+        }
+        DB::run("UPDATE staffmessages SET answer=? WHERE id=?", [$message, $answeringto]);
+        DB::run("UPDATE staffmessages SET answered=?, answeredby=? WHERE id=?", [1, $userid, $answeringto]);
+        $smsg = "Staff Message $answeringto has been answered.";
+        Redirect::autolink(URLROOT . '/admincontactstaff', $smsg);
+        die;
+    }
+
+    public function setanswered()
+    {
+        $id = (int) $_GET["id"];
+        DB::run("UPDATE staffmessages SET answered=1, answeredby = $_SESSION[id] WHERE id = $id");
+        $smsg = "Staff Message $id has been set as answered.";
+        Redirect::autolink(URLROOT . "/admincontactstaff/viewpm?pmid=$id", $smsg);
+        die;
     }
 
     public function viewanswer()
@@ -104,7 +129,7 @@ class Admincontactstaff
         if ($arr4['subject'] == "") {
             $subject = "No subject";
         } else {
-            $subject = "<a style='color: darkred' href=staffbox.php?action=viewpm&pmid=$pmid>$arr4[subject]</a>";
+            $subject = "<a style='color: darkred' href=".URLROOT."/admincontactstaff/viewpm&pmid=$pmid>$arr4[subject]</a>";
         }
         $iidee = $arr4["id"];
         if ($arr4['answer'] == "") {
@@ -124,27 +149,6 @@ class Admincontactstaff
         View::render('contactstaff/admin/viewanswer', $data, 'admin');
     }
 
-    public function takeanswer()
-    {
-        $receiver = (int) $_POST["receiver"];
-        $answeringto = $_POST["answeringto"];
-        if (!Validate::Id($receiver)) {
-            Redirect::autolink(URLROOT . '/admincontactstaff', "Invalid ID");
-        }
-        $userid = $_SESSION["id"];
-        $msg = trim($_POST["msg"]);
-        $message = $msg;
-        $added = TimeDate::get_date_time();
-        if (!$msg) {
-            Redirect::autolink(URLROOT . '/admincontactstaff', "Please enter something!");
-        }
-        DB::run("UPDATE staffmessages SET answer=? WHERE id=?", [$message, $answeringto]);
-        DB::run("UPDATE staffmessages SET answered=?, answeredby=? WHERE id=?", [1, $userid, $answeringto]);
-        $smsg = "Staff Message $answeringto has been answered.";
-        Redirect::autolink(URLROOT . '/admincontactstaff/staffbox', $smsg);
-        die;
-    }
-
     public function deletestaffmessage()
     {
         $id = (int) $_GET["id"];
@@ -153,16 +157,7 @@ class Admincontactstaff
         }
         DB::run("DELETE FROM staffmessages WHERE id=?", [$id]);
         $smsg = "Staff Message $id has been deleted.";
-        Redirect::autolink(URLROOT . "/admincontactstaff/staffbox", $smsg);
-        die;
-    }
-
-    public function setanswered()
-    {
-        $id = (int) $_GET["id"];
-        DB::run("UPDATE staffmessages SET answered=1, answeredby = $_SESSION[id] WHERE id = $id");
-        $smsg = "Staff Message $id has been set as answered.";
-        Redirect::autolink(URLROOT . "/admincontactstaff/viewpm?pmid=$id", $smsg);
+        Redirect::autolink(URLROOT . "/admincontactstaff", $smsg);
         die;
     }
 
@@ -173,7 +168,7 @@ class Admincontactstaff
             DB::run("UPDATE staffmessages SET answered=?, answeredby =?  WHERE id =?", [1, $_SESSION['id'], $arr['id']]);
         }
         $smsg = "Staff Messages have been marked as answered.";
-        Redirect::autolink("staffbox", $smsg);
+        Redirect::autolink(URLROOT."/admincontactstaff", $smsg);
         die;
     }
 

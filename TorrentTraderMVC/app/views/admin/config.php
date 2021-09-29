@@ -3,12 +3,9 @@
 <p class='text-center'>To Allow User, add username to _OWNERS setting manually at app/config/settings.php</p>
 <p class='text-center'>Like your Settings ? Make a backup before changing <a href='<?php echo URLROOT; ?>/adminconfig/backup ?>'> Here</a></p>
 
-<div class="jumbotron border ttborder">
+<div class="jumbotron border ttborder"><br>
   <div class="row">
     <div class="col-md-4">
-
-
-
 
     <label for="SITENAME">Site Name:</label><br>
     <input type="text"  class="form-control" id="SITENAME" name="SITENAME" value="<?php echo Config::TT()['SITENAME'] ?>"><br>
@@ -35,8 +32,6 @@
     <input type="text"  class="form-control" id="UPLOADRULES" name="UPLOADRULES" value="<?php echo Config::TT()['UPLOADRULES'] ?>"><br>
     <label for="TORRENTTABLE_COLUMNS">Torrnt Table Columns:</label><br>
     <input type="text"  class="form-control" id="TORRENTTABLE_COLUMNS" name="TORRENTTABLE_COLUMNS" value="<?php echo Config::TT()['TORRENTTABLE_COLUMNS'] ?>"><br>
-    <label for="TORRENTTABLE_EXPAND">Torrent Table Expand:</label><br>
-    <input type="text"  class="form-control" id="TORRENTTABLE_EXPAND" name="TORRENTTABLE_EXPAND" value="<?php echo Config::TT()['TORRENTTABLE_EXPAND'] ?>"><br>
     <label for="CAPTCHA_ON">Google Captcha on/off :</label><br>
     <?php $checked = Config::TT()['CAPTCHA_ON'] == 1;
     print("<input name='CAPTCHA_ON' value='1' type='radio' " . ($checked ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='CAPTCHA_ON' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>

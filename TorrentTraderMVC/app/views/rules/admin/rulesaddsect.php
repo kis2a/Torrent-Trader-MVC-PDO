@@ -6,5 +6,8 @@
 <tr><td colspan="2" align="center"><input type="radio" name='public' value="yes" checked="checked" />For everybody
 <input type="radio" name='public' value="no" />&nbsp;Members Only - (Min User Class: 
 <input type="text" name='class' value="0" size="1" />)</td></tr>
-<tr><td colspan="2" align="center"><input type="submit" value="Add" style="width: 60px;" /></td></tr>
-</table></form>
+</table>
+<div class="text-center">
+    <input type="submit" class='btn btn-sm ttbtn' value="Add" style="width: 60px;" />
+</div>
+</form>

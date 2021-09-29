@@ -1,4 +1,5 @@
 <?php
+// Smilies Array
 $smilies = array
     (
     ":smile" => "smile.png",

@@ -2,7 +2,7 @@
 // DB Details
 define("DB_HOST", "localhost");
 define("DB_USER", "dbusername");
-define("DB_PASS", "password");
+define("DB_PASS", "dbpassword");
 define("DB_NAME", "dbname");
 define('DB_CHAR', 'utf8');
 // URL Root
@@ -41,7 +41,7 @@ define('ALLOWEDIMAGETYPES', array(
     "image/png" => ".png",
 ));
 // Hide Blocks On Pages
-define('ISURL', array('login', 'logout', 'signup'));
+define('ISURL', array('login', 'logout', 'signup', 'contactstaff', 'recover'));
 //WAIT TIME VARS
 define('CLASS_WAIT', 1); //Classes wait time applies to, comma seperated
 define('GIGSA', 1); //Minimum gigs
@@ -59,10 +59,8 @@ define('D_WAIT', 2); //If neither are met, wait time in hours
 // Log Clean
 define('LOGCLEAN', 28 * 86400); // (Default: 28 days)
 
-// category = Category Image/Name, name = Torrent Name, dl = Download Link, uploader, comments = # of comments, completed = times completed, size, seeders, leechers, health = seeder/leecher ratio, external, wait = Wait Time (if enabled), rating = Torrent Rating, added = Date Added, nfo = link to nfo (if exists)
-define('TORRENTTABLE_COLUMNS', 'category,name,dl,magnet,tube,imdb,uploader,comments,size,seeders,leechers,health,external,added');
-// size, speed, added = Date Added, tracker, completed = times completed
-define('TORRENTTABLE_EXPAND', '');
+// category,name,dl,magnet,uploader,tube,imdb,comments,nfo,size,completed,seeders,leechers,health,external,added,speed,wait,rating
+define('TORRENTTABLE_COLUMNS', 'category,name,dl,magnet,uploader,tube,imdb,comments,nfo,size,completed,seeders,leechers,health,external,added,speed,wait,rating');
 
 // Set User Group
 define('_USER', 1);

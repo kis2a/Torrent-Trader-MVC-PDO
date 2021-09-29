@@ -6,10 +6,10 @@ if ((Config::TT()['INVITEONLY'] || Config::TT()['ENABLEINVITES']) && Auth::permi
    <div class="text-center">
 	<?php printf(Lang::N("YOU_HAVE_INVITES", $invites), $invites);?> <br> <?php
    if ($invites > 0) {  ?>
-      <a href="<?php echo URLROOT ?>/invite"><?php echo Lang::T("SEND_AN_INVITE"); ?></a> <?php
+      <a href="<?php echo URLROOT ?>/invite" class="btn ttbtn"><?php echo Lang::T("SEND_AN_INVITE"); ?></a> <?php
    }
    if (Auth::permission("invitees") > 0) { ?>
-      <a href="<?php echo URLROOT ?>/invite/invitetree"><?php echo Lang::T("Invite Tree"); ?></a> <?php
+      <a href="<?php echo URLROOT ?>/invite/invitetree" class="btn ttbtn"><?php echo Lang::T("Invite Tree"); ?></a> <?php
    } ?>
    </div>
 	<?php

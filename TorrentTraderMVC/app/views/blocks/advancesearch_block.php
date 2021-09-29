@@ -7,7 +7,7 @@ if (Auth::permission('loggedin')) {
 		<input type="text" name="search" style="width: 95%" value="<?php echo htmlspecialchars($search); ?>" /><br />
 		    <select name="cat"  style="width: 95%" >
 			<option value="0">(<?php echo Lang::T("ALL_TYPES"); ?>)</option>
-			<?php echo catdropdown(); ?>
+			<?php echo Catagorie::dropdown(); ?>
 		    </select><br />
 		    <select name="incldead" style="width: 95%" >
 			<option value="0"><?php echo Lang::T("ACTIVE"); ?></option>

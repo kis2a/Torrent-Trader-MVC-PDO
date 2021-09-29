@@ -11,9 +11,9 @@ class Friends
     {
         $userid = (int) Input::get('id');
         if (!Validate::Id($userid)) {
-            Redirect::autolink(URLROOT, "Invalid ID $userid.");
+            Redirect::autolink(URLROOT, Lang::T("INVALID_USERID"));
         }
-        if ($_SESSION["view_users"] == "no" && $_SESSION["id"] != $userid) {
+        if (Auth::permission("view_users") == "no" && Auth::permission("id") != $userid) {
             Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
         }
         $res = DB::run("SELECT * FROM users WHERE id=$userid");
@@ -23,7 +23,7 @@ class Friends
 
         // Template
         $data = [
-            'title' => 'Friend Lists',
+            'title' => "Friend Lists For ".Users::coloredname($user['username'])."",
             'sql' => $user,
             'username' => $user['username'],
             'userid' => $userid,
@@ -35,10 +35,10 @@ class Friends
 
     public function add()
     {
-        $targetid = (int) $_GET['targetid'];
-        $type = $_GET['type'];
+        $targetid = (int) Input::get('targetid');
+        $type = Input::get('type');
         if (!Validate::Id($targetid)) {
-            Redirect::autolink(URLROOT, "Invalid ID $targetid.");
+            Redirect::autolink(URLROOT, Lang::T("INVALID_USERID"));
         }
         if ($type == 'friend') {
             $r = DB::run("SELECT id FROM friends WHERE userid=$_SESSION[id] AND userid=$targetid");
@@ -63,9 +63,9 @@ class Friends
 
     public function delete()
     {
-        $targetid = (int) $_GET['targetid'];
-        $sure = htmlentities($_GET['sure']);
-        $type = htmlentities($_GET['type']);
+        $targetid = (int) Input::get('targetid');
+        $sure = htmlentities(Input::get('sure'));
+        $type = htmlentities(Input::get('type'));
         if ($type != "block") {$typ = "friend from list";} else { $typ = "blocked user from list";}
         if (!Validate::Id($targetid)) {
             Redirect::autolink(URLROOT . "/friends?id=$_SESSION[id]", "Invalid ID $_SESSION[id].");

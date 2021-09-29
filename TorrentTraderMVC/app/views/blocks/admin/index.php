@@ -21,7 +21,9 @@ while ($blocks = $data['enabled']->fetch(PDO::FETCH_LAZY)) { ?>
 <?php } ?>
 </tbody></table>
 <form action='<?php echo URLROOT ?>/adminblocks/edit'>
+<div class="text-center">
 <input type='submit' class='btn btn-sm ttbtn' value='Edit' /></form>
+</div>
 </td></tr></table>
 
 <hr />

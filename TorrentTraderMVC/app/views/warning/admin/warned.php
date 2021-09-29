@@ -24,18 +24,16 @@ if ($data['count'] > 0) { ?>
         <td><?php echo Groups::get_user_class_name($row["class"]); ?></td>
         <td><?php echo TimeDate::utc_to_tz($row["added"]); ?></td>
         <td><?php echo TimeDate::utc_to_tz($row["last_access"]); ?></td>
-        <td><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>#warnings"><?php echo number_format(get_row_count("warnings", "WHERE userid = '$row[id]' AND active = 'yes'")); ?></a></td>
+        <td><a href="<?php echo URLROOT; ?>/warning?id=<?php echo $row["id"]; ?>"><?php echo number_format(get_row_count("warnings", "WHERE userid = '$row[id]' AND active = 'yes'")); ?></a></td>
         <td><input type="checkbox" name="warned[]" value="<?php echo $row["id"]; ?>" /></td>
     </tr>
     <?php
-    endwhile;?>
-    <tr>
-        <td class="table_head" colspan="6" align="right">
-        <input type="submit" value="Remove Checked" />
-        <input type="submit" name="removeall" value="Remove All" />
-        </td>
-    </tr>
+    endwhile; ?>
     </tbody></table>
+    <div class="margin-top20 text-center">
+        <input type="submit" class="btn ttbtn" value="Remove Checked" />
+        <input type="submit" class="btn ttbtn" name="removeall" value="Remove All" />
+	</div>
     </form>
 <?php
 } else { ?>

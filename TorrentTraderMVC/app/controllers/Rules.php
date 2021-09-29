@@ -14,7 +14,7 @@ class Rules
             'title' => 'Rules',
             'res' => $res
         ];
-        View::render('rules/index', $data, 'user');
+        View::render('rules/rules', $data, 'user');
     }
-    
+
 }

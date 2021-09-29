@@ -21,9 +21,9 @@ class Adminbans
             }
             $delids = array_map('intval', $_POST["delids"]);
             $delids = implode(', ', $delids);
-            $res = DB::run("SELECT * FROM bans WHERE id IN ($delids)");
+            $res = Ban::whereIn($delids);
             while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-                DB::run("DELETE FROM bans WHERE id=$row[id]");
+                Ban::delete($row['id']);
                 Logs::write("IP Ban ($row[first] - $row[last]) was removed by $_SESSION[id] ($_SESSION[username])");
             }
             Redirect::autolink(URLROOT . '/adminbans/ip', "Ban(s) deleted.");
@@ -38,18 +38,7 @@ class Adminbans
             }
             $comment = $comment;
             $added = TimeDate::get_date_time();
-            $bins = DB::run("INSERT INTO bans (added, addedby, first, last, comment) VALUES(?,?,?,?,?)", [$added, $_SESSION['id'], $first, $last, $comment]);
-            $err = $bins->errorCode();
-            switch ($err) {
-                case 1062:
-                    Redirect::autolink(URLROOT . '/adminbans/ip', "Duplicate ban.");
-                    break;
-                case 0:
-                    Redirect::autolink(URLROOT . '/adminbans/ip', "Ban added.");
-                    break;
-                default:
-                    Redirect::autolink(URLROOT . '/adminbans/ip', Lang::T("THEME_DATEBASE_ERROR") . " " . htmlspecialchars($bins->errorInfo()));
-            }
+            Ban::insert($added, $_SESSION['id'], $first, $last, $comment);
         }
 
         $count = get_row_count("bans");
@@ -70,7 +59,7 @@ class Adminbans
     {
         $remove = (int) $_GET['remove'];
         if (Validate::Id($remove)) {
-            DB::run("DELETE FROM email_bans WHERE id=$remove");
+            Ban::deleteemail($remove);
             Logs::write(sprintf(Lang::T("EMAIL_BANS_REM"), $remove, $_SESSION["username"]));
             Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("EMAIL_BAN_DELETED"));
         }
@@ -84,7 +73,7 @@ class Adminbans
             $mail_domain = $mail_domain;
             $comment = $comment;
             $added = TimeDate::get_date_time();
-            DB::run("INSERT INTO email_bans (added, addedby, mail_domain, comment) VALUES(?,?,?,?)", [$added, $_SESSION['id'], $mail_domain, $comment]);
+            Ban::insertemail($added, $_SESSION['id'], $mail_domain, $comment);
             Logs::write(sprintf(Lang::T("EMAIL_BANS_ADD"), $mail_domain, $_SESSION["username"]));
             Redirect::autolink(URLROOT . '/adminbans/email', Lang::T("EMAIL_BAN_ADDED"));
         }

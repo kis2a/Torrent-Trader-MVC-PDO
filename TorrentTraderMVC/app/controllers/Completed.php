@@ -9,7 +9,7 @@ class Completed {
     
     public function index()
     {
-        if ($_SESSION["view_torrents"] == "no") {
+        if (Auth::permission("view_torrents") == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
         }
         $id = (int) Input::get("id");
@@ -24,7 +24,7 @@ class Completed {
         if ($res->rowCount() == 0) {
             Redirect::autolink(URLROOT, Lang::T("NO_DOWNLOADS_YET"));
         }
-        $title = sprintf(Lang::T("COMPLETED_DOWNLOADS"), mb_substr($row["name"], 0, 40));
+        $title = sprintf(Lang::T("COMPLETED_DOWNLOADS"), CutName($row["name"], 40));
         $data = [
             'title' => $title,
             'res' => $res,

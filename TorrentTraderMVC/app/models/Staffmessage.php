@@ -10,4 +10,10 @@ class Staffmessage
         return $count;
     }
 
+    public static function getAll()
+    {
+        $row = DB::run("SELECT * FROM staffmessages ORDER BY id desc");
+        return $row;
+    }
+
 }

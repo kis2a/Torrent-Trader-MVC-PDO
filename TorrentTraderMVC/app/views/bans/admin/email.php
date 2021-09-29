@@ -13,7 +13,6 @@
 </div>
 </form>
 
-
 <br />
 <center><b><?php echo Lang::T("EMAIL_BANS") ?> (<?php echo $data['count'] ?>)</b></center>
 <?php
@@ -21,10 +20,6 @@ if ($data['count'] == 0) {
     print("<p align='center'><b>" . Lang::T("NOTHING_FOUND") . "</b></p><br />\n");
 } else {
     echo $data['pagertop']; ?>
-    print("<tr><th class='table_head'>Added</th><th class='table_head'>Mail Address Or Domain</th>
-    <th class='table_head'>Banned By</th><th class='table_head'>Comment</th>
-    <th class='table_head'>Remove</th></tr>
-    
     <div class='table-responsive'> <table class='table table-striped'><thead><tr>
     <th>Added</th>
     <th>Mail Address Or Domain</th>

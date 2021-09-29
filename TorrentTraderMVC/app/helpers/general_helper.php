@@ -7,7 +7,7 @@ function data_uri($file, $mime)
     return ('data:' . $mime . ';base64,' . $base64);
 }
 
-// Function To Count A Data Established In A Data Table
+// Function To Count Database Table
 function get_row_count($table, $suffix = "")
 {
     global $pdo;
@@ -16,15 +16,7 @@ function get_row_count($table, $suffix = "")
     return $row;
 }
 
-/// each() replacement for php 7+. Change all instances of each() to thisEach() in all TT files. each() deprecated as of 7.2
-function thisEach(&$arr)
-{
-    $key = key($arr);
-    $result = ($key === null) ? false : [$key, current($arr), 'key' => $key, 'value' => current($arr)];
-    next($arr);
-    return $result;
-}
-
+// Returns The Size
 function mksize($s, $precision = 2)
 {
     $suf = array("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB");
@@ -37,6 +29,7 @@ function mksize($s, $precision = 2)
     }
 }
 
+// Shorten Name
 function CutName($vTxt, $Car)
 {
     if (strlen($vTxt) > $Car) {
@@ -45,11 +38,7 @@ function CutName($vTxt, $Car)
     return $vTxt;
 }
 
-function searchfield($s)
-{
-    return preg_replace(array('/[^a-z0-9]/si', '/^\s*/s', '/\s*$/s', '/\s+/s'), array(" ", "", "", " "), $s);
-}
-
+// Returns a numeric conversion according to a string
 function strtobytes($str)
 {
     $str = trim($str);
@@ -74,6 +63,7 @@ function strtobytes($str)
     }
 }
 
+// Profile Navbar
 function usermenu($id)
 {
     ?>
@@ -91,16 +81,17 @@ function usermenu($id)
     <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Friends</button></a>
     <?php }?>
     <?php if ($_SESSION["view_torrents"]) {?>
-    <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Seeding</button></a>
-    <a href='<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Uploaded</button></a>
+    <a href='<?php echo URLROOT; ?>/peers/seeding?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn"><?php echo Lang::T("SEEDING"); ?></button></a>
+    <a href='<?php echo URLROOT; ?>/peers/uploaded?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn"><?php echo Lang::T("UPLOADED"); ?></button></a>
     <?php }?>
     <?php if ($_SESSION["class"] > _UPLOADER) {?>
     <a href='<?php echo URLROOT; ?>/warning?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Warn</button></a>
-    <a href='<?php echo URLROOT; ?>/profile/admin?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm btn-success">Admin</button></a>
+    <a href='<?php echo URLROOT; ?>/profile/admin?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Admin</button></a>
 	<?php }?>
     <br><br><?php
 }
 
+// Torrent Navbar
 function torrentmenu($id, $external = 'no')
 {
     ?>
@@ -120,6 +111,7 @@ function torrentmenu($id, $external = 'no')
     <?php
 }
 
+// Upload Image - torrent/edit
 function uploadimage($x, $imgname, $tid)
 {
     $imagesdir = TORRENTDIR . "/images";
@@ -150,6 +142,7 @@ function uploadimage($x, $imgname, $tid)
     }
 }
 
+// Escape (Not Needed in Prepared Statements)
 function sqlesc($x)
 {
     if (!is_numeric($x)) {

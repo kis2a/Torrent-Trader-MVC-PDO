@@ -42,11 +42,11 @@ class Shoutbox
             <b><?php echo Users::coloredname($row['user']) ?>:</b></a>&nbsp;
             <?php echo nl2br(format_comment($row['message'])); ?>
             <?php
-            if ($_SESSION["edit_users"]=="yes") {
+            if (Auth::permission("edit_users") =="yes") {
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=" . $row['msgid'] . "''><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
             }
-            if ($_SESSION["edit_users"]=="no" && $_SESSION['username'] == $row['user']) {
+            if (Auth::permission("edit_users") =="no" && Auth::permission('username') == $row['user']) {
                 $ts = TimeDate::modify('date', $row['date'], "+1 day");
                 if ($ts > TT_DATE) {
                 echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=$row[msgid]&user=$row[userid]'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
@@ -63,7 +63,7 @@ class Shoutbox
 
     public function add()
     {
-        if ($_SESSION["shoutboxpos"] != 'yes') {
+        if ($_SESSION["shoutboxpos"] != 'yes' && $_SESSION['loggedin']) {
             //INSERT MESSAGE
             if (!empty(Input::get('message')) && $_SESSION['loggedin'] == true) {
                 $message = Input::get('message');
@@ -73,7 +73,7 @@ class Shoutbox
                 }
             }
         } else {
-            die();
+            Redirect::autolink(URLROOT, Lang::T("Shoutbox Banned"));
         }
         Redirect::to(URLROOT);
     }
@@ -115,12 +115,15 @@ class Shoutbox
             ];
             View::render('shoutbox/edit', $data, 'user');
         } else {
-            Redirect::autolink(URLROOT . '/logout', Lang::T("You do not have permission"));
+            Redirect::autolink(URLROOT . '/logout', Lang::T("NO_PERMISSION"));
         }
     }
 
     public function history()
     {
+        if (!$_SESSION['loggedin']) {
+            Redirect::autolink(URLROOT . '/logout', Lang::T("NO_PERMISSION"));
+        }
         $result = Shoutboxs::getAllShouts(80);
         $data = [
             'title' => 'History',

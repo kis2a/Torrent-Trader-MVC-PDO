@@ -9,7 +9,7 @@ class Adminforum
 
     public function index()
     {
-        $groupsres = DB::run("SELECT group_id, level FROM `groups` ORDER BY group_id ASC");
+        $groupsres = Groups::getGroups();
         $data = [
             'title' => Lang::T("FORUM_MANAGEMENT"),
             'groupsres' => $groupsres,
@@ -109,7 +109,6 @@ class Adminforum
         $guest_read = $_POST["guest_read"];
 
         $new_forum_forum = (int) $_POST["new_forum_forum"] ?? 0; // sub forum mod
-
 
         if ($new_forum_name == "") {
             $error_ac .= "<li>" . Lang::T("CP_FORUM_NAME_WAS_EMPTY") . "</li>\n";

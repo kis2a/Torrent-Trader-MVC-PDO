@@ -4,7 +4,7 @@
 Search: <input type='text' name='search' value='<?php echo $data['search']; ?>' size='30' />
 <input type='submit' value='Search' />
 </form>
-<center><a href='<?php echo URLROOT; ?>/peers/dead'>Dead Torrents</a></center>
+<center><a href='<?php echo URLROOT; ?>/admintorrents/dead'>Dead Torrents</a></center>
 <br>
 <form id="myform" method='post' action='<?php echo URLROOT; ?>/admintorrents'>
 <input type='hidden' name='do' value='delete' />
@@ -34,7 +34,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)) {?>
     <?php
 }?>
 </tbody></table>
-<input type='submit' value='Delete checked' />
+<input type='submit' class='btn btn-sm ttbtn' value='Delete checked' />
 </form>
 <?php echo $data['pagerbottom']; ?>
 </center>

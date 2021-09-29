@@ -15,12 +15,16 @@ if ($data['sql']->rowCount() > 0) {
             $by = "<a href='" . URLROOT . "/profile?id=$userid'><b>$postername</b></a>";
         }
         ?>
-        <table border='0' cellspacing='0' cellpadding='0'><tr><td>
-        <?php echo $added; ?>&nbsp;---&nbsp;by&nbsp;<?php echo $by; ?>
-         - [<a href='<?php echo  URLROOT; ?>/adminnews/edit?newsid=<?php echo $newsid; ?>'><b><?php echo Lang::T("EDIT"); ?></b></a>]
-         - [<a href='<?php echo URLROOT; ?>/adminnews/newsdelete?newsid=<?php echo $newsid; ?>'><b><?php echo Lang::T("DEL"); ?></b></a>]
-        </td></tr>
-        <tr valign='top'><td><b><?php echo $title; ?></b><br /><?php echo $body; ?></td></tr></table><br />
+        <div class="row">
+            <div class="col-4">
+            <?php echo $added; ?>&nbsp;---&nbsp;by&nbsp;<?php echo $by; ?>
+             - [<a href='<?php echo  URLROOT; ?>/adminnews/edit?newsid=<?php echo $newsid; ?>'><b><?php echo Lang::T("EDIT"); ?></b></a>]
+             - [<a href='<?php echo URLROOT; ?>/adminnews/newsdelete?newsid=<?php echo $newsid; ?>'><b><?php echo Lang::T("DEL"); ?></b></a>]
+            </div>
+            <div class="col-8">
+            <b><?php echo $title; ?></b><br /><?php echo $body; ?>
+            </div>
+        </div>
         <?php
         }
 } else {

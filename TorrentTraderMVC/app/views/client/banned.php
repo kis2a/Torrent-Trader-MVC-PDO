@@ -19,7 +19,7 @@
     <td class=table_col1><input type='checkbox' name='unban[]' value='<?php echo $arr14['agent_id']; ?>' /></td></tr>
 <?php }?>
     </tbody></table>
-    <center><a href='<?php echo URLROOT; ?>/adminclient'><button type="button" class="btn btn-sm btn-success">View Current Clients</button></a>&nbsp;
+    <center><a href='<?php echo URLROOT; ?>/adminclient'><button type="button" class="btn btn-sm ttbtn">View Current Clients</button></a>&nbsp;
     &nbsp;
-    <button type="input" class="btn btn-sm btn-danger">Unban</button></center>
+    <button type="input" class="btn btn-sm ttbtn">Unban</button></center>
 </form>

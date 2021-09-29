@@ -52,7 +52,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         }
         echo Lang::T("SIGNATURE"); ?>:</b> <?php echo format_comment($data['usersignature']); ?><br><br>
         <?php
-        if ($user["invited_by"]) {
+        if ($selectedid["invited_by"]) {
             $invited = $selectedid['invited_by'];
             $row = DB::run("SELECT username FROM users WHERE id=?", [$invited])->fetch();
             echo "<b>" . Lang::T("INVITED_BY") . ":</b> <a href=\"" . URLROOT . "/profile?id=$selectedid[invited_by]\">" . Users::coloredname($row['username']) . "</a><br />";

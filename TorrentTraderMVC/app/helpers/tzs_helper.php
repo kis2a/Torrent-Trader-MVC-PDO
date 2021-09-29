@@ -1,6 +1,6 @@
 <?php
-// Table With Different World Time Zones
-// Left In English For Question Of Call Class Php DateTimeZone (Language International Used is English !!!)
+// Array With Different World Time Zones
+// Php DateTimeZone (Language Default Used is English !!!)
 $tzs = array();
 $tzs["-720"] = array("(GMT - 12:00 hours) Enitwetok, Kwajalien", "Pacific/Kwajalein");
 $tzs["-660"] = array("(GMT - 11:00 hours) Midway Island, Samoa", "Pacific/Samoa");

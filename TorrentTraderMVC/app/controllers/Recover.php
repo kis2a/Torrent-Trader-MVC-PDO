@@ -48,7 +48,7 @@ class Recover
     {
         $data = [
             'title' => 'Recover Account'];
-        View::render('user/confirm', $data, 'user');
+        View::render('user/recoverconfirm', $data, 'user');
     }
 
     public function ok()
@@ -59,21 +59,21 @@ class Recover
             $password = Input::get("password");
             $password1 = Input::get("password1");
             if (empty($password) || empty($password1)) {
-                Redirect::autolink(URLROOT . "/home", Lang::T("NO_EMPTY_FIELDS"));
+                Redirect::autolink(URLROOT, Lang::T("NO_EMPTY_FIELDS"));
             } elseif ($password != $password1) {
-                Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_NO_MATCH"));
+                Redirect::autolink(URLROOT, Lang::T("PASSWORD_NO_MATCH"));
             } else {
                 $count = DB::run("SELECT COUNT(*) FROM users WHERE id=? AND secret=?", [$id, $secret])->fetchColumn();
                 if ($count != 1) {
-                    Redirect::autolink(URLROOT . "/home", Lang::T("NO_SUCH_USER"));
+                    Redirect::autolink(URLROOT, Lang::T("NO_SUCH_USER"));
                 }
                 $newsec = Helper::mksecret();
                 $wantpassword = password_hash($password, PASSWORD_BCRYPT);
                 $stmt = Users::recoverUpdate($wantpassword, $newsec, $id, $secret);
-                Redirect::autolink(URLROOT . "/home", Lang::T("PASSWORD_CHANGED_OK"));
+                Redirect::autolink(URLROOT, Lang::T("PASSWORD_CHANGED_OK"));
             }
         } else {
-            Redirect::autolink(URLROOT . "/home", Lang::T("Wrong Imput"));
+            Redirect::autolink(URLROOT, Lang::T("Wrong Imput"));
         }
     }
     

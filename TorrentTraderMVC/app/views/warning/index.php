@@ -5,7 +5,7 @@ if ($data['res']->rowCount() > 0) {
 	<br><center><b>Warnings:</b></center><br>
     <div class='table-responsive'><table class='table table-striped'>
     <thead><tr>
-	<th>Added</th>
+	<th><?php echo Lang::T("ADDED"); ?></th>
 	<th><?php echo Lang::T("EXPIRE"); ?></th>
 	<th><?php echo Lang::T("REASON"); ?></th>
 	<th><?php echo Lang::T("WARNED_BY"); ?></th>

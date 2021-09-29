@@ -4,8 +4,7 @@ This page displays all invited users which have been sent invites and have activ
 <?php
 if ($data['count'] > 0): ?>
     <br />
-    <form id="invited" method="post" action="<?php echo URLROOT; ?>/Admininvites?do=del">
-    <input type="hidden" name="do" value="del" />
+    <form id="invited" method="post" action="<?php echo URLROOT; ?>/Admininvites/sumbit">
     <div class='table-responsive'><table class='table table-striped'>
     <thead>
     <tr>
@@ -30,12 +29,10 @@ if ($data['count'] > 0): ?>
     </tr>
     <?php
     endwhile;?>
-    <tr>
-    <td>
-    <button type='submit' class='btn btn-xs btn-danger'>Delete Checked</button>
-    </td>
-    </tr>
     <tbody></table></div>
+    <div class='text-center'>
+    <button type='submit' class='btn btn-sm ttbtn'>Delete Checked</button>
+    </div>
     </form>
     <?php
 endif;

@@ -17,7 +17,7 @@ while ($res1 = $data['res']->fetch(PDO::FETCH_ASSOC)) { ?>
     <input type=\"text\" name='class' value="<?php echo $res1['class']; ?>" size="1" />)</td></tr>
 
     <tr><td colspan="2" align="center"><input type="hidden" value="<?php echo $data['id']; ?>" name="id" />
-    <input type="submit" value="<?php echo Lang::T("SAVE"); ?>" style="width: 60px;" /></td></tr>
+    <input type="submit" class='btn btn-sm ttbtn' value="<?php echo Lang::T("SAVE"); ?>" style="width: 60px;" /></td></tr>
     <?php
 } ?>
 </table>

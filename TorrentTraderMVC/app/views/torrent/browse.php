@@ -1,39 +1,33 @@
+<form method="get" action="<?php echo URLROOT; ?>/search/browse">
+<table align="center">
+<tr align='right'>
 <?php
-echo "<center><b>" . Lang::T("CATEGORIES") . ":</b> ";
-echo " - <a href=" . URLROOT . "/search/browse>" . Lang::T("SHOW_ALL") . "</a>";
-while ($catsrow = $data['catsquery']->fetch(PDO::FETCH_ASSOC)) {
-    $parenturl = urlencode($catsrow['parent_cat']);
-    echo " - <a href=" . URLROOT . "/search/browse?parent_cat=$parenturl>$catsrow[parent_cat]</a>";
-} ?><br /><br />
-
-<form method="get" action="<?php echo URLROOT ?>/search/browse">
-<table align="center"><tr align='right'>
-    <?php
-        $i = 0;
-        $thiscats = Torrents::getCatByParentName();
-        while ($cat = $thiscats->fetch(PDO::FETCH_ASSOC)) {
-            $catsperrow = 5;
-            print(($i && $i % $catsperrow == 0) ? "</tr><tr align='right'>" : "");
-            print("<td style=\"padding-bottom: 2px;padding-left: 2px\"><a href=" . URLROOT . "/search/browse?cat={$cat["id"]}'>" . htmlspecialchars($cat["parent_cat"]) . " - " . htmlspecialchars($cat["name"]) . "</a> <input name='c{$cat["id"]}' type=\"checkbox\" " . (in_array($cat["id"], $wherecatina) || $_GET["cat"] == $cat["id"] ? "checked='checked' " : "") . "value='1' /></td>\n");
-            $i++;
-        }
-echo "</tr><tr align='center'><td colspan='$catsperrow' align='center'><input type='submit' value='" . Lang::T("GO") . "' /></td></tr>";
+$i = 0;
+while ($cat = $data['cats']->fetch(PDO::FETCH_ASSOC)) {
+    $catsperrow = 5;
+    print(($i && $i % $catsperrow == 0) ? "</tr><tr align='right'>" : "");
+    print("<td class='browsebg' style=\"padding-bottom: 2px;padding-left: 2px\"><a href=" . URLROOT . "/search/browse?cat=$cat[id]>".htmlspecialchars($cat["parent_cat"])." - " . htmlspecialchars($cat["name"]) . "</a> <input name='c{$cat["id"]}' type=\"checkbox\" " . (in_array($cat["id"], $data['wherecatina']) || $_GET["cat"] == $cat["id"] ? "checked='checked' " : "") . "value='1' /></td>\n");
+    $i++;
+}
+echo "</tr><tr align='center'><td class='browsebg' colspan='$catsperrow' align='center'><input type='submit' value='".Lang::T("GO")."' /></td></tr>";
 echo "</table></form>";
 //if we are browsing, display all subcats that are in same cat
 if ($data['parent_cat']) {
-    $url .= "parent_cat=" . urlencode($data['parent_cat']) . "&amp;";
+    $data['url'] .= "parent_cat=" . urlencode($data['parent_cat']) . "&amp;";
     echo "<br /><br /><b>" . Lang::T("YOU_ARE_IN") . ":</b> <a href='" . URLROOT . "/search/browse?parent_cat=" . urlencode($data['parent_cat']) . "'>" . htmlspecialchars($data['parent_cat']) . "</a><br /><b>" . Lang::T("SUB_CATS") . ":</b> ";
-            while ($subcatsrow = $data['subcatsquery']->fetch(PDO::FETCH_ASSOC)) {
-                $name = $subcatsrow['name'];
-                echo " - <a href=" . URLROOT . "/search/browse?cat=$subcatsrow[id]>$name</a>";
-            }
+    $subcatsquery = DB::run("SELECT id, name, parent_cat FROM categories WHERE parent_cat= ? ORDER BY name", [$data['parent_cat']]);
+    while ($subcatsrow = $subcatsquery->fetch(PDO::FETCH_ASSOC)) {
+        $name = $subcatsrow['name'];
+        echo " - <a href=" . URLROOT . "/search/browse?cat=$subcatsrow[id]>$name</a>";
+    }
 }
 
-if (Validate::Id($_GET["page"])) {
-    $url .= "page=$_GET[page]&amp;";
+if (Validate::Id(Input::get("page"))) {
+    $data['url'] .= "page=$_GET[page]&amp;";
 }
 
 echo "</center><br /><br />"; //some spacing
+// New code (TorrentialStorm)
 echo "<div align='right'><form id='sort' action=''>" . Lang::T("SORT_BY") . ": <select name='sort' onchange='window.location=\"{$data['url']}sort=\"+this.options[this.selectedIndex].value+\"&amp;order=\"+document.forms[\"sort\"].order.options[document.forms[\"sort\"].order.selectedIndex].value'>";
 echo "<option value='id'" . ($_GET["sort"] == "id" ? " selected='selected'" : "") . ">" . Lang::T("ADDED") . "</option>";
 echo "<option value='name'" . ($_GET["sort"] == "name" ? " selected='selected'" : "") . ">" . Lang::T("NAME") . "</option>";
@@ -48,6 +42,7 @@ echo "<option selected='selected' value='asc'" . ($_GET["order"] == "asc" ? " se
 echo "<option value='desc'" . ($_GET["order"] == "desc" ? " selected='selected'" : "") . ">" . Lang::T("DESCEND") . "</option>";
 echo "</select>";
 echo "</form></div>";
+// End
 
 if ($data['count']) {
     torrenttable($data['res']);
@@ -55,4 +50,7 @@ if ($data['count']) {
 } else {
     print(Lang::T("NOTHING_FOUND") . "&nbsp;&nbsp;");
     print Lang::T("NO_UPLOADS");
+}
+if ($_SESSION) {
+    DB::run("UPDATE users SET last_browse=? WHERE id=?", [TimeDate::gmtime(), $_SESSION['id']]);
 }

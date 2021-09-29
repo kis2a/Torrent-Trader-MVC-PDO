@@ -13,7 +13,6 @@ class Adminconfig
         if (!in_array($_SESSION["username"], _OWNERS)) {
             Redirect::to(URLROOT . "/logout");
         }
-        
         if ($_SESSION["control_panel"] != "yes") {
             Redirect::to(URLROOT . "/logout");
         }
@@ -71,7 +70,6 @@ class Adminconfig
             'ADDBONUS' => (int) $_POST['ADDBONUS'],
             'FORCETHANKS' => (int) $_POST['FORCETHANKS'],
             'ALLOWLIKES' => (int) $_POST['ALLOWLIKES'],
-
             'SITE_ONLINE' => (int) $_POST['SITE_ONLINE'],
             'OFFLINEMSG' => $_POST['OFFLINEMSG'],
             'WELCOMEPM_ON' => (int) $_POST['WELCOMEPM_ON'],
@@ -94,7 +92,6 @@ class Adminconfig
             'RATIOWARN_MINGIGS' => (int) $_POST['RATIOWARN_MINGIGS'],
             'RATIOWARN_DAYSTOWARN' => (int) $_POST['RATIOWARN_DAYSTOWARN'],
             'TORRENTTABLE_COLUMNS' => $_POST['TORRENTTABLE_COLUMNS'],
-            'TORRENTTABLE_EXPAND' => $_POST['TORRENTTABLE_EXPAND'],
             'mail_type' => $_POST['mail_type'],
             'mail_smtp_host' => $_POST['mail_smtp_port'],
             'mail_smtp_port' => (int) $_POST['mail_smtp_port'],

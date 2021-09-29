@@ -94,7 +94,8 @@
     }
     ksort($ss_sa);
     reset($ss_sa);
-    while (list($ss_name, $ss_id) = thisEach($ss_sa)) {
+    //while (list($ss_name, $ss_id) = thisEach($ss_sa)) {
+    foreach($ss_sa as $ss_name => $ss_id) {
         if ($ss_id == $_SESSION["stylesheet"]) {
             $ss = " selected='selected'";
         } else {

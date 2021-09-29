@@ -3,6 +3,7 @@
 class View
 {
 
+    // Return Template
     public static function render($file, $data = [], $page = false)
     {
         if (file_exists('../app/views/' . $file . '.php')) {

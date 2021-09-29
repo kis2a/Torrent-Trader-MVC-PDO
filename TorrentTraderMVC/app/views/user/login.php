@@ -25,7 +25,8 @@ if (Config::TT()['MEMBERSONLY']) {?>
 	</div>
     <div class="margin-top20 text-center">
         <a href="<?php echo URLROOT; ?>/signup"><?php echo Lang::T("SIGNUP"); ?></a> | 
-        <a href="<?php echo URLROOT; ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT"); ?></a>
+        <a href="<?php echo URLROOT; ?>/recover"><?php echo Lang::T("RECOVER_ACCOUNT"); ?></a> | 
+        <a href="<?php echo URLROOT ?>/contactstaff"><?php echo Lang::T("Contact Us"); ?></a>
 	</div>
     </form>
     </div>

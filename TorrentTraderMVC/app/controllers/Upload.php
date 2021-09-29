@@ -13,7 +13,7 @@ class Upload
         if ($_SESSION["can_upload"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("UPLOAD_NO_PERMISSION"));
         }
-        if (Config::TT()['UPLOADERSONLY'] && $_SESSION["class"] < 4) {
+        if (Config::TT()['UPLOADERSONLY'] && $_SESSION["class"] < _VIP) {
             Redirect::autolink(URLROOT, Lang::T("UPLOAD_ONLY_FOR_UPLOADERS"));
         }
     }
@@ -35,7 +35,7 @@ class Upload
         self::checks();
         if ($_POST["takeupload"] == "yes") {
             // Check form data.
-            if (!isset($_POST['type'], $_POST['name'])) {
+            if (!isset($_POST['type'], $_POST['name'], $_FILES['torrent'])) {
                 $message = Lang::T('MISSING_FORM_DATA');
             }
             $tupload = new Tupload('torrent');
@@ -241,6 +241,8 @@ class Upload
 
             Redirect::to(URLROOT . "/torrent?id=$id", $message);
             die();
+        } else {
+            Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }
     }
 

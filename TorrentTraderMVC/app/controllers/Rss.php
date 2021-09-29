@@ -4,7 +4,7 @@ class Rss
 
     public function __construct()
     {
-        $this->session = Auth::user(0, 2);
+        $this->session = Auth::user(0, 1);
     }
 
     public function index()
@@ -56,8 +56,7 @@ class Rss
 
     public function custom()
     {
-        $rqt = "SELECT id, name, parent_cat FROM categories ORDER BY parent_cat ASC, sort_index ASC";
-        $resqn = DB::run($rqt);
+        $resqn = DB::run("SELECT id, name, parent_cat FROM categories ORDER BY parent_cat ASC, sort_index ASC");
         $data = [
             'title' => Lang::T("CUSTOM_RSS_XML_FEED"),
             'resqn' => $resqn
@@ -96,7 +95,7 @@ class Rss
                 $param = "";
             }
             $mss = "Your RSS link is: <a href=\"".URLROOT."/rss$param\">".URLROOT."/rss$param</a><br/><br/>";
-                Redirect::autolink(URLROOT, $mss);
+            Redirect::autolink(URLROOT, $mss);
         }
     }
 }

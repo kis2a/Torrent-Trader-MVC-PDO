@@ -117,7 +117,7 @@ class TimeDate
                 $timestamp = TimeDate::get_date_time();
             }
             $date = new DateTime($timestamp, new DateTimeZone("UTC"));
-            $ZONE = $tzs[$_SESSION["tzoffset"]][1] ?? "Europe/London";
+            $ZONE = $tzs[Auth::permission("tzoffset")][1] ?? "Europe/London";
             $date->setTimezone(new DateTimeZone($ZONE));
             return self::sql_timestamp_to_unix_timestamp($date->format('Y-m-d H:i:s'));
         }
@@ -147,7 +147,7 @@ class TimeDate
         return ($end - $start);
     }
 
-    ///ELAPSED TIME SINCE TORRENT WAS UPLOADED
+    /// ELAPSED TIME SINCE TORRENT WAS UPLOADED
     public static function get_time_elapsed($datetime, $full = false)
     {
         $now = new DateTime;
@@ -178,13 +178,15 @@ class TimeDate
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
+    // Drop Down for Time Zones
     public static function timeZoneDropDown($tzoffset)
     {
         global $tzs;
         $tz = '';
         ksort($tzs);
         reset($tzs);
-        while (list($key, $val) = thisEach($tzs)) {
+        //while (list($key, $val) = thisEach($tzs)) {
+        foreach($tzs as $key => $val) {
             if ($tzoffset == $key) {
                 $tz .= "<option value=\"$key\" selected='selected'>$val[0]</option>\n";
             } else {

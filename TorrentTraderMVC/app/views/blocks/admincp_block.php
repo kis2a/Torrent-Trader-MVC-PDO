@@ -15,7 +15,7 @@ if (Auth::permission('loggedin') === true && Auth::permission("control_panel") =
     <option value="<?php echo URLROOT; ?>/adminfaq">FAQ</option>
     <option value="<?php echo URLROOT; ?>/admintorrent/free">Freeleech Torrents</option>
     <option value="<?php echo URLROOT; ?>/admincomments">Latest Comments</option>
-    <option value="<?php echo URLROOT; ?>/adminmessages/mass">Mass PM</option>
+    <option value="<?php echo URLROOT; ?>/adminmessages/masspm">Mass PM</option>
     <option value="<?php echo URLROOT; ?>/adminmessages">Message Spy</option>
     <option value="<?php echo URLROOT; ?>/admincp/news&amp;do=view">News</option>
     <option value="<?php echo URLROOT; ?>/adminpeers">Peers List</option>

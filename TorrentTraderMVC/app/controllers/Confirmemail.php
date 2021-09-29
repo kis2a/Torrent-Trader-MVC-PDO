@@ -7,7 +7,7 @@ class Confirmemail
         $this->session = Auth::user(0, 0);
     }
 
-    // Confirm by email (siteconfig - first contact)
+    // Confirm by email (Config::TT()['CONFIRMEMAIL'] - first contact)
     public function signup()
     {
         $id = (int) Input::get("id");

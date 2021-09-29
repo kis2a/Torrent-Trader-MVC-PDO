@@ -15,7 +15,8 @@ class Ratings
             if (!isset($rpic)) {
                 $srating .= "invalid?";
             } else {
-                $srating .= "$rpic (" . $xrow["rating"] . " " . Lang::T("OUT_OF") . " 5) " . $xrow["numratings"] . " " . Lang::T("USERS_HAVE_RATED");
+                $numratings = $xrow["numratings"] ?? '';
+                $srating .= "$rpic (" . $xrow["rating"] . " " . Lang::T("OUT_OF") . " 5) " . $numratings . " " . Lang::T("USERS_HAVE_RATED");
             }
 
         }
@@ -42,7 +43,7 @@ class Ratings
             $srating .= "</form>\n";
         }
 
-        return $srating; // rating
+        return $srating;
     }
     
 }

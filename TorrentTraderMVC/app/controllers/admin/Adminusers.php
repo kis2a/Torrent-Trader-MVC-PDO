@@ -35,13 +35,11 @@ class Adminusers
             $secret = Helper::mksecret();
             $passhash = password_hash($password, PASSWORD_BCRYPT);
             $secret = $secret;
-            /*
-            $count = get_row_count("users", "WHERE username=$username");
-            if (!$count !=0) {
-            Redirect::autolink(URLROOT . "/adminusers/add", "Unable to create the account. The user name is possibly already taken.");
-            die;
+            
+            $count = DB::run("SELECT COUNT(*) FROM users WHERE username = ?", [$username])->fetchColumn();
+            if ($count !=0) {
+                Redirect::autolink(URLROOT . "/adminusers/add", "Unable to create the account. The user name is possibly already taken.");
             }
-             */
             DB::run("INSERT INTO users (added, last_access, secret, username, password, status, email) VALUES (?,?,?,?,?,?,?)", [TimeDate::get_date_time(), TimeDate::get_date_time(), $secret, $username, $passhash, 'confirmed', $email]);
             Redirect::autolink(URLROOT . "/admincp", Lang::T("COMPLETE"));
         }
@@ -109,7 +107,7 @@ class Adminusers
 
     public function confirm()
     {
-        $do = $_GET['do']; // todo
+        $do = $_GET['do'];
         if ($do == "confirm") {
             if ($_POST["confirmall"]) {
                 DB::run("UPDATE `users` SET `status` = 'confirmed' WHERE `status` = 'pending' AND `invited_by` = '0'");
@@ -138,12 +136,20 @@ class Adminusers
 
     public function cheats()
     {
+        $data = [
+            'title' => Lang::T("Possible Cheater Detection"),
+        ];
+        View::render('user/admin/cheatform', $data, 'admin');
+    }
+
+    public function result()
+    {
         $megabts = (int) $_POST['megabts'];
         $daysago = (int) $_POST['daysago'];
         if ($daysago && $megabts) {
             $timeago = 84600 * $daysago; //last 7 days
             $bytesover = 1048576 * $megabts; //over 500MB Upped
-            $result = DB::run("select * FROM users WHERE UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(added) < '$timeago' AND status='confirmed' AND uploaded > '$bytesover' ORDER BY uploaded DESC ");
+            $result = DB::run("SELECT * FROM users WHERE UNIX_TIMESTAMP('?') - UNIX_TIMESTAMP(added) < ? AND status=? AND uploaded > ? ORDER BY uploaded DESC ", [TimeDate::get_date_time(), $timeago, 'confirmed', $bytesover]);
             $num = $result->rowCount(); // how many uploaders
             $message = "<p>" . $num . " Users with found over last " . $daysago . " days with more than " . $megabts . " MB (" . $bytesover . ") Bytes Uploaded.</p>";
             $zerofix = $num - 1; // remove one row because mysql starts at zero
@@ -156,7 +162,7 @@ class Adminusers
                     ];
                     View::render('user/admin/cheatresult', $data, 'admin');
             } else {
-                    Redirect::autolink(URLROOT . '/adminusers/cheats', $message);
+                Redirect::autolink(URLROOT . '/adminusers/cheats', $message);
                 die;
             } 
 
@@ -167,5 +173,4 @@ class Adminusers
             View::render('user/admin/cheatform', $data, 'admin');
         }
     }
-
 }

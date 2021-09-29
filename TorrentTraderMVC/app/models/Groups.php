@@ -2,6 +2,18 @@
 class Groups
 {
 
+    public static function getAllById($group_id)
+    {
+        $stmt = DB::run("SELECT * FROM `groups` WHERE group_id=?", [$group_id]);
+        return $stmt;
+    }
+
+    public static function getAll()
+    {
+        $stmt = DB::run("SELECT * from `groups` ORDER BY group_id");
+        return $stmt;
+    }
+
     public static function getStaff()
     {
         $stmt = DB::run("SELECT `users`.`id`, `users`.`username`, `users`.`class`, `users`.`last_access`
@@ -25,13 +37,13 @@ class Groups
 
     public static function getGroups()
     {
-        $row = DB::run("SELECT group_id, level FROM `groups`");
+        $row = DB::run("SELECT group_id, level FROM `groups` ORDER BY group_id ASC"); //  ORDER BY group_id ASC
         return $row;
     }
 
-    public static function getGroupsearch($query, $startpoint, $per_page)
+    public static function getGroupsearch($query, $limit)
     {
-        $row = DB::run("SELECT users.*, groups.level FROM users INNER JOIN `groups` ON groups.group_id=users.class WHERE $query ORDER BY username LIMIT {$startpoint} , {$per_page}");
+        $row = DB::run("SELECT users.*, groups.level FROM users INNER JOIN `groups` ON groups.group_id=users.class WHERE $query ORDER BY username $limit");
         return $row;
     }
 
@@ -56,6 +68,11 @@ class Groups
            $ret[] = $row;
         }
         return $ret;
+    }
+    
+    public static function deleteId($group_id)
+    {
+        DB::run("DELETE FROM `groups` WHERE group_id=?", [$group_id]);
     }
     
 }

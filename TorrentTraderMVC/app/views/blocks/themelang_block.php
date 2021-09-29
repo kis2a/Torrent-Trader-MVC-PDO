@@ -12,7 +12,8 @@ if (Auth::permission('loggedin') == true) {
     }
     ksort($ss_sa);
     reset($ss_sa);
-    while (list($ss_name, $ss_id) = thisEach($ss_sa)) {
+    //while (list($ss_name, $ss_id) = thisEach($ss_sa)) {
+    foreach($ss_sa as $ss_name => $ss_id) {
         if ($ss_id == $_SESSION["stylesheet"]) {
             $ss = " selected='selected'";
         } else {
@@ -30,7 +31,8 @@ if (Auth::permission('loggedin') == true) {
     }
     ksort($lang_sa);
     reset($lang_sa);
-    while (list($lang_name, $lang_id) = thisEach($lang_sa)) {
+    //while (list($lang_name, $lang_id) = thisEach($lang_sa)) {
+    foreach($lang_sa as $lang_name => $lang_id) {
         if ($lang_id == $_SESSION["language"]) {
             $lang = " selected='selected'";
         } else {

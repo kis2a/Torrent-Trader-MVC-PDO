@@ -9,14 +9,14 @@ class Nfo
 
     public function checks($id, $edit = false)
     {
-        if ($_SESSION["view_torrents"] == "no") {
+        if (Auth::permission("view_torrents") == "no") {
             Redirect::autolink(URLROOT."/torrent?id=$id", "You do not have permission to view nfo's");
         }
         if (!$id) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("ID_NOT_FOUND_MSG_VIEW"));
         }
         if ($edit) {
-            if ($_SESSION["edit_torrents"] == "no") {
+            if (Auth::permission("edit_torrents") == "no") {
                 Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_PERMISSION"));
             }
         }
@@ -31,9 +31,8 @@ class Nfo
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NO_NFO"));
         }
         if ($res["nfo"] == "yes") {
-            $shortname = mb_substr(htmlspecialchars($res["name"]), 0, 50);
-            $nfo_dir = NFODIR;
-            $nfofilelocation = "$nfo_dir/$id.nfo";
+            $shortname = CutName(htmlspecialchars($res["name"]), 40);
+            $nfofilelocation = NFODIR."/$id.nfo";
             $filegetcontents = file_get_contents($nfofilelocation);
             $nfo = $filegetcontents;
         }
@@ -45,7 +44,7 @@ class Nfo
                 'title' => $title,
                 'nfo' => $nfo,
             ];
-            View::render('nfo/index', $data, 'user');
+            View::render('nfo/nfoview', $data, 'user');
         } else {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO Found but error"));
         }
@@ -60,21 +59,20 @@ class Nfo
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NO_NFO"));
         }
         if ($res["nfo"] == "yes") {
-            $shortname = mb_substr(htmlspecialchars($res["name"]), 0, 50);
-            $nfo_dir = NFODIR;
-            $nfofilelocation = "$nfo_dir/$id.nfo";
+            $shortname = CutName(htmlspecialchars($res["name"]), 40);
+            $nfofilelocation = NFODIR."/$id.nfo";
             $filegetcontents = file_get_contents($nfofilelocation);
             $nfo = $filegetcontents;
         }
         if ($nfo) {
             $nfo = Helper::my_nfo_translate($nfo);
-            $title = Lang::T("NFO_FILE_FOR") . ": <a href='" . URLROOT . "/torrent?id=$id'>$shortname</a> - <a href='".URLROOT."/nfo/edit?id=$id'>" . Lang::T("NFO_EDIT") . "</a>";
+            $title = Lang::T("NFO_FILE_FOR") . ": <a href='" . URLROOT . "/torrent?id=$id'>$shortname</a>";
             $data = [
                 'id' => $id,
                 'title' => $title,
                 'nfo' => $nfo,
             ];
-            View::render('nfo/edit', $data, 'user');
+            View::render('nfo/nfoedit', $data, 'user');
         } else {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO Found but error"));
         }

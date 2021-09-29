@@ -53,7 +53,6 @@ class Comment
         $row = DB::run("UPDATE comments SET text=? WHERE id=?", [$text, $id]);
     }
 
-    
     public static function insert($type, $user, $id, $added, $text)
     {
         $row = DB::run("INSERT INTO comments (user, " . $type . ", added, text) VALUES (?, ?, ?, ?)", [$user, $id, $added, $text]);
@@ -66,4 +65,14 @@ class Comment
         return $row;
     }
 
+    public static function graball($limit)
+    {
+        $res = DB::run("SELECT c.id, c.text, c.user, c.torrent, c.news, t.name, n.title, u.username, c.added 
+        FROM comments c 
+        LEFT JOIN torrents t ON c.torrent = t.id 
+        LEFT JOIN news n ON c.news = n.id 
+        LEFT JOIN users u ON c.user = u.id 
+        ORDER BY c.added DESC $limit")->fetchAll(PDO::FETCH_OBJ);
+        return $res;
+    }
 }

@@ -32,6 +32,11 @@ function writableCell($folder, $relative = 1, $text = '')
 
 view();
 
+/*
+pdo class
+php sockets enabled
+*/
+
 function view()
 {
     ?>

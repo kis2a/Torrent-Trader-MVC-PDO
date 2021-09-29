@@ -43,7 +43,6 @@ class Adminblocks
             Blocks::resortright();
             }
             
-            
             // Move to left
             if (Validate::Id($_GET["left"])) {
                 Blocks::update('left', $nextleft, $_GET["left"]);

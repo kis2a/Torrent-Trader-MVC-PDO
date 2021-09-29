@@ -28,8 +28,10 @@ if ($_GET["subact"] == "edit") {
 <input type="radio" name="sort" value="yes" <?php echo $poll["sort"] != "no" ? " checked='checked'" : "" ?> />Yes
 <input type="radio" name="sort" value="no" <?php echo $poll["sort"] == "no" ? " checked='checked'" : "" ?> /> No
 </td></tr>
-<tr><td><input type="submit" value="<?php echo $data['id'] ? "Edit poll" : "Create poll"; ?>" /></td></tr>
 </table>
+<div class="text-center">
+    <input type="submit" class='btn btn-sm ttbtn' value="<?php echo $data['id'] ? "Edit poll" : "Create poll"; ?>" />
+</div>
 <p><font class="error">*</font> required</p>
 <input type="hidden" name="pollid" value="<?php echo $poll["id"] ?>" />
 <input type="hidden" name="subact" value="<?php echo $data['id'] ? 'edit' : 'create' ?>" />

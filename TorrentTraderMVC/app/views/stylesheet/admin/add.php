@@ -12,8 +12,8 @@
 </tr>
 <tr>
 <td colspan='2' align='center' class='table_head'>
-<input type='submit' value='Add new theme' />
-<input type='reset' value='<?php echo Lang::T("RESET") ?>' />
+<input type='submit' class='btn btn-sm ttbtn' value='Add new theme' />
+<a href="<?php echo URLROOT; ?>/adminstylesheet/add" class='btn btn-sm ttbtn'><?php echo Lang::T("RESET") ?></a>
 </td>
 </tr>
 </table>

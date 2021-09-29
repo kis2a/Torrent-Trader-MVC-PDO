@@ -6,43 +6,40 @@ class Request
         $this->session = Auth::user(0, 2);
     }
 
-    public function index()
+    public function checks()
     {
         if ($_SESSION["view_torrents"] == "no") {
             Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION_TO_VIEW_AREA"));
         }
-
-        if (Config::TT()['REQUESTSON']) {
-            $categ = (int) Input::get("category");
-            $requestorid = (int) Input::get("requestorid");
-            $res = DB::run("SELECT count(requests.id) FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id");
-            $row = $res->fetch(PDO::FETCH_ASSOC);
-            $count = $row[0];
-            $perpage = 50;
-            list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, URLROOT . "/request?" . "category=" . $_GET["category"] . "&sort=" . $_GET["sort"] . "&");
-            $res = DB::run("SELECT users.downloaded, users.uploaded, users.username, users.privacy, requests.filled, requests.comments,
-            requests.filledby, requests.id, requests.userid, requests.request, requests.added, requests.hits, categories.name as cat,
-             categories.parent_cat as parent_cat
-             FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id");
-            $num = $res->rowCount();
-            $data = [
-                'title' => Lang::T('REQUESTS'),
-                'pagertop' => $pagertop,
-                'pagerbottom' => $pagerbottom,
-                'num' => $num,
-                'res' => $res,
-            ];
-            View::render('request/index', $data, 'user');
-        } else {
+        if (!Config::TT()['REQUESTSON']) {
             Redirect::autolink(URLROOT, Lang::T("REQ_OFF"));
         }
     }
 
+    public function index()
+    {
+        $this->checks();
+        $count = DB::run("SELECT count(requests.id) FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id")->fetchColumn();;
+        list($pagertop, $pagerbottom, $limit) = pager(30, $count, URLROOT . "/request?" . "category=" . $_GET["category"] . "&sort=" . $_GET["sort"] . "&");
+        $res = DB::run("SELECT users.downloaded, users.uploaded, users.username, users.privacy, requests.filled, requests.comments,
+            requests.filledby, requests.id, requests.userid, requests.request, requests.added, requests.hits, categories.name as cat,
+             categories.parent_cat as parent_cat
+             FROM requests inner join categories on requests.cat = categories.id inner join users on requests.userid = users.id");
+        $num = $res->rowCount();
+        $data = [
+            'title' => Lang::T('REQUESTS'),
+            'pagertop' => $pagertop,
+            'pagerbottom' => $pagerbottom,
+            'num' => $num,
+            'res' => $res,
+        ];
+        View::render('request/index', $data, 'user');
+    }
+
     public function edit()
     {
-        if ($_SESSION["class"] < _MODERATOR) {
-            Redirect::autolink(URLROOT . "/request", Lang::T("NO_PERMISSION_TO_VIEW_AREA"));
-        }
+        $this->checks();
+        // Get Inputs
         $id = (int) Input::get("id");
         if (!Validate::Id($id)) {
             Redirect::autolink(URLROOT . "/request", Lang::T("CP_INVALID_ID"));
@@ -54,12 +51,13 @@ class Request
         $filledby = Input::get("filledby");
         if (Input::exist()) {
             if (!$filled) {
-                DB::run("UPDATE requests SET cat=?, request=?, descr=?, filled =?, filled=? WHERE id = ?", [$cat, $request, $descr, 'yes', $filled, $id]);
+                DB::run("UPDATE requests SET cat=?, request=?, descr=?, filledby =?, filled=? WHERE id = ?", [$cat, $request, $descr, $filledby, $filled, $id]);
             } else {
-                DB::run("UPDATE requests SET cat=?, filledby =?, request=?, descr=?, filled =?  WHERE id =? ", [$cat, 0, $request, $descr, 'no', $id]);
+                DB::run("UPDATE requests SET cat=?, filledby =?, request=?, descr=?, filled =?  WHERE id =? ", [$cat, $filledby, $request, $descr, $filled, $id]);
             }
             Redirect::to(URLROOT . "/request/reqdetails?id=$id");
         }
+        
         $res = DB::run("SELECT * FROM requests WHERE id =$id");
         $data = [
             'title' => Lang::T('REQUESTS'),
@@ -70,24 +68,25 @@ class Request
 
     public function delete()
     {
+        $this->checks();
         $delreq = Input::get('delreq');
+
         if (($_SESSION['class']) > _UPLOADER) {
-            if ($delreq) {
+            if (!$delreq) {
                 Redirect::autolink(URLROOT . "/request", Lang::T("NOTHING_SELECTED"));
                 die;
             }
-            $do = "DELETE FROM requests WHERE id IN (" . implode(", ", $_POST['delreq']) . ")";
-            $do2 = "DELETE FROM addedrequests WHERE requestid IN (" . implode(", ", $_POST['delreq']) . ")";
-            $res2 = DB::run($do2);
-            $res = DB::run($do);
+            DB::run("DELETE FROM requests WHERE id IN (" . implode(", ", $_POST['delreq']) . ")");
+            DB::run("DELETE FROM addedrequests WHERE requestid IN (" . implode(", ", $_POST['delreq']) . ")");
             Redirect::autolink(URLROOT . "/request", Lang::T("_SUCCESS_DEL_"));
         } else {
+            // maybe single delte for user
             foreach ($_POST['delreq'] as $del_req) {
                 $query = DB::run("SELECT * FROM requests WHERE userid=$_SESSION[id] AND id = $del_req");
                 $num = $query->rowCount();
                 if ($num > 0) {
-                    $res2 = DB::run("DELETE FROM requests WHERE id IN ($del_req)");
-                    $res = DB::run("DELETE FROM addedrequests WHERE requestid IN ($del_req)");
+                    DB::run("DELETE FROM requests WHERE id IN ($del_req)");
+                    DB::run("DELETE FROM addedrequests WHERE requestid IN ($del_req)");
                     Redirect::autolink(URLROOT . "/request", "Request ID $del_req Deleted", URLROOT . "/request");
                 } else {
                     Redirect::autolink(URLROOT . "/request", "No Permission to delete Request ID $del_req");
@@ -98,14 +97,10 @@ class Request
 
     public function makereq()
     {
-        if (Config::TT()['REQUESTSON']) {
-            $data = [
-                'title' => Lang::T('REQUESTS'),
-            ];
-            View::render('request/makereq', $data, 'user');
-        } else {
-            Redirect::autolink(URLROOT . "/request", "Request are not available");
-        }
+        $data = [
+            'title' => Lang::T('REQUESTS'),
+        ];
+        View::render('request/makereq', $data, 'user');
     }
 
     public function confirmreq()
@@ -137,20 +132,7 @@ class Request
         if ($res->rowCount() != 1) {
             Redirect::autolink(URLROOT . "/request", "That request id doesn't exist.");
         }
-        $num = $res->fetch(PDO::FETCH_ASSOC);
-        $s = $num["request"];
-        $filled = $num["filled"];
-        $catid = $num["cat"];
-        $catn = DB::run("SELECT parent_cat,name FROM categories WHERE id='$catid' ");
-        $catname = $catn->fetch(PDO::FETCH_ASSOC);
-        $pcat = $catname["parent_cat"];
-        $ncat = $catname["name"];
-        $cres = DB::run("SELECT username FROM users WHERE id=$num[userid]");
-        if ($cres->rowCount() == 1) {
-            $carr = $cres->fetch(PDO::FETCH_ASSOC);
-            $username = "$carr[username]";
-            $comment = "$carr[descr]";
-        }
+
         $commcount = DB::run("SELECT COUNT(*) FROM comments WHERE req = $id")->fetchColumn();
         if ($commcount) {
             $commquery = "SELECT comments.id, text, user, comments.added, editedby, editedat, avatar, warned, username, title, class, donated FROM comments LEFT JOIN users ON comments.user = users.id WHERE req = $id ORDER BY comments.id";
@@ -161,15 +143,7 @@ class Request
         $data = [
             'title' => Lang::T('REQUESTS'),
             'id' => $id,
-            's' => $s,
-            'filled' => $filled,
-            'pcat' => $pcat,
-            'ncat' => $ncat,
-            'username' => $username,
-            'comment' => $comment,
-            'desc' => $num['descr'],
-            'added' => $num['added'],
-            'request' => $num['request'],
+            'res' => $res,
             'commcount' => $commcount,
             'commres' => $commres,
         ];

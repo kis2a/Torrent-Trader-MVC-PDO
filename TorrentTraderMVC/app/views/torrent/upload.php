@@ -10,11 +10,13 @@
 <form name="upload" enctype="multipart/form-data" action="<?php echo URLROOT; ?>/upload/submit" method="post">
 <input type="hidden" name="takeupload" value="yes" />
 <?php echo Lang::T("ANNOUNCE_URL"); ?>: 
-<?php while (list($key, $value) = thisEach($data['announce_urls'])) { ?>
-    <b><?php echo $value; ?></b><br />
+<?php //while (list($key, $value) = thisEach($data['announce_urls'])) { 
+      foreach($data['announce_urls'] as $key => $value) {
+    ?>
+        <b><?php echo $value; ?></b><br />
 <?php } ?>
 <?php if (Config::TT()['ALLOWEXTERNAL']) { ?>
-    <br /><p class="text-center"><b><?php echo Lang::T("THIS_SITE_ACCEPTS_EXTERNAL"); ?></b></p>
+        <br /><p class="text-center"><b><?php echo Lang::T("THIS_SITE_ACCEPTS_EXTERNAL"); ?></b></p>
 <?php }  ?>
 
 <div class="mb-6 row">
@@ -76,7 +78,7 @@ if (Config::TT()['YOU_TUBE']) { ?>
 </div><br><?php
 
 $category = "<select name=\"type\">\n<option value=\"0\">" . Lang::T("CHOOSE_ONE") . "</option>\n";
-$cats = genrelist();
+$cats = Catagorie::genrelist();
 foreach ($cats as $row) {
     $category .= "<option value=\"" . $row["id"] . "\">" . htmlspecialchars($row["parent_cat"]) . ": " . htmlspecialchars($row["name"]) . "</option>\n";
 }

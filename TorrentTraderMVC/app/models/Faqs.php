@@ -6,7 +6,6 @@ class Faqs
     {
         $stmt = DB::run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ']);
         return $stmt;
-        // $this->db->run("SELECT `id`, `question`, `flag` FROM `faq` WHERE `type`=? ORDER BY `order` ASC", ['categ'])->fetch(PDO::FETCH_BOTH);
     }
 
     public static function getFaqByType()

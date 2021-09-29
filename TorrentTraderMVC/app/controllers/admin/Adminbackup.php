@@ -26,10 +26,11 @@ class Adminbackup
                 }
             }
         }
+        
         // SORT THE LIST
         sort($Namebk);
         // OPEN TABLE
-        echo ("<br/><br/><table style='text-align:center;' width='100%'>");
+        echo ("<br/><table style='text-align:center;' width='100%'>");
         // TABLE HEADER
         echo ("<tr bgcolor='#3895D3'>"); // Start table row
         echo ("<th scope='colgroup'><b>Date</b></th>"); // Date
@@ -42,13 +43,15 @@ class Adminbackup
         // TABLE ROWS
         for ($x = count($Namebk) - 1; $x >= 0; $x--) {
             $data = explode('_', $Namebk[$x]);
+
+            //var_dump($data);
+
             echo ("<tr bgcolor='#CCCCCC'>"); // Start table row
             echo ("<td>" . $data[1] . "</td>"); // Date
-            echo ("<td>" . $data[2] . "</td>"); // Time
             echo ("<td>" . $Sizebk[$x] . " KByte</td>"); // Size
-            echo ("<td>" . $data[3] . "</td>"); // Hash
+            echo ("<td>" . $data[0] . "</td>"); // Hash
             echo ("<td><a href='" . URLROOT . "/backups/" . $Namebk[$x] . ".sql'>SQL</a> - <a href='" . URLROOT . "/backups/" . $Namebk[$x] . ".sql.gz'>GZ</a></td>"); // Download
-            echo ("<td><a href='" . URLROOT . "/adminbackupdelete?filename=" . $Namebk[$x] . ".sql'><img src='assets/images/delete.png'></a></td>"); // Delete
+            echo ("<td><a href='" . URLROOT . "/adminbackup/delete?filename=" . $Namebk[$x] . ".sql'><img src='assets/images/delete.png'></a></td>"); // Delete
             echo ("</tr>"); // End table row
         }
         // CLOSE TABLE
@@ -59,23 +62,18 @@ class Adminbackup
         require APPROOT . '/views/admin/footer.php';
     }
 
-    public function backupsdelete()
+    public function delete()
     {
         $filename = $_GET["filename"];
-        $delete_error = false;
-        if (!unlink(BACUP . '/' . $filename)) {$delete_error = true;}
-        header("Refresh: 3 ;url=" . URLROOT . "/adminbackup");
-        $title = "Back up";
-        require APPROOT . '/views/admin/header.php';
-        Redirect::autolink(URLROOT . '/adminbackup', "Selected Backup Files deleted");
-
-        if ($delete_error) {
-            echo ("<br><center><b>Has encountered a problem during the deletion</b></center><br><br><br>");
-        } else {
-            echo ("<br><center><b>$filename<br><br><br>DELETED !!!</b></center><br><br><br>");
+        $delete_error = true;
+        if (!unlink(BACUP . '/' . $filename)) {
+            $delete_error = false;
         }
-        echo ("<center>You'll be redirected in about 3 secs. If not, click <a href='/adminbackup'>here</a></center>");
-        require APPROOT . '/views/admin/footer.php';
+        if ($delete_error) {
+            Redirect::autolink(URLROOT . '/adminbackup', "Selected Backup Files deleted");
+        } else {
+            Redirect::autolink(URLROOT . '/adminbackup', Lang::T("Error Deleting"));
+        }
     }
 
     public function submit()
@@ -208,6 +206,89 @@ class Adminbackup
         } else {
             fclose($handle);
         }
+
+        Redirect::autolink(URLROOT . '/adminbackup', Lang::T("Completed Please Check File"));
     }
 
+
+
+    /*
+    public function submit()
+    {
+
+  // CREATE THE RANDOM HASH
+  $RandomString=chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122)).chr(rand(97,122));
+  $md5string = md5($RandomString);
+
+  // COMPOSE THE FILENAME
+  $curdate = str_replace (" ", "_",  TimeDate::utc_to_tz());
+  $filename = BACUP . '/db-backup_'.$curdate.'_'.$md5string.'.sql';
+
+  // COMPOSE THE HEADER OF THE SQL FILE
+  $return = "//\n";
+  $return .= "//  TorrentTrader v3.0\n";
+  $return .= "//  Database BackUp\n";
+  $return .= "//  ".date("y-m-d H:i:s")."\n";
+  $return .= "//\n\n";
+
+  // LIST ALL TABLES ON THE DATABASE
+  $tables = array();
+
+  if (empty($tables)) {
+    $result = DB::run('SHOW TABLES');
+  while($row = $result->fetch(PDO::FETCH_NUM))
+  {
+        $tables[] = $row[0];
+        
+  }
+        } else {
+            $tables = is_array($tables) ? $tables : explode(',', $tables);
+        }
+
+        //var_dump($tables);die();
+
+  // RETRIEVE THE TABLES
+  foreach($tables as $table)
+  {
+        $result = DB::run('SELECT * FROM '.$table);
+        $num_fields = $result->rowCount();
+        $return.= 'DROP TABLE IF EXISTS '.$table.';';
+        $row2 = DB::run('SHOW CREATE TABLE '.$table)->fetch(PDO::FETCH_ASSOC);
+        $return.= "\n\n".$row2[1].";\n\n";
+        for ($i = 0; $i < $num_fields; $i++)
+        {
+          while($row = $result->fetch(PDO::FETCH_ASSOC))
+          {
+                $return.= 'INSERT INTO '.$table.' VALUES(';
+
+                for($j=0; $j<$num_fields; $j++)
+                {
+                  $row[$j] = addslashes($row[$j]);
+                  $row[$j] = preg_replace("/\n/","/\\n/",$row[$j]);
+                  if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+                  if ($j<($num_fields-1)) { $return.= ','; }
+                }
+                $return.= ");\n";
+          }
+        }
+        $return.="\n\n\n";
+  }
+
+  // OLD FOPEN/FWRITE/FCLOSE METHOD
+  //$handle = fopen($filename,'w+');
+  //fwrite($handle,$return);
+  //fclose($handle);
+
+  // NEW METHOD TO STORE THE RESULT ON FILES
+  $create_error = false;
+ // if ( file_put_contents($filename, $return) >=  1) { $create_error = false; }
+ // if ( file_put_contents($filename.'.gz', gzencode( $return,9)) >= 1 ) { $create_error = false; }
+var_dump($return);die();
+  if ($create_error) {
+    Redirect::autolink(URLROOT."/adminbackup", "Has encountered a error during the backup.<br><br>");
+  } else {
+        Redirect::autolink(URLROOT."/adminbackup", "BackUp Complete.<br><br>");
+  }
+    }
+    */
 }

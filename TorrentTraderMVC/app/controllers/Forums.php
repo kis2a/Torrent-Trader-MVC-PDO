@@ -669,6 +669,8 @@ if ($_SESSION['loggedin']) {?>
         <a href='<?php echo URLROOT; ?>/messages/create?id=<?php echo $posterid; ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/icon_pm.png' border='0' alt='' /></a>
         <a href='<?php echo URLROOT; ?>/report/forum?forumid=<?php echo $topicid ?>&amp;forumpost=<?php echo $postid ?>'><img src='<?php echo URLROOT; ?>/assets/images/forum/p_report.png' border='0' alt='" . Lang::T("FORUMS_REPORT_POST") . "' /></a>&nbsp;
         <a href='javascript:scroll(0,0);'><img src='<?php echo URLROOT; ?>/assets/images/forum/p_up.png'  alt='<?php echo Lang::T("FORUMS_GOTO_TOP_PAGE"); ?>' /></a>
+        <!--- add link to exact post -->
+        <a href='<?php echo URLROOT; ?>/forums/viewtopic&amp;topicid=<?php echo $topicid; ?>&amp;page=p#post<?php echo $postid; ?>'><i class="fa fa-anchor" aria-hidden="true"></i></a>
         </div>
         <div class="col-md-9 d-none d-sm-block">
         <?php

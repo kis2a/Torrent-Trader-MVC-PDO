@@ -31,68 +31,7 @@ function health($leechers, $seeders)
     }
 }
 
-// Function To Delete A Torrent
-function deletetorrent($id)
-{
-    $stmt = DB::run("SELECT image1,image2 FROM torrents WHERE id=$id");
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    foreach (explode(".", "peers.comments.ratings.files") as $x) {
-        DB::run("DELETE FROM $x WHERE torrent = $id");
-    }
-    DB::run("DELETE FROM completed WHERE torrentid = $id");
-    if (file_exists(TORRENTDIR . "/$id.torrent")) {
-        unlink(TORRENTDIR . "/$id.torrent");
-    }
-    if ($row["image1"]) {
-        unlink(TORRENTDIR . "/images/" . $row["image1"]);
-    }
-    if ($row["image2"]) {
-        unlink(TORRENTDIR . "/images/" . $row["image2"]);
-    }
-    @unlink(NFODIR . "/$id.nfo");
-    DB::run("DELETE FROM torrents WHERE id = $id");
-    DB::run("DELETE FROM reports WHERE votedfor = $id AND type = 'torrent'");
-    // snatch
-    DB::run("DELETE FROM `snatched` WHERE `tid` = '$id'");
-}
-
-// Function To Retrieve Main Categories Of Torrents
-function genrelist()
-{
-    global $pdo;
-    $ret = array();
-    $res = DB::run("SELECT id, name, parent_cat FROM categories ORDER BY parent_cat ASC, sort_index ASC");
-    while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
-        $ret[] = $row;
-    }
-    return $ret;
-}
-
-function catdropdown()
-{
-    $cats = genrelist();
-    $catdropdown = "";
-    foreach ($cats as $cat) {
-        $catdropdown .= "<option value=\"" . $cat["id"] . "\"";
-        if ($cat["id"] == @$_GET["cat"]) {
-            $catdropdown .= " selected=\"selected\"";
-        }
-        $catdropdown .= ">" . htmlspecialchars($cat["parent_cat"]) . ": " . htmlspecialchars($cat["name"]) . "</option>\n";
-    }
-    return $catdropdown;
-}
-
-// Function To Edit The List Of Possible Languages For Torrents
-function langlist()
-{
-    $ret = array();
-    $stmt = DB::run("SELECT id, name, image FROM torrentlang ORDER BY sort_index, id");
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $ret[] = $row;
-    }
-    return $ret;
-}
-
+// Create Table Of Peers
 function peerstable($res)
 {
     $ret = "<table align='center' cellpadding=\"3\" cellspacing=\"0\" class=\"table_table\" width=\"100%\" border=\"1\"><tr><th class='table_head'>" . Lang::T("NAME") . "</th><th class='table_head'>" . Lang::T("SIZE") . "</th><th class='table_head'>" . Lang::T("UPLOADED") . "</th>\n<th class='table_head'>" . Lang::T("DOWNLOADED") . "</th><th class='table_head'>" . Lang::T("RATIO") . "</th></tr>\n";
@@ -112,11 +51,9 @@ function peerstable($res)
 }
 
 // Function To Display Tables Of Torrents
-//function torrenttable($query)
 function torrenttable($res)
 {
-    global $config, $THEME, $LANGUAGE, $pdo; //Define globals
-    //$res = DB::run($query);
+    // Set Waiting Time
     if (Config::TT()['_WAIT'] && Config::TT()['MEMBERSONLY'] && in_array($_SESSION["class"], explode(",", CLASS_WAIT))) {
         $gigs = $_SESSION["uploaded"] / (1024 * 1024 * 1024);
         $ratio = (($_SESSION["downloaded"] > 0) ? ($_SESSION["uploaded"] / $_SESSION["downloaded"]) : 0);
@@ -133,7 +70,6 @@ function torrenttable($res)
         } else {
             $wait = 0;
         }
-
     }
     $wait = '';
     // Columns
@@ -141,16 +77,7 @@ function torrenttable($res)
     $cols = array_map("strtolower", $cols);
     $cols = array_map("trim", $cols);
     $colspan = count($cols);
-    // End
-
-    // Expanding Area
-    $expandrows = array();
-    if (!empty(TORRENTTABLE_EXPAND)) {
-        $expandrows = explode(",", TORRENTTABLE_EXPAND);
-        $expandrows = array_map("strtolower", $expandrows);
-        $expandrows = array_map("trim", $expandrows);
-    }
-    // End
+    // Start The Table
     echo '<div class="table-responsive"><table class="table table-striped"><thead><tr>';
 
     foreach ($cols as $col) {
@@ -198,10 +125,9 @@ function torrenttable($res)
                 echo "<th>" . Lang::T("HEALTH") . "</th>";
                 break;
             case 'external':
-                if ($config["Config::TT()['ALLOWEXTERNAL']"]) {
+                if (Config::TT()['ALLOWEXTERNAL']) {
                     echo "<th>" . Lang::T("L/E") . "</th>";
                 }
-
                 break;
             case 'added':
                 echo "<th>" . Lang::T("ADDED") . "</th>";
@@ -213,13 +139,13 @@ function torrenttable($res)
                 if ($wait) {
                     echo "<th>" . Lang::T("WAIT") . "</th>";
                 }
-
                 break;
             case 'rating':
                 echo "<th>" . Lang::T("RATINGS") . "</th>";
                 break;
         }
     }
+    // Do They Have To Wiait
     if ($wait && !in_array("wait", $cols)) {
         echo "<th>" . Lang::T("WAIT") . "</th>";
     }
@@ -228,9 +154,7 @@ function torrenttable($res)
 
     while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
         $id = $row["id"];
-
-        print("<tr class='t-row'>\n");
-
+        print("<tr>\n");
         $x = 1;
 
         foreach ($cols as $col) {
@@ -244,29 +168,24 @@ function torrenttable($res)
                         } else {
                             print($row["cat_parent"] . ": " . $row["cat_name"]);
                         }
-
                         print("</a>");
                     } else {
                         print("-");
                     }
-
                     print("</td>\n");
                     break;
                 case 'name':
                     $char1 = 50; //cut name length
                     $smallname = htmlspecialchars(CutName($row["name"], $char1));
                     $dispname = "<b>" . $smallname . "</b>";
-
                     $last_access = $_SESSION["last_browse"];
                     $time_now = TimeDate::gmtime();
                     if ($last_access > $time_now || !is_numeric($last_access)) {
                         $last_access = $time_now;
                     }
-
                     if (TimeDate::sql_timestamp_to_unix_timestamp($row["added"]) >= $last_access) {
                         $dispname .= "<b><font color='#ff0000'> - (" . Lang::T("NEW") . "!)</font></b>";
                     }
-
                     if ($row["freeleech"] == 1) {
                         $dispname .= " <img src='" . URLROOT . "/assets/images/free.gif' border='0' alt='' />";
                     }
@@ -276,8 +195,7 @@ function torrenttable($res)
                     if ($row["sticky"] == "yes") {
                         $dispname .= " <img src='" . URLROOT . "/assets/images/sticky.gif' bored='0' alt='sticky' title='sticky'>";
                     }
-                    print("<td class='ttable_col$x' nowrap='nowrap'>" . (count($expandrows) ? "<a href=\"javascript: klappe_torrent('t" . $row['id'] . "')\"><img border=\"0\" src=\"" . URLROOT . "/assets/images/plus.gif\" id=\"pict" . $row['id'] . "\" alt=\"Show/Hide\" class=\"showthecross\" /></a>" : "") . "&nbsp;<a title=\"" . $row["name"] . "\" href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
-
+                    print("<td class='ttable_col$x' nowrap='nowrap'><a href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
                     break;
                 case 'dl':
                     print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "/download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><img src='" . URLROOT . "/assets/images/icon_download.gif' border='0' alt=\"Download .torrent\" /></a></td>");
@@ -321,7 +239,6 @@ function torrenttable($res)
                     } else {
                         print("<td class='ttable_colx' align='center'>-</td>");
                     }
-
                     break;
                 case 'imdb':
                     if ($row["imdb"]) {
@@ -329,7 +246,6 @@ function torrenttable($res)
                     } else {
                         print("<td class='ttable_colx' align='center'>-</td>");
                     }
-
                     break;
                 case 'comments':
                     print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href=" . URLROOT . "comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
@@ -340,7 +256,6 @@ function torrenttable($res)
                     } else {
                         print("<td class='ttable_col$x' align='center'>-</td>");
                     }
-
                     break;
                 case 'size':
                     print("<td class='ttable_col$x' align='center'>" . mksize($row["size"]) . "</td>\n");
@@ -358,28 +273,25 @@ function torrenttable($res)
                     print("<td class='ttable_col$x' align='center'><img src='" . URLROOT . "/assets/images/health/health_" . health($row["leechers"], $row["seeders"]) . ".gif' alt='' /></td>\n");
                     break;
                 case 'external':
-                    if ($config["Config::TT()['ALLOWEXTERNAL']"]) {
+                    if (Config::TT()['ALLOWEXTERNAL']) {
                         if ($row["external"] == 'yes') {
                             print("<td class='ttable_col$x' align='center'>" . Lang::T("E") . "</td>\n");
                         } else {
                             print("<td class='ttable_col$x' align='center'>" . Lang::T("L") . "</td>\n");
                         }
-
                     }
                     break;
                 case 'added':
-                    //print("<td class='ttable_col$x' align='center'>" . date("d-m-Y H:i:s", TimeDate::utc_to_tz_time($row['added'])) . "</td>");
                     print("<td class='ttable_col$x' align='center'>" . TimeDate::get_time_elapsed($row['added']) . "</td>");
                     break;
                 case 'speed':
                     if ($row["external"] != "yes" && $row["leechers"] >= 1) {
-                        $speedQ = $pdo->run("SELECT (SUM(downloaded)) / (UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(started)) AS totalspeed FROM peers WHERE seeder = 'no' AND torrent = '$id' ORDER BY started ASC");
+                        $speedQ = DB::run("SELECT (SUM(downloaded)) / (UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(started)) AS totalspeed FROM peers WHERE seeder = 'no' AND torrent = '$id' ORDER BY started ASC");
                         $a = $speedQ->fetch(PDO::FETCH_LAZY);
                         $totalspeed = mksize($a["totalspeed"]) . "/s";
                     } else {
                         $totalspeed = "--";
                     }
-
                     print("<td class='ttable_col$x' align='center'>$totalspeed</td>");
                     break;
                 case 'wait':
@@ -400,9 +312,7 @@ function torrenttable($res)
                     } else {
                         $rating = "<a title='$row[rating]/5'>" . ratingpic($row["rating"]) . "</a>";
                     }
-
-                    //$rating = ratingpic($row["rating"]);
-                    //$srating .= "$rpic (" . $row["rating"] . " out of 5) " . $row["numratings"] . " users have rated this torrent";
+                    $rating = $row["rating"] . "/5)";
                     print("<td class='ttable_col$x' align='center'>$rating</td>");
                     break;
             }
@@ -411,10 +321,9 @@ function torrenttable($res)
             } else {
                 $x++;
             }
-
         }
 
-        //Wait Time Check
+        // Wait Time Check
         if ($wait && !in_array("wait", $cols)) {
             $elapsed = floor((TimeDate::gmtime() - strtotime($row["added"])) / 3600);
             if ($elapsed < $wait && $row["external"] != "yes") {
@@ -423,59 +332,21 @@ function torrenttable($res)
             } else {
                 print("<td class='ttable_col$x' align='center'>--</td>\n");
             }
-
             $colspan++;
             if ($x == 2) {
                 $x--;
             } else {
                 $x++;
             }
-
         }
 
         print("</tr>\n");
-
-        //Expanding area
-        if (count($expandrows)) {
-            print("<tr class='t-row'><td class='ttable_col$x' colspan='$colspan'><div id=\"kt" . $row['id'] . "\" style=\"margin-left: 2px; display: none;\">");
-            print("<table width='100%' border='0' cellspacing='0' cellpadding='0'>");
-            foreach ($expandrows as $expandrow) {
-                switch ($expandrow) {
-                    case 'size':
-                        print("<tr><td><b>" . Lang::T("SIZE") . "</b>: " . mksize($row['size']) . "</td></tr>");
-                        break;
-                    case 'speed':
-                        if ($row["external"] != "yes" && $row["leechers"] >= 1) {
-                            $speedQ = $pdo->run("SELECT (SUM(downloaded)) / (UNIX_TIMESTAMP('" . TimeDate::get_date_time() . "') - UNIX_TIMESTAMP(started)) AS totalspeed FROM peers WHERE seeder = 'no' AND torrent = '$id' ORDER BY started ASC");
-                            $a = $speedQ->fetch(PDO::FETCH_LAZY);
-                            $totalspeed = mksize($a["totalspeed"]) . "/s";
-                            print("<tr><td><b>" . Lang::T("SPEED") . ":</b> $totalspeed</td></tr>");
-                        }
-                        break;
-                    case 'added':
-                        print("<tr><td><b>" . Lang::T("ADDED") . ":</b> " . date("d-m-Y \\a\\t H:i:s", TimeDate::utc_to_tz_time($row['added'])) . "</td></tr>");
-                        break;
-                    case 'tracker':
-                        if ($row["external"] == "yes") {
-                            print("<tr><td><b>" . Lang::T("TRACKER") . ":</b> " . htmlspecialchars($row["announce"]) . "</td></tr>");
-                        }
-
-                        break;
-                    case 'completed':
-                        print("<tr><td><b>" . Lang::T("COMPLETED") . "</b>: " . number_format($row['times_completed']) . "</td></tr>");
-                        break;
-                }
-            }
-            print("</table></div></td></tr>\n");
-        }
-        //End Expanding Area
-
     }
 
     print("</table></div><br />\n");
-
 }
 
+// Function that assigns a color based on the value of the ratio
 function get_ratio_color($ratio)
 {
     if ($ratio < 0.1) {
@@ -511,6 +382,7 @@ function get_ratio_color($ratio)
     return "#000000";
 }
 
+// Function That Returns The Image Corresponding To The Votes
 function ratingpic($num)
 {
     $r = round($num * 2) / 2;

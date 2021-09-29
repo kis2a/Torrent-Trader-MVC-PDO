@@ -6,6 +6,9 @@
 <tr><td><b>Name:</b> <input type='text' name='name' /></td></tr>
 <tr><td><b>Sort:</b> <input type='text' name='sort_index' /></td></tr>
 <tr><td><b>Image:</b> <input type='text' name='image' /></td></tr>
-<tr><td><input type='submit' value='<?php echo Lang::T("SUBMIT"); ?>' /></td></tr>
-</table></form>
+</table>
+<div class="text-center">
+    <input type='submit' class='btn btn-sm ttbtn' value='<?php echo Lang::T("SUBMIT"); ?>' />
+</div>
+</form>
 </center>

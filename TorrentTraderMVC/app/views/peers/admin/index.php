@@ -1,5 +1,5 @@
 <center>We have <?php echo $data['count1'] ?>peers</center>
-<center><a href='<?php echo URLROOT; ?>/peers/dead'>All Dead Torrents</a></center>
+<center><a href='<?php echo URLROOT; ?>/admintorrents/dead'>All Dead Torrents</a></center>
 <?php echo $data['pagertop'];
 if ($data['result']->rowCount() != 0) { ?>
     <center><table width="100%" border="0" cellspacing="0" cellpadding="3" class="table_table">

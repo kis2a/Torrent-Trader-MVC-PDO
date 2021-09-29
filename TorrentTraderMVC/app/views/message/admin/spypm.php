@@ -24,7 +24,7 @@ while ($arr = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 } ?>
 </tbody></table><br />
 <center>
-<input type='submit' value='Delete Checked' /> 
-<input type='submit' value='Delete All' name='delall' />
+<input type='submit' class='btn btn-sm ttbtn' value='Delete Checked' /> 
+<input type='submit' class='btn btn-sm ttbtn' value='Delete All' name='delall' />
 </center>
 <?php echo $data['pagerbottom']; ?>

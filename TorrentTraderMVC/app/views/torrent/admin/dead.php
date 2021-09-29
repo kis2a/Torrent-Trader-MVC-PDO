@@ -6,7 +6,7 @@ if ($data['count'] > $data['perpage']) {
     print("<br />");
 }
 ?>
-<form id="myform" method='post' action='<?php echo URLROOT; ?>/peers/dead.php'>
+<form id="myform" method='post' action='<?php echo URLROOT; ?>/admintorrents/dead.php'>
 <input type='hidden' name='do' value='delete' />
 <div class='table-responsive'><table class='table table-striped'>
     <thead><tr>
@@ -49,7 +49,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 ?>
 </tbody></table></div>
 <?php if ($_SESSION["class"] >= 6) {?>
-    <button type="submit" class="btn btn-sm ttbtn" value='Remove The Checks '>Remove The Checks</button>
+    <button type="submit" class="btn btn-sm ttbtn" value='Remove The Checks '>Delete Checked</button>
 <?php }?>
 </form>
  <?php

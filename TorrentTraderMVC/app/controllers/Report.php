@@ -18,6 +18,10 @@ class Report
         $takereason = Input::get("reason");
         $user = (int) Input::get("id");
 
+        if ($_SESSION["view_users"] == "no") {
+            Redirect::autolink(URLROOT, Lang::T("NO_USER_VIEW"));
+        }
+
         if ($takeuser) {
             if (empty($takereason)) {
                 Redirect::autolink(URLROOT . "/report/user?user=$user", Lang::T("YOU_MUST_ENTER_A_REASON"));
@@ -57,6 +61,10 @@ class Report
         $takereason = Input::get("reason");
         $torrent = (int) Input::get("torrent");
 
+        if (Auth::permission("view_torrents") == "no") {
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
+        }
+
         if (($taketorrent != "") && ($takereason != "")) {
             if (!$takereason) {
                 Redirect::autolink(URLROOT . "/report/torrent?torrent=$torrent", Lang::T("YOU_MUST_ENTER_A_REASON"));
@@ -92,18 +100,20 @@ class Report
 
     public function comment()
     {
+        // Get Inputs
         $takecomment = (int) Input::get("comment");
         $takereason = Input::get("reason");
-        $comment = (int) Input::get("comment");
         $type = Input::get("type");
+        // Check Type
         if ($type == "req") {
             $whattype = 'req';
         } else {
             $whattype = 'comment';
         }
+        // Validate Input/User Checks
         if (($takecomment != "") && ($takereason != "")) {
             if (!$takereason) {
-                Redirect::autolink(URLROOT . "/report/comment?comment=$comment", Lang::T("YOU_MUST_ENTER_A_REASON"));
+                Redirect::autolink(URLROOT . "/report/comment?comment=$takecomment", Lang::T("YOU_MUST_ENTER_A_REASON"));
             }
             $res = Reports::selectReport($_SESSION['id'], $takecomment, $whattype);
             if ($res->rowCount() == 0) {
@@ -113,21 +123,19 @@ class Report
                 Redirect::autolink(URLROOT, Lang::T("YOU_HAVE_ALREADY_REPORTED") . " torrent $takecomment");
             }
         }
-
-        if ($comment != "") {
-            $res = DB::run("SELECT id, text FROM comments WHERE id=?", [$comment]);
+        // No Input So Show Form
+        if ($takecomment != "") {
+            $res = DB::run("SELECT id, text FROM comments WHERE id=?", [$takecomment]);
             if ($res->rowCount() == 0) {
                 Redirect::autolink(URLROOT, "Invalid Comment");
                 die();
             }
             $arr = $res->fetch(PDO::FETCH_LAZY);
-            $title = 'Report';
-            // Template
             $data = [
                 'type' => $type,
-                'title' => $title,
+                'title' => 'Report',
                 'text' => $arr['text'],
-                'comment' => $comment,
+                'comment' => $takecomment,
             ];
             View::render('report/comment', $data, 'user');
             die();
@@ -144,6 +152,10 @@ class Report
         $forumid = (int) Input::get("forumid");
         $forumpost = (int) Input::get("forumpost");
 
+        if ($_SESSION["forumbanned"] == "yes" || $_SESSION["view_forum"] == "no") {
+            Redirect::autolink(URLROOT, Lang::T("FORUM_BANNED"));
+        }
+        
         if (($takeforumid != "") && ($takereason != "")) {
             if (!$takereason) {
                 Redirect::autolink(URLROOT, Lang::T("YOU_MUST_ENTER_A_REASON"));

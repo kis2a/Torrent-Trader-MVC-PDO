@@ -1,4 +1,5 @@
 <center><a href='<?php echo URLROOT; ?>/adminstylesheet/add'><?php echo Lang::T("THEME_ADD"); ?></a></center>
+<p class="text-center">To Install Theme Please Upload It First Via FTP</p>
 <center><?php echo Lang::T("THEME_CURRENT"); ?>: </center>
 
 <form id='deltheme' method='post' action='<?php echo URLROOT; ?>/adminstylesheet/delete'>
@@ -23,5 +24,5 @@ while ($row = $data['sql']->fetch(PDO::FETCH_ASSOC)) {
 }
 ?>
 </tbody></table>
-<center><input type='submit' value='<?php echo Lang::T("SELECTED_DELETE"); ?>' /><center>
+<center><input type='submit' class='btn btn-sm ttbtn' value='<?php echo Lang::T("SELECTED_DELETE"); ?>' /><center>
 </form><br>

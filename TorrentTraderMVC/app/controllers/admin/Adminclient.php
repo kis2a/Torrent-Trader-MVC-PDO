@@ -11,6 +11,7 @@ class Adminclient
     {
         if (isset($_POST['ban'])) {
             DB::run("INSERT INTO clients (agent_name, hits, ins_date) VALUES (?,?,?)", [$_POST['ban'], 1, TimeDate::get_date_time()]);
+            Redirect::autolink(URLROOT . "/adminclient/banned", Lang::T("SUCCESS"));
         }
         $res11 = DB::run("SELECT client, peer_id FROM peers GROUP BY client");
         $data = [

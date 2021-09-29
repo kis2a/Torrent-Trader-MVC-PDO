@@ -16,10 +16,10 @@ if (Auth::permission('loggedin') == true) {
 	   <p class="text-center"><?php echo Lang::T("NOTHING_FOUND"); ?></p>
        <?php
     } else { ?>
-		<div class="list-group">
+		<div>
 	    <?php
         foreach ($rows as $row) {?>
-			<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>' class="list-group-item"><?php echo Users::coloredname($row["username"]); ?></a>
+			<a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>'><?php echo Users::coloredname($row["username"]); ?></a>
 	        <?php
         } ?>
 		</div>

@@ -5,7 +5,7 @@
     <?php echo $data['filecontents']; ?></textarea></center>
 </div>
 <center><font size="4">Please Double Click</font></center>
-<center><input type="submit" value="Save"></center><br>
+<center><input type="submit" class="btn ttbtn btn-sm" value="Save"></center><br>
 </form>
 
 <div class="form-group">

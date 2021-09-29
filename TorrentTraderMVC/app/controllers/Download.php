@@ -4,29 +4,30 @@ class Download
 
     public function __construct()
     {
-        $this->session = Auth::user(0, 2);
+        $this->session = Auth::user(0, 1);
     }
 
     public function index()
     {
-        if ($_SESSION['loggedin']) {
-            if ($_SESSION["can_download"] == "no") {
+        // Check The User
+        if (Auth::permission('loggedin')) {
+            if (Auth::permission("can_download") == "no") {
                 Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION_TO_DOWNLOAD"));
             }
-            if ($_SESSION["downloadbanned"] == "yes") {
+            if (Auth::permission("downloadbanned") == "yes") {
                 Redirect::autolink(URLROOT, Lang::T("DOWNLOADBAN"));
             }
         }
-
-        $id = (int) $_GET["id"];
+        // Get The Torrent
+        $id = (int) Input::get("id");
         if (!$id) {
             Redirect::autolink(URLROOT, Lang::T("ID_NOT_FOUND_MSG_DL"));
         }
-
         $fn = TORRENTDIR . "/$id.torrent";
         $row = Torrents::isAvailableToDownload($id);
+        // Check The Torrent
         $vip = $row['vip'];
-        if ($_SESSION['class'] < _VIP && $vip == "yes") {
+        if (Auth::permission('class') < _VIP && $vip == "yes") {
             Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("VIPTODOWNLOAD"));
         }
         if (!$row) {
@@ -41,34 +42,35 @@ class Download
         if (!is_readable($fn)) {
             Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("FILE_UNREADABLE"));
         }
+        // Name Download File
         $name = $row['filename'];
         $friendlyurl = str_replace("http://", "", URLROOT);
         $friendlyname = str_replace(".torrent", "", $name);
         $friendlyext = ".torrent";
         $name = $friendlyname . "[" . $friendlyurl . "]" . $friendlyext;
         // LIKE MOD
-        if (Config::TT()['FORCETHANKS']) {
-            if ($_SESSION["id"] != $row["owner"]) {
-                $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', $_SESSION['id']]);
+        if (Config::TT()['FORCETHANKS'] && Auth::permission('loggedin')) {
+            if (Auth::permission("id") != $row["owner"]) {
+                $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$id, 'torrent', Auth::permission('id')]);
                 $like = $data->fetch(PDO::FETCH_ASSOC);
                 if (!$like) {
                     Redirect::autolink($_SERVER['HTTP_REFERER'], Lang::T("PLEASE_THANK"));
                 }
             }
         }
+        // Update Hit When Downloaded
         Torrents::updateHits($id);
-        
         // if user dont have a passkey generate one, only if current member
-        if ($_SESSION['loggedin']) {
-            if (strlen($_SESSION['passkey']) != 32) {
+        if (Auth::permission('loggedin')) {
+            if (strlen(Auth::permission('passkey')) != 32) {
                 $rand = array_sum(explode(" ", microtime()));
-                $_SESSION['passkey'] = md5($_SESSION['username'] . $rand . $_SESSION['secret'] . ($rand * mt_rand()));
-                Users::setpasskey($_SESSION['passkey'], $_SESSION['id']);
+                $_SESSION['passkey'] = md5(Auth::permission('username') . $rand . Auth::permission('secret') . ($rand * mt_rand()));
+                Users::setpasskey(Auth::permission('passkey'), Auth::permission('id'));
             }
         }
 
-        // if not external and current member, note - it was Config::TT()['MEMBERSONLY']
-        if ($row["external"] != 'yes' && $_SESSION['loggedin']) { // local torrent so add passkey
+        // Local Torrent To Add Passkey
+        if ($row["external"] != 'yes' && $_SESSION['loggedin']) {
             // Bencode
             $dict = Bencode::decode(file_get_contents($fn));
             $dict['announce'] = sprintf(PASSKEYURL, $_SESSION["passkey"]);
@@ -78,6 +80,7 @@ class Download
             header("Content-Type: application/x-bittorrent");
             print $data;
         } else {
+            // Download External
             header('Content-Disposition: attachment; filename="' . $name . '"');
             header('Content-Length: ' . filesize($fn));
             header("Content-Type: application/x-bittorrent");
@@ -87,9 +90,8 @@ class Download
 
     public function attachment()
     {
-        $id = (int) $_GET["id"];
-        $hash = $_GET["hash"];
-        $filename = $hash;
+        $id = (int) Input::get("id");
+        $filename = Input::get("hash");
         $fn = TORRENTDIR . "/attachment/$filename.data";
         $sql = DB::run("SELECT * FROM attachments WHERE  id=?", [$id])->fetch(PDO::FETCH_ASSOC);
         $extension = substr($sql['filename'], -3);

@@ -68,8 +68,8 @@ if (Auth::permission('loggedin') == true) {
           $voted = $arr2;
           // If member has voted already show results
           if ($voted) {
-              if ($arr2["selection"]) { // $arr["selection"]
-                  $uservote = $arr2["selection"]; // $arr["selection"]
+              if ($arr2["selection"]) {
+                  $uservote = $arr2["selection"];
               } else {
                   $uservote = -1;
               }

@@ -1,5 +1,5 @@
 <?php
-// Function To Display BBCodes And Smilies
+// Function To Display Input Box With BBCodes And Smilies
 function textbbcode($form, $name, $content = "")
 {
     // $form = Form Name, $name = Name of Text Area (Textarea), $content = Content Textarea (Only to edit Pages, etc ...)
@@ -226,7 +226,7 @@ function shoutbbcode($form, $name, $content = "")
     <div class="container">
     <div class="row justify-content-md-center">
     <div class="collapse" id="collapseExample">
-    <div class="card text-centre shoutsmile">
+    <div class="card text-center shoutsmile">
     <a href="javascript:SmileIT(':smile','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/smile.png" border="0" alt=':)' title=':)' /></a>
       <a href="javascript:SmileIT(':sad','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/sad.png" border="0" alt=':(' title=':(' /></a>
       <a href="javascript:SmileIT(':grin','<?php echo $form; ?>','<?php echo $name; ?>')"><img src="<?php echo URLROOT; ?>/assets/images/smilies/grin.png" border="0" alt=':D' title=':D' /></a>

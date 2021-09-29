@@ -1,8 +1,8 @@
 <?php usermenu($data['id']);
 if ($data['count']) {
-    print($pagertop);
+    print($data['pagertop']);
     torrenttable($data['res']);
-    print($pagerbottom);
+    print($data['pagerbottom']);
 } else {
     print("<br><br><center><b>" . Lang::T("UPLOADED_TORRENTS_ERROR") . "</b></center><br />");
 }

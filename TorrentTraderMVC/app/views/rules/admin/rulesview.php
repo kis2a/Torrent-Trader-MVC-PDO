@@ -10,7 +10,7 @@ while ($arr = $data['res']->fetch(PDO::FETCH_LAZY)) { ?>
     <?php echo format_comment($arr["text"]); ?>
     </td></tr>
     <tr><td><input type='hidden' value=<?php echo $arr['id']; ?> name='id' />
-    <center><input type='submit' value='Edit' /></center></form>
+    <center><input type='submit' class='btn btn-sm ttbtn' value='Edit' /></center></form>
     </td>
     </tr></table>
     </div><br>

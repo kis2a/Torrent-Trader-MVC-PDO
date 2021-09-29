@@ -14,7 +14,7 @@ class Adminpolls
             'title' => Lang::T("POLLS_MANAGEMENT"),
             'query' => $query,
         ];
-        View::render('poll/admin/pollsview', $data, 'admin');
+        View::render('poll/admin/polls-view', $data, 'admin');
     }
 
     public function results()
@@ -38,8 +38,7 @@ class Adminpolls
         Redirect::autolink(URLROOT . "/adminpolls", Lang::T("Poll and answers deleted"));
     }
 
-    public function add() // todo edit bit works
-
+    public function add()
     {
         $pollid = (int) $_GET["pollid"];
         $res = DB::run("SELECT * FROM polls WHERE id =?", [$pollid]);

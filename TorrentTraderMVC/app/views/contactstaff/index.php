@@ -1,4 +1,4 @@
-<center><b>Send message to Staff</b></center>
+<center><b><?php echo Lang::T("ACCOUNT_SEND_MSG"); ?></b></center>
 <div class="row justify-content-md-center">
     <div class="col-6 border ttborder">
 
@@ -6,17 +6,16 @@
 <div class="form-group">
 
 <div class="form-group">
-	<label for="name">Subject: </label>
+	<label for="name"><?php echo Lang::T("FORUMS_SUBJECT"); ?>: </label>
 	<input id="name" type="text" class="form-control" name="sub" minlength="3" maxlength="200" required autofocus>
 </div>
 <div class="form-group">
-    <label for="msg">Message: </label>
-    <textarea class="form-control" id="msg" name="msg" rows="3"></textarea>
+    <label for="msg"><?php echo Lang::T("MESSAGE"); ?>: </label>
+    <textarea class="form-control" id="msg" name="msg" rows="15"></textarea>
 </div>
-<div class="form-group">
-<center>
+<div class="text-center">
+    <?php (new Captcha)->html(); ?>
 	<button type="submit" class="btn ttbtn btn-sm"><?php echo Lang::T("Submit"); ?></button>
-</center>
 </div>
 
 </div>

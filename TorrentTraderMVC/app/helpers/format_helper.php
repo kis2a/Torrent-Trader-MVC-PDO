@@ -1,4 +1,5 @@
 <?php
+// Function That Allows HTML Encoding
 function encodehtml($s, $linebreaks = true)
 {
     $s = str_replace("<", "&lt;", str_replace("&", "&amp;", $s));
@@ -8,13 +9,15 @@ function encodehtml($s, $linebreaks = true)
     return $s;
 }
 
+// URL Formatting
 function format_urls($s)
 {
     return preg_replace(
         "/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i",
-        "\\1<a href='\\2' target='_blank'>\\2</a>", $s);
+        "\\1<a href='\\2'>\\2</a>", $s);
 }
 
+// Parse String (BBcode)
 function format_comment($text)
 {
     global $smilies;
@@ -95,7 +98,7 @@ function format_comment($text)
     //[hr=#ffffff] [hr=red]
     $s = preg_replace("/\[hr=((#[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9])|([a-zA-z]+))\]/i", "<hr color=\"\\1\"/>", $s);
     //[hide]Link[/hide]
-    if (Config::TT()['HIDEBBCODE'] && $_SESSION['loggedin']) {
+    if (Config::TT()['HIDEBBCODE'] && Auth::permission('loggedin')) {
         $id = (int) Input::get("topicid");
         $reply = DB::run("SELECT * FROM forum_posts WHERE topicid=$id AND userid=$_SESSION[id]");
         if ($reply->rowCount() == 0) {
@@ -113,7 +116,8 @@ function format_comment($text)
 
     // Smilies
     reset($smilies);
-    while (list($code, $url) = thisEach($smilies)) {
+    //while (list($code, $url) = thisEach($smilies)) {
+    foreach($smilies as $code => $url) {
         $s = str_replace($code, '<img border="0" src="' . URLROOT . '/assets/images/smilies/' . $url . '" alt="' . $code . '" title="' . $code . '" />', $s);
     }
 

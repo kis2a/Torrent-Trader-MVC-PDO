@@ -15,7 +15,8 @@ class Stylesheet
         $updateset[] = "stylesheet = '$stylesheet'";
         $updateset[] = "language = '$language'";
         if (count($updateset)) {
-            Users::updateset($updateset, $_SESSION['id']);
+            DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$_SESSION['id']]);
+            //Users::updateset($updateset, $_SESSION['id']);
         }
         if (empty($_SERVER["HTTP_REFERER"])) {
             Redirect::to(URLROOT);
@@ -24,7 +25,6 @@ class Stylesheet
         Redirect::to($_SERVER["HTTP_REFERER"]);
     }
 
-    
     public function forbooty()
     {
         $updateset = array();

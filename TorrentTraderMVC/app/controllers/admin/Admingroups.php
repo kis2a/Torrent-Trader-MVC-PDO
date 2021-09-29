@@ -9,7 +9,7 @@ class Admingroups
 
     public function index()
     {
-        $getlevel = DB::run("SELECT * from `groups` ORDER BY group_id");
+        $getlevel = Groups::getAll();
         $data = [
             'title' => Lang::T("Groups Management"),
             'getlevel' => $getlevel,
@@ -20,7 +20,7 @@ class Admingroups
     public function edit()
     {
         $group_id = intval($_GET["group_id"]);
-        $rlevel = DB::run("SELECT * FROM `groups` WHERE group_id=?", [$group_id]);
+        $rlevel = Groups::getAllById($group_id);
         if (!$rlevel) {
             Redirect::autolink(URLROOT . '/admingroup', Lang::T("CP_NO_GROUP_ID_FOUND"));
         }
@@ -52,10 +52,10 @@ class Admingroups
     {
         //Needs to be secured!!!!
         $group_id = intval($_GET["group_id"]);
-        if (($group_id == "1") || ($group_id == "7")) {
+        if (($group_id == "1") || ($group_id == _ADMINISTRATOR)) {
             Redirect::autolink(URLROOT . '/admingroup', Lang::T("CP_YOU_CANT_DEL_THIS_GRP"));
         }
-        DB::run("DELETE FROM `groups` WHERE group_id=?", [$group_id]);
+        Groups::deleteId($group_id);
         Redirect::autolink(URLROOT . "/admingroups/groups", Lang::T("CP_DEL_OK"));
     }
 

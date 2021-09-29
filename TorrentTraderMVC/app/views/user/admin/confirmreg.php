@@ -24,13 +24,11 @@ if ($data['count'] > 0): ?>
         </tr>
         <?php
     endwhile;?>
-    <tr>
-    <td colspan="5" align="right">
-    <input type="submit" value="Confirm Checked" />
-    <input type="submit" name="confirmall" value="Confirm All" />
-    </td>
-    </tr>
     </table>
+    <div class="text-center">
+        <input type="submit" class='btn btn-sm ttbtn' value="Confirm Checked" />
+        <input type="submit" class='btn btn-sm ttbtn' name="confirmall" value="Confirm All" />
+    </div>
     </form>
     <?php
 endif;

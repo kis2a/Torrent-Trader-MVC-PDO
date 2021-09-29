@@ -9,14 +9,12 @@ class Adminpeers
 
     public function index()
     {
-        $count1 = number_format(get_row_count("peers"));
-        $peersperpage = 50;
-        list($pagertop, $pagerbottom, $limit) = pager($peersperpage, $count1, "/adminpeers?");
-
+        $count = number_format(get_row_count("peers"));
+        list($pagertop, $pagerbottom, $limit) = pager(50, $count, "/adminpeers?");
         $result = DB::run("SELECT * FROM peers ORDER BY started DESC $limit");
         $data = [
             'title' => Lang::T("Peers List"),
-            'count1' => $count1,
+            'count1' => $count,
             'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
             'result' => $result

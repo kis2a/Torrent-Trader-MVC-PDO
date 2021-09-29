@@ -19,6 +19,7 @@ class Signup
         // Check if we're signing up with an invite
         $invite = Input::get("invite");
         $secret = Input::get("secret");
+        $invite_row = 0;
         if (!Validate::Id($invite) || strlen($secret) != 20) {
             if (Config::TT()['INVITEONLY']) {
                 Redirect::autolink(URLROOT . '/home', "<center>" . Lang::T("INVITE_ONLY_MSG") . "<br></center>");
@@ -30,7 +31,6 @@ class Signup
             }
         }
         $title = Lang::T("SIGNUP");
-        // Template
         $data = [
             'title' => $title,
             'invite' => $invite_row,

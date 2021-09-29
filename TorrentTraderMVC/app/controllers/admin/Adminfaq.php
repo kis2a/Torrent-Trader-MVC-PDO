@@ -8,39 +8,12 @@ class Adminfaq
 
     public function index()
     {
-        // make the array that has all the faq in a nice structured
-        $res = DB::run("SELECT `id`, `question`, `flag`, `order` FROM `faq` WHERE `type`='categ' ORDER BY `order` ASC");
-        while ($arr = $res->fetch(PDO::FETCH_LAZY)) {
-            $faq_categ[$arr['id']]['title'] = $arr['question'];
-            $faq_categ[$arr['id']]['flag'] = $arr['flag'];
-            $faq_categ[$arr['id']]['order'] = $arr['order'];
-        }
-
-        $res = DB::run("SELECT `id`, `question`, `flag`, `categ`, `order` FROM `faq` WHERE `type`='item' ORDER BY `order` ASC");
-        while ($arr = $res->fetch(PDO::FETCH_LAZY)) {
-            $faq_categ[$arr['categ']]['items'][$arr['id']]['question'] = $arr['question'];
-            $faq_categ[$arr['categ']]['items'][$arr['id']]['flag'] = $arr['flag'];
-            $faq_categ[$arr['categ']]['items'][$arr['id']]['order'] = $arr['order'];
-        }
-
-        if (isset($faq_categ)) {
-            // gather orphaned items
-            foreach ($faq_categ as $id => $temp) {
-                if (!array_key_exists("title", $faq_categ[$id])) {
-                    foreach ($faq_categ[$id]['items'] as $id2 => $temp) {
-                        $faq_orphaned[$id2]['question'] = $faq_categ[$id]['items'][$id2]['question'];
-                        $faq_orphaned[$id2]['flag'] = $faq_categ[$id]['items'][$id2]['flag'];
-                        unset($faq_categ[$id]);
-                    }
-                }
-            }
-
-            $data = [
-                'title' => Lang::T("FAQ_MANAGEMENT"),
-                'faq_categ' => $faq_categ,
-            ];
-            View::render('faq/admin/manage', $data, 'admin');
-        }
+        $faq_categ = Faqs::bigone();
+        $data = [
+            'title' => Lang::T("FAQ_MANAGEMENT"),
+            'faq_categ' => $faq_categ,
+        ];
+        View::render('faq/admin/manage', $data, 'admin');
     }
 
     public function reorder()
@@ -57,7 +30,7 @@ class Adminfaq
             DB::run("DELETE FROM `faq` WHERE `id`=? LIMIT 1", [$_GET['id']]);
             Redirect::to(URLROOT . "/adminfaq");
         } else {
-                Redirect::autolink(URLROOT . '/adminfaq',  "Please click <a href=\"" . URLROOT . "/adminfaq/delete?id=$_GET[id]&amp;confirm=yes\">here</a> to confirm.", URLROOT . "/adminfaq");
+            Redirect::autolink(URLROOT . '/adminfaq',  "Please click <a href=\"" . URLROOT . "/adminfaq/delete?id=$_GET[id]&amp;confirm=yes\">here</a> to confirm.", URLROOT . "/adminfaq");
         }
     }
 

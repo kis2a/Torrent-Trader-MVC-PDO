@@ -3,11 +3,6 @@
 class Auth
 {
 
-    public function __construct()
-    {
-        //$this->db = new DB;
-    }
-
     public static function user($class = 0, $force = 0, $autoclean = false)
     {
         self::ipBanned();

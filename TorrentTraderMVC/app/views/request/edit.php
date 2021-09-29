@@ -6,7 +6,6 @@
 <div class="row justify-content-md-center">
     <div class="col-6 border ttborder">
 <form name="form" action="edit&id=<?php echo $arr['id']; ?>" method="post">
-<input type="hidden" name="filledby" value="<?php echo $arr['filledby']; ?>" />
 <label for="cat">Change Cat id:</label><br>
 <input type="text" class="form-control" name="cat" value="<?php echo $arr['id']; ?>" id="cat"><br>
 <label for="request">Request Tilte:</label><br>
@@ -15,6 +14,8 @@
 <input type="text" class="form-control" name="descr" value="<?php echo $arr['descr']; ?>" id="descr"><br>
 <label for="filled">Url To Torrent:</label><br>
 <input type="text"  class="form-control" name="filled" value="<?php echo $arr['filled']; ?>" id="filled"><br>
+<label for="filledby">Fiiled By User ID:</label><br>
+<input type="text" class="form-control" name="filledby" value="<?php echo $arr['filledby']; ?>" id="filledby"><br>
 <center>
 <input type="submit"  class='btn btn-sm ttbtn' value="Update">
 <center><br>

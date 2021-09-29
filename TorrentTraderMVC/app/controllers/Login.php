@@ -9,6 +9,7 @@ class Login
 
     public function index()
     {
+        Cookie::destroyAll();
         $token = Cookie::csrf_token();
         $data = [
             'token' => $token,
@@ -24,9 +25,9 @@ class Login
         if (Input::exist() && Cookie::csrf_check()) {
             $username = Input::get("username");
             $password = Input::get("password");
-
+            // User By Name
             $sql = Users::getUserByUsername($username);
-
+            // Do Some Checks
             if (!$sql || !password_verify($password, $sql['password'])) {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("LOGIN_INCORRECT"));
             } elseif ($sql['status'] == "pending") {
@@ -34,7 +35,7 @@ class Login
             } elseif ($sql['enabled'] == "no") {
                 Redirect::autolink(URLROOT . "/logout", Lang::T("ACCOUNT_DISABLED"));
             }
-
+            // Set Cookies and token
             Cookie::setAll($sql['id'], $sql['password'], $this->loginString());
             Users::updatelogin($this->loginString(), $sql['id']);
             Redirect::to(URLROOT);

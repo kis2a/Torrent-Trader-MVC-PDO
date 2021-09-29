@@ -3,8 +3,8 @@ What is RSS? Take a look at the <a href="http://wikipedia.org/wiki/RSS_%28file_f
 <form action="<?php echo URLROOT; ?>/rss/submit" method="post">
 <table border="0" cellpadding="5" cellspacing="0" class="table_table">
 	<tr>
-	<td class="table_col1" valign="top">Categories:</td>
-	<td class="table_col2" valign="top">(Leave blank for All)<br /><br />
+	<td class="browsebg" valign="top">Categories:</td>
+	<td class="browsebg" valign="top">(Leave blank for All)<br /><br />
 	<?php
 	while ($row = $data['resqn']->fetch(PDO::FETCH_LAZY)) {
         echo '<input type="checkbox" name="cats[]" value="' . $row['id'] . '" /> ' . htmlspecialchars("$row[parent_cat] - $row[name]") . '<br />';
@@ -12,25 +12,25 @@ What is RSS? Take a look at the <a href="http://wikipedia.org/wiki/RSS_%28file_f
 	</td>
     </tr>
     <tr>
-	<td class="table_col1"><?php echo Lang::T("FEED_TYPE"); ?>:</td>
-	<td class="table_col2">
+	<td class="browsebg"><?php echo Lang::T("FEED_TYPE"); ?>:</td>
+	<td class="browsebg">
 	<input type="radio" name="dllink" value="0" checked="checked" />Details link<br />
 	<input type="radio" name="dllink" value="1" /> Download link<br />
 	</td>
 	</tr>
 	<tr>
-	<td class="table_col1"><?php echo Lang::T("LOGIN_TYPE"); ?>:</td>
-	<td class="table_col2">
+	<td class="browsebg"><?php echo Lang::T("LOGIN_TYPE"); ?>:</td>
+	<td class="browsebg">
 	<input type="radio" name="cookies" value="1" checked="checked" /> Standard (cookies)<br/>
 	<input type="radio" name="cookies" value="0" /> Alternative (no cookies)<br/>
     </td>
 	</tr>
 	<tr>
-	<td class="table_col1"><?php echo Lang::T("INCLUDE_DEAD"); ?>:</td>
-	<td class="table_col2"><input type="checkbox" name="incldead" value="1" /></td>
+	<td class="browsebg"><?php echo Lang::T("INCLUDE_DEAD"); ?>:</td>
+	<td class="browsebg"><input type="checkbox" name="incldead" value="1" /></td>
 	</tr>
 	<tr>
-	<td colspan="2" align="center"><input type="submit" value="Get Link" /></td>
+	<td class='browsebg' colspan="2" align="center"><input type="submit" value="Get Link" /></td>
     </tr>
 </table>
 </form>

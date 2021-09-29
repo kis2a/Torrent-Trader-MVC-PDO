@@ -1,5 +1,5 @@
 <?php
-// setup the forum head
+// setup the forum header
 function forumheader($location, $subforum = '', $subforumid = 0)
 {
     echo "<div>
@@ -70,6 +70,7 @@ function update_topic_last_post($topicid)
     DB::run("UPDATE forum_topics SET lastpost=? WHERE id=?", [$postid, $topicid]);
 }
 
+// Returns The ID Of A Last Post In A Forum Or Otherwise 0
 function get_forum_last_post($forumid)
 {
     $res = DB::run("SELECT lastpost FROM forum_topics WHERE forumid=? ORDER BY lastpost DESC LIMIT 1", [$forumid]);
@@ -82,7 +83,7 @@ function get_forum_last_post($forumid)
     }
 }
 
-//Top forum posts
+// Top forum posts
 function forumpostertable($res)
 {
     print("<br /><div>");
@@ -161,7 +162,7 @@ function insert_compose_frame($id, $newtopic = true)
     insert_quick_jump_menu();
 }
 
-//LASTEST FORUM POSTS
+// LASTEST FORUM POSTS
 function latestforumposts($sub_id = 0)
 {
     ?>
@@ -265,6 +266,7 @@ function latestforumposts($sub_id = 0)
     print("</div></div></div><br>");
 }
 
+// Get last post info in a array return img & lastpost
 function lastpostdetails($lastpostid)
 {
     $post_res = DB::run("SELECT added,topicid,userid FROM forum_posts WHERE id=$lastpostid");

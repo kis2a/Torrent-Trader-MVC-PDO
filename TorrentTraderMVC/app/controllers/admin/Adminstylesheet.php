@@ -22,14 +22,12 @@ class Adminstylesheet
         if ($_POST['do'] == "add") {
             if ($_POST) {
                 if (empty($_POST['name'])) {
-                    $error .= Lang::T("THEME_NAME_WAS_EMPTY") . "<br />";
+                    Redirect::autolink(URLROOT . "/adminstylesheet/add", Lang::T("THEME_NAME_WAS_EMPTY"));
                 }
                 if (empty($_POST['uri'])) {
-                    $error .= Lang::T("THEME_FOLDER_NAME_WAS_EMPTY");
+                    Redirect::autolink(URLROOT . "/adminstylesheet/add", Lang::T("THEME_FOLDER_NAME_WAS_EMPTY"));
                 }
-                if ($error) {
-                    Redirect::autolink(URLROOT . "/adminstylesheet/add", Lang::T("THEME_NOT_ADDED_REASON") . " $error");
-                }
+
                 if ($qry = DB::run("INSERT INTO stylesheets (name, uri) VALUES (?, ?)", [$_POST["name"], $_POST["uri"]])) {
                     Redirect::autolink(URLROOT . "/adminstylesheet/add", "Theme '" . htmlspecialchars($_POST["name"]) . "' added.");
                 } elseif ($qry->errorCode() == 1062) {

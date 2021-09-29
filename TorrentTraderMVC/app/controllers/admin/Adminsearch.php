@@ -27,7 +27,7 @@ class Adminsearch
                 $res = DB::run("SELECT `id`, `name` FROM `torrents` WHERE `owner` IN ($ids)");
                 while ($row = $res->fetch(PDO::FETCH_LAZY)) {
                     Logs::write("Torrent '$row[1]' (ID: $row[0]) was deleted by $_SESSION[username]");
-                    deletetorrent($row["id"]);
+                    Torrents::deletetorrent($row["id"]);
                 }
             }
             Redirect::autolink(URLROOT . "/adminsearch/simplesearch", "Entries Deleted");

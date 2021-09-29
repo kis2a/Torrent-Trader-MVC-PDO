@@ -154,4 +154,30 @@ class Torrents
         return $row;
     }
 
+
+    // Function To Delete A Torrent
+    public static function deletetorrent($id)
+    {
+        $stmt = DB::run("SELECT image1,image2 FROM torrents WHERE id=$id");
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        foreach (explode(".", "peers.comments.ratings.files") as $x) {
+            DB::run("DELETE FROM $x WHERE torrent = $id");
+        }
+        DB::run("DELETE FROM completed WHERE torrentid = $id");
+        if (file_exists(TORRENTDIR . "/$id.torrent")) {
+            unlink(TORRENTDIR . "/$id.torrent");
+        }
+        if ($row["image1"]) {
+            unlink(TORRENTDIR . "/images/" . $row["image1"]);
+        }
+        if ($row["image2"]) {
+            unlink(TORRENTDIR . "/images/" . $row["image2"]);
+        }
+        @unlink(NFODIR . "/$id.nfo");
+        DB::run("DELETE FROM torrents WHERE id = $id");
+        DB::run("DELETE FROM reports WHERE votedfor = $id AND type = 'torrent'");
+        // snatch
+        DB::run("DELETE FROM `snatched` WHERE `tid` = '$id'");
+    }
+
 }

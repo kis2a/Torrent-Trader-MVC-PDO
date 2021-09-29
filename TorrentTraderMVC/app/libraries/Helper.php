@@ -84,7 +84,7 @@ class Helper
     }
 	
 	// try move message detail array
-    public static function msgdetails($arr = [], $type)
+    public static function msgdetails($type, $arr = [])
     {
         if ($arr["sender"] == $_SESSION['id']) {
             $sender = "Yourself";

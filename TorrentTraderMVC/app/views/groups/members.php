@@ -17,7 +17,7 @@
 <?php
 foreach (range("a", "z") as $l) {
     $L = strtoupper($l);
-    if ($l == $letter) {
+    if ($l == $_GET['letter']) {
         print("<b>$L</b>\n");
     } else {
         print("<a href='".URLROOT."/group/members?letter=$l'><b>$L</b></a>\n");
@@ -25,16 +25,7 @@ foreach (range("a", "z") as $l) {
 }
 print("</p>\n");
 
-$page = (int) (!isset($_GET["page"]) ? 1 : $_GET["page"]);
-if ($page <= 0) {
-    $page = 1;
-}
-
-$per_page = 5; // Set how many records do you want to display per page.
-$startpoint = ($page * $per_page) - $per_page;
-$statement = "`users` ORDER BY `id` ASC"; // Change `users` & 'id' according to your table name.
-$results = Groups::getGroupsearch($data['query1'], $startpoint, $per_page);
-if ($results->rowCount()) { ?>
+if ($data['results']->rowCount()) { ?>
     <br />
     <div class='table-responsive'> <table class='table table-striped'><thead>
     <tr><thead><tr>
@@ -45,7 +36,7 @@ if ($results->rowCount()) { ?>
     <th><?php echo Lang::T("COUNTRY") ?></th>
     </tr></thead>
     <?php
-    while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+    while ($row = $data['results']->fetch(PDO::FETCH_ASSOC)) {
         $country = Countries::showflag($row['country']);
         ?>
         <tbody><tr>
@@ -63,5 +54,5 @@ if ($results->rowCount()) { ?>
 } else { ?>
     No records are found.
     <?php
-} ?>
-<?php echo pagination($statement, $per_page, $page, $url = '?'); ?>
+}
+echo $data['pagerbottom'];

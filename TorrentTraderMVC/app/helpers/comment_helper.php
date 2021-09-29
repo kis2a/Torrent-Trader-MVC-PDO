@@ -3,7 +3,6 @@
 function commenttable($res, $type = null)
 {
     while ($row = $res->fetch(PDO::FETCH_LAZY)) {
-
         $postername = Users::coloredname($row["username"]);
         if ($postername == "") {
             $postername = Lang::T("DELUSER");

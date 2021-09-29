@@ -43,8 +43,7 @@ class Countries
 
     public static function showflag($country)
     {
-        $cres = DB::run("
-    SELECT name,flagpic FROM countries WHERE id=?", [$country]);
+        $cres = DB::run("SELECT name,flagpic FROM countries WHERE id=?", [$country]);
         if ($carr = $cres->fetch(PDO::FETCH_ASSOC)) {
             return $country = "<img src='" . URLROOT . "/assets/images/languages/$carr[flagpic]' title='" . htmlspecialchars($carr['name']) . "' alt='" . htmlspecialchars($carr['name']) . "' />";
         } else {

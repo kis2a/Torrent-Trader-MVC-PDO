@@ -13,13 +13,9 @@ class Adminlog
         if ($search != '') {
             $where = "WHERE txt LIKE " . sqlesc("%$search%") . "";
         }
-        $res2 = DB::run("SELECT COUNT(*) FROM log $where");
-        $row = $res2->fetch(PDO::FETCH_LAZY);
-        $count = $row[0];
-        $perpage = 50;
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "/adminlog?");
-        $rqq = "SELECT id, added, txt FROM log $where ORDER BY id DESC $limit";
-        $res = DB::run($rqq);
+        $count = Logs::countWhere($where);
+        list($pagertop, $pagerbottom, $limit) = pager(50, $count, URLROOT."/adminlog?");
+        $res = Logs::getAll($where, $limit);
 
         $data = [
             'title' => Lang::T("Site Log"),
@@ -30,20 +26,18 @@ class Adminlog
     }
 
     public function delete() {
-        if ($_POST['del']) {
-            if ($_POST["delall"]) {
-                DB::run("DELETE FROM `log`");
-            } else {
-                if (!@count($_POST["del"])) {
-                    Redirect::autolink(URLROOT."/adminlog", Lang::T("NOTHING_SELECTED"));
-                }
-                $ids = array_map("intval", $_POST["del"]);
-                $ids = implode(", ", $ids);
-                DB::run("DELETE FROM `log` WHERE `id` IN ($ids)");
+        if ($_POST["delall"]) {
+            DB::run("DELETE FROM `log`");
+        } else {
+            if (!@count($_POST["del"])) {
+                Redirect::autolink(URLROOT."/adminlog", Lang::T("NOTHING_SELECTED"));
             }
-            Redirect::autolink(URLROOT . "/adminlog", Lang::T("CP_DELETED_ENTRIES"));
-            die;
+            $ids = array_map("intval", $_POST["del"]);
+            $ids = implode(", ", $ids);
+            DB::run("DELETE FROM `log` WHERE `id` IN ($ids)");
         }
+        Redirect::autolink(URLROOT . "/adminlog", Lang::T("CP_DELETED_ENTRIES"));
+        die;
     }
 
 }
