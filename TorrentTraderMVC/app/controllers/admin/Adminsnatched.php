@@ -28,7 +28,7 @@ class Adminsnatched
             $res = DB::run($sql);
             $title = "List of Hit and Run";
 
-            require APPROOT . '/views/admin/header.php';
+            require APPROOT . '/views/admin/admininc/header.php';
             Style::adminnavmenu();
             $data = [
                 'count' => $count,
@@ -36,15 +36,15 @@ class Adminsnatched
                 'pagerbottom' => $pagerbottom,
                 'res' => $res,
             ];
-            View::render('snatched/admin/hitnrun', $data);
-            require APPROOT . '/views/admin/footer.php';
+            View::render('snatched/hitnrun', $data);
+            require APPROOT . '/views/admin/admininc/footer.php';
         } else {
-            require APPROOT . '/views/admin/header.php';
+            require APPROOT . '/views/admin/admininc/header.php';
             Style::adminnavmenu();
             Style::begin($data['title']);
             print '<b><center>Hit & Run Disabled in Config.php (mod in progress)</center></b>';
             Style::end();
-            require APPROOT . '/views/admin/footer.php';
+            require APPROOT . '/views/admin/admininc/footer.php';
         }
     }
 

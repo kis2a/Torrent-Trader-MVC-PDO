@@ -3,8 +3,8 @@
 function forumheader($location, $subforum = '', $subforumid = 0)
 {
     echo "<div>
-    <img src='" . URLROOT . "/assets/images/forum/help.png'  alt='' />&nbsp;<a href='" . URLROOT . "/faq'>" . Lang::T("FORUM_FAQ") . "</a>&nbsp; &nbsp;&nbsp;
-    <img src='" . URLROOT . "/assets/images/forum/search.png' alt='' />&nbsp;<a href='" . URLROOT . "/forums/search'>" . Lang::T("SEARCH") . "</a>&nbsp; &nbsp;
+    <i class='fa fa-question tticon' title='Help'></i>&nbsp;<a href='" . URLROOT . "/faq'>" . Lang::T("FORUM_FAQ") . "</a>&nbsp; &nbsp;&nbsp;
+    <i class='fa fa-search tticon' title='Search'></i>&nbsp;<a href='" . URLROOT . "/forums/search'>" . Lang::T("SEARCH") . "</a>&nbsp; &nbsp;
     <b>" . Lang::T("FORUM_CONTROL") . "</b>
     &middot; <a href='" . URLROOT . "/forums/viewunread'>" . Lang::T("FORUM_NEW_POSTS") . "</a>
     &middot; <a href='" . URLROOT . "/forums?do=catchup'>" . Lang::T("FORUM_MARK_READ") . "</a>
@@ -289,9 +289,9 @@ function lastpostdetails($lastpostid)
         }
         //define the images for new posts or not on index
         if ($a && $a['lastpostread'] == $lastpostid) {
-            $img = "folder";
+            $img = "<i class='fa fa-file-text tticon' title='Read'></i>";
         } else {
-            $img = "folder_new";
+            $img = "<i class='fa fa-file-text tticon-red' title='UnRead'></i>";
         }
     } else {
         $lastpost = "<span class='small'>No Posts</span>";

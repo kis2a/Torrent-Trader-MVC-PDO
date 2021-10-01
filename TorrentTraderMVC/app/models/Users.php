@@ -172,7 +172,7 @@ class Users
         if ($classy) {
             $gcolor = $classy['Color'];
             if ($classy['donated'] > 0) {
-                $star = "<img src='" . URLROOT . "/assets/images/donor.png' alt='donated' border='0' width='15' height='15'>";
+                $star = "<i class='fa fa-star' aria-hidden='true' style='color:orange' title='Donated'></i>";
             } else {
                 $star = "";
             }

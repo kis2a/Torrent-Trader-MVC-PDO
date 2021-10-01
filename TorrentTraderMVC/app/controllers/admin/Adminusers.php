@@ -17,7 +17,7 @@ class Adminusers
         $data = [
             'title' => 'Add User',
         ];
-        View::render('user/admin/adduser', $data, 'admin');
+        View::render('user/adduser', $data, 'admin');
     }
 
     public function addeduserok()
@@ -56,7 +56,7 @@ class Adminusers
             'title' => 'Where are members',
             'res' => $res,
         ];
-        View::render('user/admin/whoswhere', $data, 'admin');
+        View::render('user/whoswhere', $data, 'admin');
     }
 
     public function privacy()
@@ -88,7 +88,7 @@ class Adminusers
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        View::render('user/admin/privacylevel', $data, 'admin');
+        View::render('user/privacylevel', $data, 'admin');
     }
 
     public function duplicateip()
@@ -102,7 +102,7 @@ class Adminusers
             'num' => $num,
             'res' => $res,
         ];
-        View::render('user/admin/duplicuteip', $data, 'admin');
+        View::render('user/duplicuteip', $data, 'admin');
     }
 
     public function confirm()
@@ -131,7 +131,7 @@ class Adminusers
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        View::render('user/admin/confirmreg', $data, 'admin');
+        View::render('user/confirmreg', $data, 'admin');
     }
 
     public function cheats()
@@ -139,7 +139,7 @@ class Adminusers
         $data = [
             'title' => Lang::T("Possible Cheater Detection"),
         ];
-        View::render('user/admin/cheatform', $data, 'admin');
+        View::render('user/cheatform', $data, 'admin');
     }
 
     public function result()
@@ -160,7 +160,7 @@ class Adminusers
                     'zerofix' => $zerofix,
                     'message' => $message
                     ];
-                    View::render('user/admin/cheatresult', $data, 'admin');
+                    View::render('user/cheatresult', $data, 'admin');
             } else {
                 Redirect::autolink(URLROOT . '/adminusers/cheats', $message);
                 die;
@@ -170,7 +170,7 @@ class Adminusers
             $data = [
             'title' => Lang::T("Possible Cheater Detection"),
             ];
-            View::render('user/admin/cheatform', $data, 'admin');
+            View::render('user/cheatform', $data, 'admin');
         }
     }
 }

@@ -13,7 +13,7 @@ class Adminfaq
             'title' => Lang::T("FAQ_MANAGEMENT"),
             'faq_categ' => $faq_categ,
         ];
-        View::render('faq/admin/manage', $data, 'admin');
+        View::render('faq/index', $data, 'admin');
     }
 
     public function reorder()
@@ -48,7 +48,7 @@ class Adminfaq
         $data = [
             'title' => Lang::T("FAQ_MANAGEMENT"),
         ];
-        View::render('faq/admin/newsection', $data, 'admin');
+        View::render('faq/newsection', $data, 'admin');
     }
 
     public function additem()
@@ -68,7 +68,7 @@ class Adminfaq
             'title' => Lang::T("FAQ_MANAGEMENT"),
             'res' => $res
         ];
-        View::render('faq/admin/newitem', $data, 'admin');
+        View::render('faq/newitem', $data, 'admin');
     }
 
     public function edit()
@@ -94,7 +94,7 @@ class Adminfaq
             'res' => $res,
             'res2' => $res2,
         ];
-        View::render('faq/admin/edit', $data, 'admin');
+        View::render('faq/edit', $data, 'admin');
     }
 
 }

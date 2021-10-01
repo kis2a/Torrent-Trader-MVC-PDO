@@ -5,10 +5,10 @@ Style::begin($title);
     <thead><tr>
     <th>Rank</th>
     <th>Name</th>
-    <th><img src="<?php echo URLROOT; ?>/assets/images/check.png" border=0 title=Completed></th>
+    <th><i class='fa fa-check tticon' title='Completed'></i></th>
     <th>Traffic</th>
-    <th><img src="<?php echo URLROOT; ?>/assets/images/seed.gif" border=0 title=Seeders></th>
-    <th><img src="<?php echo URLROOT; ?>/assets/images/leech.gif" border=0 title=Leechers></th>
+    <th><i class='fa fa-upload tticon' title='<?php echo Lang::T("SEEDING"); ?>'></th>
+    <th><i class='fa fa-downloadload tticon' title='<?php echo Lang::T("LEECHERS"); ?>'></i></th>
     <th>Total</th>
     <th>Ratio</th>
     </tr></thead>

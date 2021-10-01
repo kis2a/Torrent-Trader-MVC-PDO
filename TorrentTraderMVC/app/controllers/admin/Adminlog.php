@@ -22,7 +22,7 @@ class Adminlog
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        View::render('log/admin/sitelog', $data, 'admin');
+        View::render('log/index', $data, 'admin');
     }
 
     public function delete() {

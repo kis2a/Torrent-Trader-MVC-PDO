@@ -12,7 +12,7 @@
                     <div class="card-img">
                         <?php
                         if ($row["image1"] == 1){
-                            $img = "".URLROOT."/assets/images/default_avatar.png";
+                            $img = "".URLROOT."/assets/images/misc/default_avatar.png";
                         } elseif ($row["image1"] != ""){
                             $img = data_uri(TORRENTDIR."/images/".$row["image1"], $row['image1']);
                         }

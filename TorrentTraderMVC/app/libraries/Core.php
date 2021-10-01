@@ -10,13 +10,13 @@ class Core
     {
         $url = $this->getUrl();
         // Look in controllers folder for controller
-        if (file_exists('../app/controllers/' . @ucwords($url[0]) . '.php')) {
+        if (file_exists('../app/controllers/user/' . @ucwords($url[0]) . '.php')) {
             // If exists, set as controller
             $this->currentController = ucwords($url[0]);
             // Unset 0 index
             unset($url[0]);
             // Require the current controller
-            require_once '../app/controllers/' . $this->currentController . '.php';
+            require_once '../app/controllers/user/' . $this->currentController . '.php';
         }
         if (file_exists('../app/controllers/admin/' . @ucwords($url[0]) . '.php')) {
             // If exists, set as controller
@@ -26,7 +26,7 @@ class Core
             // Require the current controller
             require_once '../app/controllers/admin/' . $this->currentController . '.php';
         } else {
-            require_once '../app/controllers/' . $this->currentController . '.php';
+            require_once '../app/controllers/user/' . $this->currentController . '.php';
         }
         
 

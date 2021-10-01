@@ -29,13 +29,13 @@ if (Users::has('loggedin') === true && Users::has("edit_users") == "yes") {
     ?>
 	<ul class="list-unstyled">
 	<p><strong><?php echo Lang::T("TORRENTS"); ?></strong></p>
-	<li><i class="fa fa-folder-open-o"></i> <?php echo Lang::T("TRACKING"); ?>: <strong><?php echo $ntor; ?> <?php echo Lang::N("TORRENT", $ntor); ?></strong></li>
-	<li><i class="fa fa-calendar-o"></i> <?php echo Lang::T("NEW_TODAY"); ?>: <strong><?php echo $todaytor; ?></strong></li>
-	<li><i class="fa fa-refresh"></i> <?php echo Lang::T("SEEDERS"); ?>: <strong><?php echo number_format($seeders); ?></strong></li>
-	<li><i class="fa fa-arrow-circle-down"></i> <?php echo Lang::T("LEECHERS"); ?>: <strong><?php echo number_format($leechers); ?></strong></li>
-	<li><i class="fa fa-arrow-circle-up"></i> <?php echo Lang::T("PEERS"); ?>: <strong><?php echo number_format($localpeers); ?></strong></li>
-	<li><i class="fa fa-download"></i> <?php echo Lang::T("DOWNLOADED"); ?>: <strong><span class="label label-danger"><?php echo mksize($totaldownloaded); ?></span></strong></li>
-	<li><i class="fa fa-upload"></i> <?php echo Lang::T("UPLOADED"); ?>: <strong><span class="label label-success"><?php echo mksize($totaluploaded); ?></span></strong></li>
+	<li><i class="fa fa-folder-open-o tticon"></i> <?php echo Lang::T("TRACKING"); ?>: <strong><?php echo $ntor; ?> <?php echo Lang::N("TORRENT", $ntor); ?></strong></li>
+	<li><i class="fa fa-calendar-o tticon"></i> <?php echo Lang::T("NEW_TODAY"); ?>: <strong><?php echo $todaytor; ?></strong></li>
+	<li><i class="fa fa-refresh tticon"></i> <?php echo Lang::T("SEEDERS"); ?>: <strong><?php echo number_format($seeders); ?></strong></li>
+	<li><i class="fa fa-arrow-circle-down tticon"></i> <?php echo Lang::T("LEECHERS"); ?>: <strong><?php echo number_format($leechers); ?></strong></li>
+	<li><i class="fa fa-arrow-circle-up tticon"></i> <?php echo Lang::T("PEERS"); ?>: <strong><?php echo number_format($localpeers); ?></strong></li>
+	<li><i class="fa fa-download tticon"></i> <?php echo Lang::T("DOWNLOADED"); ?>: <strong><span class="label label-danger"><?php echo mksize($totaldownloaded); ?></span></strong></li>
+	<li><i class="fa fa-upload tticon"></i> <?php echo Lang::T("UPLOADED"); ?>: <strong><span class="label label-success"><?php echo mksize($totaluploaded); ?></span></strong></li>
 	<hr />
 	<p><strong><?php echo Lang::T("MEMBERS"); ?></strong></p>
 	<li><?php echo Lang::T("WE_HAVE"); ?>: <strong><?php echo $registered; ?> <?php echo Lang::N("MEMBER", $registered); ?></strong></li>
@@ -57,8 +57,8 @@ if (Users::has("edit_users") == "no") {
 	?>
     <ul class="list-unstyled">
 	<p><strong><?php echo Lang::T("TORRENTS"); ?></strong></p>
-	<li><i class="fa fa-folder-open-o"></i> <?php echo Lang::T("TRACKING"); ?>: <strong><?php echo $ntor; ?> <?php echo Lang::N("TORRENT", $ntor); ?></strong></li>
-	<li><i class="fa fa-calendar-o"></i> <?php echo Lang::T("NEW_TODAY"); ?>: <strong><?php echo $todaytor; ?></strong></li>
+	<li><i class="fa fa-folder-open-o tticon"></i> <?php echo Lang::T("TRACKING"); ?>: <strong><?php echo $ntor; ?> <?php echo Lang::N("TORRENT", $ntor); ?></strong></li>
+	<li><i class="fa fa-calendar-o tticon"></i> <?php echo Lang::T("NEW_TODAY"); ?>: <strong><?php echo $todaytor; ?></strong></li>
     </ul>
 	<?php
 	Style::block_end();

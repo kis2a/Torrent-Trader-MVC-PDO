@@ -58,7 +58,7 @@ class Adminreports
             'res' => $res,
             'page' => $page,
         ];
-        View::render('report/admin/index', $data, 'admin');
+        View::render('report/index', $data, 'admin');
     }
 
     public function completed()

@@ -31,7 +31,7 @@ class Adminbonus
             'limit' => $limit,
 			'res' => $res,
         ];
-        View::render('bonus/admin/seedbonus', $data, 'admin');
+        View::render('bonus/seedbonus', $data, 'admin');
     }
 
     public function change()
@@ -60,7 +60,7 @@ class Adminbonus
             'title' => Lang::T("Seedbonus Manager"),
             'row' => $row,
         ];
-        View::render('bonus/admin/seedbonuschange', $data, 'admin');
+        View::render('bonus/seedbonuschange', $data, 'admin');
     }
 
 }

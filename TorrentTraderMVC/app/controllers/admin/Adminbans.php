@@ -52,7 +52,7 @@ class Adminbans
             'pagertop' => $pagertop,
             'res' => $res,
         ];
-        View::render('bans/admin/ip', $data, 'admin');
+        View::render('bans/ip', $data, 'admin');
     }
 
     public function email()
@@ -79,7 +79,7 @@ class Adminbans
         }
 
         $count = DB::run("SELECT count(id) FROM email_bans")->fetchColumn();
-        list($pagertop, $pagerbottom, $limit) = pager(40, $count, URLROOT . "/admin/emailbans?");
+        list($pagertop, $pagerbottom, $limit) = pager(40, $count, URLROOT . "/adminbans/email?");
         $res = DB::run("SELECT * FROM email_bans ORDER BY added DESC $limit");
 
         $title = Lang::T("EMAIL_BANS");
@@ -91,7 +91,7 @@ class Adminbans
             'pagerbottom' => $pagerbottom,
             'limit' => $limit,
         ];
-        View::render('bans/admin/email', $data, 'admin');
+        View::render('bans/email', $data, 'admin');
     }
 
     public function torrent()
@@ -108,7 +108,7 @@ class Adminbans
             'pagertop' => $pagertop,
             'resqq' => $resqq,
         ];
-        View::render('bans/admin/torrents', $data, 'admin');
+        View::render('bans/torrents', $data, 'admin');
     }
 
 }

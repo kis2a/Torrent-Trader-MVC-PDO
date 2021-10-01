@@ -60,7 +60,7 @@ for ($i = 0; $i < $data['num']; ++$i) {
     <td class=table_col2><a href=".URLROOT."/request/votesview?requestid=$arr[id]><b>$arr[hits]</b></a></td>
     <td class=table_col1 align=center><a href=".URLROOT."/request/reqdetails?id=$arr[id]><b>" . $arr["comments"] . "");
     if ($_SESSION['id'] == $arr['userid'] || $_SESSION["class"] > 5) {
-        print("<td class=table_col1><input type=\"checkbox\" name=\"delreq[]\" value=\"" . $arr['id'] . "\" />&nbsp;<a href='".URLROOT."/request/edit?id=$arr[id]'><img src='".URLROOT."/assets/images/requests/edit.png' title=" . Lang::T("EDIT") . " alt=" . Lang::T("EDIT") . "></a></td>");
+        print("<td class=table_col1><input type=\"checkbox\" name=\"delreq[]\" value=\"" . $arr['id'] . "\" />&nbsp;<a href='".URLROOT."/request/edit?id=$arr[id]'><i class='fa fa-pencil tticon' title=" . Lang::T("EDIT") . "></i></a></td>");
     } else {
         print("<td class=table_col1>&nbsp;</td>");
     }

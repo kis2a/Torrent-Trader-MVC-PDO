@@ -10,7 +10,7 @@ class Adminbackup
     public function index()
     {
         $title = "Back ups";
-        require APPROOT . '/views/admin/header.php';
+        require APPROOT . '/views/admin/admininc/header.php';
         Style::adminnavmenu();
         Style::begin("Backups");
         $Namebk = array();
@@ -51,7 +51,7 @@ class Adminbackup
             echo ("<td>" . $Sizebk[$x] . " KByte</td>"); // Size
             echo ("<td>" . $data[0] . "</td>"); // Hash
             echo ("<td><a href='" . URLROOT . "/backups/" . $Namebk[$x] . ".sql'>SQL</a> - <a href='" . URLROOT . "/backups/" . $Namebk[$x] . ".sql.gz'>GZ</a></td>"); // Download
-            echo ("<td><a href='" . URLROOT . "/adminbackup/delete?filename=" . $Namebk[$x] . ".sql'><img src='assets/images/delete.png'></a></td>"); // Delete
+            echo ("<td><a href='" . URLROOT . "/adminbackup/delete?filename=" . $Namebk[$x] . ".sql'><i class='fa fa-trash-o tticon-red' title='Delete'></i></a></td>"); // Delete
             echo ("</tr>"); // End table row
         }
         // CLOSE TABLE
@@ -59,7 +59,7 @@ class Adminbackup
         // CREATE BACKUP LINK
         echo ("<br><br><center><a href='" . URLROOT . "/adminbackup/submit'>Backup Database</a> (or create a CRON task on " . URLROOT . "/adminbackup/submit)</center>");
         Style::end();
-        require APPROOT . '/views/admin/footer.php';
+        require APPROOT . '/views/admin/admininc/footer.php';
     }
 
     public function delete()

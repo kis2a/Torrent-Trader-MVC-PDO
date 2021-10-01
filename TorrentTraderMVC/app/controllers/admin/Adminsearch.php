@@ -48,7 +48,7 @@ class Adminsearch
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        View::render('user/admin/simpleusersearch', $data, 'admin');
+        View::render('search/simpleusersearch', $data, 'admin');
     }
 
     public function advancedsearch()
@@ -123,10 +123,10 @@ class Adminsearch
         }
 
         $title = Lang::T("ADVANCED_USER_SEARCH");
-        require APPROOT . '/views/admin/header.php';
+        require APPROOT . '/views/admin/admininc/header.php';
         Style::adminnavmenu();
-        require APPROOT . '/views/user/admin/advancedsearch.php';
-        require APPROOT . '/views/admin/footer.php';
+        require APPROOT . '/views/admin/search/advancedsearch.php';
+        require APPROOT . '/views/admin/admininc/footer.php';
     }
 
 }

@@ -15,7 +15,7 @@ class Admintorrentlang
             'title' => $title,
             'sql' => $sql,
         ];
-        View::render('torrentlang/torrentlangview', $data, 'admin');
+        View::render('torrentlang/index', $data, 'admin');
     }
 
     public function edit()
@@ -47,7 +47,7 @@ class Admintorrentlang
                 'id' => $id,
                 'res' => $res,
             ];
-            View::render('torrentlang/torrentlangedit', $data, 'admin');
+            View::render('torrentlang/edit', $data, 'admin');
         }
     }
 
@@ -68,7 +68,7 @@ class Admintorrentlang
                 'title' => $title,
                 'id' => $id,
             ];
-            View::render('torrentlang/torrentlangdelete', $data, 'admin');
+            View::render('torrentlang/delete', $data, 'admin');
         }
     }
 
@@ -97,7 +97,7 @@ class Admintorrentlang
         $data = [
             'title' => $title,
         ];
-        View::render('torrentlang/torrentlangadd', $data, 'admin');
+        View::render('torrentlang/add', $data, 'admin');
     }
 
 }

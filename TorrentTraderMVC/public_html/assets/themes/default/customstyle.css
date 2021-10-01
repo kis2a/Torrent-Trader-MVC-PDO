@@ -69,6 +69,16 @@ html, body {
     border-image-source: linear-gradient(to bottom, #3895D3, #8cc6ec) !important;
 }
 
+.tticon {
+	color: #fff !important;
+    padding: .075rem .25rem;
+}
+
+.tticon-red {
+	color: #ff0000 !important;
+    padding: .075rem .25rem;
+}
+
 .ttbtn {
 	color: #fff !IMPORTANT;
 	background-image: -webkit-linear-gradient(top, #072F5F, #3895D3) !IMPORTANT;
@@ -196,6 +206,9 @@ button, input, optgroup, select, textarea {
     color: #a7cdf5;	
 }
 
+.block-footer {
+    height: 5px !important;
+}
 
 @media (max-width: 767px) {
     .carousel-inner .carousel-item > div {

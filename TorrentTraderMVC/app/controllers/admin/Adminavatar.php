@@ -19,7 +19,7 @@ class Adminavatar
             'res' => $res,
             'pagerbottom' => $pagerbottom,
         ];
-        View::render('user/admin/avatar', $data, 'admin');
+        View::render('avatar/index', $data, 'admin');
     }
 
 }

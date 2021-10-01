@@ -17,7 +17,7 @@ class Adminmessages
             'title' => Lang::T("Message Spy"),
             'res' => $res,
         ];
-        View::render('message/admin/spypm', $data, 'admin');
+        View::render('message/spypm', $data, 'admin');
     }
 
     public function delete()
@@ -42,7 +42,7 @@ class Adminmessages
             'title' => Lang::T("Mass Private Message"),
             'res' => $res,
         ];
-        View::render('message/admin/masspm', $data, 'admin');
+        View::render('message/masspm', $data, 'admin');
     }
     
     public function send()

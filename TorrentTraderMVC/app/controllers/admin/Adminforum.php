@@ -14,7 +14,7 @@ class Adminforum
             'title' => Lang::T("FORUM_MANAGEMENT"),
             'groupsres' => $groupsres,
         ];
-        View::render('forum/admin/index', $data, 'admin');
+        View::render('forum/index', $data, 'admin');
     }
 
     public function addcat()
@@ -54,7 +54,7 @@ class Adminforum
             'catid' => $v['id'],
             'name' => $v['name'],
         ];
-        View::render('forum/admin/deletecat', $data, 'admin');
+        View::render('forum/deletecat', $data, 'admin');
     }
 
     public function deleteforumcat()
@@ -86,7 +86,7 @@ class Adminforum
             'sort' => $r['sort'],
             'name' => $r['name'],
         ];
-        View::render('forum/admin/editcat', $data, 'admin');
+        View::render('forum/editcat', $data, 'admin');
     }
 
     public function saveeditcat()
@@ -147,7 +147,7 @@ class Adminforum
             'catid' => $v['sort'],
             'name' => $v['name'],
         ];
-        View::render('forum/admin/deleteforum', $data, 'admin');
+        View::render('forum/deleteforum', $data, 'admin');
     }
 
     public function deleteforumok()
@@ -178,7 +178,7 @@ class Adminforum
             'guest_read' => $r['guest_read'],
             'query' => $query,
         ];
-        View::render('forum/admin/editforum', $data, 'admin');
+        View::render('forum/editforum', $data, 'admin');
     }
 
     public function saveeditforum()

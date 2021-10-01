@@ -22,7 +22,7 @@ class Adminshoutbox
         $data = [
             'title' => 'Staff Chat',
         ];
-        View::render('shoutbox/admin/staffbox', $data, 'admin');
+        View::render('shoutbox/index', $data, 'admin');
     }
 
     public function loadchat()
@@ -39,16 +39,16 @@ class Adminshoutbox
             if (!empty($av)) {
                 $av = "<img src='" . $ol3['avatar'] . "' alt='my_avatar' width='20' height='20'>";
             } else {
-                $av = "<img src='" . URLROOT . "/assets/images/default_avatar.png' alt='my_avatar' width='20' height='20'>";
+                $av = "<img src='" . URLROOT . "/assets/images/misc/default_avatar.png' alt='my_avatar' width='20' height='20'>";
             }
             if ($row['userid'] == 0) {
-                $av = "<img src='" . URLROOT . "/assets/images/default_avatar.png' alt='default_avatar' width='20' height='20'>";
+                $av = "<img src='" . URLROOT . "/assets/images/misc/default_avatar.png' alt='default_avatar' width='20' height='20'>";
             }
             ?>
             
             <tr>
             <td class="shouttable">
-            <small class="pull-left time d-none d-sm-block" style="width:99px;font-size:11px"><i class="fa fa-clock-o"></i>&nbsp;<?php echo date('jS M,  g:ia', TimeDate::utc_to_tz_time($row['date'])); ?></small>
+            <small class="pull-left time d-none d-sm-block" style="width:99px;font-size:11px"><i class="fa fa-clock-o tticon"></i>&nbsp;<?php echo date('jS M,  g:ia', TimeDate::utc_to_tz_time($row['date'])); ?></small>
             </td>
             <td class="shouttable">
             <a class="pull-left d-none d-sm-block" href="#"><?php echo $av ?></a>
@@ -59,13 +59,13 @@ class Adminshoutbox
             <?php echo nl2br(format_comment($row['message'])); ?>
             <?php
             if ($_SESSION["edit_users"]=="yes") {
-                echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove' aria-hidden='true'></i></a>&nbsp";
-                echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=" . $row['msgid'] . "''><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
+                echo "&nbsp<a href='" . URLROOT . "/shoutbox/delete?id=" . $row['msgid'] . "''><i class='fa fa-remove tticon'></i></a>&nbsp";
+                echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=" . $row['msgid'] . "''><i class='fa fa-pencil tticon'></i></a>&nbsp";
             }
             if ($_SESSION["edit_users"]=="no" && $_SESSION['username'] == $row['user']) {
                 $ts = TimeDate::modify('date', $row['date'], "+1 day");
                 if ($ts > TT_DATE) {
-                echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=$row[msgid]&user=$row[userid]'><i class='fa fa-pencil' aria-hidden='true'></i></a>&nbsp";
+                echo "&nbsp<a href='" . URLROOT . "/shoutbox/edit?id=$row[msgid]&user=$row[userid]'><i class='fa fa-pencil tticon'></i></a>&nbsp";
                 }
             } ?>
             </td>
@@ -107,7 +107,7 @@ class Adminshoutbox
         $data = [
             'title' => Lang::T("CLEAR_SHOUTBOX"),
         ];
-        View::render('shoutbox/admin/clear', $data, 'admin');
+        View::render('shoutbox/clear', $data, 'admin');
     }
 
 }

@@ -21,7 +21,7 @@ class Admincensor
               'title' => Lang::T("Censor"),
               'sres' => $sres,
             ];
-            View::render('censor/admin/oldcensor', $data, 'admin');
+            View::render('censor/oldcensor', $data, 'admin');
         } else {
             $to = isset($_GET["to"]) ? htmlentities($_GET["to"]) : $to = '';
             switch ($to) {
@@ -43,7 +43,7 @@ class Admincensor
                       'title' => Lang::T("Censor"),
                       'badwords' => $badwords,
                     ];
-                    View::render('censor/admin/newcensor', $data, 'admin');
+                    View::render('censor/newcensor', $data, 'admin');
                     break;
             }
         }

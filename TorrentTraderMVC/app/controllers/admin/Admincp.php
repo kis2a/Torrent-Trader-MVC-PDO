@@ -13,7 +13,7 @@ class Admincp
             'title1' => 'Staff Panel',
             'title' => 'Staff Chat',
             ];
-        View::render('admin/index', $data, 'admin');
+        View::render('admininc/index', $data, 'admin');
     }
     
 }

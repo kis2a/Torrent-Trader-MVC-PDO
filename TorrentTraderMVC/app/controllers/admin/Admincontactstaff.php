@@ -13,7 +13,7 @@ class Admincontactstaff
             'title' => 'Staff PMs',
             'res' => $res,
         ];
-        View::render('contactstaff/admin/staff', $data, 'admin');
+        View::render('contactstaff/index', $data, 'admin');
     }
 
     public function viewpm()
@@ -59,7 +59,7 @@ class Admincontactstaff
             'iidee' => $iidee,
             'id' => $arr4["id"],
         ];
-        View::render('contactstaff/admin/viewpm', $data, 'admin');
+        View::render('contactstaff/viewpm', $data, 'admin');
     }
 
     public function reply()
@@ -78,7 +78,7 @@ class Admincontactstaff
             'answeringto' => $answeringto,
             'receiver' => $receiver,
         ];
-        View::render('contactstaff/admin/reply', $data, 'admin');
+        View::render('contactstaff/reply', $data, 'admin');
     }
 
     public function takeanswer()
@@ -146,7 +146,7 @@ class Admincontactstaff
             'sender' => $sender,
             'answeredby' => $answeredby,
         ];
-        View::render('contactstaff/admin/viewanswer', $data, 'admin');
+        View::render('contactstaff/viewanswer', $data, 'admin');
     }
 
     public function deletestaffmessage()

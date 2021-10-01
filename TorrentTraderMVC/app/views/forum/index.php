@@ -82,7 +82,7 @@ if ($_SESSION['class'] < $forums_arr["minclassread"] && $forums_arr["guest_read"
 
     <div class="row border ttborder">
     <div class="col-md-8">
-        <img src='<?php echo URLROOT; ?>/assets/images/forum/<?php echo $detail['img']; ?>.png'>&nbsp;
+        <?php echo $detail['img']; ?>&nbsp;
         <a href='<?php echo URLROOT; ?>/forums/viewforum&amp;forumid=<?php echo $forumid; ?>'><b><?php echo $forumname; ?></b></a><br>
         <small>- <?php echo $forumdescription; ?></small>
         </div>
@@ -114,10 +114,10 @@ foreach ($testz as $testy) {
 </div>
 
 <div container><br>
-<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_new.png' style='margin: 5px' alt='' />New posts &nbsp;
-<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder.png' style='margin: 5px' alt='' />No New posts &nbsp;
-<td><img src='<?php echo URLROOT; ?>/assets/images/forum/folder_locked.png' style='margin: 5px' alt='' /><?php echo Lang::T("FORUMS_LOCKED"); ?> topic &nbsp;
-<img src='<?php echo URLROOT; ?>/assets/images/forum/folder_sticky.png' style='margin: 5px' alt='' /><?php echo Lang::T("FORUMS_STICKY"); ?> topic
+<td><i class='fa fa-file-text tticon-red' title='UnRead'></i>&nbsp;New posts &nbsp;
+<td><i class='fa fa-file-text tticon' title='Read'></i>&nbsp;No New posts &nbsp;
+<td><i class='fa fa-lock tticon' title='Lock Topic'></i>&nbsp;<?php echo Lang::T("FORUMS_LOCKED"); ?>&nbsp;
+<i class='fa fa-exclamation tticon' title='<?php echo Lang::T("FORUMS_STICKY"); ?>'></i>&nbsp;<?php echo Lang::T("FORUMS_STICKY"); ?>
 </div>
 
 <center>Our members have made <?php echo $data['postcount']; ?> posts in  <?php echo $data['topiccount']; ?> topics</center>

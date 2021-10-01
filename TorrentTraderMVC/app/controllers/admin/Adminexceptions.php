@@ -29,7 +29,7 @@ class Adminexceptions
             'filecontents' => $filecontents,
             'errorlog' => $errorlog,
         ];
-        View::render('error/admin/admin', $data, 'admin');
+        View::render('exception/index', $data, 'admin');
     }
 
 }

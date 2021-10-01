@@ -19,7 +19,7 @@ class Adminpeers
             'pagerbottom' => $pagerbottom,
             'result' => $result
         ];
-        View::render('peers/admin/index', $data, 'admin');
+        View::render('peers/index', $data, 'admin');
    }
 
 }

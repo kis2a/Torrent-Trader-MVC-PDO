@@ -35,9 +35,9 @@ torrentmenu($data['id'], $torr['external']);
             $data1 = DB::run("SELECT user FROM likes WHERE liked=? AND type=? AND user=? AND reaction=?", [$torr['id'], 'torrent', $_SESSION['id'], 'like']);
             $likes = $data1->fetch(PDO::FETCH_ASSOC);
             if ($likes) { ?>
-                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=unliketorrent'><img src='<?php echo URLROOT; ?>/assets/images/unlike.png' width='80' height='40' border='0'></a><br><?php
+                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=unliketorrent'><i class='fa fa-thumbs-up tticon' title='Like'></i></a><br><?php
             } else {?>
-                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=liketorrent'><img src='<?php echo URLROOT; ?>/assets/images/like.png' width='80' height='40' border='0'></a><br><?php
+                <b>Reaction:</b>&nbsp;<a href='<?php echo URLROOT; ?>/likes?id=<?php echo $torr['id']; ?>&type=liketorrent'><i class='fa fa-thumbs-up tticon' title='Like'></i></a><br><?php
             }
         }
         if (Config::TT()['ALLOWLIKES']) {

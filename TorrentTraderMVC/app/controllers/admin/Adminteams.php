@@ -14,7 +14,7 @@ class Adminteams
             'title' => Lang::T("TEAMS_MANAGEMENT"),
             'sql' => $sql
         ];
-        View::render('teams/admin/index', $data, 'admin');
+        View::render('teams/index', $data, 'admin');
     }
 
     public function add()
@@ -113,7 +113,7 @@ class Adminteams
                 'owner' => $owner,
                 'info' => $info,
             ];
-            View::render('teams/admin/edit', $data, 'admin');
+            View::render('teams/edit', $data, 'admin');
         }
 	}
 
@@ -125,7 +125,7 @@ class Adminteams
             'title' => Lang::T("TEAMS_MANAGEMENT"),
             'sql' => $sql
         ];
-        View::render('teams/admin/members', $data, 'admin');
+        View::render('teams/members', $data, 'admin');
 	}
 
 }

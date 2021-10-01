@@ -14,7 +14,7 @@ class Admingroups
             'title' => Lang::T("Groups Management"),
             'getlevel' => $getlevel,
         ];
-        View::render('groups/admin/view', $data, 'admin');
+        View::render('groups/index', $data, 'admin');
     }
 
     public function edit()
@@ -28,7 +28,7 @@ class Admingroups
             'title' => Lang::T("Groups Management"),
             'rlevel' => $rlevel,
         ];
-        View::render('groups/admin/edit', $data, 'admin');
+        View::render('groups/edit', $data, 'admin');
     }
 
     public function update()
@@ -66,7 +66,7 @@ class Admingroups
             'title' => Lang::T("Groups Management"),
             'rlevel' => $rlevel,
         ];
-        View::render('groups/admin/add', $data, 'admin');
+        View::render('groups/add', $data, 'admin');
     }
 
     public function addnew()

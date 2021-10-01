@@ -25,8 +25,8 @@ while ($arr = $data['mainsql']->fetch(PDO::FETCH_ASSOC)) {
 </tr><tbody></table></div>
 
 <div style="float: left;">
-read&nbsp;<img src="<?php echo URLROOT; ?>/assets/images/forum/folder.png" alt="read" width="20" height="20">&nbsp;
-unread&nbsp;<img src="<?php echo URLROOT; ?>/assets/images/forum/folder_new.png" alt="unread" width="20" height="20">
+read&nbsp;<i class='fa fa-file-text tticon' title='Read'></i>&nbsp;
+unread&nbsp;<i class='fa fa-file-text tticon-red' title='UnRead'>
 </div>
 
 <center>

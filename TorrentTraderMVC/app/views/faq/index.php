@@ -8,9 +8,9 @@ foreach ($data['faq_categ'] as $id => $temp) {
                 if ($data['faq_categ'][$id]['items'][$id2]['flag'] == "1") {
                     print("<li><a href=\"#section" . $id2 . "\">" . stripslashes($data['faq_categ'][$id]['items'][$id2]['question']) . "</a></li>\n");
                 } elseif ($data['faq_categ'][$id]['items'][$id2]['flag'] == "2") {
-                    print("<li><a href=\"#section" . $id2 . "\">" . stripslashes($data['faq_categ'][$id]['items'][$id2]['question']) . "</a> <img src=\"" . URLROOT . "/assets/images/faq/updated.png\" alt=\"Updated\" width=\"46\" height=\"13\" align=\"bottom\" /></li>\n");
+                    print("<li><a href=\"#section" . $id2 . "\">" . stripslashes($data['faq_categ'][$id]['items'][$id2]['question']) . "</a> <img src=\"" . URLROOT . "/assets/images/misc/updated.png\" alt=\"Updated\" width=\"46\" height=\"13\" align=\"bottom\" /></li>\n");
                 } elseif ($data['faq_categ'][$id]['items'][$id2]['flag'] == "3") {
-                    print("<li><a href=\"#section" . $id2 . "\">" . stripslashes($data['faq_categ'][$id]['items'][$id2]['question']) . "</a> <img src=\"" . URLROOT . "/assets/images/faq/new.png\" alt=\"New\" width=\"25\" height=\"12\" align=\"bottom\" /></li>\n");
+                    print("<li><a href=\"#section" . $id2 . "\">" . stripslashes($data['faq_categ'][$id]['items'][$id2]['question']) . "</a> <img src=\"" . URLROOT . "/assets/images/misc/new.png\" alt=\"New\" width=\"25\" height=\"12\" align=\"bottom\" /></li>\n");
                 }
 
             }

@@ -2,7 +2,7 @@
 if (Users::has('loggedin')) {
     $avatar = htmlspecialchars($_SESSION["avatar"]);
     if (!$avatar) {
-        $avatar = URLROOT . "/assets/images/default_avatar.png";
+        $avatar = URLROOT . "/assets/images/misc/default_avatar.png";
     }
     $userdownloaded = mksize($_SESSION["downloaded"]);
     $useruploaded = mksize($_SESSION["uploaded"]);

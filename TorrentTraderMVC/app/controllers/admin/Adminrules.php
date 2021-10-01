@@ -14,7 +14,7 @@ class Adminrules
             'title' => Lang::T("SITE_RULES_EDITOR"),
             'res' => $res,
         ];
-        View::render('rules/admin/rulesview', $data, 'admin');
+        View::render('rules/index', $data, 'admin');
     }
 
     public function edit()
@@ -37,7 +37,7 @@ class Adminrules
             'id' => $id,
             'res' => $res,
         ];
-        View::render('rules/admin/rulesedit', $data, 'admin');
+        View::render('rules/edit', $data, 'admin');
     }
 
     public function addsect()
@@ -54,7 +54,7 @@ class Adminrules
         $data = [
             'title' => Lang::T("SITE_RULES_EDITOR"),
         ];
-        View::render('rules/admin/rulesaddsect', $data, 'admin');
+        View::render('rules/addsect', $data, 'admin');
     }
 
 }

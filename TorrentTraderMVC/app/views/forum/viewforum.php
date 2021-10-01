@@ -145,13 +145,13 @@ if ($data['topicsres'] > 0) {
             $a = $r->fetch(PDO::FETCH_LAZY);
         }
         $new = !$a || $lppostid > $a[0];
-        $topicpic = ($locked ? ($new ? "folder_locked_new" : "folder_locked") : ($new ? "folder_new" : "folder"));
+        $topicpic = ($locked ? ($new ? "fa fa-lock fa-2x" : "fa fa-unlock fa-2x") : ($new ? "fa fa-file-text fa-2x" : "fa fa-file-text fa-2x"));
         $subject = ($sticky ? "<b>" . Lang::T("FORUMS_STICKY") . ": </b>" : "") . "<a href='" . URLROOT . "/forums/viewtopic&amp;topicid=$topicid'><b>" .
         encodehtml(stripslashes($topicarr["subject"])) . "</b></a>$topicpages";
         ?>
         <div class="row border ttborder">
         <div class="col-md-1 d-none d-sm-block">
-        <img src='<?php echo URLROOT; ?>/assets/images/forum/<?php echo $topicpic ?>.png' alt='' />
+        <i class='<?php echo $topicpic ?> tticon' title='Lock Topic'></i>
         </div>
         <div class="col-md-4">
         <?php echo $subject; ?>
@@ -173,15 +173,16 @@ if ($data['topicsres'] > 0) {
         if ($_SESSION["edit_forum"] == "yes" || $_SESSION["delete_forum"] == "yes") {
             print("<div class='col-md-2 d-none d-sm-block'>");
             if ($locked) {
-                print("<a href='" . URLROOT . "/forums/unlocktopic&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Unlock'><img src='" . URLROOT . "/assets/images/forum/topic_unlock.png' alt='UnLock Topic' /></a>\n");
+                print("<a href='" . URLROOT . "/forums/unlocktopic&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Unlock'><i class='fa fa-unlock tticon-red' title='UnLock Topic'></i></a>\n");
             } else {
-                print("<a href='" . URLROOT . "/forums/locktopic&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Lock'><img src='" . URLROOT . "/assets/images/forum/topic_lock.png' alt='Lock Topic' /></a>\n");
+                print("<a href='" . URLROOT . "/forums/locktopic&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Lock'><i class='fa fa-lock tticon' title='Lock Topic'></i></a>\n");
             }
-            print("<a href='" . URLROOT . "/forums/deletetopic&amp;topicid=$topicid&amp;sure=0' title='Delete'><img src='" . URLROOT . "/assets/images/forum/topic_delete.png' alt='Delete Topic' /></a>\n");
+            print("<a href='" . URLROOT . "/forums/deletetopic&amp;topicid=$topicid&amp;sure=0' title='Delete'><i class='fa fa-trash-o tticon-red' title='Delete Topic'></i></a>\n");
             if ($sticky) {
-                print("<a href='" . URLROOT . "/forums/unsetsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='UnStick'><img src='" . URLROOT . "/assets/images/forum/folder_sticky_new.png' alt='Unstick Topic' /></a>\n");
+                print("<a href='" . URLROOT . "/forums/unsetsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='UnStick'><i class='fa fa-exclamation tticon-red' title='Unstick Topic'></i></a>\n");
             } else {
-                print("<a href='" . URLROOT . "/forums/setsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Stick'><img src='" . URLROOT . "/assets/images/forum/folder_sticky.png' alt='Stick Topic' /></a>\n");
+                print("<a href='" . URLROOT . "/forums/setsticky&amp;forumid=$data[forumid]&amp;topicid=$topicid&amp;page=$page' title='Stick'><i class='fa fa-exclamation tticon' title='". Lang::T("FORUMS_STICKY") ."'></i>
+                </a>\n");
             }
             print("</div>");
         }
@@ -195,11 +196,11 @@ if ($data['topicsres'] > 0) {
 }
 
 print("<table cellspacing='5' cellpadding='0'><tr valign='middle'>\n");
-print("<td><img src='" . URLROOT . "/assets/images/forum/folder_new.png' style='margin-right: 5px' alt='' /></td><td >New posts</td>\n");
-print("<td><img src='" . URLROOT . "/assets/images/forum/folder.png' style='margin-left: 10px; margin-right: 5px' alt='' />" .
+print("<td><i class='fa fa-file-text tticon-red' title='UnRead'></td><td >New posts</td>\n");
+print("<td><i class='fa fa-file-text tticon' title='Read'>" .
     "</td><td>No New posts</td>\n");
-print("<td><img src='" . URLROOT . "/image/forum/folder_locked.png' style='margin-left: 10px; margin-right: 5px' alt='' />" .
-    "</td><td>" . Lang::T("FORUMS_LOCKED") . " topic</td></tr></tbody></table>\n");
+print("<td><i class='fa fa-lock tticon' title='Lock'></i>
+</td><td>" . Lang::T("FORUMS_LOCKED") . " </td></tr></tbody></table>\n");
 print("<table cellspacing='0' cellpadding='0'><tr>\n");
 print("</tr></table>\n");
 insert_quick_jump_menu($data['forumid']);

@@ -25,7 +25,7 @@ class Adminconfig
         $data = [
             'title' => 'Config',
         ];
-        View::render('admin/config', $data, 'admin');
+        View::render('config/index', $data, 'admin');
     }
 
     // I'M LAZY SO LETS UPDATE ALL AT ONCE

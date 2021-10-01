@@ -16,7 +16,7 @@ class Adminblocks
             'enabled' => $enabled,
             'disabled' => $disabled,
         ];
-        View::render('blocks/admin/index', $data, 'admin');
+        View::render('blocks/index', $data, 'admin');
     }
 
     public function edit()
@@ -114,7 +114,7 @@ class Adminblocks
             'title' => Lang::T("_BLC_MAN_"),
             'res' => $res,
         ];
-        View::render('blocks/admin/edit', $data, 'admin');
+        View::render('blocks/edit', $data, 'admin');
     }
 
     public function preview()
@@ -127,7 +127,7 @@ class Adminblocks
             'title' => Lang::T("_BLC_PREVIEW_"),
             'name' => $name,
         ];
-        View::render('blocks/admin/preview', $data, 'admin');
+        View::render('blocks/preview', $data, 'admin');
         die();
     }
 
@@ -155,7 +155,7 @@ class Adminblocks
                 'indb' => $indb,
                 'infolder' => $infolder,
             ];
-            View::render('blocks/admin/added', $data, 'admin');
+            View::render('blocks/added', $data, 'admin');
         } else {
             Redirect::autolink(URLROOT . "/adminblocks", "Please upload block to app/views/blocks");
         }

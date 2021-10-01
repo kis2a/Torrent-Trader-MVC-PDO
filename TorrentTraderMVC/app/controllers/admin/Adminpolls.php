@@ -14,7 +14,7 @@ class Adminpolls
             'title' => Lang::T("POLLS_MANAGEMENT"),
             'query' => $query,
         ];
-        View::render('poll/admin/polls-view', $data, 'admin');
+        View::render('poll/index', $data, 'admin');
     }
 
     public function results()
@@ -24,7 +24,7 @@ class Adminpolls
             'title' => Lang::T("POLLS_MANAGEMENT"),
             'poll' => $poll,
         ];
-        View::render('poll/admin/pollsresults', $data, 'admin');
+        View::render('poll/results', $data, 'admin');
     }
 
     public function delete()
@@ -47,7 +47,7 @@ class Adminpolls
             'res' => $res,
             'id' => $pollid
         ];
-        View::render('poll/admin/pollsadd', $data, 'admin');
+        View::render('poll/add', $data, 'admin');
     }
 
     public function save()

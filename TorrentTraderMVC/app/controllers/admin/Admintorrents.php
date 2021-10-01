@@ -32,7 +32,7 @@ class Admintorrents
             'res' => $res,
             'search' => $search,
         ];
-        View::render('torrent/admin/torrentmanage', $data, 'admin');
+        View::render('torrent/index', $data, 'admin');
     }
 
     public function free()
@@ -51,7 +51,7 @@ class Admintorrents
             'resqq' => $resqq,
             'pagerbottom' => $pagerbottom,
         ];
-        View::render('torrent/admin/freetorrent', $data, 'admin');
+        View::render('torrent/freeleech', $data, 'admin');
     }
     
     
@@ -92,7 +92,7 @@ class Admintorrents
             'pagertop' => $pagertop,
             'pagerbottom' => $pagerbottom,
         ];
-        View::render('torrent/admin/dead', $data, 'admin');
+        View::render('torrent/dead', $data, 'admin');
     }
 
 }

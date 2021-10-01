@@ -40,7 +40,7 @@ if ($data['results']->rowCount()) { ?>
         $country = Countries::showflag($row['country']);
         ?>
         <tbody><tr>
-        <td><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row['id']; ?>'><b><?php echo Users::coloredname($row['username']) ?></b></a><?php echo  ($row["donated"] > 0 ? "<img src='".URLROOT."/assets/images/star.png' border='0' alt='Donated' />" : "") ?></td>
+        <td><a href='<?php echo URLROOT; ?>/profile?id=<?php echo $row['id']; ?>'><b><?php echo Users::coloredname($row['username']) ?></b></a><?php echo  ($row["donated"] > 0 ? "<i class='fa fa-star' aria-hidden='true' style='color:orange' title='Donated'></i>" : "") ?></td>
         <td><?php echo  TimeDate::utc_to_tz($row["added"]); ?></td>
         <td><?php echo  TimeDate::utc_to_tz($row["last_access"]) ?></td>
         <td><?php echo Lang::T($row["level"]); ?></td>

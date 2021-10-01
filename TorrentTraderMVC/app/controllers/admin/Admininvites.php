@@ -18,7 +18,7 @@ class Admininvites
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        View::render('invite/admin/invited', $data, 'admin');
+        View::render('invite/index', $data, 'admin');
     }
 
     public function sumbit()
@@ -55,7 +55,7 @@ class Admininvites
             'pagerbottom' => $pagerbottom,
             'res' => $res,
         ];
-        View::render('invite/admin/pendinginvite', $data, 'admin');
+        View::render('invite/pending', $data, 'admin');
     }
 
 }

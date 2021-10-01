@@ -1,4 +1,4 @@
-<?php include APPROOT."/views/torrent/torrentnavbar.php"; ?><br>
+<?php torrentmenu($data['id']); ?><br>
 <table class='table table-striped table-bordered table-hover'><thead>
 <tr>
 <th class="table_head"><?php echo Lang::T("PORT"); ?></th>

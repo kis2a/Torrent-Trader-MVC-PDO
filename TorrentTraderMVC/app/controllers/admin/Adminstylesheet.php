@@ -14,7 +14,7 @@ class Adminstylesheet
             'title' => Lang::T("THEME_MANAGEMENT"),
             'sql' => $res,
         ];
-        View::render('stylesheet/admin/index', $data, 'admin');
+        View::render('stylesheet/index', $data, 'admin');
     }
 
     public function add()
@@ -40,7 +40,7 @@ class Adminstylesheet
         $data = [
             'title' => Lang::T("Theme"),
         ];
-        View::render('stylesheet/admin/add', $data, 'admin');
+        View::render('stylesheet/add', $data, 'admin');
     }
 
     public function delete()

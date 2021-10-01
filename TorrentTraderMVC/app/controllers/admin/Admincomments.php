@@ -18,7 +18,7 @@ class Admincomments
             'pagerbottom' => $pagerbottom,
             'count' => $count,
         ];
-        View::render('comments/admin/index', $data, 'admin');
+        View::render('comments/index', $data, 'admin');
     }
 
 }

@@ -19,7 +19,7 @@ class Adminwarning
             'count' => $count,
             'res' => $res,
         ];
-        View::render('warning/admin/warned', $data, 'admin');
+        View::render('warning/index', $data, 'admin');
     }
 
     public function submit()

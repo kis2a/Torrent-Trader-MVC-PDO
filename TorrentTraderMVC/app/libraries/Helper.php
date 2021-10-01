@@ -107,9 +107,9 @@ class Helper
         $subject = "<a href='" . URLROOT . "/messages/read?&type=$type&id=" . $arr["id"] . "'><b>" . format_comment($arr["subject"]) . "</b></a>";
         $added = TimeDate::utc_to_tz($arr["added"]);
         if ($arr["unread"] == "yes") {
-            $unread = "<img src='" . URLROOT . "/assets/images/forum/folder_new.png' alt='read' width='25' height='25'>";
+            $unread = "<i class='fa fa-file-text tticon-red' title='UnRead'></i>";
         } else {
-            $unread = "<img src='" . URLROOT . "/assets/images/forum/folder.png' alt='unread' width='25' height='25'>";
+            $unread = "<i class='fa fa-file-text tticon' title='Read'></i>";
         }
         $arr = array($sender, $receiver, $subject, $unread, $added);
         return $arr;

@@ -46,7 +46,8 @@ class Style
     {
         ?>
             </div>
-        </div><br>
+        </div>
+        <div class="block-footer"></div>
         <?php
     }
 
@@ -70,12 +71,12 @@ class Style
         } else {
             $title = Config::TT()['SITENAME'] . " : " . htmlspecialchars($title);
         }
-        require_once APPROOT . "/views/admin/header.php";
+        require_once APPROOT . "/views/admin/admininc/header.php";
     }
     
     public static function adminfooter()
     {
-        require_once APPROOT . "/views/admin/footer.php";
+        require_once APPROOT . "/views/admin/admininc/footer.php";
     }
 
     public static function adminnavmenu()
@@ -134,7 +135,8 @@ class Style
     {
             ?>
             </div>
-        </div><br>
+        </div>
+        <div class="block-footer"></div>
         <?php
     }
 

@@ -135,7 +135,7 @@ function format_comment($text)
             for ($i = 0; $i < count($badwords); ++$i) {
                 $badwords[$i] = trim($badwords[$i]);
             }
-            $s = str_replace($badwords, "<img src='" . URLROOT . "/assets/images/censored.png' border='0' alt='Censored' title='Censored' />", $s);
+            $s = str_replace($badwords, "<img src='" . URLROOT . "/assets/images/misc/censored.png' border='0' alt='Censored' title='Censored' />", $s);
         }
         @fclose($f);
     }
