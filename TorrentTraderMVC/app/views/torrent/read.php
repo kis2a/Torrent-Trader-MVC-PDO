@@ -70,14 +70,14 @@ torrentmenu($data['id'], $torr['external']);
     if (!Config::TT()['FORCETHANKS']) {
         // Magnet
         if ($torr["external"] == 'yes') {
-            print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm btn-success'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
-            print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a><br>");
+            print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm ttbtn'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
+            print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm ttbtn'>Magnet Download</button></a><br>");
         } else {
-            print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm btn-success'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
-            print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a><br>");
+            print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm ttbtn'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
+            print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm ttbtn'>Magnet Download</button></a><br>");
         }
     } else {
-        print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm btn-success'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
+        print("<a href=\"" . URLROOT . "/download?id=$torr[id]&amp;name=" . rawurlencode($torr["filename"]) . "\"><button type='button' class='btn btn-sm ttbtn'>" . Lang::T("DOWNLOAD_TORRENT") . "</button></a>");
         $data = DB::run("SELECT user FROM thanks WHERE thanked = ? AND type = ? AND user = ?", [$torr['id'], 'torrent', $_SESSION['id']]);
         $like = $data->fetch(PDO::FETCH_ASSOC);
         if ($like) {
@@ -85,27 +85,27 @@ torrentmenu($data['id'], $torr['external']);
             if ($torr["external"] == 'yes') {
                 if ($_SESSION["can_download"] == "yes") {
                     // magnet
-                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a><br>");
+                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm ttbtn'>Magnet Download</button></a><br>");
                 } else {
                     echo '<br>';
                 }
             } else {
                 if ($_SESSION["can_download"] == "yes") {
                     // magnet button
-                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a><br>");
+                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm ttbtn'>Magnet Download</button></a><br>");
                 } else {
                     echo '<br>';
                 }
             }
         } else {
             if($_SESSION["id"] != $torr["owner"]) {
-                print("<a href='" . URLROOT . "/likes/thanks?id=$torr[id]&type=torrent'><button  class='btn btn-sm btn-danger'>Thanks</button></a><br>");
+                print("<a href='" . URLROOT . "/likes/thanks?id=$torr[id]&type=torrent'><button  class='btn btn-sm ttbtn'>Thanks</button></a><br>");
             } else {
                 if ($torr["external"] == 'yes') {
                     // magnet
-                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a><br>");
+                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=" . URLROOT . "/announce.php?passkey=" . $_SESSION["passkey"] . "\"><button type='button' class='btn btn-sm ttbtn'>Magnet Download</button></a><br>");
                 } else {
-                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm btn-danger'>Magnet Download</button></a><br>");
+                    print("&nbsp;<a href=\"magnet:?xt=urn:btih:" . $torr["info_hash"] . "&dn=" . $torr["filename"] . "&tr=udp://tracker.openbittorrent.com&tr=udp://tracker.publicbt.com\"><button type='button' class='btn btn-sm ttbtn'>Magnet Download</button></a><br>");
                 }
             }
         }
@@ -130,9 +130,9 @@ torrentmenu($data['id'], $torr['external']);
         <b><?php echo Lang::T("FREE_LEECH"); ?>: </b><font color='#ff0000'><?php echo Lang::T("FREE_LEECH_MSG"); ?></font><br><?php
     } ?>
     <b><?php echo Lang::T("LAST_CHECKED"); ?>: </b><?php echo  date("d-m-Y H:i:s", TimeDate::utc_to_tz_time($torr["last_action"])); ?><br>
-    <a href="<?php echo URLROOT; ?>/report/torrent?torrent=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm btn-danger'><?php echo Lang::T("REPORT_TORRENT") ?></button></a>&nbsp;
+    <a href="<?php echo URLROOT; ?>/report/torrent?torrent=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT_TORRENT") ?></button></a>&nbsp;
     <?php if ($_SESSION["edit_torrents"] == "yes") {
-        echo "<a href='" . URLROOT . "/torrent/edit?id=$torr[id]&amp;returnto=" . urlencode($_SERVER["REQUEST_URI"]) . "'><button type='button' class='btn btn-sm btn-success'><b>" . Lang::T("EDIT_TORRENT") . "</b></button></a>&nbsp;";
+        echo "<a href='" . URLROOT . "/torrent/edit?id=$torr[id]&amp;returnto=" . urlencode($_SERVER["REQUEST_URI"]) . "'><button type='button' class='btn btn-sm ttbtn'><b>" . Lang::T("EDIT_TORRENT") . "</b></button></a>&nbsp;";
     }
     if ($_SESSION["edit_users"] == "yes") { ?>
         <a href="<?php echo URLROOT; ?>/snatched?tid=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a><?php

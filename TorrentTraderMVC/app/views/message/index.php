@@ -26,7 +26,7 @@ while ($arr = $data['mainsql']->fetch(PDO::FETCH_ASSOC)) {
 
 <div style="float: left;">
 read&nbsp;<i class='fa fa-file-text tticon' title='Read'></i>&nbsp;
-unread&nbsp;<i class='fa fa-file-text tticon-red' title='UnRead'>
+unread&nbsp;<i class='fa fa-file-text tticon-red' title='UnRead'></i>
 </div>
 
 <center>

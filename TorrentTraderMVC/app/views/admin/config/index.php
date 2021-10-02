@@ -119,6 +119,9 @@
     <label for="FORUMONINDEX">Forum On Index:</label><br>
     <?php $checked = Config::TT()['FORUMONINDEX'] == 1;
     print("<input name='FORUMONINDEX' value='1' type='radio' " . ($checked ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='FORUMONINDEX' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>
+    <label for="FORUMONINDEX">Latest Forum Post On Index:</label><br>
+    <?php $checked = Config::TT()['LATESTFORUMPOSTONINDEX'] == 1;
+    print("<input name='LATESTFORUMPOSTONINDEX' value='1' type='radio' " . ($checked ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='LATESTFORUMPOSTONINDEX' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>
     <label for="IPCHECK">IP Check:</label><br>
     <?php $checked = Config::TT()['IPCHECK'] == 1;
     print("<input name='IPCHECK' value='1' type='radio' " . ($checked? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='IPCHECK' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>

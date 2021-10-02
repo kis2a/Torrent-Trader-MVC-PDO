@@ -1,6 +1,6 @@
 THERE IS NO INSTALLER REQUIRED!
 
-1) Copy ALL files to your webserver, NOTE the name of the public folder "public_html" where index.phph is
+1) Copy ALL files to your webserver, NOTE the name of the public folder "public_html" where index.php is
    On server this maybe called public, home etc rename the file to match.
    Only the contents of public_html go in the public folder.
    
@@ -23,7 +23,9 @@ THERE IS NO INSTALLER REQUIRED!
    define("DB_NAME", "dbname");
    define('DB_CHAR', 'utf8');
    // Your Site Address
-   define('URLROOT', 'http://localhost/TorrentTraderMVC'); 
+   define('URLROOT', 'http://localhost/TorrentTraderMVC');
+   // Allow User Admin Access
+   define('_OWNERS', array('M-jay'));
 
 4) Apply the following CHMOD's
    777 - data/backups

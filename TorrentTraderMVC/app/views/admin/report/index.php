@@ -20,12 +20,12 @@
 
 <form id="reports" method="post" action="<?php echo URLROOT; ?>/adminreports/completed">
 <table class='table table-striped table-bordered table-hover'><thead><tr>
-<th class="table_head">Reported By</th>
-<th class="table_head">Subject</th>
-<th class="table_head">Type</th>
-<th class="table_head">Reason</th>
-<th class="table_head">Dealt With</th>
-<th class="table_head"><input type="checkbox" name="checkall" onclick="checkAll(this.form.id);" /></th>
+<th>Reported By</th>
+<th>Subject</th>
+<th>Type</th>
+<th>Reason</th>
+<th>Dealt With</th>
+<th><input type="checkbox" name="checkall" onclick="checkAll(this.form.id);" /></th>
 </tr><thead>
 <?php
 if ($data['res']->rowCount() <= 0): ?>
@@ -42,7 +42,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)):
 
     $r = Reports::getname($row['type'], $row['votedfor']);
 
-    var_dump($r);
+    //var_dump($r);
     //$r = $q->fetch(PDO::FETCH_LAZY);
     if ($row["type"] == "user") {
         $link = "".URLROOT."/profile?id=$row[votedfor]";
@@ -55,23 +55,25 @@ while ($row = $data['res']->fetch(PDO::FETCH_LAZY)):
     }
     ?>
     <tr>
-          <td class="table_col1" align="center" width="10%"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row['addedby']; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
-          <td class="table_col2" align="center" width="15%"><a href="<?php echo $link; ?>"><?php echo CutName($r['name'], 40); ?></a></td>
-          <td class="table_col1" align="center" width="10%"><?php echo $row['type']; ?></td>
-          <td class="table_col2" align="center" width="50%"><?php echo htmlspecialchars($row['reason']); ?></td>
-          <td class="table_col1" align="center" width="10%"><?php echo $dealtwith; ?></td>
-          <td class="table_col2" align="center" width="5%"><input type="checkbox" name="reports[]" value="<?php echo $row["id"]; ?>" /></td>
-      </tr>
+    <td><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row['addedby']; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
+    <td><a href="<?php echo $link; ?>"><?php echo CutName($r['name'], 40); ?></a></td>
+    <td><?php echo $row['type']; ?></td>
+    <td><?php echo htmlspecialchars($row['reason']); ?></td>
+    <td><?php echo $dealtwith; ?></td>
+    <td><input type="checkbox" name="reports[]" value="<?php echo $row["id"]; ?>" /></td>
+    </tr>
 <?php
 endwhile; ?>
 </tbody></table>
 
+<div class="text-center">
 <?php
 if ($_GET["completed"] != 1): ?>
-    <input type="submit" name="mark" value="Mark Completed" />
+    <input type="submit" class='btn btn-sm ttbtn' name="mark" value="Mark Completed" />
     <?php
 endif;?>
-<input type="submit" name="del" value="Delete" />
+<input type="submit" class='btn btn-sm ttbtn' name="del" value="Delete" />
+</div>
 </form>
 <?php
 print $pagerbottom;

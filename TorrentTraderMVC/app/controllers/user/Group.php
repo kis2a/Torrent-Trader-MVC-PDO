@@ -49,7 +49,7 @@ class Group
             $q .= ($q ? "&amp;" : "") . "class=$class";
         }
         $count = DB::run("SELECT COUNT(*) FROM users WHERE " . $query)->fetchcolumn();
-        list($pagertop, $pagerbottom, $limit) = pager(1, $count, URLROOT . "/group/members?$q&");
+        list($pagertop, $pagerbottom, $limit) = pager(25, $count, URLROOT . "/group/members?$q&");
         $results = Groups::getGroupsearch($query, $limit);
 
         $res = Groups::getGroups();

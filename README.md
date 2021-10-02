@@ -27,7 +27,7 @@ Credit to original authors of any code or mods this is just a version i use to l
 
 - A Web server
 - PHP 8
-- MySQL 5.9
+- MySQL 8 / MariaDB 10
 
 ## <a name="installation"></a> :computer: Installation
 
@@ -56,7 +56,9 @@ THERE IS NO INSTALLER REQUIRED!
    define("DB_NAME", "dbname");\
    define('DB_CHAR', 'utf8');\
    // Your Site Address\
-   define('URLROOT', 'http://localhost/TorrentTraderMVC'); 
+   define('URLROOT', 'http://localhost/TorrentTraderMVC');\
+   // Allow User Admin Access\
+   define('_OWNERS', array('M-jay'));
 
 4) Apply the following CHMOD's\
    777 - data/backups\

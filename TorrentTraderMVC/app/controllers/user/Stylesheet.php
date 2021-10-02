@@ -31,7 +31,8 @@ class Stylesheet
         $stylesheet = Input::get('stylesheet');
         $updateset[] = "stylesheet = '$stylesheet'";
         if (count($updateset)) {
-            Users::updateset($updateset, $_SESSION['id']);
+            DB::run("UPDATE `users` SET " . implode(', ', $updateset) . " WHERE `id` =?", [$_SESSION['id']]);
+            //Users::updateset($updateset, $_SESSION['id']);
         }
         if (empty($_SERVER["HTTP_REFERER"])) {
             Redirect::to(URLROOT);

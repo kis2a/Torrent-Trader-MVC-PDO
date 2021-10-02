@@ -1,8 +1,44 @@
-<center><form method='post' action='<?php echo  URLROOT ?>/admincategories/takeadd'>
-<table border='0' cellspacing='0' cellpadding='5'>
-<tr><td align='left'><b>Parent Category:</b> <input type='text' name='parent_cat' /></td></tr>
-<tr><td align='left'><b>Sub Category:</b> <input type='text' name='name' /></td></tr>
-<tr><td align='left'><b>Sort:</b> <input type='text' name='sort_index' /></td></tr>
-<tr><td align='left'><b>Image:</b> <input type='text' name='image' /></td></tr>
-<tr><td colspan='2'><input type='submit' class="btn btn-sm ttbtn" value='<?php echo  Lang::T("SUBMIT") ?>' /></td></tr>
-</table></form></center>
+<form method='post' action='<?php echo  URLROOT ?>/admincategories/takeadd'>
+
+<div class="row justify-content-md-center">
+    <div class="col-2">
+        <b>Parent Category:</b>
+    </div>
+    <div class="col-2">
+        <input type='text' name='parent_cat' /><br>
+    </div>
+</div>
+
+<div class="row justify-content-md-center">
+    <div class="col-2">
+        <b>Sub Category:</b>
+    </div>
+    <div class="col-2">
+        <input type='text' name='name' /><br>
+    </div>
+</div>
+
+<div class="row justify-content-md-center">
+    <div class="col-2">
+        <b>Sort:</b>
+    </div>
+    <div class="col-2">
+        <input type='text' name='sort_index' /><br>
+    </div>
+</div>
+
+<div class="row justify-content-md-center">
+    <div class="col-2">
+        <b>Image:</b>
+    </div>
+    <div class="col-2">
+        <input type='text' name='image' /><br>
+    </div>
+</div>
+
+<div class="text-center">
+    <input type='submit' class="btn btn-sm ttbtn" value='<?php echo Lang::T("SUBMIT") ?>' />
+</div>
+
+</div>
+</form>

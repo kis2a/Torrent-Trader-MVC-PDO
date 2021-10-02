@@ -55,7 +55,7 @@ td { vertical-align: top; }
 
 <input type="button" class="button" value="Check Again" onclick="window.location=window.location" /><br /><br />
 
-<a href="check.php?phpinfo=1">PHPInfo</a><br /><br />
+<a href="check.php?phpinfo=1">PHPInfo</a><br />
 <a href='index.php'>Return to your homepage</a></center><br />
 <b>Required Settings Check:</b><br />
 <p>If any of these items are highlighted in red then please take actions to correct them. <br />
@@ -63,17 +63,23 @@ Failure to do so could lead to your installation not functioning correctly.</p>
 <br />
 This system check is designed for unix based servers, windows based servers may not give desired results<br /><br>
 
-<b>For file uploads you might need to change some setting</b><br /><br>
-block direct access to protect attachments<br />
-For attachments check<br />
+<b>For file uploads you might need to change some setting</b><br />
 memory_limit<br />	
-1300008K<br />
+?????K<br />
 post_max_size<br />
-1200008K<br />
+??????K<br />
 upload_max_filesize<br />
-1200008K<br />
+???K<br />
 <br />
-<br />
+
+<b>Check For PDO</b><br>
+<?php
+if (class_exists('PDO')) {
+    echo '<b><font color="green">PDO Is Installed</font></b><br><br>';
+} else {
+    echo '<b><font color="red">PDO Not Installed</font></b><br><br>';
+}
+?>
 
 <table cellpadding="3" cellspacing="1" style="border-collapse: collapse" border="1">
 <tr>
@@ -109,7 +115,7 @@ upload_max_filesize<br />
 	<td>app/config/config.php</td>
 	<td>
 	<?php
-if (@file_exists('config/config.php') && @is_writable(APPROOT.'/config/config.php')) {
+if (@file_exists('../config/config.php') && @is_writable(APPROOT.'/config/config.php')) {
         echo '<b><font color="red">Writeable</font></b><br />Warning: leaving app/config/config.php writeable is a security risk';
     } else {
         echo '<b><font color="green">Unwriteable</font></b>';
@@ -195,10 +201,20 @@ echo "<b>Table Status Check:</b><br /><br />";
 try {
     $link = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
     $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	
+
+    $stmt = $link->query("SHOW VARIABLES LIKE 'sql_mode'")->fetch();
+    if (!$stmt) {
+        echo "<font color='#ff0000'><b>Error Getting SQL Mode:</b></font><br><br>";
+    } else {
+		echo "<font color='#00cc00'><b>SQL Mode:</b></font><br>";
+        echo var_dump($stmt[1])."<br><br>";
+	}
+	
     $stmt = $link->prepare("SHOW TABLES");
     $stmt->execute();
         if (!$stmt) {
-            //echo "<font color='#ff0000'><b>Failed to list tables:</b></font> (%d) %s<br />" . $stmt->errorInfo();
+            echo "<font color='#ff0000'><b>Failed to list tables:</b></font>";
         } else {
             $tables = array();
             while ($rr = $stmt->fetch()) {

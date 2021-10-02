@@ -61,7 +61,7 @@ class Admincategories
         $id = (int) $_GET["id"];
         if ($_GET["sure"] == '1') {
             if (!Validate::Id($id)) {
-                Redirect::autolink(URLROOT . "/admincategories", Lang::T("CP_NEWS_INVAILD_ITEM_ID = $newsid"));
+                Redirect::autolink(URLROOT . "/admincategories", Lang::T("CP_NEWS_INVAILD_ITEM_ID = $id"));
             }
             $newcatid = (int) $_POST["newcat"];
             DB::run("UPDATE torrents SET category=$newcatid WHERE category=$id"); //move torrents to a new cat

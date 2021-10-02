@@ -621,7 +621,7 @@ class Forums
                         if ($extension == 'zip') {
                             $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
                             if (file_exists($daimage)) {
-                                print(" <a class='btn btn-sm btn-success' href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><i class='fa fa-file-archive-o tticon' ></i>Download</a><br>");
+                                print(" <a class='btn btn-sm ttbtn' href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><i class='fa fa-file-archive-o tticon' ></i>Download</a><br>");
                             } else {
                                 print("no zip<br>");
                             }
@@ -639,7 +639,7 @@ class Forums
                         <!-- The Close Button -->
                         <?php
 $switchimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
-                                ?><button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><b>CLOSE</b></button><br><?php
+                                ?><button type="button" class="btn btn-sm ttbtn" data-dismiss="modal"><b>CLOSE</b></button><br><?php
 echo $row7['filename']; ?><br>
                         <img src='<?php echo data_uri($switchimage, $row7['filename']); ?>' style="width:100%" alt=''>
                     </div>

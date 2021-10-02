@@ -85,10 +85,10 @@ class Messages
         $type = isset($_GET['type']) ? $_GET['type'] : null;
         // Set button condition
         if ($type == 'templates' || $type == 'draft') {
-            $button = "<a href='" . URLROOT . "/messages/update?type=$type&id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>";
+            $button = "<a href='" . URLROOT . "/messages/update?type=$type&id=$id'><button  class='btn btn-sm ttbtn'>Edit</button></a>";
         } elseif ($type == 'inbox' || $type == 'outbox') {
-            $button = " <a href='" . URLROOT . "/messages/reply?type=$type&id=$id'><button  class='btn btn-sm btn-success'>Reply</button></a>
-                        <a href='" . URLROOT . "/messages/update?type=$type&id=$id'><button  class='btn btn-sm btn-success'>Edit</button></a>";
+            $button = " <a href='" . URLROOT . "/messages/reply?type=$type&id=$id'><button  class='btn btn-sm ttbtn'>Reply</button></a>
+                        <a href='" . URLROOT . "/messages/update?type=$type&id=$id'><button  class='btn btn-sm ttbtn'>Edit</button></a>";
         }
         // get row
         $res = DB::run("SELECT * FROM messages WHERE id=$id");

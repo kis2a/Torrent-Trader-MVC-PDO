@@ -1,10 +1,11 @@
-<center><a href='<?php echo URLROOT ?>/admincategories/add'><b>Add New Category</b></a></center><br />
-<i>Please note that if no image is specified, the category name will be displayed</i><br />
+<p class="text-center"><a href='<?php echo URLROOT ?>/admincategories/add'><b>Add New Category</b></a></p><br />
+<p class="text-center"><i>Please note that if no image is specified, the category name will be displayed</i></p><br />
 <table class='table table-striped table-bordered table-hover'><thead><tr>
-<th width='10' class='table_head'>Sort</th>
-<th class='table_head'>Parent Cat</th>
-<th class='table_head'>Sub Cat</th>
-<th class='table_head'>Image</th><th width='30' class='table_head'></th>
+<th width='10'>Sort</th>
+<th>Parent Cat</th>
+<th>Sub Cat</th>
+<th class='table_head'>Image</th>
+<th width='30'></th>
 </tr></thead></tbody>
 <?php
 while ($row = $data['sql']->fetch(PDO::FETCH_ASSOC)) {

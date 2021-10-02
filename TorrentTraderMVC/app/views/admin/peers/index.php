@@ -1,20 +1,20 @@
-<center>We have <?php echo $data['count1'] ?>peers</center>
-<center><a href='<?php echo URLROOT; ?>/admintorrents/dead'>All Dead Torrents</a></center>
+<p class="text-center">We have <?php echo $data['count1'] ?>peers</p>
+<p class="text-center"><a href='<?php echo URLROOT; ?>/admintorrents/dead'>All Dead Torrents</a></p>
 <?php echo $data['pagertop'];
 if ($data['result']->rowCount() != 0) { ?>
-    <center><table width="100%" border="0" cellspacing="0" cellpadding="3" class="table_table">
-    <tr>
-    <th class="table_head">User</th>
-    <th class="table_head">Torrent</th>
-    <th class="table_head">IP</th>
-    <th class="table_head">Port</th>
-    <th class="table_head">Upl.</th>
-    <th class="table_head">Downl.</th>
-    <th class="table_head">Peer-ID</th>
-    <th class="table_head">Conn.</th>
-    <th class="table_head">Seeding</th>
-    <th class="table_head">Started</th>
-    <th class="table_head">Last<br />Action</th>
+    <table class='table table-striped table-bordered table-hover'><thead><tr>
+    <th>User</th>
+    <th>Torrent</th>
+    <th>IP</th>
+    <th>Port</th>
+    <th>Upl.</th>
+    <th>Downl.</th>
+    <th>Peer-ID</th>
+    <th>Conn.</th>
+    <th>Seeding</th>
+    <th>Started</th>
+    <th>Last<br />Action</th>
+    </tr><thead>
     </tr> <?php
     while ($row = $data['result']->fetch(PDO::FETCH_ASSOC)) {
         if (Config::TT()['MEMBERSONLY']) {

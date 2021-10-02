@@ -63,7 +63,7 @@ class Invite
             $emailmain = Config::TT()['SITEEMAIL'];
 
             $body = file_get_contents(APPROOT . "/views/emails/inviteuser.php");
-            $body = str_replace("%Config::TT()['SITENAME']%", $names, $body);
+            $body = str_replace("sitename%", $names, $body);
             $body = str_replace("%username%", $_SESSION['username'], $body);
             $body = str_replace("%email%", $email, $body);
             $body = str_replace("%mess%", $mess, $body);
