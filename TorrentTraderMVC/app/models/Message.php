@@ -34,13 +34,13 @@ class Message
             [$sender, $receiver, $added, $subject, $msg, $poster, $unread, $location]
         );
         // email notif
-        $user = DB::run("SELECT id, acceptpms, notifs, email FROM users WHERE id=?", [$receiver])->fetch(PDO::FETCH_ASSOC);
+        $user = DB::run("SELECT id, username, acceptpms, notifs, email FROM users WHERE id=?", [$receiver])->fetch(PDO::FETCH_ASSOC);
         if (strpos($user['notifs'], '[pm]') !== false) {
-            $sender = $user = DB::run("SELECT username FROM users WHERE id=?", [$receiver])->fetch(PDO::FETCH_ASSOC);
-            $cusername = $sender["username"] ?? 0;
-            $body = "You have received a PM from ".$cusername."\n\nYou can use the URL below to view the message (you may have to login).\n\n    ".Config::TT()['URLROOT']."/messages\n\n".Config::TT()['SITENAME']."";
+            $body = "You have received a PM\n\nYou can use the URL below to view the message (you may have to login).\n\n$url/messages\n\n".Config::TT()['SITENAME']."";
+            $url = URLROOT;
+            $email = Config::TT()['SITEEMAIL'];
             $TTMail = new TTMail();
-            $TTMail->Send($user["email"], "You have received a PM from $cusername", $body, "From: Config::TT()[SITEEMAIL]", "-fConfig::TT()[SITEEMAIL]");
+            $TTMail->Send($user["email"], "You have received a PM", $body, "From: " . Config::TT()['SITEEMAIL'] . "", "-f" . Config::TT()['SITEEMAIL'] . "");
         }
     }
 

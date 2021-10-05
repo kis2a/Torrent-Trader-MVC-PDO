@@ -1,5 +1,5 @@
 <center>
-<a href="<?php echo URLROOT ?>/search/browse"><?php echo Lang::T("BROWSE_TORRENTS") ?><a><br><br>
+<a href="<?php echo URLROOT ?>/search/browse"><?php echo Lang::T("BROWSE_TORRENTS") ?></a><br><br>
 
 <form method="get" action="<?php echo URLROOT; ?>/search/test<?php echo $data['url']; ?>">
 <?php
