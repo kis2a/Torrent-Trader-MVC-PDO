@@ -171,25 +171,9 @@ foreach ($php_recommended_settings as $phprec) {
 </table>
 
 <br /><b>Directory and File Permissions Check:</b><br />
-<p>In order for TorrentTrader! to function correctly it needs to be able to access or write to certain files or directories.<br />
-If you see "Unwriteable" you need to change the permissions on the file or directory to 777 (directories) or 666 (files) so that TorrentTrader to write to it.
-<br />The censor.txt should be chmodded to <b>600</b>.
-</p>
-<br />
 
 <table cellpadding="3" cellspacing="1" style='border-collapse: collapse' border="1" >
 <?php
-writableCell('../data/backups');
-writableCell('../data/uploads');
-writableCell('../data/uploads/images');
-writableCell('../data/uploads/imdb');
-writableCell('../data/uploads/attachment');
-writableCell('../data/cache');
-writableCell('../data/cache/imdb');
-writableCell('../data/import');
-writableCell('../data/logs/censor.txt', 1);
-writableCell('../data/logs/exception_log.txt', 1);
-writableCell('uploads');
 writableCell('uploads/avatars');
 writableCell('uploads/thumbnail');
 ?>
@@ -205,10 +189,11 @@ try {
 
     $stmt = $link->query("SHOW VARIABLES LIKE 'sql_mode'")->fetch();
     if (!$stmt) {
-        echo "<font color='#ff0000'><b>Error Getting SQL Mode:</b></font><br><br>";
+        echo "<font color='#ff0000'><b>SQL Mode:</b></font>&nbsp;&nbsp;";
+        echo "Error Getting SQL Mode<br><br>";
     } else {
-		echo "<font color='#00cc00'><b>SQL Mode:</b></font><br>";
-        echo var_dump($stmt[1])."<br><br>";
+		echo "<font color='#00cc00'><b>SQL Mode:</b></font>&nbsp;&nbsp;";
+        echo $stmt[1]."<br><br>";
 	}
 	
     $stmt = $link->prepare("SHOW TABLES");

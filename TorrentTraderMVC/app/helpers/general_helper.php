@@ -114,7 +114,7 @@ function torrentmenu($id, $external = 'no')
 // Upload Image - torrent/edit
 function uploadimage($x, $imgname, $tid)
 {
-    $imagesdir = TORRENTDIR . "/images";
+    $imagesdir = UPLOADDIR."/images";
     $allowed_types = ALLOWEDIMAGETYPES;
     if (!($_FILES["image$x"]["name"] == "")) {
         if ($imgname != "") {

@@ -36,8 +36,8 @@ class Message
         // email notif
         $user = DB::run("SELECT id, username, acceptpms, notifs, email FROM users WHERE id=?", [$receiver])->fetch(PDO::FETCH_ASSOC);
         if (strpos($user['notifs'], '[pm]') !== false) {
-            $body = "You have received a PM\n\nYou can use the URL below to view the message (you may have to login).\n\n$url/messages\n\n".Config::TT()['SITENAME']."";
             $url = URLROOT;
+            $body = "You have received a PM\n\nYou can use the URL below to view the message (you may have to login).\n\n$url/messages\n\n".Config::TT()['SITENAME']."";
             $email = Config::TT()['SITEEMAIL'];
             $TTMail = new TTMail();
             $TTMail->Send($user["email"], "You have received a PM", $body, "From: " . Config::TT()['SITEEMAIL'] . "", "-f" . Config::TT()['SITEEMAIL'] . "");

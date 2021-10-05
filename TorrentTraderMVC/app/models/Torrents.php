@@ -164,16 +164,16 @@ class Torrents
             DB::run("DELETE FROM $x WHERE torrent = $id");
         }
         DB::run("DELETE FROM completed WHERE torrentid = $id");
-        if (file_exists(TORRENTDIR . "/$id.torrent")) {
-            unlink(TORRENTDIR . "/$id.torrent");
+        if (file_exists(UPLOADDIR . "/torrents/$id.torrent")) {
+            unlink(UPLOADDIR . "/torrents$id.torrent");
         }
         if ($row["image1"]) {
-            unlink(TORRENTDIR . "/images/" . $row["image1"]);
+            unlink(UPLOADDIR . "/images/" . $row["image1"]);
         }
         if ($row["image2"]) {
-            unlink(TORRENTDIR . "/images/" . $row["image2"]);
+            unlink(UPLOADDIR . "/images/" . $row["image2"]);
         }
-        @unlink(NFODIR . "/$id.nfo");
+        @unlink(UPLOADDIR . "/nfos/$id.nfo");
         DB::run("DELETE FROM torrents WHERE id = $id");
         DB::run("DELETE FROM reports WHERE votedfor = $id AND type = 'torrent'");
         // snatch

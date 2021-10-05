@@ -61,7 +61,7 @@ class Scrape
         $id = Input::get('id');
         $resu = DB::run("SELECT id, info_hash FROM torrents WHERE external = 'yes' AND id = $id");
         while ($rowu = $resu->fetch(PDO::FETCH_ASSOC)) {
-            $torrent = new Torrent(TORRENTDIR . "/$rowu[id].torrent");
+            $torrent = new Torrent(UPLOADDIR."/torrents/$rowu[id].torrent");
             try {
                 $scraped = $torrent->scrape();
             } catch (Exception $e) {

@@ -4,7 +4,7 @@ class Tscraper
 {
     public static function ScrapeId($id)
     {
-        $torrent = new Torrent(TORRENTDIR . "/$id.torrent");
+        $torrent = new Torrent(UPLOADDIR."/torrents/$id.torrent");
         try {
             $scraped = $torrent->scrape();
         } catch (\Exception $e) {

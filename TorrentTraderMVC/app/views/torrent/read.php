@@ -190,7 +190,7 @@ if ($torr['imdb'] != "") {
         <div class="col">
         <?php if ($torr["image1"] != "") {
             if ($torr["image1"] != "") {
-                $img1 = "&nbsp;&nbsp;<img src='".data_uri(TORRENTDIR."/images/".$torr["image1"], $torr['image1'])."' height='300' width='200' border='0' alt='' />";
+                $img1 = "&nbsp;&nbsp;<img src='".data_uri(UPLOADDIR."/images/".$torr["image1"], $torr['image1'])."' height='300' width='200' border='0' alt='' />";
             }
             print("" . $img1 . "");
         } ?>
@@ -198,7 +198,7 @@ if ($torr['imdb'] != "") {
         <div class="col">
         <?php if ($torr["image2"] != "") {
             if ($torr["image2"] != "") {
-                $img2 = "<img src='".data_uri(TORRENTDIR."/images/".$torr["image2"], $torr['image2'])."' height='300' width='200' border='0' alt='' />";
+                $img2 = "<img src='".data_uri(UPLOADDIR."/images/".$torr["image2"], $torr['image2'])."' height='300' width='200' border='0' alt='' />";
             }
             print("" . $img2 . "");
         } ?>
@@ -209,7 +209,7 @@ if ($torr['imdb'] != "") {
 }
 //DISPLAY NFO BLOCK
 if ($torr["nfo"] == "yes") {
-    $nfofilelocation = NFODIR."/$torr[id].nfo";
+    $nfofilelocation = UPLOADDIR."/nfos/$torr[id].nfo";
     $filegetcontents = file_get_contents($nfofilelocation);
     $nfo = $filegetcontents;
     if ($nfo) {

@@ -110,8 +110,8 @@ class Upload
             }
             if (!$message) {
                 //parse torrent file
-                $torrent_dir = TORRENTDIR;
-                $nfo_dir = NFODIR;
+                $torrent_dir = UPLOADDIR."/torrents";
+                $nfo_dir = UPLOADDIR."/nfos";
                 if (!($tupload->move("$torrent_dir/$fname"))) {
                     Redirect::autolink(URLROOT . '/upload', Lang::T("ERROR") . ": " . Lang::T("UPLOAD_COULD_NOT_BE_COPIED") . " $torrent_dir - $fname");
                 }
@@ -156,7 +156,7 @@ class Upload
                     if ($_FILES['image$x']['size'] > IMAGEMAXFILESIZE) {
                         Redirect::autolink(URLROOT . '/upload', Lang::T("INVAILD_FILE_SIZE_IMAGE"));
                     }
-                    $uploaddir = TORRENTDIR . '/images/';
+                    $uploaddir = UPLOADDIR . '/images/';
                     $ifile = $_FILES['image' . $x]['tmp_name'];
                     $im = getimagesize($ifile);
                     if (!$im[2]) {

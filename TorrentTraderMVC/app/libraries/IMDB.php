@@ -113,13 +113,13 @@ class IMDB
     public function __construct($sSearch, $iCache = null, $sSearchFor = 'all')
     {
         $this->sRoot = URLROOT;
-        if (!is_writable(TORRENTDIR.'/imdb') && !mkdir(TORRENTDIR.'/imdb')) {
+        if (!is_writable(UPLOADDIR.'/imdb') && !mkdir(UPLOADDIR.'/imdb')) {
             throw new Exception('The directory “uploads/imdb” isn’t writable.');
         }
         if (!is_writable(CACHE.'/imdb') && !mkdir(CACHE.'/imdb')) { 
             throw new Exception('The directory “cache/imdb” isn’t writable.');
         }
-        if (!is_writable(TORRENTDIR.'/cast') && !mkdir(TORRENTDIR.'/cast')) {
+        if (!is_writable(UPLOADDIR.'/cast') && !mkdir(UPLOADDIR.'/cast')) {
             throw new Exception('The directory “uploads/cast” isn’t writable.');
         }
         if (!function_exists('curl_init')) {
@@ -1631,10 +1631,10 @@ class IMDBHelper extends IMDB
     public static function saveImage($sUrl, $iId)
     {
         if (preg_match('~title_addposter.jpg|imdb-share-logo.png~', $sUrl)) {
-            return TORRENTDIR.'/imdb/not-found.jpg';
+            return UPLOADDIR.'/imdb/not-found.jpg';
         }
 
-        $sFilename = TORRENTDIR.'/imdb/' . $iId . '.jpg';
+        $sFilename = UPLOADDIR.'/imdb/' . $iId . '.jpg';
         if (file_exists($sFilename)) {
             return 'uploads/imdb/' . $iId . '.jpg';
         }

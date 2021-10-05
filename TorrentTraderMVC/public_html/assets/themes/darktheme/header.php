@@ -14,24 +14,26 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
     <title><?php echo $title; ?></title>
   
     <!-- Bootstrap & core CSS -->
-    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) ?>/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URLROOT; ?>/assets/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo ($_SESSION['stylesheet'] ?: Config::TT()['DEFAULTTHEME']) ?>/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- TT Custom CSS, any edits must go here-->
-    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) ?>/customstyle.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo ($_SESSION['stylesheet'] ?: Config::TT()['DEFAULTTHEME']) ?>/customstyle.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css">
   </head>
 <body>
 
-<?php require APPROOT . '/views/inc/default/navbar.php'; ?><br>
+<?php require "assets/themes/default/navbar.php"; ?><br>
 
 <div class="container-fluid">
 <div class="row">
   
 <?php
 if (Config::TT()['LEFTNAV']) { ?>
-<div class="col  ttsidebar">
+<div class="col ttsidebar">
   <?php Blocks::left();?>
 </div> <?php
 } ?>
 
 <div class="col">
+
+<th style="width: 70%">

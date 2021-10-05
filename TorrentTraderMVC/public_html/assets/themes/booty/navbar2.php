@@ -30,7 +30,7 @@ if ($_SESSION["view_torrents"] == "yes") {
     } else {
        $connectable = "<b><font color='#FFFFFF'>?</font></b>";
     } ?>
-    <a href="#"><i class="fa fa-refresh fa-spin fa-3x fa-fw tticon"></i></a>&nbsp;<?php echo $connectable ?>&nbsp;&nbsp;
+    <a href="#"><i class="fa fa-refresh fa-spin fa-1x fa-fw tticon"></i></a>&nbsp;<?php echo $connectable ?>&nbsp;&nbsp;
     <font color='#FFFFFF'><?php echo $activeleech ?></font>&nbsp;&nbsp;<a href="javascript:popout(0) "onclick="window.open('<?php echo  URLROOT ?>/peers/popoutleech?id=<?php echo  $_SESSION['id'] ?>','Leeching','width=350,height=350,scrollbars=yes')"><i class="fa fa-arrow-circle-down tticon"></i></a>&nbsp;&nbsp;
     <font color='#FFFFFF'><?php echo $activeseed ?></font>&nbsp;&nbsp;<a href="javascript:popout(0) "onclick="window.open('<?php echo  URLROOT ?>/peers/popoutseed?id=<?php echo  $_SESSION['id'] ?>','Seeding','width=350,height=350,scrollbars=yes')"><i class="fa fa-arrow-circle-up tticon"></i></a>&nbsp;&nbsp;
   <?php

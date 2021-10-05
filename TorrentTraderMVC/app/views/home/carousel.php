@@ -14,7 +14,7 @@
                         if ($row["image1"] == 1){
                             $img = "".URLROOT."/assets/images/misc/default_avatar.png";
                         } elseif ($row["image1"] != ""){
-                            $img = data_uri(TORRENTDIR."/images/".$row["image1"], $row['image1']);
+                            $img = data_uri(UPLOADDIR."/images/".$row["image1"], $row['image1']);
                         }
                         ?> 
                         <a href='<?php echo URLROOT; ?>/torrent?id=<?php echo $row["id"] ?>'><img src="<?php echo $img; ?>"  width="100" height="250" ></a>

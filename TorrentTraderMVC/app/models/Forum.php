@@ -69,7 +69,7 @@ class Forum
         if ($sql->rowCount() != 0) {
             foreach ($sql as $row7) {
                 //print("<br>&nbsp;<b>$row7[filename]</b><br>");
-                $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+                $daimage = UPLOADDIR . "/attachment/$row7[file_hash].data";
                 if (file_exists($daimage)) {
                     if (unlink($daimage)) {
                         DB::run("DELETE FROM attachments WHERE content_id=?", [$row7['id']]);

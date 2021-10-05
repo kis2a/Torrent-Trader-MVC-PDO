@@ -99,9 +99,9 @@ class Auth
                     ob_start();
                     ob_clean();
                 }
-                require_once "../app/views/inc/darktheme/header.php";
+                require_once "assets/themes/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/header.php";
                 echo '<div class="alert alert-warning"><center>' . stripslashes(Config::TT()['OFFLINEMSG']) . '</center></div>';
-                require_once "../app/views/inc/default/footer.php";
+                require_once "assets/themes/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/footer.php";
                 if ($wrapper) {
                     die();
                 }

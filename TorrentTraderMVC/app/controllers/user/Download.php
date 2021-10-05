@@ -23,7 +23,7 @@ class Download
         if (!$id) {
             Redirect::autolink(URLROOT, Lang::T("ID_NOT_FOUND_MSG_DL"));
         }
-        $fn = TORRENTDIR . "/$id.torrent";
+        $fn = UPLOADDIR . "/torrents/$id.torrent";
         $row = Torrents::isAvailableToDownload($id);
         // Check The Torrent
         $vip = $row['vip'];
@@ -92,7 +92,7 @@ class Download
     {
         $id = (int) Input::get("id");
         $filename = Input::get("hash");
-        $fn = TORRENTDIR . "/attachment/$filename.data";
+        $fn = UPLOADDIR . "/attachment/$filename.data";
         $sql = DB::run("SELECT * FROM attachments WHERE  id=?", [$id])->fetch(PDO::FETCH_ASSOC);
         $extension = substr($sql['filename'], -3);
         if (!file_exists($fn)) {

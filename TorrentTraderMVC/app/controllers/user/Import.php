@@ -11,7 +11,7 @@ class Import
     public static function gettorrentfiles()
     {
         $files = array();
-        $dh = opendir(IMPORT . "/");
+        $dh = opendir(UPLOADDIR."/import/");
         while (false !== ($file = readdir($dh))) {
             if (preg_match("/\.torrent$/i", $file)) {
                 $files[] = $file;
@@ -66,9 +66,9 @@ class Import
                 $shortfname = $torrent = $matches[1];
 
                 //parse torrent file
-                $torrent_dir = TORRENTDIR;
+                $torrent_dir = UPLOADDIR."/torrents";
                 $torInfo = new Parse();
-                $tor = $torInfo->torr(IMPORT."/$fname");
+                $tor = $torInfo->torr(UPLOADDIR."/import/$fname");
 
                 $announce = strtolower($tor[0]);
                 $infohash = $tor[1];
@@ -122,7 +122,7 @@ class Import
                     continue;
                 }
 
-                copy(IMPORT."/$files[$i]", "$torrent_dir/$id.torrent");
+                copy(UPLOADDIR."/import/$files[$i]", "$torrent_dir/$id.torrent");
 
                 //EXTERNAL SCRAPE
                 if ($external == 'yes' && Config::TT()['UPLOADSCRAPE']) {
@@ -132,7 +132,7 @@ class Import
                 Logs::write("Torrent $id ($name) was Uploaded by $_SESSION[username]");
                 $message .= "<br /><b>" . Lang::T("UPLOAD_OK") . "</b><br /><a href='" . URLROOT . "/torrent?id=" . $id . "'>" . Lang::T("UPLOAD_VIEW_DL") . "</a><br /><br />";
                 echo $message;
-                @unlink(IMPORT."/$fname");
+                @unlink(UPLOADDIR."/import/$fname");
             }
             echo "</center>";
             Style::end();

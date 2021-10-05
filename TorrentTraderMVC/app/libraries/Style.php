@@ -21,12 +21,12 @@ class Style
         } else {
             $title = Config::TT()['SITENAME'] . " : " . htmlspecialchars($title);
         }
-        require_once APPROOT . "/views/inc/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/header.php";
+        require_once "assets/themes/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/header.php";
     }
     
     public static function footer()
     {
-        require_once APPROOT . "/views/inc/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/footer.php";
+        require_once "assets/themes/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/footer.php";
     }
     
     public static function begin($caption = "-", $align = "justify")

@@ -15,7 +15,7 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
   
     <!-- Bootstrap & core CSS -->
     <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) ?>/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo URLROOT; ?>/assets/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<?php echo URLROOT; ?>/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
     <!-- TT Custom CSS, any edits must go here-->
     <link href="<?php echo URLROOT; ?>/assets/themes/<?php echo (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) ?>/customstyle.css" rel="stylesheet">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai-sublime.min.css">
@@ -25,7 +25,7 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
   <div class="container-fluid" style="padding-top: 10px;">
 
   <div class="col-sm-12">
-  <?php require APPROOT . '/views/inc/default/navbar.php'; ?>
+  <?php require "assets/themes/" . (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) . "/navbar.php"; ?>
   </div>
 
 <table class="table">

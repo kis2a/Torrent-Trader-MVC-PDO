@@ -160,8 +160,8 @@ class Torrent
         if (!$row) {
             Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("TORRENT_ID_GONE"));
         }
-        $torrent_dir = TORRENTDIR;
-        $nfo_dir = NFODIR;
+        $torrent_dir = UPLOADDIR."/torrents";
+        $nfo_dir = UPLOADDIR."/nfos";
         //DO THE SAVE TO DB HERE
         if (Input::exist()) {
             $updateset = array();
@@ -233,7 +233,7 @@ class Torrent
 
             if ($img1action == "delete") {
                 if ($row['image1']) {
-                    $del = unlink(TORRENTDIR . "/images/$row[image1]");
+                    $del = unlink(UPLOADDIR . "/images/$row[image1]");
                     $updateset[] = "image1 = ''";
                 }
             }
@@ -245,7 +245,7 @@ class Torrent
 
             if ($img2action == "delete") {
                 if ($row['image2']) {
-                    $del = unlink(TORRENTDIR . "/images/$row[image2]");
+                    $del = unlink(UPLOADDIR . "/images/$row[image2]");
                     $updateset[] = "image2 = ''";
                 }
             }

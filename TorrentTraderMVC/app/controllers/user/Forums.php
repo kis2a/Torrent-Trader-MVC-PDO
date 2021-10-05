@@ -352,7 +352,7 @@ class Forums
                 $hash = sha1($sourcePath);
 
                 $newfile = $hash . "." . $extension;
-                $targetPath = TORRENTDIR . "/attachment/" . $hash . ".data"; // Target path where file is to be stored
+                $targetPath = UPLOADDIR . "/attachment/" . $hash . ".data"; // Target path where file is to be stored
                 $thumbPath = "uploads/thumbnail/" . $hash . ".jpg"; // Target path where attachment as jpg is to be stored
 
                 if ($extension == 'zip') {
@@ -619,7 +619,7 @@ class Forums
                         print("<br>&nbsp;<b>$row7[filename]</b><br>");
                         $extension = substr($row7['filename'], -3);
                         if ($extension == 'zip') {
-                            $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+                            $daimage = UPLOADDIR . "/attachment/$row7[file_hash].data";
                             if (file_exists($daimage)) {
                                 print(" <a class='btn btn-sm ttbtn' href=\"" . URLROOT . "/download/attachment?id=$row7[id]&amp;hash=" . rawurlencode($row7["file_hash"]) . "\"><i class='fa fa-file-archive-o tticon' ></i>Download</a><br>");
                             } else {
@@ -638,7 +638,7 @@ class Forums
                     <div class="modal-content">
                         <!-- The Close Button -->
                         <?php
-$switchimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+$switchimage = UPLOADDIR . "/attachment/$row7[file_hash].data";
                                 ?><button type="button" class="btn btn-sm ttbtn" data-dismiss="modal"><b>CLOSE</b></button><br><?php
 echo $row7['filename']; ?><br>
                         <img src='<?php echo data_uri($switchimage, $row7['filename']); ?>' style="width:100%" alt=''>
@@ -833,7 +833,7 @@ echo '<center>Add attachment<center><br>';
         $sql = DB::run("SELECT * FROM attachments WHERE content_id =?", [$postid]);
         if ($sql->rowCount() != 0) {
             foreach ($sql as $row7) {
-                $daimage = TORRENTDIR . "/attachment/$row7[file_hash].data";
+                $daimage = UPLOADDIR . "/attachment/$row7[file_hash].data";
                 if (file_exists($daimage)) {
                     if (unlink($daimage)) {
                         DB::run("DELETE FROM attachments WHERE content_id=?", [$postid]);

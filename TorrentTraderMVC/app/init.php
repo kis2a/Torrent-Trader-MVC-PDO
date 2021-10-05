@@ -5,7 +5,7 @@ require_once 'config/config.php';
 $config = require_once 'config/settings.php';
 // Load Langauge
 $language = isset($_SESSION['language'])  ? $_SESSION['language'] : 'english';
-require_once LANG . $language.'.php';
+require_once LANG."/$language.php";
 // Error Reporting
 error_reporting(0); // error_reporting(E_ALL ^ E_NOTICE);
 ini_set('display_errors', 0);

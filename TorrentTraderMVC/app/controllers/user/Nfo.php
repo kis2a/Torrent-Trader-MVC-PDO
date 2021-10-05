@@ -32,7 +32,7 @@ class Nfo
         }
         if ($res["nfo"] == "yes") {
             $shortname = CutName(htmlspecialchars($res["name"]), 40);
-            $nfofilelocation = NFODIR."/$id.nfo";
+            $nfofilelocation = UPLOADDIR."/nfos/$id.nfo";
             $filegetcontents = file_get_contents($nfofilelocation);
             $nfo = $filegetcontents;
         }
@@ -60,7 +60,7 @@ class Nfo
         }
         if ($res["nfo"] == "yes") {
             $shortname = CutName(htmlspecialchars($res["name"]), 40);
-            $nfofilelocation = NFODIR."/$id.nfo";
+            $nfofilelocation = UPLOADDIR."/nfos/$id.nfo";
             $filegetcontents = file_get_contents($nfofilelocation);
             $nfo = $filegetcontents;
         }
@@ -83,7 +83,7 @@ class Nfo
         $id = (int) Input::get("id");
         $this->checks($id, true);
 
-        $nfo = NFODIR . "/$id.nfo";
+        $nfo = UPLOADDIR."/nfos/$id.nfo";
         if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }
@@ -101,7 +101,7 @@ class Nfo
         $id = (int) Input::get("id");
         $this->checks($id, true);
 
-        $nfo = NFODIR . "/$id.nfo";
+        $nfo = UPLOADDIR."/nfos/$id.nfo";
         if ((!Validate::Id($id)) || (!$contents = file_get_contents($nfo))) {
             Redirect::autolink(URLROOT."/torrent?id=$id", Lang::T("NFO_NOT_FOUND"));
         }

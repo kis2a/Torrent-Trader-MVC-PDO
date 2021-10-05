@@ -198,7 +198,7 @@ function torrenttable($res)
                     print("<td class='ttable_col$x' nowrap='nowrap'><a href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
                     break;
                 case 'dl':
-                    print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "/download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><i class='fa fa-download tticon' title='Download'></i></a></td>");
+                    print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "/download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><i class='fa fa-download' style='color:green' title='Download'></i></a></td>");
                     break;
                 case 'magnet':
                     $magnet = DB::run("SELECT info_hash FROM torrents WHERE id=?", [$id])->fetch();
