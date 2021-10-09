@@ -5,7 +5,7 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="<?php echo DB_CHAR; ?>">
+  <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="author" content="M-jay" />
     <meta name="generator" content="TorrentTrader <?php echo VERSION; ?>" />
