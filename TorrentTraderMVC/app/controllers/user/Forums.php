@@ -122,7 +122,7 @@ class Forums
                                 JOIN forum_topics
                                 ON forum_posts.topicid=forum_topics.id
                                 WHERE ($whered)
-                                ORDER BY count_words DESC")->fetchAll();
+                                ORDER BY count_words,added DESC")->fetchAll();
             } else {
                 $res2 = DB::run("SELECT COUNT(DISTINCT subject), ( $wherea ) as count_words
                                  FROM forum_topics
@@ -137,7 +137,7 @@ class Forums
                                 JOIN forum_posts
                                 ON forum_posts.topicid=forum_topics.id
                                 WHERE ($wherec)
-                                ORDER BY count_words DESC")->fetchAll();
+                                ORDER BY count_words,added DESC")->fetchAll();
             }
 
             if ($count > 0) {

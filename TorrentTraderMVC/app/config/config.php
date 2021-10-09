@@ -10,14 +10,11 @@ define('URLROOT', 'http://localhost/torrenttraderpdo');
 // App Root
 define('APPROOT', dirname(dirname(__FILE__)));
 // Paths
-define('CACHE', '../data/cache'); // Cache dir (only used if type is "disk"). Must be CHMOD 777
-define('LANG', '../data/languages/');
-define('TORRENTDIR', '../data/uploads');
-define('NFODIR', '../data/uploads');
-define('BLOCKSDIR', '../views/blocks');
-define('IMPORT', '../data/import');
-define('LOGGER', '../data/logs');
 define('BACUP', '../data/backups');
+define('CACHE', '../data/cache'); // Cache dir (only used if type is "disk"). Must be CHMOD 777
+define('LANG', '../data/languages');
+define('LOGGER', '../data/logs');
+define('UPLOADDIR', '../data/uploads');
 // Quick Time
 define('TT_TIME', time());
 define('TT_DATE', date("Y-m-d H:i:s"));

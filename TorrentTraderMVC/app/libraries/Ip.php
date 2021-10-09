@@ -4,7 +4,7 @@ class Ip
     // Check IP for ban and Redirect
     public static function checkipban($ip)
     {
-        $res = DB::run('SELECT * FROM bans WHERE true');
+        $res = DB::run('SELECT * FROM bans');
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $banned = false;
             if (self::is_ipv6($row["first"]) && self::is_ipv6($row["last"]) && self::is_ipv6($ip)) {

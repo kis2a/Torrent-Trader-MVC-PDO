@@ -248,7 +248,7 @@ function torrenttable($res)
                     }
                     break;
                 case 'comments':
-                    print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href=" . URLROOT . "comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
+                    print("<td class='ttable_col$x' align='center'><font size='1' face='verdana'><a href=" . URLROOT . "/comments?type=torrent&amp;id=$id'>" . number_format($row["comments"]) . "</a></font></td>\n");
                     break;
                 case 'nfo':
                     if ($row["nfo"] == "yes") {

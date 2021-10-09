@@ -1,4 +1,4 @@
-SET GLOBAL SQL_MODE = "";
+SET SQL_MODE = "";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
