@@ -216,9 +216,14 @@ class Cleanup
     public static function hitnrun()
     {
         $timenow = TimeDate::gmtime();
-        DB::run("UPDATE snatched SET hnr = 'yes' WHERE completed = '1' AND hnr = 'no' AND uload < dload AND $timenow - HNR_DEADLINE > stime AND HNR_SEEDTIME > ltime AND done='no'");
+        // my edits
+        $length = HNR_DEADLINE * 86400; // 7 days
+        $seedtime = HNR_SEEDTIME * 3600; // 48 hours
+        // deadline here 7 days - seedtime/target 48 hours
+        DB::run("UPDATE snatched SET hnr = 'yes' WHERE completed = '1' AND hnr = 'no' AND uload < dload AND $timenow - $length > stime AND $seedtime > ltime AND done='no'");
         DB::run("UPDATE `snatched` SET `hnr` = 'no' WHERE `hnr` = 'yes' AND uload >= dload");
-        DB::run("UPDATE `snatched` SET `hnr` = 'no' WHERE `hnr` = 'yes' AND ltime >= HNR_SEEDTIME");
+        // seedtime/target
+        DB::run("UPDATE `snatched` SET `hnr` = 'no' WHERE `hnr` = 'yes' AND ltime >= $seedtime");
         $a = DB::run("SELECT DISTINCT uid FROM snatched WHERE hnr = 'yes' AND done='no'");
         if ($a->rowCount() > 0):
             while ($b = $a->fetch(PDO::FETCH_ASSOC)):
@@ -227,14 +232,14 @@ class Cleanup
                 $count = $d[0];
                 $user = $b[0];
 
-                $length = HNR_DISABLED;
+                //$length = HNR_DEADLINE;
                 $expiretime = gmdate("Y-m-d H:i:s", $timenow + $length);
 
                 $e = DB::run("SELECT type, active FROM warnings WHERE userid = '$user'");
                 $f = $e->fetch(PDO::FETCH_ASSOC);
                 $type = $f[0];
                 $active = $f[1];
-                // warn
+                // warn 5 hit & runs then warned
                 if ($count >= HNR_WARN && $type != "HnR"):
                     $reason = "" . Lang::T("CLEANUP_WARNING_FOR_ACCUMULATING") . " " . HNR_WARN . " H&R.";
                     $subject = "" . Lang::T("CLEANUP_WARNING_FOR_H&R") . "";
@@ -250,7 +255,7 @@ class Cleanup
 												                                 VALUES (?,?,?,?,?,?)", [0, $user, TimeDate::get_date_time(), $subject, $msg, 1]);
                     endif;
                 endif;
-                // Unwarned
+                // Unwarned below 5 hit & runs then unwarn
                 if ($count < HNR_WARN && $type == "HnR"):
                     $subject = "" . Lang::T("CLEANUP_REMOVAL_OF_H&R_WARNING") . "";
                     $msg = "" . Lang::T("CLEANUP_YOU_NOW_HAVE_LESS_THAN") . " " . HNR_WARN . " H&R.\n" . Lang::T("CLEANUP_YOUR_WARNING_FOR_H&R_HAS_REMOVED") . "";
@@ -259,7 +264,7 @@ class Cleanup
                     DB::run("INSERT INTO messages (sender, receiver, added, subject, msg, poster)
 									                             VALUES (?,?,?,?,?,?)", [0, $user, TimeDate::get_date_time(), $subject, $msg, 1]);
                 endif;
-                // Ban
+                // Ban after 50
                 if ($count >= HNR_BAN):
                     $g = DB::run("SELECT username, email, modcomment FROM users WHERE id = $user");
                     $h = $g->fetch(PDO::FETCH_ASSOC);
@@ -279,6 +284,11 @@ class Cleanup
                     $TTMail = new TTMail();
                     $TTMail->Send($h[1], "$subject", "$body", "" . Lang::T("OF") . ": " . Config::TT()['SITEEMAIL'] . "", "-f" . Config::TT()['SITEEMAIL'] . "");
                 endif;
+                
+                // Ban download after 15
+                if ($count >= HNR_STOP_DL){
+                    DB::run("UPDATE users SET downloadbanned = 'yes' WHERE id = $user");
+                }
             endwhile;
         endif;
     }

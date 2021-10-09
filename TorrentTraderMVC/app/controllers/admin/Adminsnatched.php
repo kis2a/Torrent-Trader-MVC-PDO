@@ -36,7 +36,7 @@ class Adminsnatched
                 'pagerbottom' => $pagerbottom,
                 'res' => $res,
             ];
-            View::render('snatched/hitnrun', $data);
+            View::render('snatched/hitnrun', $data, 'admin');
             require APPROOT . '/views/admin/admininc/footer.php';
         } else {
             require APPROOT . '/views/admin/admininc/header.php';

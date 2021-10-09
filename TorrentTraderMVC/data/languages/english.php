@@ -1085,6 +1085,21 @@ $LANG["T_L_OR_E"] = "Local or External";
 $LANG["LOCAL_TORRENT"] = "Local Torrent";
 $LANG["EXTERNAL_TORRENT"] = "External Torrent";
 $LANG["FREE"] = "Free";
+$LANG["CLEANUP_WARNING_FOR_ACCUMULATING"] ="You're warned because you have accumulated";
+$LANG["CLEANUP_WARNING_FOR_H&R"] ="Warning for H&R";
+$LANG["CLEANUP_YOU_HAVE_BEEN_WARNEWD_ACCUMULATED"] ="You're warned because you have accumulated";
+$LANG["CLEANUP_REMOVAL_OF_H&R_WARNING"] ="Your warning for H&R has been removed";
+$LANG["CLEANUP_YOU_NOW_HAVE_LESS_THAN"] =" You have now less than";
+$LANG["CLEANUP_YOUR_WARNING_FOR_H&R_HAS_REMOVED"] ="Your warning for H&R has been removed.";
+$LANG["CLEANUP_BANNED_FOR"] ="Banned because that the warning time for H&R has expired.";
+$LANG["CLEANUP_HAS_BEEN_BANNED_REASON"] ="Banned because that the warning time for H&R has expired.";
+$LANG["CLEANUP_YOUR_ACCOUNT"] ="Your account at";
+$LANG["CLEANUP_HAS_BEEN_DISABLED"] ="has been disabled";
+$LANG["CLEANUP_YOU_WERE_BANNED_FOLLOWING"] ="You have been banned for the following reason";
+$LANG["CLEANUP_YOU_CAN_CONTACT_BY_LINK"] ="You can contact us by following this link:";
+$LANG["CLEANUP_BANNED_FOR_EXPIRED_H&R_WARNING_TIMEOUT"] ="Banned because that the warning time for H&R has expired";
+$LANG["THERE_ARE_NO_RECORDINGS"] ="There are no recordings of Hit and Run!";
+$LANG["H&R"] ="HnR";
 
 // exceptions
 $LANG["EXCEPTION_EDIT"] = "Edit the Exception log (";

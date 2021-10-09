@@ -134,6 +134,7 @@ class Bonus
                 Logs::write("<a href=" . URLROOT . "/profile?id=$_SESSION[id]><b>$_SESSION[username]</b></a> " . Lang::T("DELETED_RECORDING") . ": <a href=" . URLROOT . "/torrent?id=$torid><b>$torid</b></a> " . Lang::T("HIT_AND_RUN_WITH") . " <b>$viewsize</b> " . Lang::T("OF_UPLOAD") . "");
                 Redirect::autolink(URLROOT . "/bonus/trade", Lang::T("ONE_RECORDING_HIT_AND_RUN_DELETED"));
             }
+            // 3rd line down seedtime/target
             echo "<div style='margin-top:5px; margin-bottom:20px;' align='center'>
           <font size='2' color='#0080FF'>
           <div style='margin-top:5px;' align='center'>

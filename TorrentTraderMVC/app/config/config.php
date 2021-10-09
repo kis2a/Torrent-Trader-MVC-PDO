@@ -67,13 +67,12 @@ define('_UPLOADER', 4);
 define('_MODERATOR', 5);
 define('_SUPERMODERATOR', 6);
 define('_ADMINISTRATOR', 7);
-// Hit & Run mod
+// Snatched
 define('HNR_ON', false); // Not Finished only for testing
-define('HNR_DEADLINE', 7 * 86400); // 7 days to hit the seed target
-define('HNR_SEEDTIME', 172800); // target is to seed for 48 hours
+define('HNR_DEADLINE', 7); // 7 days to hit the seed target
+define('HNR_SEEDTIME', 48); // target is to seed for 48 hours
 define('HNR_WARN', 5); // 5 hit & runs then warned
-define('HNR_STOP_DL', 5); // After 5 H & R stop downloading
+define('HNR_STOP_DL', 15); // After 15 H & R stop downloading
 define('HNR_BAN', 50); // After 50 H&R they are banned
-define('HNR_DISABLED', TRUE);
 
 define('_ANNOUNCEINTERVAL', 600);
