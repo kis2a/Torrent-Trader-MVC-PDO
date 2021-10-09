@@ -5,7 +5,7 @@
 
     <div><b>File List:</b></br><?php
     if (!count($data['files'])) {
-       echo Lang::T("NOTHING_TO_SHOW_FILES") . IMPORT;
+       echo Lang::T("NOTHING_TO_SHOW_FILES") . UPLOADDIR."/import";
     } else {
         foreach ($data['files'] as $f) {
            echo htmlspecialchars($f) . "<br />";
