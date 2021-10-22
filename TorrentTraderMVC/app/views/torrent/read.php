@@ -119,7 +119,7 @@ torrentmenu($data['id'], $torr['external']);
     if ($torr["external"]!='yes') { ?>
         <b><?php echo Lang::T("SPEED"); ?>: </b><br /><?php
     } ?>
-    <b><?php echo Lang::T("COMPLETED"); ?>:</b><?php echo  number_format($torr["times_completed"]); ?><br><?php
+    <b><?php echo Lang::T("COMPLETED"); ?>:</b><?php echo  number_format($torr["times_completed"]); ?>&nbsp;<?php
     if ($torr["external"] != "yes" && $torr["times_completed"] > 0) { ?>
         <a href='<?php echo URLROOT; ?>/completed?id=<?php echo $data['id']; ?>'><?php echo Lang::T("WHOS_COMPLETED"); ?></a>]<br><?php
     } 

@@ -307,7 +307,7 @@ class Torrent
                          VALUES(?,?,?,?,?,?,?)",
                     [0, $torrentid, TimeDate::get_date_time(), 'Your torrent ' . $torrentname . ' has been deleted by ' . $_SESSION['username'], $torrentname . ' was deleted by ' . $_SESSION['username'] . ' Reason: $delreason', 'yes', 'in']);
             }
-            Redirect::autolink(URLROOT . "/torrent?id=$torrentid", htmlspecialchars($torrentname) . " " . Lang::T("HAS_BEEN_DEL_DB"));
+            Redirect::autolink(URLROOT . "/peers/uploaded?id=$_SESSION[id]", htmlspecialchars($torrentname) . " " . Lang::T("HAS_BEEN_DEL_DB"));
             die;
         }
     }

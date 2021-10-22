@@ -239,8 +239,7 @@ class Upload
                 Tscraper::ScrapeId($id);
             }
 
-            Redirect::to(URLROOT . "/torrent?id=$id", $message);
-            die();
+            Redirect::autolink(URLROOT . "/torrent?id=$id", $message);
         } else {
             Redirect::autolink(URLROOT, Lang::T("ERROR"));
         }

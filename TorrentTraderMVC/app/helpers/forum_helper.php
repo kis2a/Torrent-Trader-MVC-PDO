@@ -29,7 +29,7 @@ function catch_up()
         $postid = $arr["lastpost"];
         $r = DB::run("SELECT id,lastpostread FROM forum_readposts WHERE userid=? and topicid=?", [$userid, $topicid]);
         if ($r->rowCount() == 0) {
-            DB::run("INSERT INTO forum_readposts (userid, topicid, lastpostread) VALUES(?, ?, ?), [$userid, $topicid, $postid]");
+            DB::run("INSERT INTO forum_readposts (userid, topicid, lastpostread) VALUES(?, ?, ?)", [$userid, $topicid, $postid]);
         } else {
             $a = $r->fetch(PDO::FETCH_ASSOC);
             if ($a["lastpostread"] < $postid) {
