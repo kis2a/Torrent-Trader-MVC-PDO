@@ -1,10 +1,9 @@
 <?php
-Style::begin(Lang::T("Warning")); ?>
-<table><tr>
+Style::begin(Lang::T("Warning"));
+?>
 Hey <?php echo Users::has('username'); ?>,
-you have <?php echo  $hnr; ?> recording <?php echo ($hnr2 > 1 ? "s" : "") ?> for Hit and Run!&nbsp; 
-View the recordings into <a href='<?php echo URLROOT; ?>/snatched'><b>Your Snatch List</b></a>
+you have <b></b><?php echo  $data['count']; ?></b> Hit and Run!&nbsp; 
+View the recordings in <a href='<?php echo URLROOT; ?>/snatched/user?uid=<?php echo Users::has('id'); ?>'><b>Your Snatch List</b></a>.
 You must to keep seeding or you can <a href='<?php echo URLROOT; ?>/bonus/trade'><b>Trade to Delete</b></a>
-<?php echo  ($hnr2 > 1 ? "these recordings" : "this recording") ?> with Seed Bonus or Upload
-</td></tr></table> <?
+<?
 Style::end();

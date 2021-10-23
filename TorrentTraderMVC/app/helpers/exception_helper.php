@@ -85,7 +85,21 @@ function get_verbose_backtrace($backtrace = null, $depth = 0)
 
     return join("\n", $output);
 }
-
+// Redirect to error page 
+function to($url)
+{
+    if (!headers_sent()) {
+        header("Location: " . $url, true, 302);
+        exit();
+    } else {
+        echo '<script type="text/javascript">';            echo 'window.location.href="' . $url . '";';
+        echo '</script>';
+        echo '<noscript>';
+        echo '<meta http-equiv="refresh" content="0; url=' . $url . '" />';
+        echo '</noscript>';
+        exit();
+    }
+}
 // Debug complex Exception Log & Redirect
 function handleUncaughtException($e)
 {
@@ -96,7 +110,7 @@ function handleUncaughtException($e)
     $error .= "\n" . get_verbose_backtrace($e->getTrace());
     // Log details of error in a file
     error_log($error, 3, "../data/logs/exception_log.txt");
-    Redirect::to(URLROOT . '/exceptions');
+    to(URLROOT . '/exceptions');
 }
 
 // Exception basic database Log & Redirect
@@ -109,5 +123,5 @@ function handleException($e)
     $error .= "\n" . $e->getTrace();
     // Log details of error in a file
     DB::run("INSERT INTO `sqlerr` (`txt`, `time`) VALUES (?,?)", [$error, TimeDate::get_date_time()]);
-    Redirect::to(URLROOT . '/exceptions');
+    to(URLROOT . '/exceptions');
 }

@@ -19,32 +19,21 @@ class Adminsnatched
             Redirect::autolink(URLROOT . "/Adminsnatched", "Entries deleted.");
         }
         if (HNR_ON) {
-            $res = DB::run("SELECT * FROM `snatched` where hnr='yes' ");
-            $row = $res->fetch(PDO::FETCH_ASSOC);
-            $count = $row[0];
+            $count = DB::run("SELECT count(*) FROM `snatched` where hnr='yes' ")->fetchColumn();
             $perpage = 50;
             list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "Adminsnatched?");
             $sql = "SELECT *,s.tid FROM users u left join snatched s on s.uid=u.id  where hnr='yes' ORDER BY s.uid DESC $limit";
             $res = DB::run($sql);
-            $title = "List of Hit and Run";
-
-            require APPROOT . '/views/admin/admininc/header.php';
-            Style::adminnavmenu();
             $data = [
+                'title' => "List of Hit and Run",
                 'count' => $count,
                 'pagertop' => $pagertop,
                 'pagerbottom' => $pagerbottom,
                 'res' => $res,
             ];
             View::render('snatched/hitnrun', $data, 'admin');
-            require APPROOT . '/views/admin/admininc/footer.php';
         } else {
-            require APPROOT . '/views/admin/admininc/header.php';
-            Style::adminnavmenu();
-            Style::begin($data['title']);
-            print '<b><center>Hit & Run Disabled in Config.php (mod in progress)</center></b>';
-            Style::end();
-            require APPROOT . '/views/admin/admininc/footer.php';
+            Redirect::autolink(URLROOT, "Hit & Run Disabled in Config.php (mod in progress)");
         }
     }
 

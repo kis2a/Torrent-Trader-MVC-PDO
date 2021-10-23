@@ -38,4 +38,28 @@ class DB
         $stmt->execute($args);
         return $stmt;
     }
+    
+    // Update 
+    public static function update($table, $data, $where)
+    {
+        //merge data and where together
+        $collection = array_merge($data, $where);
+        //collect the values from collection
+        $values = array_values($collection);
+        //setup fields
+        $fieldDetails = null;
+        foreach ($data as $key => $value) {
+            $fieldDetails .= "$key = ?,";
+        }
+        $fieldDetails = rtrim($fieldDetails, ',');
+        //setup where 
+        $whereDetails = null;
+        $i = 0;
+        foreach ($where as $key => $value) {
+            $whereDetails .= $i == 0 ? "$key = ?" : " AND $key = ?";
+            $i++;
+        }
+        $stmt = self::run("UPDATE $table SET $fieldDetails WHERE $whereDetails", $values);
+        return $stmt->rowCount();
+    }
 }

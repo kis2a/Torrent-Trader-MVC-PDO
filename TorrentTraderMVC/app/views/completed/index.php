@@ -1,10 +1,15 @@
-<table cellpadding="3" cellspacing="0" align="center" class="table_table">
-<tr>
-    <th class="table_head"><?php echo Lang::T("USERNAME"); ?></th>
-    <th class="table_head"><?php echo Lang::T("CURRENTLY_SEEDING"); ?></th>
-    <th class="table_head"><?php echo Lang::T("DATE_COMPLETED"); ?></th>
-    <th class="table_head"><?php echo Lang::T("RATIO"); ?></th>
-</tr>
+<div class='table-responsive'> <table class='table table-striped'><thead><tr>
+    <th> <b><?php echo Lang::T("USERNAME"); ?></b> | <b><?php echo Lang::T("RATIO"); ?></b> </th>
+    <th> <b><?php echo Lang::T("STARTED"); ?></b> </th>
+    <th> <b><?php echo Lang::T("COMPLETED"); ?></b> </th>
+    <th> <b><?php echo Lang::T("LAST_ACTION"); ?></b> </th>
+    <th> <b><?php echo Lang::T("UPLOADED"); ?></b> </th>
+    <th> <b><?php echo Lang::T("DOWNLOADED"); ?></b> </th>
+    <th> <b><?php echo Lang::T("RATIO"); ?></b> </th>
+    <th> <b><?php echo Lang::T("SEED_TIME"); ?></b> </th>
+    <th> <b><?php echo Lang::T("SEEDING"); ?></b> </th>
+    <th> <font color="#FF1200"><b>H</b><small>&</small><b>R</b></font> </th>
+</tr></thead>
 <?php
 while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 
@@ -46,7 +51,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     if ($row2['hnr'] != "yes") { $hnr = "<font color='#27B500'><b>".Lang::T("NO")."</b></font>";  } else { $hnr = "<font color='#FF1200'><b>".Lang::T("YES")."</b></font>"; }
 
 ?>
-    <tr>
+    <tbody><tr>
         <?php /*
     <td class="table_col1"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
     <td class="table_col2"><?php echo $peers; ?></td>
@@ -54,18 +59,19 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     <td class="table_col2"><?php echo number_format($ratio, 2); ?></td>
 */ ?>
 
-    <td class="table_col1"><a href="account-details.php?id=<?php echo $row["id"]; ?>"><b><?php echo $row["username"]; ?></b></a> | <b><?php echo $ratio; ?></b></td>
-    <td class="table_col2" align="center"><?php echo date('d.M.Y<\\b\\r>H:i', TimeDate::sql_timestamp_to_unix_timestamp($startdate));?></td>
-    <td class="table_col1" align="center"><?php echo $comdate; ?></td>
-    <td class="table_col2" align="center"><?php echo date('d.M.Y<\\b\\r>H:i', TimeDate::sql_timestamp_to_unix_timestamp($lastaction));?></td>
-    <td class="table_col1" align="center"><?php echo $upload; ?></td>
-    <td class="table_col2" align="center"><?php echo $download; ?></td>
-    <td class="table_col1" align="center"><b><?php echo $tratio; ?></b></td>
-    <td class="table_col2" align="center"><?php echo $seedtime; ?></td>
-    <td class="table_col1" align="center"><?php echo $peers; ?></td>
-    <td class="table_col2" align="center"><b><?php echo $hnr; ?></b></td>
+    <td><a href="<?php URLROOT ?>/profile?id=<?php echo $row["id"]; ?>"><b><?php echo $row["username"]; ?></b></a> | <b><?php echo $ratio; ?></b></td>
+    <td><?php echo date('d.M.Y<\\b\\r>H:i', TimeDate::sql_timestamp_to_unix_timestamp($startdate));?></td>
+    <td><?php echo $comdate; ?></td>
+    <td><?php echo date('d.M.Y<\\b\\r>H:i', TimeDate::sql_timestamp_to_unix_timestamp($lastaction));?></td>
+    <td><?php echo $upload; ?></td>
+    <td><?php echo $download; ?></td>
+    <td><b><?php echo $tratio; ?></b></td>
+    <td><?php echo $seedtime; ?></td>
+    <td><?php echo $peers; ?></td>
+    <td><b><?php echo $hnr; ?></b></td>
     </tr>
     <?php
 } ?>
-</table>
-<center><a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $data['id']; ?>"><?php echo Lang::T("BACK_TO_DETAILS"); ?></a></center>
+</tr></tbody>
+</table></div>
+<div class"text-center"><a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $data['id']; ?>" class='btn btn-sm ttbtn'><?php echo Lang::T("BACK_TO_DETAILS"); ?></a></div>

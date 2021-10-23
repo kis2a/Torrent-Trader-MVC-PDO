@@ -110,11 +110,7 @@ class Search
             View::render('search/search', $data, 'user');
 
         } else {
-            Style::header(Lang::T("SEARCH"));
-            Style::begin(Lang::T("SEARCH"));
-            echo 'Nothing Found !';
-            Style::end();
-            Style::footer();
+            Redirect::autolink(URLROOT."/search", "Nothing Found Try Again");
         }
     }
 

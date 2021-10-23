@@ -1,83 +1,100 @@
 <?php
-// Error Reporting
-error_reporting(0);
+// Stop Errors Messing With Output
+error_reporting(0); // E_ALL ^ E_NOTICE
+// Set Some Config Settings (external are done with download - not announce)
+define("_MEMBERSONLY", true);
+define("_DEBUG", false);
+define("_INTERVAL", 600);
+define("_INTERVAL_MIN", 300);
+// Classes
 require '../app/config/config.php';
 require '../app/libraries/DB.php';
 require '../app/libraries/Announce.php';
-// Register custom exception handler
+// Register custom exception handler (Disable On Live)
 include "../app/helpers/exception_helper.php";
 set_exception_handler("handleUncaughtException");
 
-// Use the correct content-type
-header("Content-type: Text/Plain");
+// 1) Check Whats Connecting (no browsers allowed)
+$agent = Announce::checkagent($_SERVER["HTTP_USER_AGENT"]) ?? 'n/a';
 
-// Make sure we have something to use as a passkey
-$passkey = $_GET['passkey'] ?? '';
-// Tracker Request Parameters https://wiki.theory.org/BitTorrentSpecification
-$info_hash = bin2hex($_GET['info_hash']);
-$peerid = $_GET['peer_id'];
-$port = $_GET['port'];
-$downloaded = isset($_GET['downloaded']) && is_numeric($_GET['downloaded']) ? intval($_GET['downloaded']) : 0;
-$uploaded = isset($_GET['uploaded']) && is_numeric($_GET['uploaded']) ? intval($_GET['uploaded']) : 0;
-$left = isset($_GET['left']) && is_numeric($_GET['left']) ? intval($_GET['left']) : 0;
-$compact = ($_GET["compact"] && $_GET["compact"] == 1) ? true : false;
-$no_peer_id = $_GET["no_peer_id"];
-$event = $_GET['event'] ?? '';
-$ipadress = is_string($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : die("Weird ip adress");
-$numwant = $_GET["numwant"] ? (int) $_GET["numwant"] : 50; // limit peers 50 ?
+// 2) Check Passkey
+$passkey = Announce::checkpasskey($_GET['passkey']);
 
-// Set Seeder/Client/Completed
-$seeder = ($left == 0) ? "yes" : "no";
-$user_agent = isset($_SERVER['HTTP_USER_AGENT']) && is_string($_SERVER['HTTP_USER_AGENT']) ? substr($_SERVER['HTTP_USER_AGENT'], 0, 80) : "N/A";
-$completed = 0;
+// 3) Get Respones From Client
+$client = Announce::checkClientFields();
 
-// Check Vars
-Announce::Checks($port, $compact, $passkey, $user_agent);
-Announce::Clientban($peerid);
+// 4) Check If Seeder
+$seeder = ($client['left'] == 0) ? "yes" : "no";
 
-// Get User/Torrent/Peer info
-$user = Announce::UserCheck($passkey);
-$torrent = Announce::TorrentCheck($info_hash);
-$peer = Announce::PeerCheck($torrent['id'], $passkey, $user['maxslots']);
+// 5) Check User
+$user['id'] = 0;
+if (_MEMBERSONLY){
+	$user = Announce::UserCheck($passkey);
+}
 
-// Insert Or Update Peers Table
+// 6) Check Torrent
+$torrent = Announce::TorrentCheck($client['info_hash']);
+
+// 7) Completed So Lets Record    
+if ($client['event'] == "completed") {
+    if ( _MEMBERSONLY ) {
+        Announce::Completed($user['id'], $torrent['id']);
+        $torrent['times_completed'] = $torrent['times_completed'] + 1;
+    }
+}
+
+// 8) Check If Peer Already In Database
+$peer = Announce::CheckIfPeer($torrent['id'], $client['peer_id'], $passkey);
+
+// 9) Is It New Or Exsisting Peer
 if (!$peer) {
-    // Waitingtimes ??
-    $sockres = @fsockopen($ipadress, $port, $errno, $errstr, 5);
-    if (!$sockres) {
-        $connectable = "no";
-    } else {
-        $connectable = "yes";
+    // If New Peer stopped Return Empty Response
+    if ($client['event'] == "stopped") {
+        die(Announce::response(array(), 0, 0));
     }
-    @fclose($sockres);
-    Announce::InsertPeer($connectable, $torrent['id'], $peerid, $ipadress, $passkey, $port, $uploaded, $downloaded, $left, $seeder, $user['id'], $user_agent);
-} elseif ($peer) {
-    // Lets Calculate Any Changes & Update User $ Snatched Tables
-    $elapsed = ($peer['seeder'] == 'yes') ? 50 - floor(($peer['ez'] - time()) / 60) : 0; //
-    $upthis = max(0, $uploaded - $peer["uploaded"]);
-    $downthis = max(0, $downloaded - $peer["downloaded"]);
-    if (($upthis > 0 || $downthis > 0 || $elapsed > 0) && $user['id']) { // LIVE STATS!)
-        Announce::UpdateUserAndSnatched($upthis, $downthis, $elapsed, $user['id'], $torrent['id'], $torrent['freeleech']);
+    // Check Max Download Slots
+    Announce::MaxSlots($user);
+    // Use Client To Insert New Peer - wait times / fsock / max connections would go before here
+	Announce::InsertPeer($passkey, $seeder, $user['id'], $agent, $torrent, $client);
+	// Not Seeder So Insert Snatch
+	if ( (_MEMBERSONLY) && (($seeder == 'no' && $torrent['freeleech'] == 0)) ) {
+        Announce::InsertSnatched($user['id'], $torrent['id']);
     }
-    // Now Update Peer Table
-    Announce::UpdatePeer($ip, $passkey, $port, $uploaded, $downloaded, $left, $user_agent, $seeder, $torrent['id'], $peerid);
+} else {
+	// Use Client To Update User/Snatched Details
+	$elapsed = ($peer['seeder'] == 'yes') ? _INTERVAL - floor(($peer['ez'] - time()) / 60) : 0;
+    $upthis = max(0, $client['uploaded'] - $peer["uploaded"]);
+    $downthis = max(0, $client['downloaded'] - $peer["downloaded"]);
+    if ($upthis > 0 || $downthis > 0 || $elapsed > 0){
+		if ($torrent["freeleech"] == 1){
+			Announce::UpdateUser($user['id'], $upthis, false);
+		}else{
+            Announce::UpdateUser($user['id'], $upthis, $downthis);
+            Announce::UpdateSnatched($userid, $torrentid, $elapsed, $downthis, $upthis);
+        }
+    }
+    // If Peer stopped Delete & Return Empty Response
+    if ($client['event'] == "stopped") {
+        Announce::DeletePeer($torrent['id'], $client['peer_id']);
+        die(Announce::response(array(), 0, 0));
+    }
+    // Now Update Peer
+    Announce::UpdatePeer($passkey, $agent, $seeder, $torrent['id'], $client);
 }
 
-// Run Events Updates
-Announce::Event($event, $torrent['id'], $peerid, $user['id'], $seeder, $torrent['freeleech']);
+// 10) Now Lets Get Details For Response
+$response = DB::run("SELECT peer_id, ip, port FROM peers WHERE torrent = ?", [$torrent['id']])->fetchAll();
+$reply = array(); // To be encoded and sent to the client
+foreach($response as $resp) { // Runs for every client with the same torrentid/infohash
+	$reply[] = array($resp['ip'], $resp['port'], $resp['peer_id']); //ip, port, peerid
+}
+$seeders = DB::run("SELECT COUNT(*) FROM peers WHERE seeder=? AND torrent = ?", ['yes', $torrent['id']])->fetchColumn();
+$leechers = DB::run("SELECT COUNT(*) FROM peers WHERE seeder=? AND torrent = ?", ['no', $torrent['id']])->fetchColumn();
 
-// Count Peers In Table
-$count_peers = Announce::CountPeers($torrent['id']);
-$reply[] = array($ipadress, $port, $peerid);
-$seeders = 0;
-$leechers = 0;
-if ($r = $count_peers->fetch(PDO::FETCH_NUM)) {
-    $seeders = $r[1];
-    $leechers = $r[0];
+// 11) Update Torrent
+if ($seeder == "yes") {
+    Announce::UpdateTorrent($leechers, $seeders, $torrent['times_completed'], $torrent);
 }
 
-// Update Torrent
-Announce::UpdateTorrent($leechers, $seeders, $torrent['completed'] + $completed, $torrent['banned'], $torrent['id']);
-
-// Print out response
-die(Announce::track($reply, $seeders[0], $leechers[0]));
+// 12) Send Response Back
+die(Announce::response($reply, $seeders, $leechers));

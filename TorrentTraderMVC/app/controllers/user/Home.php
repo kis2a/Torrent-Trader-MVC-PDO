@@ -18,14 +18,10 @@ class Home
         }
         // Start Hit And Run Warning
         if (HNR_ON) {
-            $query = DB::run("SELECT count(hnr) FROM `snatched` WHERE `uid` = '" . Users::has("id") . "' AND `hnr` = 'yes'");
-            $res2 = $query->fetch(PDO::FETCH_ASSOC);
-            $hnr = "<b><b>&nbsp; " . $res2[0] . " &nbsp;</b>";
-            $hnr2 = $res2[0];
-            if ($res2[0] > 0) {
+            $count = DB::run("SELECT count(hnr) FROM `snatched` WHERE `uid` = ? AND `hnr` = ?", [Users::has("id"), 'yes'])->fetchColumn();
+            if ($count > 0) {
                 $data = [
-                    'hnr1' => $hnr,
-                    'hnr2' => $hnr2,
+                    'count' => $count,
                 ];
                 View::render('home/hitnrun', $data);
             }

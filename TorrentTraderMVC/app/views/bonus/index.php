@@ -15,7 +15,7 @@
   <tbody><tr>
       <td><?php echo htmlspecialchars($row['title']); ?></td>
       <td><?php echo htmlspecialchars($row['descr']); ?></td>
-      <td><?php echo $row->cost; ?></td>
+      <td><?php echo $row['cost']; ?></td>
       <td><input type="submit"  class='btn btn-sm ttbtn' value="Exchange"></td>
   </tr></tbody>
   </form>

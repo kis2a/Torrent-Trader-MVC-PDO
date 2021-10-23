@@ -124,7 +124,7 @@ class Forums
                                 WHERE ($whered)
                                 ORDER BY count_words,added DESC")->fetchAll();
             } else {
-                $res2 = DB::run("SELECT COUNT(DISTINCT subject), ( $wherea ) as count_words
+                $res2 = DB::run("SELECT COUNT(*), ( $wherea ) as count_words
                                  FROM forum_topics
                                  JOIN forum_posts
                                  ON forum_posts.topicid=forum_topics.id
@@ -132,7 +132,7 @@ class Forums
                 $count = $res2;
                 list($pagertop, $pagerbottom, $limit) = pager(30, $count, URLROOT . "/forums/result?keywords=$keywords&");
 
-                $res = DB::run("SELECT DISTINCT subject, forumid, topicid, forum_posts.userid, ( $wherea ) as count_words
+                $res = DB::run("SELECT subject, forumid, topicid, forum_posts.userid, ( $wherea ) as count_words
                                 FROM forum_topics
                                 JOIN forum_posts
                                 ON forum_posts.topicid=forum_topics.id

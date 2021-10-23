@@ -1100,7 +1100,27 @@ $LANG["CLEANUP_YOU_CAN_CONTACT_BY_LINK"] ="You can contact us by following this 
 $LANG["CLEANUP_BANNED_FOR_EXPIRED_H&R_WARNING_TIMEOUT"] ="Banned because that the warning time for H&R has expired";
 $LANG["THERE_ARE_NO_RECORDINGS"] ="There are no recordings of Hit and Run!";
 $LANG["H&R"] ="HnR";
-
+// trade Hit & Run
+$LANG["DELETED_RECORDING"] ="Has deleted a recording of H&R for Torrent ID:";
+$LANG["POINTS_OF_SEED_BONUS"] ="with <b>100 points</b> of Seed Bonus.";
+$LANG["YOUR_RECORDINGS_OF_HIT_AND_RUN"] ="Your Recordings of Hit and Run";
+$LANG["ONE_RECORDING_HIT_AND_RUN_DELETED"] ="One recording for Hit and Run was deleted.";
+$LANG["DELETED_RECORDING"] = "has deleted a recording of H&R for Torrent ID:";
+$LANG["OF_UPLOAD"] = "of Upload";
+$LANG["HIT_AND_RUN_FOR"] ="for";
+$LANG["HIT_AND_RUN_HOURS_RATIO_BECOMES"] ="hours or until ratio becomes";
+$LANG["HIT_AND_RUN_DELETE"] ="But if you want a fast way, you can trade to delete";
+$LANG["HIT_AND_RUN_WITH"] = "With";
+$LANG["SEED_TIME"] = "Seed Time";
+$LANG["SNATCHLIST_SEEDBONUS"] = "Seed Bonus";
+$LANG["SNATCHLIST_YOU_DONT_HAVE_ENOUGH"] = "You don't have enough";
+$LANG["SNATCHLIST_FOR_TRADING"] = "for trading !";
+$LANG["SNATCHLIST_UPLOAD"] = "Upload";
+$LANG["SNATCHLIST_COST"] = "Cost";
+$LANG["YOUR_LIST_OF_HITS_AND_RUN"] = "Your List of Hits and Run is empty";
+$LANG["HIT_AND_RUN_YOUR_SNATCH_LIST"] ="View Your Snatch List";
+$LANG["TO_SOLVE_THIS_PROBLEM_SEEDING"] ="To solve this problem you must to keep seeding";
+$LANG["SNATCHLIST_POINTS_OF_SEED_BONUS"] = "points of Seed Bonus";
 // exceptions
 $LANG["EXCEPTION_EDIT"] = "Edit the Exception log (";
 $LANG["EXCEPTION_READ"] = "Read the Exception Log";
