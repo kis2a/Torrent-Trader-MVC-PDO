@@ -135,7 +135,7 @@ class Bonus
                <th><i class='fa fa-download tticon' title='Downloaded'></i></th>
                <th><?php echo Lang::T("SEED_TIME"); ?></th>
                <th><?php echo Lang::T("DELETE"); ?></th>
-               </tr></thead>
+               </tr></thead><tbody>
               <?php
               while ($row = $res->fetch(PDO::FETCH_ASSOC)):
                 $torid = $row['tid'];
@@ -166,7 +166,7 @@ class Bonus
 		        </td>
 			    </tr><?php
 			   endwhile; ?>
-             </table></div>
+             </tbody></table></div>
              </form>
              <?php
            Style::end();

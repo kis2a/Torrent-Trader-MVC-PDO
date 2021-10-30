@@ -9,21 +9,14 @@ class Snatched
 
     public function user()
     {
-        $uid = (int) $_GET['uid'];
-        $id = (int) $_GET['id'];
+        $uid = (int) $_GET['id'];
 
-        if ($id != 0) {
-            $uid = (int) $_GET['id'];
-        }
         if (($_SESSION["control_panel"] == "no") && $_SESSION["id"] != $uid) {
             Redirect::autolink(URLROOT, Lang::T("NO_PERMISSION"));
         }
-        $count_uid = get_row_count('snatched', 'WHERE `uid` = \'' . $uid . '\'');
-        $type = "user";
-        $count_tid = 0;
 
-        $perpage = 50;
-        list($pagertop, $pagerbottom, $limit) = pager($perpage, $count_uid, URLROOT . '/snatched/user?uid=' . $uid . ' &amp;');
+        $count_uid = get_row_count('snatched', 'WHERE `uid` = \'' . $uid . '\'');
+        list($pagertop, $pagerbottom, $limit) = pager(50, $count_uid, '/snatched?id=' . $uid . ' &amp;');
         $qry = "SELECT
 				snatched.tid as tid,
 				torrents.name,
@@ -53,86 +46,14 @@ class Snatched
         if ($count_uid > 0) {
             $users = DB::run("SELECT `username` FROM `users` WHERE `id` = '$uid'")->fetchColumn();
             $title = "" . Lang::T("SNATCHLIST_FOR") . " " . htmlspecialchars($users) . "";
-            $title2 = "" . Lang::T("SNATCHLIST_FOR") . " " . $users . "";
 
-            Style::header($title);
-            Style::begin($title2);
-
-            if ($uid == $_SESSION['id']) {
-                usermenu($id);
-                print("<div style='margin-top:20px; margin-bottom:20px' align='center'><font size='2'>" . Lang::T("SNATCHED_MESSAGE") . "</font></div>");
-            }
-
-            if ($res->rowCount() > 0):
-            ?>
-		    	<div class='table-responsive'> <table class='table table-striped'>
-		    	    <thead><tr>
-						<th><?php echo Lang::T("TORRENT_NAME"); ?></th>
-					  <?php if (Config::TT()['ALLOWEXTERNAL']) {?>
-						<th><?php echo Lang::T("T_L_OR_E"); ?></th>
-					  <?php }?>
-						<th><?php echo Lang::T("UPLOADED"); ?></th>
-						<th><?php echo Lang::T("DOWNLOADED"); ?></th>
-						<th><?php echo Lang::T("RATIO"); ?></th>
-						<th><?php echo Lang::T("ADDED"); ?></th>
-						<th><?php echo Lang::T("LAST_ACTION"); ?></th>
-						<th><img src="assets/images/seedtime.png" border="0" title="<?php echo Lang::T("SEED_TIME"); ?>"></th>
-						<th><i class='fa fa-check tticon' title='<?php echo Lang::T("COMPLETED"); ?>'></i></th>
-						<th><i class='fa fa-upload tticon' title='<?php echo Lang::T("SEEDING"); ?>'></i></th>
-						<th><?php echo Lang::T("HNR"); ?></th>
-					</tr></thead>
-
-					<?php
-while ($row = $res->fetch(PDO::FETCH_LAZY)):
-
-                $startdate = TimeDate::utc_to_tz(TimeDate::get_date_time($row[4]));
-                $lastaction = TimeDate::utc_to_tz(TimeDate::get_date_time($row[5]));
-
-                $query = DB::run("SELECT external, freeleech FROM torrents WHERE id = $row[0]");
-                $result = $query->fetch();
-                if ($result[0] == "yes") {$type = "" . Lang::T("EXTERNAL_TORRENT") . "";} else { $type = "" . Lang::T("LOCAL_TORRENT") . "";}
-                if ($result[1] == 1) {$freeleech = "" . Lang::T("FREE") . "";} else { $freeleech = "";}
-
-                if ($row[3] > 0) {$ratio = number_format($row[2] / $row[3], 2);} else { $ratio = "---";}
-                $ratio = "<font color=" . get_ratio_color($ratio) . ">$ratio</font>";
-
-                if ($row[8] != "yes") {$hnr = "<font color=#27B500><b>" . Lang::T("NO") . "</b></font>";} else { $hnr = "<font color=#FF1200><b>" . Lang::T("YES") . "</b></font>";}
-                if ($row[9] != "yes") {$seed = "<font color=#FF1200><b>" . Lang::T("NO") . "</b></font>";} else { $seed = "<font color=#27B500><b>" . Lang::T("YES") . "</b></font>";}
-
-                $maxchar = 30; //===| cut name length
-                $smallname = htmlspecialchars(CutName($row[1], $maxchar));
-                ?>
-							<tbody><tr><!-- below was ".(count($expandrows)?" -->
-								<?php echo ("<td class='ttable_col1' align='left' nowrap='nowrap'><a title=\"" . $row["1"] . "\" href=\"/torrent?id=" . $row['0'] . "&amp;hit=1\"><b>$smallname</b></a> $freeleech</td>"); ?>
-							  <?php if (Config::TT()['ALLOWEXTERNAL']) {?>
-								<td><?php echo $type; ?></td>
-							  <?php }?>
-								<td><font color="#27B500"><?php echo mksize($row[2]); ?></font></td>
-								<td><font color="#FF1200"><?php echo mksize($row[3]); ?></font></td>
-								<td><?php echo $ratio; ?></td>
-								<td><?php echo date('d.M.Y H:i', TimeDate::sql_timestamp_to_unix_timestamp($startdate)); ?></td>
-								<td><?php echo date('d.M.Y H:i', TimeDate::sql_timestamp_to_unix_timestamp($lastaction)); ?></td>
-								<td><?php echo ($row[6]) ? TimeDate::mkprettytime($row[6]) : '---'; ?></td>
-								<td><?php echo ($row[7]) ? "<font color=#0080FF><b>" . Lang::T("YES") . "</b></font>" : "<b>" . Lang::T("NO") . "</b>"; ?></td>
-								<td><?php echo $seed; ?></td>
-								<td><?php echo $hnr; ?></td>
-							</tr></tbody>
-							<?php
-endwhile;
-            ?>
-				</table></div>
-			    <?php
-
-            if ($count_uid > $perpage) {echo $pagerbottom;}
-
-            if ($uid != $_SESSION['id']) {
-                print("<div class='text-center'><a href=" . URLROOT . "/profile?id=$uid><b><input type='submit' class='btn btn-sm ttbtn' value='" . Lang::T("GO_TO_USER_ACCOUNT") . "'></b></a></div>");
-            }
-
-            endif;
-            Style::end();
-            Style::footer();
-            die;
+            $data = [
+                'title' => $title,
+                'res' => $res,
+                'count_uid' => $count_uid,
+                'uid' => $uid,
+            ];
+            View::render('snatched/user', $data, 'user');
         } else {
             Redirect::autolink(URLROOT, Lang::T("User Has No Snatched Torrents :)"));
         }
@@ -142,19 +63,9 @@ endwhile;
     public function index()
     {
         $tid = (int) $_GET['tid'];
-        $uid = (int) $_GET['uid'];
-        $id = (int) $_GET['id'];
 
-        if ($id != 0) {
-            $uid = (int) $_GET['id'];
-        }
-        if ($tid == 0 && $uid == 0) {
-            $uid = (int) $_SESSION['id'];
-        }
         if ($tid > 0) {
             $count_tid = get_row_count('snatched', 'WHERE `tid` = \'' . $tid . '\'');
-            $type = "torrent";
-            $count_uid = 0;
         }
 
         $torrents = DB::run("SELECT `name` FROM `torrents` WHERE `id` = '$tid'")->fetchColumn();
@@ -191,54 +102,14 @@ endwhile;
         $res = DB::run($qry);
 
         if ($count_tid > 0) {
-            Style::header($title);
-            Style::begin($title);
-            if ($res->rowCount() > 0): ?>
-			    <div class='table-responsive'> <table class='table table-striped'><thead><tr>
-					<th><?php echo Lang::T("USERNAME"); ?></th>
-					<th><?php echo Lang::T("UPLOADED"); ?></th>
-					<th><?php echo Lang::T("DOWNLOADED"); ?></th>
-					<th><?php echo Lang::T("RATIO"); ?></th>
-					<th><?php echo Lang::T("ADDED"); ?></th>
-					<th><?php echo Lang::T("LAST_ACTION"); ?></th>
-					<th><?php echo Lang::T("SEED_TIME"); ?></th>
-					<th><i class='fa fa-check tticon' title='<?php echo Lang::T("COMPLETED"); ?>'></i></th>
-					<th><i class='fa fa-upload tticon' title='<?php echo Lang::T("SEEDING"); ?>'></i></th>
-					<th><?php echo Lang::T("HNR"); ?></th>
-				</tr></thead>
-				<?php
-while ($row = $res->fetch(PDO::FETCH_LAZY)):
-                if ($row[6] > 0) {$ratio = number_format($row[5] / $row[6], 2);} else { $ratio = "---";}
-                $ratio = "<font color=" . get_ratio_color($ratio) . ">$ratio</font>";
-                $startdate = TimeDate::utc_to_tz(TimeDate::get_date_time($row[7]));
-                $lastaction = TimeDate::utc_to_tz(TimeDate::get_date_time($row[8]));
-                if ($row[11] != "yes") {$hnr = "<font color=#27B500><b>" . Lang::T("NO") . "</b></font>";} else { $hnr = "<font color=#FF1200><b>" . Lang::T("YES") . "</b></font>";}
-                if ($row[12] != "yes") {$seed = "<font color=#FF1200><b>" . Lang::T("NO") . "</b></font>";} else { $seed = "<font color=#27B500><b>" . Lang::T("YES") . "</b></font>";}
-                ?>
 
-						<tbody><tr>
-							<td><a href="<?php echo URLROOT ?>/profile?id=<?php echo $row[0]; ?>"><?php echo "<b>" . $row[1] . "</b>"; ?></a></td>
-							<td><font color="#27B500"><?php echo mksize($row[5]); ?></font></td>
-							<td><font color="#FF1200"><?php echo mksize($row[6]); ?></font></td>
-							<td><?php echo $ratio; ?></td>
-							<td><?php echo date('d.M.Y H:i', TimeDate::sql_timestamp_to_unix_timestamp($startdate)); ?></td>
-							<td><?php echo date('d.M.Y H:i', TimeDate::sql_timestamp_to_unix_timestamp($lastaction)); ?></td>
-							<td><?php echo ($row[9]) ? TimeDate::mkprettytime($row[9]) : '---'; ?></td>
-							<td><?php echo ($row[10]) ? "<font color=#0080FF><b>" . Lang::T("YES") . "</b></font>" : "<b>" . Lang::T("NO") . "</b>"; ?></td>
-							<td><?php echo $seed; ?></td>
-							<td><?php echo $hnr; ?></td>
-						</tr></tbody>
-						<?php
-endwhile;
-            ?>
-			</table></div>
-			<?php
-if ($count_tid > $perpage) {echo ($pagerbottom);}
-            print("<div class='text-center'><a href=" . URLROOT . "/torrent?id=$tid><b><input type='submit' class='btn btn-sm ttbtn' value='" . Lang::T("BACK_TO_TORRENT") . "'></b></a></div>");
-            endif;
-            Style::end();
-            Style::footer();
-            die;
+            $data = [
+                'title' => $title,
+                'res' => $res,
+                'tid' => $tid,
+            ];
+            View::render('snatched/torrent', $data, 'user');
+
         } else {
             Redirect::autolink(URLROOT, Lang::T("Torrent Has No Snatched Users :)"));
         }

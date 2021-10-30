@@ -11,7 +11,7 @@ if ($selectedid["privacy"] != "strong" || ($_SESSION["control_panel"] == "yes") 
         <a href="<?php echo URLROOT ?>/messages/create?&amp;id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("PM") ?></button></a>&nbsp;
 		<a href="<?php echo URLROOT ?>/report/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT") ?></button></a>&nbsp;
         <?php if ($_SESSION["edit_users"] == "yes") {?>
-		<a href="<?php echo URLROOT; ?>/snatched/user?uid=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a>
+		<a href="<?php echo URLROOT; ?>/snatched/user?id=<?php echo $selectedid["id"] ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("SNATCHLIST") ?></button></a>
         <?php } ?>
         </center>
     </div>

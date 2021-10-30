@@ -4,7 +4,7 @@ if ($_SESSION['class'] > _MODERATOR) { ?>
     <center><b>Super Moderator Only</b></center>
     <ul class="list-group">
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admingroups/groups"><img src="<?php echo URLROOT; ?>/assets/images/admin/user_groups.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("USER_GROUPS_VIEW"); ?></b></a></li>
-    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminshoutbox/clear"><img src="<?php echo URLROOT; ?>/assets/images/shoutclear.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("CLEAR_SHOUTBOX"); ?></b></a></li>
+    <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminshoutbox/clear"><img src="<?php echo URLROOT; ?>/assets/images/admin/shoutclear.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("CLEAR_SHOUTBOX"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admincontactstaff"><img src="<?php echo URLROOT; ?>/assets/images/admin/staffmess.png" border="0" width="20" height="20" alt="" />&nbsp;<b>Staff Messages</b></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/adminlog"><img src="<?php echo URLROOT; ?>/assets/images/admin/site_log.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("SITELOG"); ?></b></a></li>
     <li class="list-group-item"><a href="<?php echo URLROOT; ?>/admincensor"><img src="<?php echo URLROOT; ?>/assets/images/admin/word_censor.png" border="0" width="20" height="20" alt="" />&nbsp;<b><?php echo Lang::T("WORD_CENSOR"); ?></b></a></li>

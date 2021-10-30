@@ -7,13 +7,14 @@ $config = require_once 'config/settings.php';
 $language = isset($_SESSION['language'])  ? $_SESSION['language'] : 'english';
 require_once LANG."/$language.php";
 // Error Reporting
-error_reporting(0); // error_reporting(E_ALL ^ E_NOTICE);
+error_reporting(0); // error_reporting(E_ALL);
 ini_set('display_errors', 0);
 ini_set('display_startup_errors', 0);
 //ini_set('error_log', '../data/logs/errors_log.txt');
 // Register custom exception handler
 include "helpers/exception_helper.php";
-set_exception_handler("handleUncaughtException"); //handleException
+set_exception_handler("handleUncaughtException");
+//set_error_handler('runtime_error_handler');
 // Load TimeZones/Smileys Array
 require_once 'helpers/tzs_helper.php';
 require "helpers/smileys.php";

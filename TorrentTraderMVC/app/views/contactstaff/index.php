@@ -1,4 +1,5 @@
 <center><b><?php echo Lang::T("ACCOUNT_SEND_MSG"); ?></b></center>
+<center>Please leave your username or email if you are not a current member</center>
 <div class="row justify-content-md-center">
     <div class="col-6 border ttborder">
 

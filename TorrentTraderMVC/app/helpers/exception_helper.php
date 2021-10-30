@@ -113,15 +113,35 @@ function handleUncaughtException($e)
     to(URLROOT . '/exceptions');
 }
 
-// Exception basic database Log & Redirect
-function handleException($e)
+function runtime_error_handler($errno, $errstr, $errfile, $errline)
 {
-    // Construct the error string
-    $error = "\nUncaught Exception: " . (date("Y-m-d H:i:s - "));
-    $error .= $e->getMessage() . " in file " . $e->getFile() . " on line " . $e->getLine() . "\n";
-    // Add trace and debug output
-    $error .= "\n" . $e->getTrace();
-    // Log details of error in a file
-    DB::run("INSERT INTO `sqlerr` (`txt`, `time`) VALUES (?,?)", [$error, TimeDate::get_date_time()]);
-    to(URLROOT . '/exceptions');
+    $date = date('d M Y H:i:s');
+    switch ($errno) {
+    case E_USER_ERROR:
+        $err_msg = 'Custom ERROR [' . $errno . '] ' . $errstr . "\n" .
+            ' Fatal mistake! PHP ' . PHP_VERSION . " (" . PHP_OS . ")\n" .
+            ' Completion of work...';
+        break;
+    case E_USER_WARNING:
+        $err_msg =  'Custom WARNING [' . $errno . '] ' . $errstr;
+        break;
+    case E_USER_NOTICE:
+        $err_msg =  'Custom NOTICE [' . $errno . '] ' . $errstr;
+        break;
+    default:
+        $err_msg = 'Message: Unknown error: [' . $errno . '] ' . $errstr;
+        break;
+    }
+    $err_msg = "\n" .
+        'Message: ' . $err_msg . "\n" .
+        'Date: ' . $date . "\n" .
+        'Line: ' . $errline . "\n" .
+        'File: ' . $errfile . "\n";
+    file_put_contents(LOGGER.'/runtime_errors', $err_msg, FILE_APPEND);
+
+    if ($errno === E_USER_ERROR) {
+        exit(1);
+    }
+
+    return true;
 }

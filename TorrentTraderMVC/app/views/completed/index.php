@@ -1,3 +1,6 @@
+<?php
+torrentmenu($data['id']);
+?>
 <div class='table-responsive'> <table class='table table-striped'><thead><tr>
     <th> <b><?php echo Lang::T("USERNAME"); ?></b> | <b><?php echo Lang::T("RATIO"); ?></b> </th>
     <th> <b><?php echo Lang::T("STARTED"); ?></b> </th>
@@ -9,7 +12,7 @@
     <th> <b><?php echo Lang::T("SEED_TIME"); ?></b> </th>
     <th> <b><?php echo Lang::T("SEEDING"); ?></b> </th>
     <th> <font color="#FF1200"><b>H</b><small>&</small><b>R</b></font> </th>
-</tr></thead>
+</tr></thead><tbody>
 <?php
 while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
 
@@ -51,7 +54,7 @@ while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
     if ($row2['hnr'] != "yes") { $hnr = "<font color='#27B500'><b>".Lang::T("NO")."</b></font>";  } else { $hnr = "<font color='#FF1200'><b>".Lang::T("YES")."</b></font>"; }
 
 ?>
-    <tbody><tr>
+    <tr>
         <?php /*
     <td class="table_col1"><a href="<?php echo URLROOT; ?>/profile?id=<?php echo $row["id"]; ?>"><?php echo Users::coloredname($row['username']); ?></a></td>
     <td class="table_col2"><?php echo $peers; ?></td>

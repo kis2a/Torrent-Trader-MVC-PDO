@@ -16,7 +16,7 @@ if ($data['res']->rowCount() != 0) {
        <th><b>Started</b></th>
        <th><b><b>Last&nbsp;Action</b></th>
        <th><input type="checkbox" name="checkall" onclick="checkAll(this.form.id)" /></th>
-       </tr></thead> <?php
+       </tr></thead><tbody> <?php
     while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {
         if (Config::TT()['MEMBERSONLY']) {
             $sql1 = "SELECT id, username FROM users WHERE id = $row[uid]";
@@ -24,9 +24,9 @@ if ($data['res']->rowCount() != 0) {
             $row1 = $result1->fetch(PDO::FETCH_ASSOC);
         }
         if ($row1['username']) {
-            print '<tbody><tr><td><a href="' . URLROOT . '/profile?id=' . $row['uid'] . '"><b>' . Users::coloredname($row1['username']) . '</b></a></td>';
+            print '<tr><td><a href="' . URLROOT . '/profile?id=' . $row['uid'] . '"><b>' . Users::coloredname($row1['username']) . '</b></a></td>';
         } else {
-            print '<tbody><tr><td>' . $row['ip'] . '</td>';
+            print '<tr><td>' . $row['ip'] . '</td>';
         }
         $sql2 = "SELECT name FROM torrents WHERE id = $row[tid]";
         $result2 = DB::run($sql2);
