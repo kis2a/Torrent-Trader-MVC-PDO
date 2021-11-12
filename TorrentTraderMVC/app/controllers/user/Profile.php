@@ -211,7 +211,7 @@ class Profile
                     $prodemoted = ($class > $uc ? "promoted" : "demoted");
                     $msg = "You have been $prodemoted to " . Groups::get_user_class_name($class) . " by " . $_SESSION["username"] . "";
                     $added = TimeDate::get_date_time();
-                    DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(?,?,?,?)", [0, $_SESSION['id'], $msg, $added]);
+                    DB::run("INSERT INTO messages (sender, receiver, msg, added) VALUES(?,?,?,?)", [0, $id, $msg, $added]);
                 }
             }
             //continue updates

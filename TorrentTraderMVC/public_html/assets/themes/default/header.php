@@ -22,10 +22,10 @@ $GLOBALS['tstart'] = array_sum(explode(" ", microtime()));
   </head>
 <body>
 
-<?php require "assets/themes/". (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) ."/navbar.php"; ?><br>
+<?php require "assets/themes/". (Users::has('stylesheet') ?: Config::TT()['DEFAULTTHEME']) ."/navbar.php"; ?>
 
 <div class="container-fluid">
-<div class="row">
+<div class="row page">
   
 <?php
 if (Config::TT()['LEFTNAV']) { ?>
