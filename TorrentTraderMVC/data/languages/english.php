@@ -1134,10 +1134,10 @@ $LANG["NOVIDEOTUBE"] = "No YouTube video for this Torrent.";
 $LANG["FORMAT"] = "Accepted Format";
 $LANG["YOUTUBE"] = "Trailer";
 
-// IMDB
-$LANG["IMDB"] = "Internet Movie Database:";
+// TMDB
+$LANG["TMDB"] = "The Movie Database:";
 $LANG["LINK"] = "Link";
-$LANG["INFO"] = "If a valid imdb is given we can autofill the description.";
+$LANG["INFO"] = "If a valid TMDB is given we can autofill the description.";
 $LANG["RELEASED"] = "Released";
 $LANG["RATED"] = "Rated";
 $LANG["ALIAS"] = "Also Known As";
@@ -1149,7 +1149,7 @@ $LANG["RUNTIME"] = "Runtime";
 $LANG["VOTES"] = "Votes";
 $LANG["ACTORS"] = "Actors";
 $LANG["PLOT"] = "Plot";
-$LANG["SHORT"] = "IMDB";
+$LANG["SHORT"] = "TMDB";
 $LANG["UPDATE"] = "Last Updated";
 
 //Requests Pages

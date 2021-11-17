@@ -127,9 +127,6 @@
     print("<input name='IPCHECK' value='1' type='radio' " . ($checked? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='IPCHECK' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>
     <label for="ACCOUNTMAX">Account Max:</label><br>
     <input type="text"  class="form-control" id="ACCOUNTMAX" name="ACCOUNTMAX" value="<?php echo Config::TT()['ACCOUNTMAX'] ?>"><br>
-    <label for="IMDB1">IMDB:</label><br>
-    <?php $checked = Config::TT()['IMDB1'] == 1;
-    print("<input name='IMDB' value='1' type='radio' " . ($checked ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='IMDB' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>
     <label for="YOU_TUBE">Youtube:</label><br>
     <?php $checked = Config::TT()['YOU_TUBE'] == 1;
     print("<input name='YOU_TUBE' value='1' type='radio' " . ($checked ? " checked='checked'" : "") . " />True &nbsp;&nbsp;<input name='YOU_TUBE' value='0' type='radio' " . (!$checked ? " checked='checked'" : "") . " />False<br><br>");?>

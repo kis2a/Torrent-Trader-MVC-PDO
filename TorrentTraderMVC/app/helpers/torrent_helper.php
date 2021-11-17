@@ -100,8 +100,8 @@ function torrenttable($res)
             case 'tube':
                 echo "<th>" . Lang::T("YOUTUBE") . "</th>";
                 break;
-            case 'imdb':
-                echo "<th>IMDB</th>";
+            case 'tmdb':
+                echo "<th>TMDB</th>";
                 break;
             case 'comments':
                 echo "<th>" . Lang::T("COMM") . "</th>";
@@ -240,9 +240,9 @@ function torrenttable($res)
                         print("<td class='ttable_colx' align='center'>-</td>");
                     }
                     break;
-                case 'imdb':
-                    if ($row["imdb"]) {
-                        print("<td class='ttable_col$x' align='center'><a href=" . $row['imdb'] . " target='_blank'><" . htmlspecialchars($row['imdb']) . "><img src='" . URLROOT . "/assets/images/misc/imdb.png'  border='0' width='20' height='20' alt=\"\" /></a></td>");
+                case 'tmdb':
+                    if ($row["tmdb"]) {
+                        print("<td class='ttable_col$x' align='center'><a href=" . $row['tmdb'] . " target='_blank'><" . htmlspecialchars($row['tmdb']) . "><img src='" . URLROOT . "/assets/images/misc/tmdb.png'  border='0' width='20' height='20' alt=\"\" /></a></td>");
                     } else {
                         print("<td class='ttable_colx' align='center'>-</td>");
                     }

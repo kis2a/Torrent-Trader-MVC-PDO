@@ -56,8 +56,8 @@ define('D_WAIT', 2); //If neither are met, wait time in hours
 // Log Clean
 define('LOGCLEAN', 28 * 86400); // (Default: 28 days)
 
-// category,name,dl,magnet,uploader,tube,imdb,comments,nfo,size,completed,seeders,leechers,health,external,added,speed,wait,rating
-define('TORRENTTABLE_COLUMNS', 'category,name,dl,magnet,uploader,tube,imdb,comments,nfo,size,completed,seeders,leechers,health,external,added,speed,wait,rating');
+// category,name,dl,magnet,uploader,tube,tmdb,comments,nfo,size,completed,seeders,leechers,health,external,added,speed,wait,rating
+define('TORRENTTABLE_COLUMNS', 'category,name,dl,magnet,uploader,tube,tmdb,comments,nfo,size,completed,seeders,leechers,health,external,added,speed,wait,rating');
 
 // Set User Group
 define('_USER', 1);
@@ -67,7 +67,7 @@ define('_UPLOADER', 4);
 define('_MODERATOR', 5);
 define('_SUPERMODERATOR', 6);
 define('_ADMINISTRATOR', 7);
-// Snatched
+// Snatched (H&R)
 define('HNR_ON', false); // Not Finished only for testing
 define('HNR_DEADLINE', 7); // 7 days to hit the seed target
 define('HNR_SEEDTIME', 48); // target is to seed for 48 hours
@@ -76,3 +76,8 @@ define('HNR_STOP_DL', 15); // After 15 H & R stop downloading
 define('HNR_BAN', 50); // After 50 H&R they are banned
 
 define('_ANNOUNCEINTERVAL', 600);
+
+// TMDB
+define('_TMDBAPIKEY', 'Place_Api_Key_Here'); // Place Key Here
+define('MovieCats', array('Anime')); // movie cats eg array('Movies','MoviesHD')
+define('SerieCats', array('Apps')); // serie cat eg array('Anime','tv')

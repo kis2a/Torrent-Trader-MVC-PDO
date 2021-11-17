@@ -40,19 +40,18 @@
     </div>
 </div><br>
 
-<?php 
-if (Config::TT()['IMDB1']) { ?>
 <div class="mb-6 row">
-    <label for="imdb" class="col-sm-2 col-form-label"><a href="https://www.imdb.com/?ref_=nv_home" target='_blank'><img border='0' src='assets/images/misc/imdb.png' width='30' height='30' title='Click here to go to IMDB'></a></label>
+    <label for="tmdb" class="col-sm-2 col-form-label"><a href="https://www.themoviedb.org/" target='_blank'><img border='0' src='assets/images/misc/tmdb.png' width='30' height='30' title='Click here to go to TMDB'></a></label>
     <div class="col-sm-8">
-	<input class="form-control" type='text' name='imdb'>Example https://www.imdb.com/title/tt1799527/
+	<input class="form-control" type='text' name='tmdb'>Example https://www.themoviedb.org/movie/399566-godzilla-vs-kong
     </div>
-</div><br><?php
-}
+</div><br><?php ?>
 
+ 
+<?php
 if (Config::TT()['YOU_TUBE']) { ?>
 <div class="mb-6 row">
-	<label for="imdb" class="col-sm-2 col-form-label"><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='30' height='30' title='Click here to go to Youtube'></a></label>
+	<label for="tube" class="col-sm-2 col-form-label"><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='30' height='30' title='Click here to go to Youtube'></a></label>
 	<div class="col-sm-8">
 	<input class="form-control" type='text' name='tube'>Example https://www.youtube.com/watch?v=aYzVrjB-CWs
 	</div>

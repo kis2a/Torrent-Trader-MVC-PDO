@@ -17,12 +17,27 @@ class Torrent
             Redirect::autolink(URLROOT, Lang::T("THATS_NOT_A_VALID_ID"));
         }
         //GET ALL MYSQL VALUES FOR THIS TORRENT
-        $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.tube, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.imdb, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, torrents.vip, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
+        $res = DB::run("SELECT torrents.anon, torrents.seeders, torrents.tube, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.last_action, torrents.numratings, torrents.name, torrents.tmdb, torrents.tmdb, torrents.owner, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.external, torrents.image1, torrents.image2, torrents.announce, torrents.numfiles, torrents.freeleech, torrents.vip, IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.numratings, categories.name AS cat_name, torrentlang.name AS lang_name, torrentlang.image AS lang_image, categories.parent_cat as cat_parent, users.username, users.privacy FROM torrents LEFT JOIN categories ON torrents.category = categories.id LEFT JOIN torrentlang ON torrents.torrentlang = torrentlang.id LEFT JOIN users ON torrents.owner = users.id WHERE torrents.id = $id");
         $row = $res->fetch(PDO::FETCH_ASSOC);
         //DECIDE IF TORRENT EXISTS
         if (!$row || ($row["banned"] == "yes" && $_SESSION["edit_torrents"] == "no")) {
             Redirect::autolink(URLROOT, Lang::T("TORRENT_NOT_FOUND"));
         }
+
+        if(!empty($row["tmdb"]) && in_array($row["cat_parent"], SerieCats)) {
+            $id_tmdb = Tmdbscraper::getId($row["tmdb"]);
+            $total = get_row_count("tmdbshow"," WHERE id_tmdb = ".$id_tmdb."");
+            if($total == 0) {
+                Tmdbscraper::createSerie($id_tmdb, $id);
+            }
+        } elseif(!empty($row["tmdb"]) && in_array($row["cat_parent"], MovieCats)) {
+            $id_tmdb = Tmdbscraper::getId($row["tmdb"]);
+            $total = get_row_count("tmdbfilm"," WHERE id_tmdb = ".$id_tmdb."");
+            if($total == 0) {
+                Tmdbscraper::createFilm($id_tmdb, $id);
+            }
+        }
+
         // vip
         $vip = $row["vip"];
         if ($vip == "yes") {
@@ -75,7 +90,6 @@ class Torrent
         }
         $torrent1 = Torrents::getAll($id);
         $title = Lang::T("DETAILS_FOR_TORRENT") . " \"" . $row["name"] . "\"";
-
         $data = [
             'title' => $title,
             'row' => $row,
@@ -183,11 +197,11 @@ class Torrent
             if (!empty($_POST["name"])) {
                 $updateset[] = "name = " . sqlesc($_POST["name"]);
             }
-            // IMDB
-            if ($_POST['imdb'] != $row['imdb']) {
-                $updateset[] = "imdb = " . sqlesc($_POST["imdb"]);
+            // TMDB
+            if ($_POST['tmdb'] != $row['tmdb']) {
+                $updateset[] = "tmdb = " . sqlesc($_POST["tmdb"]);
                 $TTCache = new Cache();
-                $TTCache->Delete("imdb/$id");
+                $TTCache->Delete("tmdb/film/$id");
             }
             $updateset[] = "descr = " . sqlesc($_POST["descr"]);
             $updateset[] = "category = " . (int) $_POST["type"];

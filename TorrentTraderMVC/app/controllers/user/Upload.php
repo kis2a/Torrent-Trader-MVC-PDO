@@ -101,8 +101,8 @@ class Upload
             if (!empty(Input::get("name"))) {
                 $name = Input::get("name");
             }
-            if (!empty(Input::get('imdb'))) {
-                $imdb = Input::get('imdb');
+            if (!empty(Input::get('tmdb'))) {
+                $tmdb = Input::get('tmdb');
             }
             // If Message Show
             if ($message) {
@@ -188,13 +188,14 @@ class Upload
             $filecounts = (int) $filecount;
             // Insert Torrent
             try {
-                DB::run("INSERT INTO torrents (filename, owner, name, vip, descr, image1, image2, category, tube, added, info_hash, size, numfiles, save_as, announce, external, nfo, torrentlang, anon, last_action, freeleech, imdb)
+                DB::run("INSERT INTO torrents (filename, owner, name, vip, descr, image1, image2, category, tube, added, info_hash, size, numfiles, save_as, announce, external, nfo, torrentlang, anon, last_action, freeleech, tmdb)
                          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                        [$fname, $_SESSION['id'], $name, $vip, $descr, $inames[0], $inames[1], $catid, $tube, TimeDate::get_date_time(), $infohash, $torrentsize, $filecounts, $fname, $announce, $external, $nfo, $langid, $anon, TimeDate::get_date_time(), $free, $imdb]);
+                        [$fname, $_SESSION['id'], $name, $vip, $descr, $inames[0], $inames[1], $catid, $tube, TimeDate::get_date_time(), $infohash, $torrentsize, $filecounts, $fname, $announce, $external, $nfo, $langid, $anon, TimeDate::get_date_time(), $free, $tmdb]);
             } catch (PDOException $e) {
                 rename("$torrent_dir/$fname", "$torrent_dir/duplicate.torrent"); // todo
                 Redirect::to(URLROOT . '/exceptions');
             }
+
             $id = DB::lastInsertId();
 
             if ($id == 0) {

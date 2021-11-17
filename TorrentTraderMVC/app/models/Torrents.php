@@ -7,7 +7,7 @@ class Torrents
     {
         $row = DB::run(" SELECT torrents.anon, torrents.seeders, torrents.tube, torrents.banned,
             torrents.leechers, torrents.info_hash, torrents.filename, torrents.nfo, torrents.torrentlang, torrents.category,
-            torrents.last_action, torrents.numratings, torrents.name, torrents.imdb,
+            torrents.last_action, torrents.numratings, torrents.name, torrents.tmdb,
             torrents.owner, torrents.save_as, torrents.descr, torrents.visible,
             torrents.size, torrents.added, torrents.views, torrents.hits,
             torrents.times_completed, torrents.id, torrents.type, torrents.external,
@@ -54,7 +54,7 @@ class Torrents
 
     public static function getTorrentByCat($where, $parent_check, $orderby, $limit)
     {
-        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.announce, torrents.tube,  torrents.imdb, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed,
+        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.announce, torrents.tube,  torrents.tmdb, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed,
 	                           torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name
 	                    AS cat_name, categories.parent_cat AS cat_parent, categories.image AS cat_pic, users.username, users.privacy,
 	                    IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1))
@@ -93,7 +93,7 @@ class Torrents
 
     public static function getCatSortAll($where, $date_time, $orderby, $limit)
     {
-        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.category, torrents.sticky, torrents.imdb, torrents.tube, torrents.tube, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size,
+        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.category, torrents.sticky, torrents.tmdb, torrents.tube, torrents.tube, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size,
                                torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name
                         AS cat_name, categories.parent_cat
                         AS cat_parent, categories.image
@@ -141,7 +141,7 @@ class Torrents
 
     public static function search($where, $orderby, $limit, $params)
     {
-        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.announce, torrents.tube,  torrents.imdb, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed,
+        $row = DB::run("SELECT torrents.id, torrents.anon, torrents.announce, torrents.tube,  torrents.tmdb, torrents.category, torrents.sticky, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed,
         torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech, categories.name
         AS cat_name, categories.parent_cat AS cat_parent, categories.image AS cat_pic, users.username, users.privacy,
         IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1))

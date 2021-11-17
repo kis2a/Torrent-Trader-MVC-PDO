@@ -103,7 +103,6 @@ class Adminconfig
             'LATESTFORUMPOSTONINDEX' => (int) $_POST['LATESTFORUMPOSTONINDEX'],
             'IPCHECK' => (int) $_POST['IPCHECK'],
             'ACCOUNTMAX' => (int) $_POST['ACCOUNTMAX'],
-            'IMDB1' => (int) $_POST['IMDB1'],
             'YOU_TUBE' => (int) $_POST['YOU_TUBE'],
             'FREELEECHGBON' => (int) $_POST['FREELEECHGBON'],
             'FREELEECHGB' => (int) $_POST['FREELEECHGB'],

@@ -6,6 +6,10 @@ html, body {
 	line-height: 1.4;
 }
 
+.page {
+    padding-top: 10px;
+}
+
 .ttsidebar {
     -ms-flex: 0 0 210px;
     flex: 0 0 210px;
@@ -21,6 +25,12 @@ html, body {
 	.ttmobile {
 		max-width: 600px !important;
 	}
+}
+
+/* Define the spacing between center contents and side bars */
+.col{
+    padding-right: 5px;
+    padding-left: 5px;
 }
 
 .navbar {
@@ -212,7 +222,7 @@ button, input, optgroup, select, textarea {
 }
 
 .block-footer {
-    height: 5px !important;
+    height: 10px !important;
 }
 
 @media (max-width: 767px) {

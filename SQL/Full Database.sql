@@ -17,21 +17,6 @@ CREATE TABLE IF NOT EXISTS `addedrequests` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `agents`
---
-
-CREATE TABLE IF NOT EXISTS `clients` (
-  `agent_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `agent_name` varchar(255) NOT NULL DEFAULT '',
-  `hits` int(10) UNSIGNED NOT NULL DEFAULT 0,
-  `ins_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`agent_id`),
-  UNIQUE KEY `agent_name` (`agent_name`) USING HASH
-) ENGINE=MyISAM;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `attachments`
 --
 
@@ -206,6 +191,21 @@ CREATE TABLE IF NOT EXISTS `censor` (
 ) ENGINE=MyISAM;
 
 INSERT INTO `censor` VALUES ('fuck', 'f**k');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clients`
+--
+
+CREATE TABLE IF NOT EXISTS `clients` (
+  `agent_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `agent_name` varchar(255) NOT NULL DEFAULT '',
+  `hits` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `ins_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`agent_id`),
+  UNIQUE KEY `agent_name` (`agent_name`) USING HASH
+) ENGINE=MyISAM;
 
 -- --------------------------------------------------------
 
@@ -1027,6 +1027,47 @@ CREATE TABLE IF NOT EXISTS `thanks` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tmdbfilm`
+--
+
+CREATE TABLE `tmdbfilm` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id_tmdb` int(10) NOT NULL DEFAULT 0,
+  `title` varchar(255) DEFAULT NULL,
+  `duration` varchar(100) DEFAULT NULL,
+  `producer` varchar(255) DEFAULT NULL,
+  `genre` varchar(255) DEFAULT NULL,
+  `plot` text DEFAULT NULL,
+  `actor` longtext DEFAULT NULL,
+  `trailer` varchar(100) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `image` varchar(50) DEFAULT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tmdbshow`
+--
+
+CREATE TABLE `tmdbshow` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `id_tmdb` int(10) NOT NULL DEFAULT 0,
+  `title` varchar(255) DEFAULT NULL,
+  `image` varchar(50) DEFAULT NULL,
+  `season` int(10) DEFAULT NULL,
+  `episodes` int(10) DEFAULT NULL,
+  `status` varchar(100) DEFAULT NULL,
+  `date` datetime DEFAULT NULL,
+  `creator` varchar(255) DEFAULT NULL,
+  `genre` varchar(255) DEFAULT NULL,
+  `plot` text DEFAULT NULL,
+  `actor` longtext DEFAULT NULL,
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM;
+
+--
 -- Table structure for table `torrentlang`
 --
 
@@ -1086,7 +1127,7 @@ CREATE TABLE IF NOT EXISTS `torrents` (
   `torrentlang` int(10) UNSIGNED NOT NULL DEFAULT 1,
   `freeleech` enum('0','1') NOT NULL DEFAULT '0',
   `tube` varchar(100) DEFAULT NULL,
-  `imdb` varchar(100) DEFAULT NULL,
+  `tmdb` varchar(100) DEFAULT NULL,
   `uplreq` enum('yes','no') DEFAULT 'no',
   `sticky` enum('yes','no') DEFAULT 'no',
   `vip` enum('yes','no') DEFAULT 'no',
