@@ -1,8 +1,9 @@
 <?php
-require_once APPROOT . "/libraries/tmdb/TMDB.php";
+require_once APPROOT . "/libraries/TMDB.php"; // todo edit
 
-class Tmdbscraper
+class TMDBS
 {
+    // Get TMDB Id From Url
     public static function getId($url)
     {
         $parts = explode('/', $url);
@@ -10,23 +11,19 @@ class Tmdbscraper
         return $id_tmdb;
     }
     
+    // Save Film Details In Database
     public static function createFilm($id_tmdb, $id)
     {
         // Get TMDB Api
-        $tmdb = new TMDB(_TMDBAPIKEY, 'en'); // , true
+        $tmdb = new TMDB(); // , true
         $film = $tmdb->getMovie($id_tmdb);
-        // Debug
-        //var_dump($film);
         // Get & Save Image
-        $image_url = $tmdb->getImageURL('w185') . "" . $film->getPoster();
+        $image_url = $tmdb->getImageURL('w300') . "" . $film->getPoster();
         $image = $tmdb->saveImage($image_url, UPLOADDIR . "/tmdb/film/", $id_tmdb);
         // Get Data
         $trailer = $film->getTrailer();
         $title = $film->getTitle();
-        $date = $film->date();
         $duration = $film->duration();
-        $producer = '$film->creator()';
-        $prod = $producer[0];
         $genre = $film->genre();
         $plot = $film->getPlot();
         $actors = $film->actor();
@@ -38,20 +35,19 @@ class Tmdbscraper
         $casting_img = $casting[2];
         $casting_img = explode('&', $casting_img);
         for ($i = 0; $i <= 3; $i++) {
-            //$bdd = '';
             $bdd .= "$casting_nom[$i]*$casting_role[$i]*$casting_img[$i]&";
         }
-
         // Insert Data
         DB::run("INSERT INTO tmdbfilm 
         (id_tmdb, title, duration, producer, genre, plot, actor, trailer, date, image)
                  VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [$id_tmdb, $title, $duration, $prod, $genre, $plot, $bdd, $trailer, $date, $image]);
+        [$id_tmdb, $title, $duration, 'not working', $genre, $plot, $bdd, $trailer, null, $image]);
         // Return To Torrent
         Redirect::to(URLROOT . "/torrent?id=$id");
 
     }
 
+    // Fetch Movie Data From Database or Cache
     public static function getFilm($id_tmdb)
     {
         $TTCache = new Cache();
@@ -80,10 +76,8 @@ class Tmdbscraper
         print("<div><table cellpadding='3' width='80%'>
         <tr><td width='25%' class='browsebg' align='center' rowspan='8'><img src='" . data_uri(UPLOADDIR . "/tmdb/film/" . $_data["poster"], $_data["poster"]) . "'/></td>
         <td width='150px' class='browsebg' align='right'><b> Title : </b></td><td class='browsebg' align='left'> " . $_data["title"] . " </td></tr>
-        <tr><td class='browsebg' align='right'><b> Date : </b></td><td class='browsebg' align='left'> " . $_data["date"] . " </td></tr>
         <tr><td class='browsebg' align='right'><b> Duration : </b></td><td class='browsebg' align='left'> " . $_data["duration"] . " </td></tr>
-        
-		<td class='browsebg' align='right'><b> Genre : </b></td><td class='browsebg' align='left'> " . $_data["genre"] . " </td></tr></td></tr>
+        <td class='browsebg' align='right'><b> Genre : </b></td><td class='browsebg' align='left'> " . $_data["genre"] . " </td></tr></td></tr>
         <tr><td class='browsebg' align='right'><b> Plot : </b></td><td class='browsebg' align='left'> " . $_data["plot"] . " </td></tr>
         <tr><td class='browsebg' align='right'><b> Actors : </b></td><td class='browsebg' align='left'><table width='100%'><tr>");
         $casting = explode('&', $_data["actors"]);
@@ -95,17 +89,14 @@ class Tmdbscraper
         print('<iframe width="400px" height="230px" src="https://www.youtube.com/embed/' . $_data["trailer"] . '" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div></center><br /><br />');
     }
 
-
-
+    // Save Show Details In Database
     public static function createSerie($id_tmdb, $id)
     {
         // Get TMDB Api
-        $tmdb = new TMDB(_TMDBAPIKEY, 'en'); // , true
+        $tmdb = new TMDB(); // , true
         $serie = $tmdb->getTVShow($id_tmdb);
-        // Debug
-        //var_dump($film);
         // Get & Save Image
-        $image_url = $tmdb->getImageURL('w185') . "" . $serie->getPoster();
+        $image_url = $tmdb->getImageURL('w300') . "" . $serie->getPoster();
         $image = $tmdb->saveImage($image_url, UPLOADDIR . "/tmdb/serie/", $id_tmdb);
         // Get Data
         $titre = $serie->getName();
@@ -119,15 +110,12 @@ class Tmdbscraper
         $actors = $serie->actor();
         $casting = $actors;
         $casting_role = $casting[0];
-
-        
         $casting_role = explode('*', $casting_role);
         $casting_nom = $casting[1];
         $casting_nom = explode('+', $casting_nom);
         $casting_img = $casting[2];
         $casting_img = explode('&', $casting_img);
         for ($i = 0; $i <= 3; $i++) {
-            //$bdd = '';
             $bdd .= "$casting_nom[$i]*$casting_role[$i]*$casting_img[$i]&";
         }
         // Insert Data
@@ -138,6 +126,7 @@ class Tmdbscraper
         Redirect::to(URLROOT . "/torrent?id=$id");
     }
 
+    // Fetch Show Data From Database or Cache
     public static function getSerie($id_tmdb)
     {
         $TTCache = new Cache();

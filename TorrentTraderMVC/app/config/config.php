@@ -79,5 +79,7 @@ define('_ANNOUNCEINTERVAL', 600);
 
 // TMDB
 define('_TMDBAPIKEY', 'Place_Api_Key_Here'); // Place Key Here
+define('_TMDBLANG', 'en'); // TMDB Language
+define('_TMDBDEBUG', true); // TMDB Debug
 define('MovieCats', array('Anime')); // movie cats eg array('Movies','MoviesHD')
 define('SerieCats', array('Apps')); // serie cat eg array('Anime','tv')

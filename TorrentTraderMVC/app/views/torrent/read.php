@@ -149,16 +149,16 @@ if ($_SESSION["delete_torrents"] == "yes") {?>
 <?php
 
 if(!empty($torr["tmdb"]) && in_array($torr["cat_parent"], SerieCats)) {
-    $id_tmdb = Tmdbscraper::getId($torr["tmdb"]);
+    $id_tmdb = TMDBS::getId($torr["tmdb"]);
     $total = get_row_count("tmdbshow"," WHERE id_tmdb = ".$id_tmdb."");
     if($total > 0) {
-        Tmdbscraper::getSerie($id_tmdb);
+        TMDBS::getSerie($id_tmdb);
     }
 } elseif(!empty($torr["tmdb"]) && in_array($torr["cat_parent"], MovieCats)) {
-    $id_tmdb = Tmdbscraper::getId($torr["tmdb"]);
+    $id_tmdb = TMDBS::getId($torr["tmdb"]);
     $total = get_row_count("tmdbfilm"," WHERE id_tmdb = ".$id_tmdb."");
     if($total > 0) {
-        Tmdbscraper::getFilm($id_tmdb);
+        TMDBS::getFilm($id_tmdb);
     }
 } else {
 ?>

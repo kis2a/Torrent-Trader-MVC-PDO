@@ -1,34 +1,5 @@
 <?php
 
-// TMDB
-function duration_sec($time) {
-    $tabTemps = array("jours" => 86400,"h." => 3600,"min." => 60);
-    $result = "";
-    foreach($tabTemps as $uniteTemps => $nombreSecondesDansUnite)
-        {
-        $$uniteTemps = floor($time/$nombreSecondesDansUnite);
-        $time = $time%$nombreSecondesDansUnite;
-        if($$uniteTemps > 0 || !empty($result))
-        $result .= $$uniteTemps." $uniteTemps ";
-        }
-    return $result;
- }
- 
- // Function that calculates the Hours Minutes of a duration in sec
- function duration($time){
- $tabTemps = array("jours" => 86400,"h." => 60,"min." => 1);
- $result = "";
- foreach($tabTemps as $uniteTemps => $nombreSecondesDansUnite){
- $$uniteTemps = floor($time/$nombreSecondesDansUnite);
- $time = $time%$nombreSecondesDansUnite;
- if($$uniteTemps > 0 || !empty($result))
- $result .= $$uniteTemps." $uniteTemps ";
- }
- return $result;
- }
- // End TMDB
-
- 
 // get image embeded image
 function data_uri($file, $mime)
 {

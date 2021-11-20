@@ -25,16 +25,16 @@ class Torrent
         }
 
         if(!empty($row["tmdb"]) && in_array($row["cat_parent"], SerieCats)) {
-            $id_tmdb = Tmdbscraper::getId($row["tmdb"]);
+            $id_tmdb = TMDBS::getId($row["tmdb"]);
             $total = get_row_count("tmdbshow"," WHERE id_tmdb = ".$id_tmdb."");
             if($total == 0) {
-                Tmdbscraper::createSerie($id_tmdb, $id);
+                TMDBS::createSerie($id_tmdb, $id);
             }
         } elseif(!empty($row["tmdb"]) && in_array($row["cat_parent"], MovieCats)) {
-            $id_tmdb = Tmdbscraper::getId($row["tmdb"]);
+            $id_tmdb = TMDBS::getId($row["tmdb"]);
             $total = get_row_count("tmdbfilm"," WHERE id_tmdb = ".$id_tmdb."");
             if($total == 0) {
-                Tmdbscraper::createFilm($id_tmdb, $id);
+                TMDBS::createFilm($id_tmdb, $id);
             }
         }
 
