@@ -2,8 +2,7 @@
 
 class Person
 {
-    const MEDIA_TYPE_PERSON = 'person';
-    const JOB_DIRECTOR = 'Director';
+
     private $_data;
 
     // 	Construct Class

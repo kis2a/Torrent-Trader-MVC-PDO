@@ -51,7 +51,7 @@
 <?php
 if (Config::TT()['YOU_TUBE']) { ?>
 <div class="mb-6 row">
-	<label for="tube" class="col-sm-2 col-form-label"><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/youtube.png' width='30' height='30' title='Click here to go to Youtube'></a></label>
+	<label for="tube" class="col-sm-2 col-form-label"><a href=\"http://www.youtube.com\" target='_blank'><img border='0' src='assets/images/misc/youtube.png' width='30' height='30' title='Click here to go to Youtube'></a></label>
 	<div class="col-sm-8">
 	<input class="form-control" type='text' name='tube'>Example https://www.youtube.com/watch?v=aYzVrjB-CWs
 	</div>

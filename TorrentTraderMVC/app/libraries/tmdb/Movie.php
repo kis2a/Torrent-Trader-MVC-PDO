@@ -2,9 +2,6 @@
 
 class Movie
 {
-    const MEDIA_TYPE_MOVIE = 'movie';
-    const CREDITS_TYPE_CAST = 'cast';
-    const MEDIA_TYPE_TV = 'tv';
 
 	private $_tmdb;
 
