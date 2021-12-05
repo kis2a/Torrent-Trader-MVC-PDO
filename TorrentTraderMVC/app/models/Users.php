@@ -166,9 +166,9 @@ class Users
         DB::run("DELETE FROM `snatched` WHERE `uid` = '$userid'");
     }
 
-    public static function coloredname($name)
+    public static function coloredname($name, $array = null)
     {
-        $classy = DB::run("SELECT u.class, u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
+        $classy = DB::run("SELECT u.class, u.id, u.last_access, u.country, u.age, u.gender, u.avatar,  u.donated, u.warned, u.enabled, g.Color, g.level, u.uploaded, u.downloaded FROM `users` `u` INNER JOIN `groups` `g` ON g.group_id=u.class WHERE username ='" . $name . "'")->fetch();
         if ($classy) {
             $gcolor = $classy['Color'];
             if ($classy['donated'] > 0) {
@@ -186,7 +186,18 @@ class Users
             } else {
                 $disabled = "";
             }
-            return stripslashes("<font color='" . $gcolor . "'>" . $name . "" . $star . "" . $warn . "" . $disabled . "</font>");
+
+            $avatar = htmlspecialchars($classy["avatar"]);
+            if (!$avatar) {
+                $avatar = URLROOT . "/assets/images/misc/default_avatar.png";
+            }
+
+            if ($array != null && $_SESSION['view_users'] == 'yes') {
+                return stripslashes("<a href='".URLROOT."/profile?id=".$classy['id']."'  onMouseover=\"return overlib('<table class=ballooncolor border=1 width=300px align=center><tr valign=top><td class=ballooncolor align=center><img border=0 height=200 width=120 src=$avatar></td><td width=80%  class=ballooncolor><div align=left><b>Class: </b><font color=" . $gcolor . ">" . $classy["level"] . "</font><br /><b>Donated: </b>" . $classy["donated"] . "<br /><b>Age: </b>" . $classy["age"] . "<br /><b>Last Visit: </b><font color=green>" . TimeDate::utc_to_tz($classy["last_access"]) . "</font><br /><b>Downloaded: </b><font color=red>" . mksize($classy["downloaded"]) . "</font><br /><b> Uploaded: </b>" . mksize($classy['uploaded']) . "</div></td></tr></table>', CENTER, HEIGHT, 200, WIDTH, 300)\"; onMouseout=\"return nd()\"><font color='" . $gcolor . "'>" . $name . "" . $star . "" . $warn . "" . $disabled . "</font></a>");
+            } else {
+                return stripslashes("<a href='".URLROOT."/profile?id=".$classy['id']."'><font color='" . $gcolor . "'>" . $name . "" . $star . "" . $warn . "" . $disabled . "</font></a>");
+            }
+
         }
     }
 

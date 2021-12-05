@@ -35,6 +35,9 @@ if (Config::TT()['RIGHTNAV']) {?>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+
+    <script src="<?php echo URLROOT; ?>/assets/js/overlib.js"></script>
+
     <script>
         function updateShouts(){
             // Assuming we have #shoutbox

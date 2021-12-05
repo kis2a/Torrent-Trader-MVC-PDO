@@ -69,6 +69,87 @@ class Cleanup
         if (HNR_ON) {
             self::hitnrun();
         }
+        //self::autopromote();
+    }
+
+    
+    public static function autopromote() {
+        $minratio = 0.9; # ratio for demotion to LEECHE
+        $gigs3 = 50 * 1073741824; # 50 GB
+        $delay2 = sqlesc(TimeDate::get_date_time(TimeDate::gmtime() - 1 * 1)); # Joined > 1 month
+        
+        // auto promote by gb
+        $res = DB::run("SELECT id, username FROM users WHERE class = 1 AND uploaded / downloaded > $minratio");
+        $time = TimeDate::get_date_time();
+        while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
+            $res_classname = DB::run("SELECT level FROM groups WHERE group_id="._POWERUSER." LIMIT 1");
+            if ($res_classname->rowCount() == 1) {
+                $arr_classname = $res_classname->fetch(PDO::FETCH_ASSOC);
+                $new_classname = "$arr_classname[level]";
+            }
+            $username = $arr['username'];
+            DB::run("UPDATE users SET class = "._POWERUSER." WHERE id = $arr[id]");
+            DB::run("INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, $arr[id], '$time', '[b]Congratulations[/b], you were automatically promoted to [b]Member[/b] class. Please note that if your ratio drops below [b]" . $minratio . "[/b] at any time,  you will be demoted to [b]Leecher[/b]', 'You have been promoted as " . $new_classname . "')");
+            unset($res, $arr, $res_classname, $arr_classname,$new_classname);
+        }
+
+        // auto demote to leecher
+        $res = DB::run("SELECT id, username, modcomment FROM users WHERE class < 4 AND uploaded / downloaded < $minratio");
+        while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
+            $username = $arr['username'];
+            $modcomment = $arr['modcomment'];
+            $modcomment2 = gmdate("d-M-Y") . " - Has been demoted by System to Leecher \n";
+            $modcomment = $modcomment2 . "" . $modcomment;
+            $modcom = sqlesc($modcomment);
+            DB::run("UPDATE users SET class = 1, modcomment = CONCAT($modcom,modcomment) WHERE id = $arr[id]");
+            DB::run("INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, $arr[id], '$time', 'You were automatically demoted to [b]Leecher[/b]. That happened because your ratio dropped below [b]" . $minratio . "[/b]', 'You have been demoted to Leecher')");
+            Logs::write("<a href=/account-details.php?id=$arr[id]><b>$username</b></a> has been demoted by System to <b>Leecher</b> class");
+        }
+        
+        // auto promote to class 3
+        $res = DB::run("SELECT id, username FROM users WHERE (class = 1 || class = 2) AND warned = 'no' AND added < $delay2 AND uploaded >= $gigs3 AND uploaded >= downloaded");
+        $time = TimeDate::get_date_time();
+        while ($arr = $res->fetch(PDO::FETCH_ASSOC)) {
+            $res_classname = DB::run("SELECT level FROM groups WHERE group_id=3 LIMIT 1");
+            if ($res_classname->rowCount() == 1) {
+                $arr_classname = $res_classname->fetch(PDO::FETCH_ASSOC);
+                $new_classname = "$arr_classname[level]";
+            }
+            $username = $arr['username'];
+            DB::run("UPDATE users SET class = 3 WHERE id = $arr[id]");
+            DB::run("INSERT INTO messages (sender, receiver, added, msg, subject) VALUES(0, $arr[id], '$time', '[b]Congratulations[/b], you were automatically promoted to [b]Power User[/b] class. Please note that if your ratio drops below [b]" . $minratio . "[/b] at any time,  you will be demoted to [b]Leecher[/b]', 'You have been promoted as " . $new_classname . "')");
+            unset($res, $arr, $res_classname, $arr_classname,$new_classname);
+        }
+
+        // uploader mod test
+        $query = DB::run('SELECT torrents.owner, COUNT(*)  AS counta FROM torrents INNER JOIN users ON (torrents.owner=users.id) WHERE users.class < "2" and users.donated = "0" and torrents.banned = "no" and torrents.added > DATE_SUB(NOW(), INTERVAL 15 DAY) GROUP BY torrents.owner');
+        while ($UP = $query->fetch(PDO::FETCH_ASSOC)){
+            if ($UP['counta'] > 3){
+                DB::run('UPDATE users SET class = 3 WHERE id = ' . sqlesc ($UP['owner']).'');
+                $subject = 'Automatic Promotion To Uploader Status';
+                $msg = 'Hello you did 1 upload, you are promoted to Uploader, Bravo !!! ';
+                DB::run("INSERT INTO `messages` (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`) VALUES ('0', '".$UP['owner']."','".TimeDate::get_date_time()."', '$subject', '$msg', 'yes', 'in')");
+            }
+        }
+
+        // Uploader demote if he did not upload 1 torrent over 2 week
+        while ($up = $query->fetch(PDO::FETCH_ASSOC)){
+            $query2 = DB::run('SELECT name, added, DATE_SUB(NOW(), INTERVAL 15 DAY) AS date_expiration FROM torrents WHERE owner = '.$up['id'].'');
+            while ($up2 = $query2->fetch(PDO::FETCH_ASSOC)) {
+                if ($up2["added"] > $up2["date_expiration"]){
+                    $nbre = $nbre + 1;
+                } else {
+                    $nbre = $nbre;
+                }
+            }
+        }
+        if ($nbre < 1) {
+            DB::run('UPDATE users SET class = 2 WHERE id = ' . sqlesc ($up['id']).'');
+            $subject = 'Automatic Downgrading to Member Status';
+            $msg = 'You have not uploaded in the last fortnight so you have been demoted from uploader.';
+            DB::run("INSERT INTO `messages` (`sender`, `receiver`, `added`, `subject`, `msg`, `unread`, `location`) VALUES ('0', '".$up['id']."', '".TimeDate::get_date_time()."', '$subject', '$msg', 'yes', 'in')");
+        }
+        $nbre = 0;
     }
 
     public static function deletepeers()

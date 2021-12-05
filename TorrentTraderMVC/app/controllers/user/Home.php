@@ -103,7 +103,7 @@ class Home
             ];
             View::render('home/carousel', $data);
         }
-		
+
         // Latest Torrents
         if (Config::TT()['MEMBERSONLY'] && !Users::has('loggedin')) {
             $data = [
@@ -111,7 +111,7 @@ class Home
             ];
             View::render('home/notorrents', $data);
         } else {
-            $query = "SELECT torrents.id, torrents.anon, torrents.announce, torrents.category, torrents.sticky,  torrents.vip,  torrents.tube,  torrents.tmdb, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech,
+            $query = "SELECT torrents.id, torrents.anon, torrents.descr, torrents.announce, torrents.category, torrents.sticky,  torrents.vip,  torrents.tube,  torrents.tmdb, torrents.leechers, torrents.nfo, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.owner, torrents.external, torrents.freeleech,
             categories.name AS cat_name, categories.image AS cat_pic, categories.parent_cat AS cat_parent,
             users.username, users.privacy,
             IF(torrents.numratings < 2, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating
@@ -119,7 +119,7 @@ class Home
             LEFT JOIN categories ON category = categories.id
             LEFT JOIN users ON torrents.owner = users.id
             WHERE visible = 'yes' AND banned = 'no'
-            ORDER BY sticky ASC, id DESC LIMIT 25";
+            ORDER BY sticky, added DESC, id DESC LIMIT 25";
             $res = DB::run($query);
             if ($res->rowCount() > 0) {
                 $data = [
@@ -134,6 +134,12 @@ class Home
                 DB::run("UPDATE users SET last_browse=" . TimeDate::gmtime() . " WHERE id=?", [Users::has('id')]);
             }
         }
+        // Visited Users
+        $stmt = DB::run("SELECT id, username, class, donated, warned, avatar FROM users WHERE enabled = 'yes' AND status = 'confirmed' AND privacy !='strong' AND UNIX_TIMESTAMP('".timedate::get_date_time()."') - UNIX_TIMESTAMP(users.last_access) <= 86400");
+        $data = [
+            'stmt' => $stmt,
+        ];
+        View::render('home/visitedusers', $data);
         // Disclaimer
         if (Config::TT()['DISCLAIMERON']) {
             $data = [];

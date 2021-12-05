@@ -76,6 +76,7 @@ define('HNR_STOP_DL', 15); // After 15 H & R stop downloading
 define('HNR_BAN', 50); // After 50 H&R they are banned
 
 define('_ANNOUNCEINTERVAL', 600);
+define('PopularCats', array(28)); // popular cat id for popular block
 
 // TMDB
 define('_TMDBAPIKEY', 'Place_Api_Key_Here'); // Place Key Here

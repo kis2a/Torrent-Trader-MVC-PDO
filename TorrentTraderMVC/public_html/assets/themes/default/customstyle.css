@@ -260,3 +260,15 @@ button, input, optgroup, select, textarea {
 .carousel-control-next-icon {
     background-color: rgb(255, 0, 0);
 }
+
+.ballooncolor {
+    color: rgb(5, 33, 59);	
+    background-color: #a7cdf5;	
+}
+
+.balloonheadercolor {
+    background-image: -webkit-linear-gradient(top, #072F5F, #3895D3);
+    background-image: linear-gradient(to bottom, #072F5F, #3895D3);
+    background-repeat: repeat-x;
+    color: #fff;
+}

@@ -12,7 +12,7 @@ class TMDBS
     }
     
     // Save Film Details In Database
-    public static function createFilm($id_tmdb, $id)
+    public static function createFilm($id_tmdb, $id, $url = null)
     {
         // Get TMDB Api
         $tmdb = new TMDB(); // , true
@@ -38,10 +38,10 @@ class TMDBS
             $bdd .= "$casting_nom[$i]*$casting_role[$i]*$casting_img[$i]&";
         }
         // Insert Data
-        DB::run("INSERT INTO tmdbfilm 
-        (id_tmdb, title, duration, producer, genre, plot, actor, trailer, date, image)
-                 VALUES (?,?,?,?,?,?,?,?,?,?)",
-        [$id_tmdb, $title, $duration, 'not working', $genre, $plot, $bdd, $trailer, null, $image]);
+        DB::run("INSERT INTO tmdb 
+        (id_tmdb, title, duration, producer, genre, plot, actor, trailer, date, image, url, type)
+                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        [$id_tmdb, $title, $duration, 'not working', $genre, $plot, $bdd, $trailer, null, $image, $url, 'movie']);
         // Return To Torrent
         Redirect::to(URLROOT . "/torrent?id=$id");
 
@@ -54,7 +54,7 @@ class TMDBS
         $expires = 1728000; // Cache time in seconds
         if (($_data = $TTCache->Get("tmdb/film/$id_tmdb", $expires)) === false) {
             // Get Data From DB
-            $res = DB::run("SELECT * FROM `tmdbfilm` WHERE id_tmdb = " . $id_tmdb . "");
+            $res = DB::run("SELECT * FROM `tmdb` WHERE id_tmdb = ? AND type = ?", [$id_tmdb, 'movie']);
             $film = $res->fetch(PDO::FETCH_ASSOC);
             // Data
             $_data["title"] = $film["title"];
@@ -90,7 +90,7 @@ class TMDBS
     }
 
     // Save Show Details In Database
-    public static function createSerie($id_tmdb, $id)
+    public static function createSerie($id_tmdb, $id, $url = null)
     {
         // Get TMDB Api
         $tmdb = new TMDB(); // , true
@@ -119,9 +119,9 @@ class TMDBS
             $bdd .= "$casting_nom[$i]*$casting_role[$i]*$casting_img[$i]&";
         }
         // Insert Data
-        DB::run("INSERT INTO tmdbshow (id_tmdb, title, image, season, episodes, status, date, creator, genre, plot, actor)
-	             VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                [$id_tmdb, $titre, $image, $season, $episode, $status, $date, $creator, $genre, $plot, str_replace("http:", "https:", $bdd)]);
+        DB::run("INSERT INTO tmdb (id_tmdb, title, image, season, episodes, status, date, creator, genre, plot, actor, url, type)
+	             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                [$id_tmdb, $titre, $image, $season, $episode, $status, $date, $creator, $genre, $plot, str_replace("http:", "https:", $bdd,), $url, 'show']);
         // Return To Torrent
         Redirect::to(URLROOT . "/torrent?id=$id");
     }
@@ -133,7 +133,7 @@ class TMDBS
         $expires = 1728000; // Cache time in seconds
         if (($_data = $TTCache->Get("tmdb/serie/$id_tmdb", $expires)) === false) {
             // Get Data From DB
-            $res = DB::run("SELECT * FROM `tmdbshow` WHERE id_tmdb = " . $id_tmdb . "");
+            $res = DB::run("SELECT * FROM `tmdb` WHERE id_tmdb = ? AND type = ?", [$id_tmdb, 'show']);
             $serie = $res->fetch(PDO::FETCH_ASSOC);
             // Data
             $_data["poster"] = $serie["image"];

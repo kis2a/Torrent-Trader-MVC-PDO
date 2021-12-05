@@ -178,13 +178,9 @@ function torrenttable($res)
                     $char1 = 50; //cut name length
                     $smallname = htmlspecialchars(CutName($row["name"], $char1));
                     $dispname = "<b>" . $smallname . "</b>";
-                    $last_access = $_SESSION["last_browse"];
-                    $time_now = TimeDate::gmtime();
-                    if ($last_access > $time_now || !is_numeric($last_access)) {
-                        $last_access = $time_now;
-                    }
-                    if (TimeDate::sql_timestamp_to_unix_timestamp($row["added"]) >= $last_access) {
-                        $dispname .= "<b><font color='#ff0000'> - (" . Lang::T("NEW") . "!)</font></b>";
+                    $added = date("M d, Y", TimeDate::utc_to_tz_time($row['added']));
+                    if (strtotime($added) >= strtotime("yesterday")){ // Only show for torrents 1 day old
+                        $dispname .= "<b><font color='#ff0000'> (" . Lang::T("NEW") . "!) </font></b>";
                     }
                     if ($row["freeleech"] == 1) {
                         $dispname .= " <img src='" . URLROOT . "/assets/images/misc/free.gif' border='0' alt='' />";
@@ -195,7 +191,14 @@ function torrenttable($res)
                     if ($row["sticky"] == "yes") {
                         $dispname .= " <img src='" . URLROOT . "/assets/images/misc/sticky.gif' bored='0' alt='sticky' title='sticky'>";
                     }
-                    print("<td class='ttable_col$x' nowrap='nowrap'><a href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
+                    //print("<td class='ttable_col$x' nowrap='nowrap'><a href=\"" . URLROOT . "/torrent?id=$id&amp;hit=1\">$dispname</a></td>");
+                    
+// BALLOON TOOLTIP MOD
+$bimg = DB::run("SELECT image1 FROM torrents WHERE id=$id")->fetch(PDO::FETCH_ASSOC);
+$balon =($bimg["image1"] ? data_uri(UPLOADDIR."/images/".$bimg["image1"], $bimg["image1"]) : "".URLROOT."/assets/images/misc/default_avatar.png");
+print("<td class='ttable_col$x' nowrap='nowrap'><a href=\"" . URLROOT . "/torrent?id=$id&hit=1\" onMouseover=\"return overlib('<table class=ballooncolor border=1 width=300px align=center><tr><td class=balloonheadercolor colspan=2 align=center>$smallname</td></tr><tr valign=top><td class=ballooncolor align=center><img border=0 height=200 width=120 src=$balon></td><td width=80%  class=ballooncolor><div align=left><b>Uploaded on: </b>" . date("m-d-Y", TimeDate::utc_to_tz_time($row["added"])) . "<br /><b>Size: </b>". mksize($row["size"]) . "<br /><b>Completed: </b>" . $row["times_completed"] . "<br /></div><div align=left><b>Views: </b>" . $row["views"] . "<br />".$lang." ".$flag."<br /><b>Hits: </b>" . $row["hits"] . "<br /><b>Seeders: </b><font color=green>" . $row["seeders"] . "</font><br /><b>Leechers: </b><font color=red>" . $row["leechers"] . "</font><br /><b> Uploaded by: </b>" . $row['username'] . "</div></td></tr><tr><td class=balloonheadercolor colspan=2 align=center>".Lang::T("DESCRIPTION")."</td></tr><tr><td  class=ballooncolor colspan=2>" . $row['descr'] . "</td></tr></table>', CENTER, HEIGHT, 200, WIDTH, 300)\"; onMouseout=\"return nd()\">".$dispname."</a></td>");
+// END BALLOON MOD
+                    
                     break;
                 case 'dl':
                     print("<td class='ttable_col$x' align='center'><a href=\"" . URLROOT . "/download?id=$id&amp;name=" . rawurlencode($row["filename"]) . "\"><i class='fa fa-download' style='color:green' title='Download'></i></a></td>");

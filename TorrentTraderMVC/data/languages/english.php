@@ -1204,3 +1204,18 @@ $LANG["EMPTY_RECEIVER"] = "Receiver cannot be empty !";
 $LANG["EMPTY_SUBJECT"] = "Subject cannot be empty !";
 $LANG["SAVED_DRAFT"] = "Saved Message as Draft !";
 $LANG["SAVED_TEMPLATE"] = "Template Created !";
+
+//Catalogue
+$LANG["CATALOGUE"] = "Catalog";
+$LANG["SEARCH_CAT"] = "Search Catalog";
+$LANG["TORRENT_INFO"] = "Torrent INFO";
+$LANG["SEED_INFO"] = "Seed info! (top 5 seeders)";
+$LANG["NUMBER_OF_DOWNLOADS"] = "Downloaded";
+$LANG["TIMES"] = "times";
+$LANG["TORRENT_GO"] = "To torrent";
+$LANG["DIRECT_DOWN"] = "Direct download";
+$LANG["NO_INFO"] = "No information available";
+$LANG["NO_SEEDER"] = "No Seeders";
+$LANG["NO_MATCHES"] = "Sorry. Nothing matches";
+$LANG["CLICK_ENLARGE"] = "Click to enlarge";
+$LANG["TORRENT_NOT_ACTIVE"] = "This torrent is not active";

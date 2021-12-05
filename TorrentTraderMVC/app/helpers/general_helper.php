@@ -77,6 +77,7 @@ function usermenu($id)
     <a href='<?php echo URLROOT; ?>/account/email?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Email</button></a>
     <a href='<?php echo URLROOT; ?>/messages/overview'><button type="button" class="btn btn-sm ttbtn">Messages</button></a>
     <a href='<?php echo URLROOT; ?>/bonus'><button type="button" class="btn btn-sm ttbtn">Seed Bonus</button></a>
+    <a href='<?php echo URLROOT; ?>/bookmark'><button type="button" class="btn btn-sm ttbtn">Bookmarks</button></a>
     <?php }?>
     <?php if ($_SESSION["view_users"]) {?>
     <a href='<?php echo URLROOT; ?>/friends?id=<?php echo $id; ?>'><button type="button" class="btn btn-sm ttbtn">Friends</button></a>
@@ -150,4 +151,25 @@ function sqlesc($x)
         $x = "'" . $x . "'";
     }
     return $x;
+}
+
+function getexttype($ext = '')
+{
+    $ext = strtolower($ext);
+    $music = array('mp3', 'wav', 'flac', 'm3u');
+    $video = array('mp4', 'avi', 'mkv', 'flv', 'wmv');
+    $file = array('txt', 'pdf', 'doc', 'zip', 'nfo', 'srt', 'exe');
+    $image = array('jpeg', 'gif', 'png');
+    if ($ext == false || $ext == '') {
+        $filetype_icon = "&nbsp;<i class='fa fa-question'></i>";
+    } else if (in_array($ext, $music)) {
+        $filetype_icon = "&nbsp;<i class='fa fa-music'></i>";
+    } else if (in_array($ext, $video)) {
+        $filetype_icon = "&nbsp;<i class='fa fa-film'></i>";
+    } else if (in_array($ext, $file)) {
+        $filetype_icon = "&nbsp;<i class='fa fa-file'></i>";
+    } else if (in_array($ext, $image)) {
+        $filetype_icon = "&nbsp;<i class='fa fa-picture-o'></i>";
+    }
+    return $filetype_icon;
 }

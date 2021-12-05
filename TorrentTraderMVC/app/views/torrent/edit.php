@@ -13,20 +13,21 @@ torrentmenu($data['id'], $torr['external']); ?>
     <input type='radio' name='img1action' value='keep' checked='checked' /><?php echo Lang::T("KEEP_IMAGE") ?>&nbsp;&nbsp;
     <input type='radio' name='img1action' value='delete' /><?php echo Lang::T("DELETE_IMAGE") ?>&nbsp;&nbsp;
     <input type='radio' name='img1action' value='update' /><?php echo Lang::T("UPDATE_IMAGE") ?><br />
-    <input class="btn btn-sm ttbtn"  type='file' name='image0' size='60' /> <br /><br /> <b><?php echo Lang::T("IMAGE") ?> 2:</b>&nbsp;&nbsp;<br>
+    <input type='file' name='image0' size='60' /> <br /><br /> <b><?php echo Lang::T("IMAGE") ?> 2:</b>&nbsp;&nbsp;<br>
     <input type='radio' name='img2action' value='keep' checked='checked' /><?php echo Lang::T("KEEP_IMAGE") ?>&nbsp;&nbsp;
     <input type='radio' name='img2action' value='delete' /><?php echo Lang::T("DELETE_IMAGE") ?>&nbsp;&nbsp;
     <input type='radio' name='img2action' value='update' /><?php echo Lang::T("UPDATE_IMAGE") ?><br />
-    <input class="btn btn-sm ttbtn"  type='file' name='image1' size='60' /><br><br>
+    <input type='file' name='image1' size='60' /><br><br>
     <b><?php echo Lang::T("NFO") ?>: </b><br />
     <input type='radio' name='nfoaction' value='keep' checked='checked' />Keep NFO &nbsp;
+    <input type='radio' name='nfoaction' value='delete' />Delete NFO &nbsp;
     <input type='radio' name='nfoaction' value='update' />Update NFO:<?php
     if ($torr["nfo"] == "yes") { ?>
         &nbsp;&nbsp;<a href='<?php echo URLROOT  ?>/nfo?id=<?php echo $torr["id"]  ?>'>[<?php echo Lang::T("VIEW_CURRENT_NFO")  ?>]</a><?php
     } else { ?>
        &nbsp;&nbsp;<font color='#ff0000'><?php echo Lang::T("NO_NFO_UPLOADED")  ?></font><?php
     } ?>
-    <br /><input class="btn btn-sm ttbtn" type='file' name='nfofile' size='60'><br><br>
+    <br /><input type='file' name='nfofile' size='60'><br><br>
     <b><?php echo Lang::T("CATEGORIES")  ?>: </b><br><?php echo $data['catdrop']  ?><br><br>
     <b><?php echo Lang::T("LANG")  ?>: </b><br>
     <?php echo $data['langdrop'] ?><br><br>

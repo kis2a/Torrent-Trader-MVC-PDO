@@ -130,6 +130,12 @@ if ($torr["external"] != 'yes' && $torr["freeleech"] == '1') {?>
         <b><?php echo Lang::T("FREE_LEECH"); ?>: </b><font color='#ff0000'><?php echo Lang::T("FREE_LEECH_MSG"); ?></font><br><?php
 }?>
     <b><?php echo Lang::T("LAST_CHECKED"); ?>: </b><?php echo date("d-m-Y H:i:s", TimeDate::utc_to_tz_time($torr["last_action"])); ?><br>
+<?php
+    if ($_SESSION["edit_users"] == "yes") {?>
+    <a href="<?php echo URLROOT; ?>/torrent?id=<?php echo $torr['id'] ?>&bump=1"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("Bump") ?></button></a><?php
+}
+Bookmarks::select($torr['id']);
+?>
     <a href="<?php echo URLROOT; ?>/report/torrent?torrent=<?php echo $torr['id']; ?>"><button type='button' class='btn btn-sm ttbtn'><?php echo Lang::T("REPORT_TORRENT") ?></button></a>&nbsp;
     <?php if ($_SESSION["edit_torrents"] == "yes") {
     echo "<a href='" . URLROOT . "/torrent/edit?id=$torr[id]&amp;returnto=" . urlencode($_SERVER["REQUEST_URI"]) . "'><button type='button' class='btn btn-sm ttbtn'><b>" . Lang::T("EDIT_TORRENT") . "</b></button></a>&nbsp;";
@@ -150,13 +156,13 @@ if ($_SESSION["delete_torrents"] == "yes") {?>
 
 if(!empty($torr["tmdb"]) && in_array($torr["cat_parent"], SerieCats)) {
     $id_tmdb = TMDBS::getId($torr["tmdb"]);
-    $total = get_row_count("tmdbshow"," WHERE id_tmdb = ".$id_tmdb."");
+    $total = DB::run("SELECT count(*) FROM tmdb WHERE id_tmdb = ? AND type = ?", [$id_tmdb, 'show'])->fetchColumn();
     if($total > 0) {
         TMDBS::getSerie($id_tmdb);
     }
 } elseif(!empty($torr["tmdb"]) && in_array($torr["cat_parent"], MovieCats)) {
     $id_tmdb = TMDBS::getId($torr["tmdb"]);
-    $total = get_row_count("tmdbfilm"," WHERE id_tmdb = ".$id_tmdb."");
+    $total = DB::run("SELECT count(*) FROM tmdb WHERE id_tmdb = ? AND type = ?", [$id_tmdb, 'movie'])->fetchColumn();
     if($total > 0) {
         TMDBS::getFilm($id_tmdb);
     }
@@ -202,3 +208,46 @@ if ($torr["nfo"] == "yes") {
     }
 }
 endforeach;
+
+  // Similar Torrents mod
+  $shortname = CutName(htmlspecialchars($torr["name"]), 50);
+  $searchname = substr($torr['name'], 0, 8);
+  $query1 = str_replace(" ", ".", sqlesc("%" . $searchname . "%"));
+  $catid = str_replace(".", " ", sqlesc("%" . $data['category'] . "%"));
+  $r = DB::run("SELECT torrents.id,  torrents.name,  torrents.size,  torrents.added,  torrents.seeders,  torrents.leechers,  torrents.category, categories.image 
+           FROM torrents 
+         LEFT JOIN categories ON torrents.category = categories.id 
+  WHERE (torrents.name LIKE {$query1}) 
+  OR (torrents.category LIKE {$catid}) 
+  LIMIT 10");
+
+if ($r->rowCount() > 0) {
+    ?>
+    <br><center><b>Similar Torrents</b></center>
+    <div class="table-responsive"><table class="table table-striped"><thead><tr>
+    <th>Type</th>
+    <th>Name</th>
+    <th>Size</th>
+    <th>Added</th>
+    <th>S</th>
+    <th>L</th>
+    </tr></thead><tbody> <?php
+while ($a = $r->fetch(PDO::FETCH_ASSOC)) {
+$cat = "<img class=glossy src=\"".URLROOT."/assets/images/categories/$a[image]\" alt=\"$a[name]\" title=\"$row[cat_parent] : $row[cat_name]\"\>";
+$name = $a["name"];
+echo" <tr>
+    <td>$cat</td>
+    <td><a title=".$a["name"]." href=torrents-details.php?id=" . $a["id"] . "&hit=1><b>" . CutName(htmlspecialchars($a["name"]), $char1) . "</b><br/></a></td>
+    <td>" . mksize($a['size']) . "</td>
+    <td>$a[added]</td>
+    <td><span style='color:Chartreuse'>$a[seeders]</span></td>
+    <td><span style='color:red'>$a[leechers]</span></td>";
+}
+echo "<tr>";
+echo "</tbody></table></div>";
+
+}
+      else {
+          print(Lang::T("NO_SIMILAR_TORRENT_FOUND"));
+      }
+

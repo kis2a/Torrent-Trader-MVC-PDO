@@ -64,7 +64,8 @@ if (!$peer) {
 	// Use Client To Update User/Snatched Details
 	$elapsed = ($peer['seeder'] == 'yes') ? _INTERVAL - floor(($peer['ez'] - time()) / 60) : 0;
     $upthis = max(0, $client['uploaded'] - $peer["uploaded"]);
-    $downthis = max(0, $client['downloaded'] - $peer["downloaded"]);
+    // $downthis = max(0, $client['downloaded'] - $peer["downloaded"]); 
+	$downthis = $user['class'] == _VIP ? 0 : max(0, $client['downloaded'] - $peer["downloaded"]);
     if ($upthis > 0 || $downthis > 0 || $elapsed > 0){
 		if ($torrent["freeleech"] == 1){
 			Announce::UpdateUser($user['id'], $upthis, false);

@@ -26,15 +26,15 @@ class Torrent
 
         if(!empty($row["tmdb"]) && in_array($row["cat_parent"], SerieCats)) {
             $id_tmdb = TMDBS::getId($row["tmdb"]);
-            $total = get_row_count("tmdbshow"," WHERE id_tmdb = ".$id_tmdb."");
+            $total = DB::run("SELECT count(*) FROM tmdb WHERE id_tmdb = ? AND type = ?", [$id_tmdb, 'show'])->fetchColumn();
             if($total == 0) {
-                TMDBS::createSerie($id_tmdb, $id);
+                TMDBS::createSerie($id_tmdb, $id, $row["tmdb"]);
             }
         } elseif(!empty($row["tmdb"]) && in_array($row["cat_parent"], MovieCats)) {
             $id_tmdb = TMDBS::getId($row["tmdb"]);
-            $total = get_row_count("tmdbfilm"," WHERE id_tmdb = ".$id_tmdb."");
+            $total = DB::run("SELECT count(*) FROM tmdb WHERE id_tmdb = ? AND type = ?", [$id_tmdb, 'movie'])->fetchColumn();
             if($total == 0) {
-                TMDBS::createFilm($id_tmdb, $id);
+                TMDBS::createFilm($id_tmdb, $id, $row["tmdb"]);
             }
         }
 
@@ -58,7 +58,10 @@ class Torrent
             Redirect::to(URLROOT . "/torrent?id=$id");
             die;
         }
-
+        if ($_GET["bump"]) {
+            DB::run("UPDATE torrents SET added = NOW() WHERE id = $id");
+            Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("Bumped Torrent"));
+        }
 
         $ts = TimeDate::modify('date', $row['last_action'], '+2 day');
         if ($ts > TT_DATE) {
@@ -113,6 +116,7 @@ class Torrent
         if ($_SESSION["edit_torrents"] == "no" && $_SESSION['id'] != $row['owner']) {
             Redirect::autolink(URLROOT . "/torrent?id=$id", Lang::T("NO_TORRENT_EDIT_PERMISSION"));
         }
+
         //GET DATA FROM DB
         $row = DB::run("SELECT * FROM torrents WHERE id =?", [$id])->fetch();
         if (!$row) {
@@ -193,6 +197,9 @@ class Torrent
                     @move_uploaded_file($nfofilename, "$nfo_dir/$id.nfo");
                     $updateset[] = "nfo = 'yes'";
                 } //success
+            } elseif ($nfoaction == "delete") {
+                unlink(UPLOADDIR."/nfos/$id");
+                $updateset[] = "nfo = 'no'";
             }
             if (!empty($_POST["name"])) {
                 $updateset[] = "name = " . sqlesc($_POST["name"]);

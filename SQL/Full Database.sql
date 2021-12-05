@@ -97,6 +97,20 @@ INSERT INTO `blocks` (`id`, `named`, `name`, `position`, `description`, `enabled
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `bookmarks`
+--
+
+CREATE TABLE `bookmarks` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `userid` int(10) NOT NULL DEFAULT 0,
+  `targetid` int(10) NOT NULL DEFAULT 0,
+  `type` varchar(10) NOT NULL DEFAULT 'torrent',
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `bonus`
 --
 
@@ -1027,43 +1041,27 @@ CREATE TABLE IF NOT EXISTS `thanks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tmdbfilm`
+-- Table structure for table `tmdb`
 --
 
-CREATE TABLE `tmdbfilm` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tmdb` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,,
   `id_tmdb` int(10) NOT NULL DEFAULT 0,
   `title` varchar(255) DEFAULT NULL,
-  `duration` varchar(100) DEFAULT NULL,
-  `producer` varchar(255) DEFAULT NULL,
   `genre` varchar(255) DEFAULT NULL,
   `plot` text DEFAULT NULL,
   `actor` longtext DEFAULT NULL,
-  `trailer` varchar(100) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `image` varchar(50) DEFAULT NULL,
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tmdbshow`
---
-
-CREATE TABLE `tmdbshow` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `id_tmdb` int(10) NOT NULL DEFAULT 0,
-  `title` varchar(255) DEFAULT NULL,
-  `image` varchar(50) DEFAULT NULL,
+  `url` varchar(150) DEFAULT NULL,
+  `trailer` varchar(100) DEFAULT NULL,
+  `duration` varchar(100) DEFAULT NULL,
+  `producer` varchar(255) DEFAULT NULL,
   `season` int(10) DEFAULT NULL,
   `episodes` int(10) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
   `creator` varchar(255) DEFAULT NULL,
-  `genre` varchar(255) DEFAULT NULL,
-  `plot` text DEFAULT NULL,
-  `actor` longtext DEFAULT NULL,
+  `type` varchar(35) DEFAULT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM;
 
