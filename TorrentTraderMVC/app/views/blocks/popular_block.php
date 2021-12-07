@@ -1,4 +1,5 @@
 <?php
+if (Users::has('loggedin') == true) {
 $tcat = implode(',', PopularCats);
 $i = 0;
 $q = "SELECT torrents.id, torrents.image1, torrents.seeders, torrents.leechers, torrents.added FROM torrents WHERE visible = 'yes' AND banned = 'no' AND image1 != '' AND category IN ($tcat) ORDER BY torrents.seeders + torrents.leechers DESC LIMIT 10"; 
@@ -20,3 +21,4 @@ while ( $r = $q->fetch(PDO::FETCH_ASSOC) )
 print '</tr>';
 print '</table>';
 Style::block_end();
+}

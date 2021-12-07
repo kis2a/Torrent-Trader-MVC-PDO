@@ -75,14 +75,14 @@ INSERT INTO `blocks` (`id`, `named`, `name`, `position`, `description`, `enabled
 (4, 'Login Block', 'login', 'left', 'Description here...', 1, 1),
 (5, 'rss', 'rss', 'right', 'Description here...', 1, 14),
 (6, 'latestuploads', 'latestuploads', 'left', 'Description here...', 1, 7),
-(7, 'advancestats', 'advancestats', 'left', 'Description here...', 1, 9),
+(7, 'advancestats', 'advancestats', 'left', 'Description here...', 1, 10),
 (8, 'serverload', 'serverload', 'right', 'Description here...', 1, 15),
 (9, 'usersonline', 'usersonline', 'right', 'Description here...', 1, 2),
 (10, 'Main Category', 'maincats', 'left', 'Description here...', 1, 3),
 (11, 'simplesearch', 'simplesearch', 'right', 'Description here...', 1, 5),
 (12, 'advancesearch', 'advancesearch', 'right', 'Description here...', 1, 6),
 (13, 'latestimages', 'latestimages', 'right', 'Description here...', 1, 7),
-(14, 'mostactivetorrents', 'mostactivetorrents', 'left', 'Description here...', 1, 6),
+(14, 'mostactivetorrents', 'mostactivetorrents', 'left', 'Description here...', 1, 8),
 (15, 'scrollingnews', 'scrollingnews', 'left', 'Description here...', 1, 5),
 (16, 'newestmember', 'newestmember', 'right', 'Description here...', 1, 10),
 (17, 'polls', 'polls', 'right', 'Description here...', 1, 9),
@@ -92,7 +92,8 @@ INSERT INTO `blocks` (`id`, `named`, `name`, `position`, `description`, `enabled
 (21, 'admincp', 'admincp', 'right', 'Description here...', 1, 8),
 (22, 'request', 'request', 'right', 'Description here...', 1, 12),
 (23, 'ipconnected', 'ipconnected', 'right', 'Description here...', 1, 13),
-(24, 'qbit', 'qbit', 'left', 'Description here...', 1, 8);
+(24, 'qbit', 'qbit', 'left', 'Description here...', 1, 9),
+(25, 'popular', 'popular', 'left', 'latest movie images', 1, 6);
 
 -- --------------------------------------------------------
 

@@ -31,11 +31,12 @@ class Adminmassemail
         }
         $ids = array_map("intval", $_POST["groups"]);
         $ids = implode(", ", $ids);
-        $res_log = DB::run("SELECT DISTINCT level FROM groups WHERE group_id IN ($ids)");
+        $res_log = DB::run("SELECT DISTINCT level FROM `groups` WHERE group_id IN ($ids)");
         while ($row_log = $res_log->fetch(PDO::FETCH_ASSOC)) {
             $msg_log .= $row_log["level"] . ", ";
         }
-        $res = DB::run("SELECT u.email FROM users u LEFT JOIN groups g ON u.class = g.group_id WHERE u.enabled = 'yes' AND u.status = 'confirmed' AND u.class IN ($ids)");
+        
+        $res = DB::run("SELECT u.email FROM users u LEFT JOIN `groups` g ON u.class = g.group_id WHERE u.enabled = 'yes' AND u.status = 'confirmed' AND u.class IN ($ids)");
         $siteemail = Config::TT()['SITEEMAIL'];
         while ($row = $res->fetch(PDO::FETCH_ASSOC)) {
             $TTMail = new TTMail();

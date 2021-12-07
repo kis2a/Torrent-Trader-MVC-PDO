@@ -8,7 +8,7 @@ This page allows you to send a mass-email to all members, in the usergroups you 
     <tr><td align="center">Subject: <input type="text" name="subject" size="40" /></td></tr>
     <tr><td align="center">To:
         <?php
-        while ($row = $res->fetch(PDO::FETCH_ASSOC)) {?>
+        while ($row = $data['res']->fetch(PDO::FETCH_ASSOC)) {?>
             <input type="checkbox" name="groups[]" value="<?php echo $row["group_id"]; ?>" /> <?php echo $row["level"]; ?>
             <?php
         } ?>

@@ -8,7 +8,11 @@ class Catalog
 
     public function index()
     {
-        $search = $_GET['search'] ?? '';
+        //check permissions
+        if ($_SESSION["view_torrents"] != "yes" && Config::TT()['MEMBERSONLY']) {
+            Redirect::autolink(URLROOT, Lang::T("NO_TORRENT_VIEW"));
+        }
+		$search = $_GET['search'] ?? '';
         $url = "?";
         if ($search != '') {
             $keys = explode(" ", $search);
