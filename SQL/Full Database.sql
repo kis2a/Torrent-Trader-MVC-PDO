@@ -1046,7 +1046,7 @@ CREATE TABLE IF NOT EXISTS `thanks` (
 --
 
 CREATE TABLE `tmdb` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,,
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `id_tmdb` int(10) NOT NULL DEFAULT 0,
   `title` varchar(255) DEFAULT NULL,
   `genre` varchar(255) DEFAULT NULL,
